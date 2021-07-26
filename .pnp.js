@@ -57,7 +57,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["prettier", "npm:2.3.2"],
             ["semantic-release", "npm:17.4.4"],
             ["semantic-release-monorepo", "virtual:4a172b79e9467458dbc479a30265edea657a9ee31db377069a857af09e1621fb4081bdf596d15717b71116025b5fbf4850986893c6fa788a0a9d8298b850b150#npm:7.0.5"],
-            ["slash", "npm:3.0.0"],
+            ["slash", "npm:4.0.0"],
             ["tslib", "npm:2.3.0"],
             ["typescript", "patch:typescript@npm%3A4.3.5#builtin<compat/typescript>::version=4.3.5&hash=ddfc1b"],
             ["yo", "npm:4.2.0"]
@@ -1110,7 +1110,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["prettier", "npm:2.3.2"],
             ["semantic-release", "npm:17.4.4"],
             ["semantic-release-monorepo", "virtual:4a172b79e9467458dbc479a30265edea657a9ee31db377069a857af09e1621fb4081bdf596d15717b71116025b5fbf4850986893c6fa788a0a9d8298b850b150#npm:7.0.5"],
-            ["slash", "npm:3.0.0"],
+            ["slash", "npm:4.0.0"],
             ["tslib", "npm:2.3.0"],
             ["typescript", "patch:typescript@npm%3A4.3.5#builtin<compat/typescript>::version=4.3.5&hash=ddfc1b"],
             ["yo", "npm:4.2.0"]
@@ -5090,7 +5090,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ]],
       ["core-js", [
         ["npm:3.12.1", {
-          "packageLocation": "./.yarn/unplugged/core-js-npm-3.12.1-6d1063bc86/node_modules/core-js/",
+          "packageLocation": "./.yarn/cache/core-js-npm-3.12.1-6d1063bc86-8b1d05579e.zip/node_modules/core-js/",
           "packageDependencies": [
             ["core-js", "npm:3.12.1"]
           ],
@@ -12941,6 +12941,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["slash", "npm:3.0.0"]
           ],
           "linkType": "HARD",
+        }],
+        ["npm:4.0.0", {
+          "packageLocation": "./.yarn/cache/slash-npm-4.0.0-ce4bbc4a80-714b10473d.zip/node_modules/slash/",
+          "packageDependencies": [
+            ["slash", "npm:4.0.0"]
+          ],
+          "linkType": "HARD",
         }]
       ]],
       ["slice-ansi", [
@@ -13091,7 +13098,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ]],
       ["spawn-sync", [
         ["npm:1.0.15", {
-          "packageLocation": "./.yarn/unplugged/spawn-sync-npm-1.0.15-ae144228c0/node_modules/spawn-sync/",
+          "packageLocation": "./.yarn/cache/spawn-sync-npm-1.0.15-ae144228c0-c31c84dd8b.zip/node_modules/spawn-sync/",
           "packageDependencies": [
             ["spawn-sync", "npm:1.0.15"],
             ["concat-stream", "npm:1.6.2"],
@@ -15048,7 +15055,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ]],
       ["yo", [
         ["npm:4.2.0", {
-          "packageLocation": "./.yarn/unplugged/yo-npm-4.2.0-fd8fdd1e1a/node_modules/yo/",
+          "packageLocation": "./.yarn/cache/yo-npm-4.2.0-fd8fdd1e1a-134d56a0f7.zip/node_modules/yo/",
           "packageDependencies": [
             ["yo", "npm:4.2.0"],
             ["async", "npm:2.6.3"],

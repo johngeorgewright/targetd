@@ -668,7 +668,7 @@ __metadata:
     prettier: 2.3.2
     semantic-release: 17.4.4
     semantic-release-monorepo: 7.0.5
-    slash: 3.0.0
+    slash: 4.0.0
     tslib: 2.3.0
     typescript: 4.3.5
     yo: 4.2.0
@@ -11222,7 +11222,14 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"slash@npm:3.0.0, slash@npm:^3.0.0":
+"slash@npm:4.0.0":
+  version: 4.0.0
+  resolution: "slash@npm:4.0.0"
+  checksum: 714b10473dd5efce5ebaad47c74d69201baf7715fa58e8049d3d2716d9da25a9571bfd3ecc50c3b7f4165948e2d8d5a1aa7faeaeca4891ee71a2fbd408268091
+  languageName: node
+  linkType: hard
+
+"slash@npm:^3.0.0":
   version: 3.0.0
   resolution: "slash@npm:3.0.0"
   checksum: fc3e8597d822ee3ba6cd76e9b001cd5be315f9b81c3a03a29bb611c003d1484e3b29a9e7bc020298fa669b585ff7c9268f44513f60c186216eb6af3111a3e838
