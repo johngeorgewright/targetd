@@ -1,0 +1,61 @@
+name: Publish
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  decipher:
+    name: Decipher
+    runs-on: ubuntu-latest
+    outputs:
+      package: ${{ steps.tag.outputs.package }}
+      version: ${{ steps.tag.outputs.version }}
+    steps:
+      - name: Tag
+        id: tag
+        shell: python
+        run: |
+          import re
+
+          reftest = re.compile(r'^refs/tags/(?P<package>@johngeorgewright/[a-zA-Z0-9_-]+)-v(?P<version>\d+.\d+.\d+)$')
+          refmatch = reftest.match('${{ github.ref }}')
+
+          if refmatch is None:
+            print('Cannot match ref "${{ github.ref }}".')
+          else:
+            package = refmatch.group('package')
+            version = refmatch.group('version')
+            print("::set-output name=package::%s" %package)
+            print("::set-output name=version::%s" %version)
+
+  npm:
+    name: NPM
+    runs-on: ubuntu-latest
+    needs: [decipher]
+    if: needs.decipher.outputs.package != '' && needs.decipher.outputs.version != ''
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v2
+
+      - name: Install Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Setup
+        run: |
+          yarn config set npmPublishRegistry https://registry.npmjs.org
+          yarn config set npmAuthToken $NPM_TOKEN
+          yarn
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Build
+        run: yarn workspace ${{ needs.decipher.outputs.package }} build
+
+      - name: Publish
+        run: yarn workspace ${{ needs.decipher.outputs.package }} npm publish --access public
+        env:
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

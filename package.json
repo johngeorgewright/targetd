@@ -1,0 +1,60 @@
+{
+  "name": "@johngeorgewright/ts-mono-repo",
+  "version": "0.0.0",
+  "description": "The MOL Ads mono-repo",
+  "main": "index.js",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "yarn workspaces foreach --topological-dev --exclude @johngeorgewright/generator run build",
+    "clean": "yarn workspaces foreach run clean",
+    "build:generator": "yarn workspace @johngeorgewright/generator run build",
+    "commit": "yarn git-cz",
+    "generate:package": "yarn yo ./packages/generator/generators/package",
+    "remove:package": "yarn yo ./packages/generator/generators/remove-package",
+    "release": "yarn workspaces foreach --no-private --topological-dev run release",
+    "start": "yarn build && yarn workspaces foreach --no-private --parallel --interlaced run start",
+    "test": "yarn workspaces foreach run test"
+  },
+  "author": "",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/johngeorgewright/ts-mono-repo/issues"
+  },
+  "homepage": "https://github.com/johngeorgewright/ts-mono-repo#readme",
+  "devDependencies": {
+    "@commitlint/cli": "12.1.4",
+    "@commitlint/config-conventional": "12.1.4",
+    "@semantic-release/commit-analyzer": "8.0.1",
+    "@semantic-release/git": "9.0.0",
+    "@semantic-release/github": "7.2.3",
+    "@semantic-release/release-notes-generator": "9.0.3",
+    "commitizen": "4.2.4",
+    "cz-conventional-changelog": "3.3.0",
+    "husky": "7.0.1",
+    "jest-runner": "27.0.6",
+    "lerna": "4.0.0",
+    "lint-staged": "11.1.1",
+    "prettier": "2.3.2",
+    "semantic-release": "17.4.4",
+    "semantic-release-monorepo": "7.0.5",
+    "slash": "3.0.0",
+    "typescript": "4.3.5",
+    "yo": "4.2.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
+  "lint-staged": {
+    "*.{md,json,js,jsx,ts,tsx,yml,yaml}": [
+      "yarn prettier --write"
+    ]
+  },
+  "dependencies": {
+    "tslib": "2.3.0"
+  }
+}

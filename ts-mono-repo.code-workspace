@@ -1,0 +1,16 @@
+{
+  "folders": [
+    { "name": "✨ @johngeorgewright/ts-mono-repo", "path": "." },
+    { "name": "🏗 @johngeorgewright/generator", "path": "packages/generator" }
+  ],
+  "settings": {
+    "search.exclude": { "**/dist": true, "**/.yarn": true, "**/.pnp.*": true },
+    "prettier.prettierPath": ".yarn/sdks/prettier/index.js",
+    "typescript.tsdk": ".yarn/sdks/typescript/lib",
+    "typescript.enablePromptUseWorkspaceTsdk": true,
+    "jest.jestCommandLine": "yarn test"
+  },
+  "extensions": {
+    "recommendations": ["arcanis.vscode-zipfs", "esbenp.prettier-vscode"]
+  }
+}

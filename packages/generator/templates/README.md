@@ -1,0 +1,3 @@
+# @johngeorgewright/<%= name %>
+
+<%= description %>
