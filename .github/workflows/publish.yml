@@ -9,25 +9,15 @@ jobs:
     name: Decipher
     runs-on: ubuntu-latest
     outputs:
-      package: ${{ steps.tag.outputs.package }}
-      version: ${{ steps.tag.outputs.version }}
+      package: ${{ fromJSON(steps.tag.outputs.groups).package }}
+      version: ${{ fromJSON(steps.tag.outputs.groups).version }}
     steps:
       - name: Tag
         id: tag
-        shell: python
-        run: |
-          import re
-
-          reftest = re.compile(r'^refs/tags/(?P<package>@johngeorgewright/[a-zA-Z0-9_-]+)-v(?P<version>\d+.\d+.\d+)$')
-          refmatch = reftest.match('${{ github.ref }}')
-
-          if refmatch is None:
-            print('Cannot match ref "${{ github.ref }}".')
-          else:
-            package = refmatch.group('package')
-            version = refmatch.group('version')
-            print("::set-output name=package::%s" %package)
-            print("::set-output name=version::%s" %version)
+        uses: johngeorgewright/regex-action
+        with:
+          ref: ${{ github.ref }}
+          regex: ^refs/tags/(?P<package>@config/[a-zA-Z0-9_-]+)-v(?P<version>\d+.\d+.\d+)$
 
   npm:
     name: NPM

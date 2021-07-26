@@ -6,8 +6,8 @@ import prettier from 'prettier'
 import { writeFile } from 'fs/promises'
 
 export = class PackageGenerator extends Generator {
-  #namespace = '@johngeorgewright'
-  #vsCodeWS = 'ts-mono-repo.code-workspace'
+  #namespace = '@config'
+  #vsCodeWS = 'config.code-workspace'
   #answers: { description?: string; name?: string; public?: boolean } = {}
 
   constructor(args: string | string[], opts: Record<string, unknown>) {
@@ -79,12 +79,12 @@ export = class PackageGenerator extends Generator {
     this.packageJson.set('license', 'MIT')
 
     this.packageJson.set('bugs', {
-      url: 'https://github.com/johngeorgewright/ts-mono-repo/issues',
+      url: 'https://github.com/johngeorgewright/config/issues',
     })
 
     this.packageJson.set(
       'homepage',
-      'https://github.com/johngeorgewright/ts-mono-repo#readme'
+      'https://github.com/johngeorgewright/config#readme'
     )
 
     const devDependencies = [

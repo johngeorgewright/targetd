@@ -1,5 +1,5 @@
 {
-  "name": "@johngeorgewright/generator",
+  "name": "@config/generator",
   "version": "0.0.0",
   "description": "Generates a MOL ads packages",
   "private": true,

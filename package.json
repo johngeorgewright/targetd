@@ -1,16 +1,16 @@
 {
-  "name": "@johngeorgewright/ts-mono-repo",
+  "name": "@config/mono-repo",
   "version": "0.0.0",
-  "description": "The MOL Ads mono-repo",
+  "description": "The MOL config system",
   "main": "index.js",
   "private": true,
   "workspaces": [
     "packages/*"
   ],
   "scripts": {
-    "build": "yarn workspaces foreach --topological-dev --exclude @johngeorgewright/generator run build",
+    "build": "yarn workspaces foreach --topological-dev --exclude @config/generator run build",
     "clean": "yarn workspaces foreach run clean",
-    "build:generator": "yarn workspace @johngeorgewright/generator run build",
+    "build:generator": "yarn workspace @config/generator run build",
     "commit": "yarn git-cz",
     "generate:package": "yarn yo ./packages/generator/generators/package",
     "remove:package": "yarn yo ./packages/generator/generators/remove-package",
@@ -21,9 +21,9 @@
   "author": "",
   "license": "UNLICENSED",
   "bugs": {
-    "url": "https://github.com/johngeorgewright/ts-mono-repo/issues"
+    "url": "https://github.com/johngeorgewright/config/issues"
   },
-  "homepage": "https://github.com/johngeorgewright/ts-mono-repo#readme",
+  "homepage": "https://github.com/johngeorgewright/config#readme",
   "devDependencies": {
     "@commitlint/cli": "12.1.4",
     "@commitlint/config-conventional": "12.1.4",

@@ -1,3 +1,3 @@
-# @johngeorgewright/<%= name %>
+# @config/<%= name %>
 
 <%= description %>

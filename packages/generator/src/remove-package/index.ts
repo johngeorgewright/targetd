@@ -9,7 +9,7 @@ import { promisify } from 'util'
 const rimraf = promisify(rimrafCB)
 
 export = class RemovePackageGenerator extends Generator {
-  #vsCodeWS = 'ts-mono-repo.code-workspace'
+  #vsCodeWS = 'config.code-workspace'
   #packagesPath = pathHelper.resolve(__dirname, '..', '..', '..')
   #answers: { names?: string[] } = {}
 

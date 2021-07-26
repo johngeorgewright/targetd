@@ -1,4 +1,4 @@
-# @johngeorgewright/generator
+# @config/generator
 
 This is a private package to this mono-repo that is used to generate new packages quickly.
 

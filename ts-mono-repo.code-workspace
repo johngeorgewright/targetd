@@ -1,7 +1,7 @@
 {
   "folders": [
-    { "name": "✨ @johngeorgewright/ts-mono-repo", "path": "." },
-    { "name": "🏗 @johngeorgewright/generator", "path": "packages/generator" }
+    { "name": "✨ @config/mono-repo", "path": "." },
+    { "name": "🏗 @config/generator", "path": "packages/generator" }
   ],
   "settings": {
     "search.exclude": { "**/dist": true, "**/.yarn": true, "**/.pnp.*": true },
