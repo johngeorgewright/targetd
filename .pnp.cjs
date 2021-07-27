@@ -29,6 +29,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       {
         "name": "@config/generator",
         "reference": "workspace:packages/generator"
+      },
+      {
+        "name": "@config/targeting-predicate",
+        "reference": "workspace:packages/targeting-predicate"
       }
     ],
     "enableTopLevelFallback": true,
@@ -36,7 +40,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
     "fallbackExclusionList": [
       ["@config/api", ["workspace:packages/api"]],
       ["@config/generator", ["workspace:packages/generator"]],
-      ["@config/mono-repo", ["workspace:."]]
+      ["@config/mono-repo", ["workspace:."]],
+      ["@config/targeting-predicate", ["workspace:packages/targeting-predicate"]]
     ],
     "fallbackPool": [
     ],
@@ -1116,6 +1121,22 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["tslib", "npm:2.3.0"],
             ["typescript", "patch:typescript@npm%3A4.3.5#~builtin<compat/typescript>::version=4.3.5&hash=d8b4e7"],
             ["yo", "npm:4.2.0"]
+          ],
+          "linkType": "SOFT",
+        }]
+      ]],
+      ["@config/targeting-predicate", [
+        ["workspace:packages/targeting-predicate", {
+          "packageLocation": "./packages/targeting-predicate/",
+          "packageDependencies": [
+            ["@config/targeting-predicate", "workspace:packages/targeting-predicate"],
+            ["@config/api", "workspace:packages/api"],
+            ["@types/jest", "npm:26.0.24"],
+            ["jest", "virtual:500290b2a563a9ad5085ac2b33055b60d235ff3ea55739f816c13d4f9bb9c1e4d024a42b8ede8dfb9aa13b35932d8bf41727407b9f1d9b92f3886061b55ff87a#npm:27.0.6"],
+            ["rimraf", "npm:3.0.2"],
+            ["ts-jest", "virtual:500290b2a563a9ad5085ac2b33055b60d235ff3ea55739f816c13d4f9bb9c1e4d024a42b8ede8dfb9aa13b35932d8bf41727407b9f1d9b92f3886061b55ff87a#npm:27.0.4"],
+            ["tslib", "npm:2.3.0"],
+            ["typescript", "patch:typescript@npm%3A4.3.5#~builtin<compat/typescript>::version=4.3.5&hash=d8b4e7"]
           ],
           "linkType": "SOFT",
         }]

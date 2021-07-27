@@ -1,7 +1,7 @@
 {
-  "name": "@config/api",
+  "name": "@config/targeting-predicate",
   "version": "0.0.0",
-  "description": "Load and query data",
+  "description": "Adds a predicate for simple targeting properties",
   "main": "dist/index.js",
   "private": true,
   "scripts": {
@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/johngeorgewright/config#readme",
   "devDependencies": {
+    "@config/api": "workspace:packages/api",
     "@types/jest": "26.0.24",
     "jest": "27.0.6",
     "rimraf": "3.0.2",
@@ -24,7 +25,9 @@
     "typescript": "4.3.5"
   },
   "dependencies": {
-    "runtypes": "^6.3.1",
     "tslib": "2.3.0"
+  },
+  "peerDependencies": {
+    "@config/api": "workspace:packages/api"
   }
 }

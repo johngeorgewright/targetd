@@ -2,7 +2,11 @@
   "folders": [
     { "name": "✨ @config/mono-repo", "path": "." },
     { "name": "🏗 @config/generator", "path": "packages/generator" },
-    { "name": "📦 @config/api", "path": "packages/api" }
+    { "name": "📦 @config/api", "path": "packages/api" },
+    {
+      "name": "📦 @config/targeting-predicate",
+      "path": "packages/targeting-predicate"
+    }
   ],
   "settings": {
     "search.exclude": { "**/dist": true, "**/.yarn": true, "**/.pnp.*": true },
