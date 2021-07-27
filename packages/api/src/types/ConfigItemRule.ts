@@ -20,3 +20,5 @@ const ConfigItemRule = RuleWithPayload.Or(ClientConfigItemRule)
 type ConfigItemRule = Static<typeof ConfigItemRule>
 
 export default ConfigItemRule
+
+
