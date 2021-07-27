@@ -2,7 +2,7 @@
   "name": "@config/api",
   "version": "0.0.0",
   "description": "Load and query data",
-  "main": "dist/index.js",
+  "main": "dist/Config.js",
   "private": true,
   "scripts": {
     "build": "yarn clean && yarn tsc && yarn rimraf 'dist/**/?(__tests__|__mocks__|__setup__|*.test.*)'",
@@ -24,6 +24,7 @@
     "typescript": "4.3.5"
   },
   "dependencies": {
+    "runtypes": "^6.3.1",
     "tslib": "2.3.0"
   }
 }

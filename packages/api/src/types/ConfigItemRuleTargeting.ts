@@ -1,8 +1,15 @@
-import { Array, Boolean, Dictionary, Number, Static, String } from "runtypes"
+import { Array, Boolean, Dictionary, Number, Static, String } from 'runtypes'
 
-const ConfigItemRuleTargeting = Dictionary(
-  Array(String).Or(Array(Number)).Or(Boolean), String)
+export const ConfigItemRuleTargetingValue = Array(String)
+  .Or(Array(Number))
+  .Or(Boolean)
 
-type ConfigItemRuleTargeting = Static(typeof ConfigItemRuleTargeting)
+export type ConfigItemRuleTargetingValue = Static<
+  typeof ConfigItemRuleTargetingValue
+>
+
+const ConfigItemRuleTargeting = Dictionary(ConfigItemRuleTargetingValue, String)
+
+type ConfigItemRuleTargeting = Static<typeof ConfigItemRuleTargeting>
 
 export default ConfigItemRuleTargeting

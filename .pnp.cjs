@@ -58,10 +58,9 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["lerna", "npm:4.0.0"],
             ["lint-staged", "npm:11.1.1"],
             ["prettier", "npm:2.3.2"],
-            ["runtypes", "npm:6.3.1"],
             ["semantic-release", "npm:17.4.4"],
             ["semantic-release-monorepo", "virtual:4a172b79e9467458dbc479a30265edea657a9ee31db377069a857af09e1621fb4081bdf596d15717b71116025b5fbf4850986893c6fa788a0a9d8298b850b150#npm:7.0.5"],
-            ["slash", "npm:3.0.0"],
+            ["slash", "npm:4.0.0"],
             ["tslib", "npm:2.3.0"],
             ["typescript", "patch:typescript@npm%3A4.3.5#~builtin<compat/typescript>::version=4.3.5&hash=d8b4e7"],
             ["yo", "npm:4.2.0"]
@@ -1058,6 +1057,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/jest", "npm:26.0.24"],
             ["jest", "virtual:500290b2a563a9ad5085ac2b33055b60d235ff3ea55739f816c13d4f9bb9c1e4d024a42b8ede8dfb9aa13b35932d8bf41727407b9f1d9b92f3886061b55ff87a#npm:27.0.6"],
             ["rimraf", "npm:3.0.2"],
+            ["runtypes", "npm:6.3.1"],
             ["ts-jest", "virtual:500290b2a563a9ad5085ac2b33055b60d235ff3ea55739f816c13d4f9bb9c1e4d024a42b8ede8dfb9aa13b35932d8bf41727407b9f1d9b92f3886061b55ff87a#npm:27.0.4"],
             ["tslib", "npm:2.3.0"],
             ["typescript", "patch:typescript@npm%3A4.3.5#~builtin<compat/typescript>::version=4.3.5&hash=d8b4e7"]
@@ -1110,10 +1110,9 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["lerna", "npm:4.0.0"],
             ["lint-staged", "npm:11.1.1"],
             ["prettier", "npm:2.3.2"],
-            ["runtypes", "npm:6.3.1"],
             ["semantic-release", "npm:17.4.4"],
             ["semantic-release-monorepo", "virtual:4a172b79e9467458dbc479a30265edea657a9ee31db377069a857af09e1621fb4081bdf596d15717b71116025b5fbf4850986893c6fa788a0a9d8298b850b150#npm:7.0.5"],
-            ["slash", "npm:3.0.0"],
+            ["slash", "npm:4.0.0"],
             ["tslib", "npm:2.3.0"],
             ["typescript", "patch:typescript@npm%3A4.3.5#~builtin<compat/typescript>::version=4.3.5&hash=d8b4e7"],
             ["yo", "npm:4.2.0"]
@@ -12951,6 +12950,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/slash-npm-3.0.0-b87de2279a-94a93fff61.zip/node_modules/slash/",
           "packageDependencies": [
             ["slash", "npm:3.0.0"]
+          ],
+          "linkType": "HARD",
+        }],
+        ["npm:4.0.0", {
+          "packageLocation": "./.yarn/cache/slash-npm-4.0.0-ce4bbc4a80-da8e4af737.zip/node_modules/slash/",
+          "packageDependencies": [
+            ["slash", "npm:4.0.0"]
           ],
           "linkType": "HARD",
         }]
