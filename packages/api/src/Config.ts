@@ -3,6 +3,7 @@ import ConfigItemRule from './types/ConfigItemRule'
 import TargetingPredicate from './types/TargetingPredicate'
 import Query from './types/Query'
 import { mapObject } from './util'
+import TargetingDescriptor from './types/TargetingDescriptor'
 
 export default class Config {
   #data: ConfigItem[]
@@ -12,8 +13,8 @@ export default class Config {
     this.#data = data
   }
 
-  usePredicate(prop: string, targetingPrediate: TargetingPredicate) {
-    this.#predicates[prop] = targetingPrediate
+  usePredicate(targetingDescriptor: TargetingDescriptor) {
+    this.#predicates[targetingDescriptor.name] = targetingDescriptor.predicate
   }
 
   getPayload(name: string, query: Query) {

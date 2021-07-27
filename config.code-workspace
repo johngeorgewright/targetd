@@ -2,7 +2,8 @@
   "folders": [
     { "name": "✨ @config/mono-repo", "path": "." },
     { "name": "🏗 @config/generator", "path": "packages/generator" },
-    { "name": "📦 @config/api", "path": "packages/api" }
+    { "name": "📦 @config/api", "path": "packages/api" },
+    { "name": "📦 @config/date-range", "path": "packages/date-range" }
   ],
   "settings": {
     "search.exclude": { "**/dist": true, "**/.yarn": true, "**/.pnp.*": true },
