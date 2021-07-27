@@ -4,10 +4,13 @@ import TargetingPredicate from './types/TargetingPredicate'
 import Query from './types/Query'
 import { mapObject } from './util'
 import TargetingDescriptor from './types/TargetingDescriptor'
+import { Runtype } from 'runtypes'
+import ConfigItemRuleTargeting from './types/ConfigItemRuleTargeting'
 
 export default class Config {
   #data: ConfigItem[]
   #predicates: Record<string, TargetingPredicate> = {}
+  #targetingValidator: Runtype = ConfigItemRuleTargeting
 
   constructor(data: ConfigItem[]) {
     this.#data = data
@@ -15,6 +18,9 @@ export default class Config {
 
   usePredicate(targetingDescriptor: TargetingDescriptor) {
     this.#predicates[targetingDescriptor.name] = targetingDescriptor.predicate
+    this.#targetingValidator = targetingDescriptor.runtype.And(
+      this.#targetingValidator
+    )
   }
 
   getPayload(name: string, query: Query) {
