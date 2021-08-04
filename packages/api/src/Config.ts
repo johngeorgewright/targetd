@@ -53,10 +53,10 @@ export default class Config<Targeting extends rt.Record<any, any>> {
       false
     >
 
-    const newTargeting: NewTargeting = {
+    const newTargeting: NewTargeting = rt.Record({
       ...targeting.fields,
       [targetingDescriptor.name]: targetingDescriptor.runtype.optional(),
-    }
+    })
 
     return new Config(
       this.#data as rt.Static<ConfigItems<NewTargeting>>,
@@ -104,21 +104,14 @@ export default class Config<Targeting extends rt.Record<any, any>> {
       (targeting: Record<keyof Targeting, unknown>) => boolean
     >
   ) {
-    return objectEvery(targeting, (targetingKey, targetingVal) => {
+    return objectEvery(targeting, (targetingKey) => {
       if (!(targetingKey in query)) return false
+
       if (targetingKey in customPredicates)
         return customPredicates[targetingKey](targeting as any)
+      else console.warn(`Invalid targeting property ${targetingKey}`)
 
-      const queryValue = query[targetingKey as keyof Query]
-      return Array.isArray(queryValue)
-        ? queryValue.some((q) =>
-            this.#defaultTargetingStrategy(q, targetingVal)
-          )
-        : this.#defaultTargetingStrategy(queryValue, targetingVal)
+      return false
     })
-  }
-
-  #defaultTargetingStrategy(x: string | number | boolean, y: boolean | any[]) {
-    return typeof y === 'boolean' ? y === x : y.includes(x)
   }
 }

@@ -19,9 +19,13 @@ export function objectEvery<T extends Record<string, unknown>>(
 ) {
   for (const key in obj) {
     if (Object.prototype.hasOwnProperty.call(obj, key)) {
-      fn(key, obj[key])
+      if (!fn(key, obj[key])) {
+        return false
+      }
     }
   }
+
+  return true
 }
 
 export function arrayInit<T extends unknown[]>(array: T) {

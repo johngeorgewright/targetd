@@ -612,9 +612,10 @@ __metadata:
   dependencies:
     "@johngw/array": ^3.1.5
     "@types/jest": 26.0.24
+    "@types/node": ^16.4.11
     jest: 27.0.6
     rimraf: 3.0.2
-    runtypes: ^6.3.1
+    runtypes: ^6.3.2
     ts-jest: 27.0.4
     ts-toolbelt: ^9.6.0
     tslib: 2.3.0
@@ -2420,6 +2421,13 @@ __metadata:
   version: 15.6.0
   resolution: "@types/node@npm:15.6.0"
   checksum: 424d9610aff823754a446500f2fc75b3de1570d250194d20ead3dad9f93b8a69f56169f1baa894781c970e7d508b418a5e98492225ee2a106fd9d4aa6f6b1e7e
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^16.4.11":
+  version: 16.4.11
+  resolution: "@types/node@npm:16.4.11"
+  checksum: 9c50c79acc587d90be4d2a408772a53239d9532b7a4b88e27baadb652a15a4a57e3bb6a242a1b153a30b6cf55cb69db87992494f47b2aa2683f2f28cfd5c3bd4
   languageName: node
   linkType: hard
 
@@ -10934,10 +10942,10 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"runtypes@npm:^6.3.1":
-  version: 6.3.1
-  resolution: "runtypes@npm:6.3.1"
-  checksum: 1a340a4d790dc06e5a4b612d0e7824ae34135941befe172ddb9173d98484394678c25a741c8ef64215c2ae69dfbb6ed8211c37a79678547a4ab6fd5ad789348a
+"runtypes@npm:^6.3.2":
+  version: 6.3.2
+  resolution: "runtypes@npm:6.3.2"
+  checksum: c3a899e668e3c5b51d1e3411ace79cdef928bb43db75e1383bb4bea71512f31e14b94cce989180a1e82dd32136fd7081d8474976630ac40f929c413d65500186
   languageName: node
   linkType: hard
 

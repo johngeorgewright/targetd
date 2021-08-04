@@ -73,7 +73,7 @@ export = class PackageGenerator extends Generator {
       clean: 'yarn rimraf dist',
       start: 'yarn tsc --watch --preserveWatchOutput',
       release: 'yarn semantic-release -e semantic-release-monorepo',
-      test: 'yarn jest',
+      test: 'yarn jest --passWithNoTests',
     })
 
     this.packageJson.set('license', 'MIT')

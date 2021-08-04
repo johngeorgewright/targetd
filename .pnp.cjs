@@ -1061,9 +1061,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@config/api", "workspace:packages/api"],
             ["@johngw/array", "npm:3.1.5"],
             ["@types/jest", "npm:26.0.24"],
+            ["@types/node", "npm:16.4.11"],
             ["jest", "virtual:500290b2a563a9ad5085ac2b33055b60d235ff3ea55739f816c13d4f9bb9c1e4d024a42b8ede8dfb9aa13b35932d8bf41727407b9f1d9b92f3886061b55ff87a#npm:27.0.6"],
             ["rimraf", "npm:3.0.2"],
-            ["runtypes", "npm:6.3.1"],
+            ["runtypes", "npm:6.3.2"],
             ["ts-jest", "virtual:500290b2a563a9ad5085ac2b33055b60d235ff3ea55739f816c13d4f9bb9c1e4d024a42b8ede8dfb9aa13b35932d8bf41727407b9f1d9b92f3886061b55ff87a#npm:27.0.4"],
             ["ts-toolbelt", "npm:9.6.0"],
             ["tslib", "npm:2.3.0"],
@@ -3137,6 +3138,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@types-node-npm-15.6.0-2f2269856c-424d9610af.zip/node_modules/@types/node/",
           "packageDependencies": [
             ["@types/node", "npm:15.6.0"]
+          ],
+          "linkType": "HARD",
+        }],
+        ["npm:16.4.11", {
+          "packageLocation": "./.yarn/cache/@types-node-npm-16.4.11-9f16741294-9c50c79acc.zip/node_modules/@types/node/",
+          "packageDependencies": [
+            ["@types/node", "npm:16.4.11"]
           ],
           "linkType": "HARD",
         }]
@@ -12613,10 +12621,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["runtypes", [
-        ["npm:6.3.1", {
-          "packageLocation": "./.yarn/cache/runtypes-npm-6.3.1-b7a93baaf7-1a340a4d79.zip/node_modules/runtypes/",
+        ["npm:6.3.2", {
+          "packageLocation": "./.yarn/cache/runtypes-npm-6.3.2-c4ddb30a59-c3a899e668.zip/node_modules/runtypes/",
           "packageDependencies": [
-            ["runtypes", "npm:6.3.1"]
+            ["runtypes", "npm:6.3.2"]
           ],
           "linkType": "HARD",
         }]
