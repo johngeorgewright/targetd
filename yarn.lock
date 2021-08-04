@@ -686,7 +686,7 @@ __metadata:
     slash: 4.0.0
     tslib: 2.3.0
     typescript: 4.3.5
-    yo: 4.2.0
+    yo: 4.3.0
   languageName: unknown
   linkType: soft
 
@@ -2901,13 +2901,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"array-uniq@npm:^1.0.0":
-  version: 1.0.3
-  resolution: "array-uniq@npm:1.0.3"
-  checksum: 1625f06b093d8bf279b81adfec6e72951c0857d65b5e3f65f053fffe9f9dd61c2fc52cff57e38a4700817e7e3f01a4faa433d505ea9e33cdae4514c334e0bf9e
-  languageName: node
-  linkType: hard
-
 "arrify@npm:^1.0.0, arrify@npm:^1.0.1":
   version: 1.0.1
   resolution: "arrify@npm:1.0.1"
@@ -3125,24 +3118,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bin-version-check@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "bin-version-check@npm:3.0.0"
+"bin-version-check@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "bin-version-check@npm:4.0.0"
   dependencies:
-    bin-version: ^2.0.0
-    semver: ^5.1.0
-    semver-truncate: ^1.0.0
-  checksum: 8d9f116ef27d763eb360e02d312af5cbdcf7b601ecb867ace696a9f303086f70f4dc11c2a775a39fbdeec030159fc5d8d0ebabffcf09a68ae60923692b3ddc84
+    bin-version: ^3.0.0
+    semver: ^5.6.0
+    semver-truncate: ^1.1.2
+  checksum: fab468416e27df2f5440ee143065399457bec885b5c1ec01ecf2185ea6f071ff087ef1e3f84cca7314f43145e9bca3127cb1b6f783e35f3242ff7e7edb033b0a
   languageName: node
   linkType: hard
 
-"bin-version@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "bin-version@npm:2.0.0"
+"bin-version@npm:^3.0.0":
+  version: 3.1.0
+  resolution: "bin-version@npm:3.1.0"
   dependencies:
-    execa: ^0.1.1
-    find-versions: ^2.0.0
-  checksum: 50dca9cb4e6e133f7646fe52f9ea6d350fac4f66ba25501957d44b812776ec8eeab7405df43e2f43faf02418962b15601f3ba4a1492bfe67e4fd1f2e849cb141
+    execa: ^1.0.0
+    find-versions: ^3.0.0
+  checksum: 59ef7194420fc30f3a4ea8ce569ad11f7eb736019ca765778739f14702faf2b23b3bcf757e0d29b3839c14bcca9dc38c10c083d3d601363ef06436424204579d
   languageName: node
   linkType: hard
 
@@ -4195,16 +4188,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cross-spawn-async@npm:^2.1.1":
-  version: 2.2.5
-  resolution: "cross-spawn-async@npm:2.2.5"
-  dependencies:
-    lru-cache: ^4.0.0
-    which: ^1.2.8
-  checksum: 6d9059a68a643d9a7506c0d7ca518a803a4293d62cbd3763bdb18cac0dd7bfa9b07d6705361a23c486c7b790e4a2fbfc3d63b93e21de52ad862794b12c6f055f
-  languageName: node
-  linkType: hard
-
 "cross-spawn@npm:^5.0.1":
   version: 5.1.0
   resolution: "cross-spawn@npm:5.1.0"
@@ -4950,17 +4933,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"execa@npm:^0.1.1":
-  version: 0.1.1
-  resolution: "execa@npm:0.1.1"
-  dependencies:
-    cross-spawn-async: ^2.1.1
-    object-assign: ^4.0.1
-    strip-eof: ^1.0.0
-  checksum: 5aea82685f4d8fa0b01967e15ef51faf476773ba0a72468fa7a92826ff58dd082f1e786b32b2a9dc330b9cbf032b3e981aefc283b371549f06f402fae853f79f
-  languageName: node
-  linkType: hard
-
 "execa@npm:^0.7.0":
   version: 0.7.0
   resolution: "execa@npm:0.7.0"
@@ -5307,13 +5279,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"find-versions@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "find-versions@npm:2.0.0"
+"find-versions@npm:^3.0.0":
+  version: 3.2.0
+  resolution: "find-versions@npm:3.2.0"
   dependencies:
-    array-uniq: ^1.0.0
-    semver-regex: ^1.0.0
-  checksum: e0387cfc51df3bc6a5347a0b6b79a65e2f0eef4c399b424b3bffcb89e0b1ef7f31698933530f1cf2d0c451781aae06f20def23609623a9b15b49401150658f7d
+    semver-regex: ^2.0.0
+  checksum: f010e00f9dedd5b83206762d668b4b3b86bbb81f3c2d957e2559969b9eadb6124297c4a2a1d51c5efea3d79557b19660a2758c77bb6a5ba5ce7750fba9847082
   languageName: node
   linkType: hard
 
@@ -5812,7 +5783,7 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"global-tunnel-ng@npm:^2.5.3, global-tunnel-ng@npm:^2.7.1":
+"global-tunnel-ng@npm:^2.7.1":
   version: 2.7.1
   resolution: "global-tunnel-ng@npm:2.7.1"
   dependencies:
@@ -8315,7 +8286,7 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"lru-cache@npm:^4.0.0, lru-cache@npm:^4.0.1":
+"lru-cache@npm:^4.0.1":
   version: 4.1.5
   resolution: "lru-cache@npm:4.1.5"
   dependencies:
@@ -11091,10 +11062,10 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"semver-regex@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "semver-regex@npm:1.0.0"
-  checksum: 17411400eebe392f22502f566f4402c62ba427200443db3b2ff19e18a95aa5ff6480d4c8b8d84050e7c5a79ffe54b9f220629f1f7f3de90748532ee5bf040e6b
+"semver-regex@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "semver-regex@npm:2.0.0"
+  checksum: da7d6f5ceae80e2097933b1e4ea2815c2cfa2c50c6501db1a3d435a6063c0f23d66bc25fe8d06755048f3d7588d85339db6471446b2c91fea907e5c2ada5b0df
   languageName: node
   linkType: hard
 
@@ -11105,7 +11076,7 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"semver-truncate@npm:^1.0.0":
+"semver-truncate@npm:^1.1.2":
   version: 1.1.2
   resolution: "semver-truncate@npm:1.1.2"
   dependencies:
@@ -12818,7 +12789,7 @@ typescript@4.3.5:
   languageName: node
   linkType: hard
 
-"which@npm:^1.2.14, which@npm:^1.2.8, which@npm:^1.2.9, which@npm:^1.3.1":
+"which@npm:^1.2.14, which@npm:^1.2.9, which@npm:^1.3.1":
   version: 1.3.1
   resolution: "which@npm:1.3.1"
   dependencies:
@@ -13115,15 +13086,14 @@ typescript@4.3.5:
   languageName: node
   linkType: hard
 
-"yeoman-doctor@npm:^4.0.0":
-  version: 4.0.0
-  resolution: "yeoman-doctor@npm:4.0.0"
+"yeoman-doctor@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "yeoman-doctor@npm:5.0.0"
   dependencies:
     ansi-styles: ^3.2.0
-    bin-version-check: ^3.0.0
+    bin-version-check: ^4.0.0
     chalk: ^2.3.0
     global-agent: ^2.0.0
-    global-tunnel-ng: ^2.5.3
     latest-version: ^3.1.0
     log-symbols: ^2.1.0
     semver: ^5.0.3
@@ -13132,13 +13102,13 @@ typescript@4.3.5:
   bin:
     yo-doctor: lib/cli.js
     yodoctor: lib/cli.js
-  checksum: 8442b1b39243ddeff21a2fcfdc2468438e298ad0df83e3649967c39c327d8d70c54ed82515055805b401e3c22a65058b81f779a16f952df1e50ce2f2f6d500af
+  checksum: 0bad17497d98fefc5f0981b01d8dce531ff2d9d7230ea807e1cb072ca54eeee25dd5ad1773a83c5292dfbb0ff16cbe6290db4b3bf499428b277271e3f7da0fe1
   languageName: node
   linkType: hard
 
-"yeoman-environment@npm:~3.4.0":
-  version: 3.4.1
-  resolution: "yeoman-environment@npm:3.4.1"
+"yeoman-environment@npm:^3.5.1":
+  version: 3.5.1
+  resolution: "yeoman-environment@npm:3.5.1"
   dependencies:
     "@npmcli/arborist": ^2.2.2
     are-we-there-yet: ^1.1.5
@@ -13158,7 +13128,6 @@ typescript@4.3.5:
     grouped-queue: ^2.0.0
     inquirer: ^8.0.0
     is-scoped: ^2.1.0
-    isbinaryfile: ^4.0.8
     lodash: ^4.17.10
     log-symbols: ^4.0.0
     mem-fs: ^1.2.0 || ^2.0.0
@@ -13180,7 +13149,7 @@ typescript@4.3.5:
     mem-fs-editor: ^8.1.2 || ^9.0.0
   bin:
     yoe: cli/index.js
-  checksum: 79eccf61a571610e6c6da2eeb84abe51c32ba55a48d707f2df463693e3791b5218532b3efa7f4c2d63a015a3cf80acd2ff5e2fe371b86c4a5b1c1c7ff02155ef
+  checksum: 34153b71bfcb54050d6ed6feed72240f1eb1cac3d8984d8349bcfd8b2e0eda1e812b6ee8582570a835f7e746ca7f14453ae6c71f86cece6bc77265425a8d600d
   languageName: node
   linkType: hard
 
@@ -13209,9 +13178,9 @@ typescript@4.3.5:
   languageName: node
   linkType: hard
 
-"yo@npm:4.2.0":
-  version: 4.2.0
-  resolution: "yo@npm:4.2.0"
+"yo@npm:4.3.0":
+  version: 4.3.0
+  resolution: "yo@npm:4.3.0"
   dependencies:
     async: ^2.6.1
     chalk: ^2.4.1
@@ -13242,13 +13211,13 @@ typescript@4.3.5:
     update-notifier: ^2.5.0
     user-home: ^2.0.0
     yeoman-character: ^1.0.0
-    yeoman-doctor: ^4.0.0
-    yeoman-environment: ~3.4.0
+    yeoman-doctor: ^5.0.0
+    yeoman-environment: ^3.5.1
     yosay: ^2.0.2
   bin:
     yo: lib/cli.js
     yo-complete: lib/completion/index.js
-  checksum: ef32f38ffe60a8c14410e8c1e6d0143a07f089113fb910e3f553e6d552174e13aaee20f04660487031e9a5c562f6e7cf8a334c7702a617875102a19aadf50997
+  checksum: 3fd7b22603f45404ff1c8d1e3e3e27bd027c2b93ced7b81c54001e8dfccaf9473d80d7150b19c8eea6e08c9079fcd0e1086355efb1c9be1b3813ac4c222641f9
   languageName: node
   linkType: hard
 
