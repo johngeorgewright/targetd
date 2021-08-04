@@ -12,8 +12,8 @@
     "clean": "yarn workspaces foreach run clean",
     "build:generator": "yarn workspace @config/generator run build",
     "commit": "yarn git-cz",
-    "generate:package": "yarn yo ./packages/generator/generators/package",
-    "remove:package": "yarn yo ./packages/generator/generators/remove-package",
+    "package:generate": "yarn yo ./packages/generator/generators/package",
+    "package:remove": "yarn yo ./packages/generator/generators/remove-package",
     "release": "yarn workspaces foreach --no-private --topological-dev run release",
     "start": "yarn build && yarn workspaces foreach --exclude @config/generator --parallel --interlaced run start",
     "test": "yarn workspaces foreach run test"

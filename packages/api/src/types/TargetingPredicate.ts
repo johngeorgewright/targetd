@@ -1,11 +1,9 @@
-import ConfigItemRuleTargeting from './ConfigItemRuleTargeting'
+import { Runtype, Static } from 'runtypes'
 import Query from './Query'
 
-type TargetingPredicate<Extra extends Record<string, unknown> = {}> = (
-  query: Query
-) => (targeting: ConfigItemRuleTargeting & Extra) => boolean
+type TargetingPredicate<
+  Name extends string | number | symbol,
+  T extends Runtype
+> = (query: Query) => (targeting: Record<Name, Static<T>>) => boolean
 
 export default TargetingPredicate
-
-export type ExtractExtraTargetingProperties<T extends TargetingPredicate> =
-  T extends TargetingPredicate<infer Extra> ? Extra : never

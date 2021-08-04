@@ -1,42 +1,54 @@
 import Config from './Config'
+import * as rt from 'runtypes'
 
-let config: Config
+let config: Config<any>
 
 beforeEach(() => {
-  config = new Config([
-    {
-      name: 'foo',
-      rules: [
-        {
-          targeting: {
-            weather: ['sunny'],
+  config = Config.create()
+    .usePredicate({
+      name: 'weather',
+      predicate: (q) => (t) =>
+        typeof q.weather === 'string' && t.weather.includes(q.weather),
+      runtype: rt.Array(rt.String),
+    })
+    .usePredicate({
+      name: 'highTide',
+      predicate: (q) => (t) => q.highTide === t.highTide,
+      runtype: rt.Boolean,
+    })
+    .add([
+      {
+        name: 'foo',
+        rules: [
+          {
+            targeting: {
+              weather: ['sunny'],
+            },
+            payload: '😎',
           },
-          payload: '😎',
-        },
-        {
-          targeting: {
-            weather: ['rainy'],
+          {
+            targeting: {
+              weather: ['rainy'],
+            },
+            payload: '☂️',
           },
-          payload: '☂️',
-        },
-        {
-          targeting: {
-            highTide: true,
+          {
+            targeting: {
+              highTide: true,
+            },
+            payload: '🏄‍♂️',
           },
-          payload: '🏄‍♂️',
-        },
-        {
-          payload: 'bar',
-        },
-      ],
-    },
-  ])
+          {
+            payload: 'bar',
+          },
+        ],
+      },
+    ])
 })
 
 test('getPayload', () => {
   expect(config.getPayload('foo', {})).toBe('bar')
   expect(config.getPayload('foo', { weather: 'sunny' })).toBe('😎')
   expect(config.getPayload('foo', { weather: 'rainy' })).toBe('☂️')
-  expect(config.getPayload('foo', { weather: ['rainy'] })).toBe('☂️')
   expect(config.getPayload('foo', { highTide: true })).toBe('🏄‍♂️')
 })
