@@ -610,14 +610,14 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@config/api@workspace:packages/api"
   dependencies:
-    "@johngw/array": ^3.1.5
+    "@johngw/array": 3.1.5
     "@types/jest": 26.0.24
-    "@types/node": ^16.4.11
+    "@types/node": 16.4.11
     jest: 27.0.6
     rimraf: 3.0.2
-    runtypes: ^6.3.2
+    runtypes: 6.3.2
     ts-jest: 27.0.4
-    ts-toolbelt: ^9.6.0
+    ts-toolbelt: 9.6.0
     tslib: 2.3.0
     typescript: 4.3.5
   languageName: unknown
@@ -937,7 +937,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@johngw/array@npm:^3.1.5":
+"@johngw/array@npm:3.1.5":
   version: 3.1.5
   resolution: "@johngw/array@npm:3.1.5"
   dependencies:
@@ -2424,7 +2424,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^16.4.11":
+"@types/node@npm:16.4.11":
   version: 16.4.11
   resolution: "@types/node@npm:16.4.11"
   checksum: 9c50c79acc587d90be4d2a408772a53239d9532b7a4b88e27baadb652a15a4a57e3bb6a242a1b153a30b6cf55cb69db87992494f47b2aa2683f2f28cfd5c3bd4
@@ -10942,7 +10942,7 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"runtypes@npm:^6.3.2":
+"runtypes@npm:6.3.2":
   version: 6.3.2
   resolution: "runtypes@npm:6.3.2"
   checksum: c3a899e668e3c5b51d1e3411ace79cdef928bb43db75e1383bb4bea71512f31e14b94cce989180a1e82dd32136fd7081d8474976630ac40f929c413d65500186
@@ -12237,7 +12237,7 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"ts-toolbelt@npm:^9.6.0":
+"ts-toolbelt@npm:9.6.0":
   version: 9.6.0
   resolution: "ts-toolbelt@npm:9.6.0"
   checksum: 9f35fd95d895a5d32ea9fd2e532a695b0bae6cbff6832b77292efa188a0ed1ed6e54f63f74a8920390f3d909a7a3adb20a144686372a8e78b420246a9bd3d58a
