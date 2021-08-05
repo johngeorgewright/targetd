@@ -1,17 +1,21 @@
-import { Array, Record, String } from 'runtypes'
+import { Array, Record, Runtype } from 'runtypes'
 import ConfigItemRule from './ConfigItemRule'
 
-function ConfigItem<T extends Record<any, any>>(Targeting: T) {
+function ConfigItem<P extends Runtype, T extends Record<any, any>>(
+  Payload: P,
+  Targeting: T
+) {
   return Record({
-    name: String,
-    rules: Array(ConfigItemRule(Targeting)),
+    rules: Array(ConfigItemRule(Payload, Targeting)),
   })
 }
 
-type ConfigItem<Targeting extends Record<any, any>> = Record<
+type ConfigItem<
+  Payload extends Runtype,
+  Targeting extends Record<any, any>
+> = Record<
   {
-    name: String
-    rules: Array<ConfigItemRule<Targeting>, false>
+    rules: Array<ConfigItemRule<Payload, Targeting>, false>
   },
   false
 >

@@ -1,80 +1,105 @@
-import { cast as castArray } from '@johngw/array'
 import Query from './types/Query'
 import TargetingDescriptor from './types/TargetingDescriptor'
 import * as rt from 'runtypes'
 import TargetingPredicates from './types/TargetingPredicates'
 import { objectEvery, objectMap } from './util'
 import ConfigItems from './types/ConfigItems'
-import ConfigItemRule from './types/ConfigItemRule'
 import ConfigItem from './types/ConfigItem'
+import ConfigItemRule from './types/ConfigItemRule'
 
-export default class Config<Targeting extends rt.Record<any, any>> {
-  readonly #data: rt.Static<ConfigItems<Targeting>>
+export default class Config<
+  Data extends Record<string, rt.Runtype>,
+  Targeting extends rt.Record<any, any>
+> {
+  readonly #data: rt.Static<ConfigItems<Data, Targeting>>
+  readonly #dataValidators: Data
   readonly #predicates: TargetingPredicates<Targeting>
-  readonly #validator: ConfigItems<Targeting>
+  readonly #targetingValidator: Targeting
 
   static create() {
     return new Config(
-      [],
+      {},
+      {},
       {} as TargetingPredicates<rt.Record<{}, false>>,
-      ConfigItems(rt.Record({}))
+      rt.Record({})
     )
   }
 
   private constructor(
-    data: rt.Static<ConfigItems<Targeting>>,
+    data: rt.Static<ConfigItems<Data, Targeting>>,
+    dataValidators: Data,
     predicates: TargetingPredicates<Targeting>,
-    validator: ConfigItems<Targeting>
+    targetingValidator: Targeting
   ) {
     this.#data = data
+    this.#dataValidators = dataValidators
     this.#predicates = predicates
-    this.#validator = validator
+    this.#targetingValidator = targetingValidator
   }
 
-  add(
-    data: rt.Static<ConfigItems<Targeting>> | rt.Static<ConfigItem<Targeting>>
+  useDataValidator<Name extends string, Validator extends rt.Runtype>(
+    name: Name,
+    validator: Validator
   ) {
-    return new Config(
-      this.#validator.check([...this.#data, ...castArray(data)]),
+    return new Config<Data & Record<Name, Validator>, Targeting>(
+      this.#data,
+      {
+        ...this.#dataValidators,
+        [name]: validator,
+      },
       this.#predicates,
-      this.#validator
+      this.#targetingValidator
+    )
+  }
+
+  addRules<Name extends string>(
+    name: Name,
+    rules: rt.Static<ConfigItemRule<Data[Name], Targeting>>[]
+  ) {
+    const validator = ConfigItems(
+      this.#dataValidators,
+      this.#targetingValidator
+    )
+    return new Config(
+      validator.check({ ...this.#data, [name]: { rules } }),
+      this.#dataValidators,
+      this.#predicates,
+      this.#targetingValidator
     )
   }
 
   usePredicate<Name extends string, R extends rt.Runtype>(
     targetingDescriptor: TargetingDescriptor<Name, R>
   ) {
-    let targeting =
-      this.#validator.element.fields.rules.element.alternatives[0].fields
-        .targeting?.underlying
-
     type NewTargeting = rt.Record<
       Targeting['fields'] & Record<Name, rt.Optional<R>>,
       false
     >
 
     const newTargeting: NewTargeting = rt.Record({
-      ...targeting.fields,
+      ...this.#targetingValidator.fields,
       [targetingDescriptor.name]: targetingDescriptor.runtype.optional(),
     })
 
     return new Config(
-      this.#data as rt.Static<ConfigItems<NewTargeting>>,
+      this.#data as rt.Static<ConfigItems<Data, NewTargeting>>,
+      this.#dataValidators,
       {
         ...this.#predicates,
         [targetingDescriptor.name]: targetingDescriptor.predicate,
       },
-      ConfigItems(newTargeting)
+      newTargeting
     )
   }
 
   getPayload(name: string, query: Query) {
-    type Rules = rt.Static<ConfigItemRule<Targeting>>[]
-
-    const rules = this.#data.reduce<Rules>((rules, configItem) => {
-      if (configItem.name === name) rules.push(...configItem.rules)
-      return rules
-    }, [])
+    const rules =
+      (
+        this.#data as Record<
+          string,
+          rt.Static<ConfigItem<rt.Unknown, Targeting>>
+        >
+      )[name]?.rules || []
 
     const customPredicates = objectMap(this.#predicates, (createPredicate) =>
       createPredicate(query)
