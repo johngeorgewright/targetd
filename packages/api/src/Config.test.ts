@@ -71,6 +71,7 @@ Object {
   },
 }
 `)
+    return
   }
 
   throw new Error('Didnt error correctly')

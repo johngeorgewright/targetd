@@ -3,11 +3,11 @@ import { objectMap } from '../util'
 import ConfigItem from './ConfigItem'
 
 function ConfigItems<
-  DT extends Record<string, rt.Runtype>,
+  D extends Record<string, rt.Runtype>,
   T extends rt.Record<any, any>
->(dataTypes: DT, Targeting: T) {
+>(dataValidators: D, Targeting: T) {
   return rt.Record(
-    objectMap(dataTypes, (Payload) => ConfigItem(Payload, Targeting))
+    objectMap(dataValidators, (Payload) => ConfigItem(Payload, Targeting))
   )
 }
 

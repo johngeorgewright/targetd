@@ -52,16 +52,17 @@ export default class Config<
     )
   }
 
-  addRules<Name extends string>(
+  addRules<Name extends keyof Data>(
     name: Name,
     rules: rt.Static<ConfigItemRule<Data[Name], Targeting>>[]
   ) {
-    const validator = ConfigItems(
-      this.#dataValidators,
-      this.#targetingValidator
-    )
+    const dataItem = (this.#data as any)[name] || { rules: [] }
+    dataItem.rules.push(...rules)
     return new Config(
-      validator.check({ ...this.#data, [name]: { rules } }),
+      ConfigItems(this.#dataValidators, this.#targetingValidator).check({
+        ...this.#data,
+        [name]: dataItem,
+      }),
       this.#dataValidators,
       this.#predicates,
       this.#targetingValidator
@@ -76,11 +77,6 @@ export default class Config<
       false
     >
 
-    const newTargeting: NewTargeting = rt.Record({
-      ...this.#targetingValidator.fields,
-      [targetingDescriptor.name]: targetingDescriptor.runtype.optional(),
-    })
-
     return new Config(
       this.#data as rt.Static<ConfigItems<Data, NewTargeting>>,
       this.#dataValidators,
@@ -88,7 +84,10 @@ export default class Config<
         ...this.#predicates,
         [targetingDescriptor.name]: targetingDescriptor.predicate,
       },
-      newTargeting
+      rt.Record({
+        ...this.#targetingValidator.fields,
+        [targetingDescriptor.name]: targetingDescriptor.runtype.optional(),
+      })
     )
   }
 
