@@ -1,9 +1,12 @@
-import { Array, Optional, Record, Union, Unknown } from 'runtypes'
+import { Array, Optional, Record, Runtype, Union } from 'runtypes'
 
-function ConfigItemRule<T extends Record<any, any>>(Targeting: T) {
+function ConfigItemRule<P extends Runtype, T extends Record<any, any>>(
+  Payload: P,
+  Targeting: T
+) {
   const RuleWithPayload = Record({
     targeting: Targeting.optional(),
-    payload: Unknown,
+    payload: Payload,
   })
 
   const ClientConfigItemRule = Record({
@@ -14,12 +17,15 @@ function ConfigItemRule<T extends Record<any, any>>(Targeting: T) {
   return RuleWithPayload.Or(ClientConfigItemRule)
 }
 
-type ConfigItemRule<Targeting extends Record<any, any>> = Union<
+type ConfigItemRule<
+  Payload extends Runtype,
+  Targeting extends Record<any, any>
+> = Union<
   [
     Record<
       {
         targeting: Optional<Targeting>
-        payload: Unknown
+        payload: Payload
       },
       false
     >,
@@ -30,7 +36,7 @@ type ConfigItemRule<Targeting extends Record<any, any>> = Union<
           Record<
             {
               targeting: Optional<Targeting>
-              payload: Unknown
+              payload: Payload
             },
             false
           >,
