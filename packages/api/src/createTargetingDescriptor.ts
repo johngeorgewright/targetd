@@ -1,9 +1,10 @@
 import * as rt from 'runtypes'
-import TargetingPredicate from './types/TargetingPredicate'
+import TargetingPredicate from './validators/TargetingPredicate'
 
 export default function createTargetingDescriptor<
   Name extends string,
-  R extends rt.Runtype
->(name: Name, runtype: R, predicate: TargetingPredicate<Name, R>) {
+  QV extends rt.Runtype,
+  TV extends rt.Runtype
+>(name: Name, runtype: TV, predicate: TargetingPredicate<Name, QV, TV>) {
   return { name, predicate, runtype }
 }
