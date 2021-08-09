@@ -1,7 +1,7 @@
 import Config from './Config'
 import * as rt from 'runtypes'
 
-let config: Config<any, any>
+let config: Config<any, any, any>
 
 beforeEach(() => {
   config = Config.create()
@@ -10,12 +10,14 @@ beforeEach(() => {
       name: 'weather',
       predicate: (q) => (t) =>
         typeof q.weather === 'string' && t.weather.includes(q.weather),
-      runtype: rt.Array(rt.String),
+      validator: rt.Array(rt.String),
+      queryValidator: rt.String,
     })
     .usePredicate({
       name: 'highTide',
       predicate: (q) => (t) => q.highTide === t.highTide,
-      runtype: rt.Boolean,
+      validator: rt.Boolean,
+      queryValidator: rt.Boolean,
     })
     .addRules('foo', [
       {

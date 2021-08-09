@@ -1,97 +1,107 @@
-import Query from './types/Query'
-import TargetingDescriptor from './types/TargetingDescriptor'
+import TargetingDescriptor from './validators/TargetingDescriptor'
 import * as rt from 'runtypes'
-import TargetingPredicates from './types/TargetingPredicates'
+import TargetingPredicates from './validators/TargetingPredicates'
 import { objectEvery, objectMap } from './util'
-import ConfigItems from './types/ConfigItems'
-import ConfigItem from './types/ConfigItem'
-import ConfigItemRule from './types/ConfigItemRule'
+import ConfigItems from './validators/ConfigItems'
+import ConfigItem from './validators/ConfigItem'
+import ConfigItemRule from './validators/ConfigItemRule'
+import { Keys } from 'ts-toolbelt/out/Any/Keys'
+import { StaticRecord } from './types'
 
 export default class Config<
   Data extends Record<string, rt.Runtype>,
-  Targeting extends rt.Record<any, any>
+  Targeting extends Record<string, rt.Runtype>,
+  Query extends Record<Keys<Targeting>, rt.Runtype>
 > {
   readonly #data: rt.Static<ConfigItems<Data, Targeting>>
   readonly #dataValidators: Data
-  readonly #predicates: TargetingPredicates<Targeting>
-  readonly #targetingValidator: Targeting
+  readonly #predicates: TargetingPredicates<Targeting, Query>
+  readonly #targetingValidators: Targeting
+  readonly #queryValidators: Query
 
   static create() {
-    return new Config(
-      {},
-      {},
-      {} as TargetingPredicates<rt.Record<{}, false>>,
-      rt.Record({})
-    )
+    return new Config({}, {}, {}, {}, {})
   }
 
   private constructor(
     data: rt.Static<ConfigItems<Data, Targeting>>,
     dataValidators: Data,
-    predicates: TargetingPredicates<Targeting>,
-    targetingValidator: Targeting
+    predicates: TargetingPredicates<Targeting, Query>,
+    targetingValidators: Targeting,
+    queryValidators: Query
   ) {
     this.#data = data
     this.#dataValidators = dataValidators
     this.#predicates = predicates
-    this.#targetingValidator = targetingValidator
+    this.#targetingValidators = targetingValidators
+    this.#queryValidators = queryValidators
   }
 
   useDataValidator<Name extends string, Validator extends rt.Runtype>(
     name: Name,
     validator: Validator
   ) {
-    return new Config<Data & Record<Name, Validator>, Targeting>(
+    return new Config<Data & Record<Name, Validator>, Targeting, Query>(
       this.#data,
       {
         ...this.#dataValidators,
         [name]: validator,
       },
       this.#predicates,
-      this.#targetingValidator
+      this.#targetingValidators,
+      this.#queryValidators
     )
   }
 
-  addRules<Name extends keyof Data>(
+  addRules<Name extends Keys<Data>>(
     name: Name,
     rules: rt.Static<ConfigItemRule<Data[Name], Targeting>>[]
   ) {
-    const dataItem = (this.#data as any)[name] || { rules: [] }
-    dataItem.rules.push(...rules)
+    const dataItem = (this.#data as any)[name] || {}
     return new Config(
-      ConfigItems(this.#dataValidators, this.#targetingValidator).check({
+      ConfigItems(this.#dataValidators, this.#targetingValidators).check({
         ...this.#data,
-        [name]: dataItem,
+        [name]: {
+          ...dataItem,
+          rules: [...(dataItem.rules || []), ...rules],
+        },
       }),
       this.#dataValidators,
       this.#predicates,
-      this.#targetingValidator
+      this.#targetingValidators,
+      this.#queryValidators
     )
   }
 
-  usePredicate<Name extends string, R extends rt.Runtype>(
-    targetingDescriptor: TargetingDescriptor<Name, R>
-  ) {
-    type NewTargeting = rt.Record<
-      Targeting['fields'] & Record<Name, rt.Optional<R>>,
-      false
-    >
-
+  usePredicate<
+    Name extends string,
+    TV extends rt.Runtype,
+    QV extends rt.Runtype
+  >(targetingDescriptor: TargetingDescriptor<Name, TV, QV>) {
+    type NewTargeting = Targeting & Record<Name, TV>
+    type NewQuery = Query & Record<Keys<NewTargeting>, QV>
     return new Config(
-      this.#data as rt.Static<ConfigItems<Data, NewTargeting>>,
+      this.#data as any,
       this.#dataValidators,
       {
         ...this.#predicates,
         [targetingDescriptor.name]: targetingDescriptor.predicate,
-      },
-      rt.Record({
-        ...this.#targetingValidator.fields,
-        [targetingDescriptor.name]: targetingDescriptor.runtype.optional(),
-      })
+      } as TargetingPredicates<NewTargeting, NewQuery>,
+      {
+        ...this.#targetingValidators,
+        [targetingDescriptor.name]: targetingDescriptor.validator,
+      } as NewTargeting,
+      {
+        ...this.#queryValidators,
+        [targetingDescriptor.name]: targetingDescriptor.queryValidator,
+      } as NewQuery
     )
   }
 
-  getPayload(name: string, query: Query) {
+  getPayload(name: Keys<Data>, rawQuery: StaticRecord<Query>) {
+    const Query = rt.Partial(this.#queryValidators)
+    const query = Query.check(rawQuery)
+
     const rules =
       (
         this.#data as Record<
@@ -101,13 +111,17 @@ export default class Config<
       )[name]?.rules || []
 
     const customPredicates = objectMap(this.#predicates, (createPredicate) =>
-      createPredicate(query)
+      createPredicate(query as any)
     )
 
     const rule = rules.find(
       (rule) =>
         !rule.targeting ||
-        this.#targetingPredicate(query, rule.targeting, customPredicates)
+        this.#targetingPredicate(
+          query as any,
+          rule.targeting as any,
+          customPredicates
+        )
     )
 
     return (
@@ -121,11 +135,11 @@ export default class Config<
   }
 
   #targetingPredicate(
-    query: Query,
-    targeting: rt.Static<Targeting>,
+    query: StaticRecord<Query>,
+    targeting: StaticRecord<Targeting>,
     customPredicates: Record<
-      keyof Targeting,
-      (targeting: Record<keyof Targeting, unknown>) => boolean
+      any,
+      (targeting: Record<string, unknown>) => boolean
     >
   ) {
     return objectEvery(targeting, (targetingKey) => {
