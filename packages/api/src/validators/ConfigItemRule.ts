@@ -4,15 +4,15 @@ function ConfigItemRule<
   P extends rt.Runtype,
   T extends Record<string, rt.Runtype>
 >(Payload: P, targeting: T) {
-  const Targeting = rt.Partial(targeting)
+  const Targeting = rt.Partial(targeting).optional()
 
   const RuleWithPayload = rt.Record({
-    targeting: Targeting.optional(),
+    targeting: Targeting,
     payload: Payload,
   })
 
   const ClientConfigItemRule = rt.Record({
-    targeting: Targeting.optional(),
+    targeting: Targeting,
     client: rt.Array(RuleWithPayload),
   })
 

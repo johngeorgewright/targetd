@@ -5,7 +5,7 @@ type TargetingPredicate<
   QV extends Runtype,
   TV extends Runtype
 > = (
-  query: Record<Name, Static<QV>>
+  query: Partial<Record<Name, Static<QV>>>
 ) => (targeting: Record<Name, Static<TV>>) => boolean
 
 export default TargetingPredicate

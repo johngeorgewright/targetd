@@ -111,17 +111,13 @@ export default class Config<
       )[name]?.rules || []
 
     const customPredicates = objectMap(this.#predicates, (createPredicate) =>
-      createPredicate(query as any)
+      createPredicate(query)
     )
 
     const rule = rules.find(
       (rule) =>
         !rule.targeting ||
-        this.#targetingPredicate(
-          query as any,
-          rule.targeting as any,
-          customPredicates
-        )
+        this.#targetingPredicate(query, rule.targeting, customPredicates)
     )
 
     return (
@@ -135,8 +131,8 @@ export default class Config<
   }
 
   #targetingPredicate(
-    query: StaticRecord<Query>,
-    targeting: StaticRecord<Targeting>,
+    query: Partial<StaticRecord<Query>>,
+    targeting: Partial<StaticRecord<Targeting>>,
     customPredicates: Record<
       any,
       (targeting: Record<string, unknown>) => boolean
