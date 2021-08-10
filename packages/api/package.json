@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/johngeorgewright/config#readme",
   "devDependencies": {
-    "@types/jest": "26.0.24",
+    "@types/jest": "27.0.0",
     "@types/node": "16.4.11",
     "jest": "27.0.6",
     "rimraf": "3.0.2",

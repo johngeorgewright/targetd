@@ -18,7 +18,7 @@
   "homepage": "https://github.com/johngeorgewright/config#readme",
   "devDependencies": {
     "@config/api": "workspace:packages/api",
-    "@types/jest": "26.0.24",
+    "@types/jest": "27.0.0",
     "jest": "27.0.6",
     "rimraf": "3.0.2",
     "ts-jest": "27.0.4",
