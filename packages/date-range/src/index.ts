@@ -9,23 +9,18 @@ type DateRange = rt.Static<typeof DateRange>
 
 export default createTargetingDescriptor(
   'dateRange',
+  rt.Undefined,
   DateRange.Or(rt.Array(DateRange)),
-  () =>
-    ({ dateRange }) =>
-      Array.isArray(dateRange)
-        ? dateRangesPredicate(dateRange)
-        : dateRangePredicate(dateRange)
+  () => (t) => Array.isArray(t) ? dateRangesPredicate(t) : dateRangePredicate(t)
 )
 
-function dateRangePredicate({ end, start }: DateRange) {
+function dateRangePredicate(t: DateRange) {
   const now = Date.now()
-  const tooLate = end && new Date(end).getTime() <= now
-  const tooEarly = start && new Date(start).getTime() > now
+  const tooLate = t.end && new Date(t.end).getTime() <= now
+  const tooEarly = t.start && new Date(t.start).getTime() > now
   return !tooLate && !tooEarly
 }
 
-function dateRangesPredicate(dateRanges: DateRange[]) {
-  return (
-    Object.keys(dateRanges).length === 0 || dateRanges.some(dateRangePredicate)
-  )
+function dateRangesPredicate(ts: DateRange[]) {
+  return Object.keys(ts).length === 0 || ts.some((t) => dateRangePredicate(t))
 }
