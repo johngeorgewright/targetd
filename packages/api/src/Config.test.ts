@@ -8,14 +8,13 @@ beforeEach(() => {
     .useDataValidator('foo', rt.String)
     .usePredicate({
       name: 'weather',
-      predicate: (q) => (t) =>
-        typeof q.weather === 'string' && t.weather.includes(q.weather),
+      predicate: (q) => (t) => typeof q === 'string' && t.includes(q),
       validator: rt.Array(rt.String),
       queryValidator: rt.String,
     })
     .usePredicate({
       name: 'highTide',
-      predicate: (q) => (t) => q.highTide === t.highTide,
+      predicate: (q) => (t) => q === t,
       validator: rt.Boolean,
       queryValidator: rt.Boolean,
     })

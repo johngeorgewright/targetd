@@ -86,7 +86,7 @@ export default class Config<
       {
         ...this.#predicates,
         [targetingDescriptor.name]: targetingDescriptor.predicate,
-      } as TargetingPredicates<NewTargeting, NewQuery>,
+      } as any,
       {
         ...this.#targetingValidators,
         [targetingDescriptor.name]: targetingDescriptor.validator,
@@ -110,8 +110,9 @@ export default class Config<
         >
       )[name]?.rules || []
 
-    const customPredicates = objectMap(this.#predicates, (createPredicate) =>
-      createPredicate(query)
+    const customPredicates = objectMap(
+      this.#predicates,
+      (createPredicate, targetingKey) => createPredicate(query[targetingKey])
     )
 
     const rule = rules.find(
@@ -133,16 +134,13 @@ export default class Config<
   #targetingPredicate(
     query: Partial<StaticRecord<Query>>,
     targeting: Partial<StaticRecord<Targeting>>,
-    customPredicates: Record<
-      any,
-      (targeting: Record<string, unknown>) => boolean
-    >
+    customPredicates: Record<any, (targeting: unknown) => boolean>
   ) {
     return objectEvery(targeting, (targetingKey) => {
       if (!(targetingKey in query)) return false
 
       if (targetingKey in customPredicates)
-        return customPredicates[targetingKey](targeting as any)
+        return customPredicates[targetingKey](targeting[targetingKey])
       else console.warn(`Invalid targeting property ${targetingKey}`)
 
       return false

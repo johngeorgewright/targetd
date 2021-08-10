@@ -7,7 +7,7 @@ export default interface TargetingDescriptor<
   QV extends rt.Runtype
 > {
   name: Name
-  predicate: TargetingPredicate<Name, QV, TV>
+  predicate: TargetingPredicate<QV, TV>
   validator: TV
   queryValidator: QV
 }

@@ -10,7 +10,7 @@ export default function createTargetingDescriptor<
   name: Name,
   queryValidator: QV,
   validator: TV,
-  predicate: TargetingPredicate<Name, QV, TV>
+  predicate: TargetingPredicate<QV, TV>
 ): TargetingDescriptor<Name, TV, QV> {
   return { name, predicate, queryValidator, validator }
 }
