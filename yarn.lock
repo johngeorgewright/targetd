@@ -655,7 +655,7 @@ __metadata:
     jest: 27.0.6
     prettier: 2.3.2
     rimraf: 3.0.2
-    semantic-release: 17.4.4
+    semantic-release: 17.4.5
     semantic-release-monorepo: 7.0.5
     ts-jest: 27.0.4
     tslib: 2.3.1
@@ -681,7 +681,7 @@ __metadata:
     lerna: 4.0.0
     lint-staged: 11.1.2
     prettier: 2.3.2
-    semantic-release: 17.4.4
+    semantic-release: 17.4.5
     semantic-release-monorepo: 7.0.5
     slash: 4.0.0
     tslib: 2.3.1
@@ -8369,12 +8369,12 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"marked@npm:^2.0.0":
-  version: 2.0.5
-  resolution: "marked@npm:2.0.5"
+"marked@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "marked@npm:3.0.0"
   bin:
     marked: bin/marked
-  checksum: 1f667a920c3ebf97c899c04e3c2d3ceda3b1b9b6089e54ceab7c9863b2e69581a8b740416e4fcd941ed3f87559dc1e815ffeaf954e5a8e259963514257bc7832
+  checksum: 04d5ba7405463f8d8c0c1539dc7e06a253b2ebbdb41363ed8a3d0144bf0522f9a44d2c983fef979bbcf714c4f839f90e237e0a89b3a2fdcd58accc1675c4ec47
   languageName: node
   linkType: hard
 
@@ -10938,9 +10938,9 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"semantic-release@npm:17.4.4":
-  version: 17.4.4
-  resolution: "semantic-release@npm:17.4.4"
+"semantic-release@npm:17.4.5":
+  version: 17.4.5
+  resolution: "semantic-release@npm:17.4.5"
   dependencies:
     "@semantic-release/commit-analyzer": ^8.0.0
     "@semantic-release/error": ^2.2.0
@@ -10959,7 +10959,7 @@ fsevents@^2.3.2:
     hook-std: ^2.0.0
     hosted-git-info: ^4.0.0
     lodash: ^4.17.21
-    marked: ^2.0.0
+    marked: ^3.0.0
     marked-terminal: ^4.1.1
     micromatch: ^4.0.2
     p-each-series: ^2.1.0
@@ -10972,7 +10972,7 @@ fsevents@^2.3.2:
     yargs: ^16.2.0
   bin:
     semantic-release: bin/semantic-release.js
-  checksum: 870b4df485e7aef09cd3dd9d060112c6d04b7ab4b72fbd74a6c8e5b7702920b33d956e3a16a0004c886508545e2385ee1673be481f1b8ae5380882efae03c444
+  checksum: e1b16ce5a43bf9c1dac525e1d95801aa79d08e4435c1e5945a050ac960c5139e060487103184dde24a0a2c1ae4f090866fc22854e7a7bc8ea953ceea1ef94c31
   languageName: node
   linkType: hard
 
