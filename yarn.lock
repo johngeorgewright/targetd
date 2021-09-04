@@ -615,7 +615,7 @@ __metadata:
     "@types/node": 16.4.11
     jest: 27.1.0
     rimraf: 3.0.2
-    runtypes: 6.3.2
+    runtypes: 6.4.0
     ts-jest: 27.0.5
     ts-toolbelt: 9.6.0
     tslib: 2.3.1
@@ -10891,10 +10891,10 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"runtypes@npm:6.3.2":
-  version: 6.3.2
-  resolution: "runtypes@npm:6.3.2"
-  checksum: c3a899e668e3c5b51d1e3411ace79cdef928bb43db75e1383bb4bea71512f31e14b94cce989180a1e82dd32136fd7081d8474976630ac40f929c413d65500186
+"runtypes@npm:6.4.0":
+  version: 6.4.0
+  resolution: "runtypes@npm:6.4.0"
+  checksum: 5275302c7b5c5e0f561622f407ece96d2c02758cd7aa45cf768957f7568198fff098ed31f2176a7a0569aad928b5f5a0d982ed0e4924c8057aed2468702755ae
   languageName: node
   linkType: hard
 
