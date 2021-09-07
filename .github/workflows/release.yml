@@ -20,7 +20,7 @@ jobs:
           node-version: 14
 
       - name: Setup
-        run: yarn
+        run: yarn --immutable
 
       - name: Build
         run: yarn build
