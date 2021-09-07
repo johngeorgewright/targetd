@@ -28,17 +28,17 @@
     "@commitlint/cli": "13.1.0",
     "@commitlint/config-conventional": "13.1.0",
     "@semantic-release/commit-analyzer": "8.0.1",
-    "@semantic-release/git": "9.0.0",
+    "@semantic-release/git": "9.0.1",
     "@semantic-release/github": "7.2.3",
     "@semantic-release/release-notes-generator": "9.0.3",
     "commitizen": "4.2.4",
     "cz-conventional-changelog": "3.3.0",
-    "husky": "7.0.1",
-    "jest-runner": "27.0.6",
+    "husky": "7.0.2",
+    "jest-runner": "27.1.0",
     "lerna": "4.0.0",
     "lint-staged": "11.1.2",
     "prettier": "2.3.2",
-    "semantic-release": "17.4.4",
+    "semantic-release": "17.4.7",
     "semantic-release-monorepo": "7.0.5",
     "slash": "4.0.0",
     "typescript": "4.3.5",
@@ -55,6 +55,6 @@
     ]
   },
   "dependencies": {
-    "tslib": "2.3.0"
+    "tslib": "2.3.1"
   }
 }

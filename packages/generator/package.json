@@ -16,24 +16,24 @@
   "license": "UNLICENSED",
   "devDependencies": {
     "@semantic-release/commit-analyzer": "8.0.1",
-    "@semantic-release/git": "9.0.0",
+    "@semantic-release/git": "9.0.1",
     "@semantic-release/github": "7.2.3",
     "@semantic-release/release-notes-generator": "9.0.3",
-    "@types/jest": "26.0.24",
+    "@types/jest": "27.0.1",
     "@types/prettier": "2.3.2",
-    "@types/rimraf": "3.0.1",
-    "@types/yeoman-generator": "5.2.2",
-    "jest": "27.0.6",
+    "@types/rimraf": "3.0.2",
+    "@types/yeoman-generator": "5.2.5",
+    "jest": "27.1.0",
     "prettier": "2.3.2",
     "rimraf": "3.0.2",
-    "semantic-release": "17.4.4",
+    "semantic-release": "17.4.7",
     "semantic-release-monorepo": "7.0.5",
-    "ts-jest": "27.0.4",
+    "ts-jest": "27.0.5",
     "typescript": "4.3.5"
   },
   "dependencies": {
     "change-case": "4.1.2",
-    "tslib": "2.3.0",
-    "yeoman-generator": "5.4.0"
+    "tslib": "2.3.1",
+    "yeoman-generator": "5.4.2"
   }
 }
