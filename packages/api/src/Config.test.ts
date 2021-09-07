@@ -62,7 +62,7 @@ test('payload runtype validation', () => {
           payload: 'rab',
         },
       ])
-  } catch (error) {
+  } catch (error: any) {
     expect(error.details).toMatchInlineSnapshot(`
 Object {
   "foo": Object {
