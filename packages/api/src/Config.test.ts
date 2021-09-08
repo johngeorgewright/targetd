@@ -1,22 +1,20 @@
 import Config from './Config'
 import * as rt from 'runtypes'
 
-let config: Config<any, any, any>
-
-beforeEach(() => {
-  config = Config.create()
+test('getPayload', () => {
+  const config = Config.create()
     .useDataValidator('foo', rt.String)
     .usePredicate({
       name: 'weather',
       predicate: (q) => (t) => typeof q === 'string' && t.includes(q),
-      validator: rt.Array(rt.String),
       queryValidator: rt.String,
+      targetingValidator: rt.Array(rt.String),
     })
     .usePredicate({
       name: 'highTide',
       predicate: (q) => (t) => q === t,
-      validator: rt.Boolean,
       queryValidator: rt.Boolean,
+      targetingValidator: rt.Boolean,
     })
     .addRules('foo', [
       {
@@ -40,14 +38,23 @@ beforeEach(() => {
       {
         payload: 'bar',
       },
+      {
+        targeting: {
+          // @ts-expect-error
+          nonExistantKey: 'some value',
+        },
+        payload: 'error',
+      },
     ])
-})
 
-test('getPayload', () => {
   expect(config.getPayload('foo', {})).toBe('bar')
   expect(config.getPayload('foo', { weather: 'sunny' })).toBe('😎')
   expect(config.getPayload('foo', { weather: 'rainy' })).toBe('☂️')
   expect(config.getPayload('foo', { highTide: true })).toBe('🏄‍♂️')
+  // @ts-expect-error
+  config.getPayload('mung', {})
+  // @ts-expect-error
+  config.getPayload('foo', { nonExistantKey: 'some value' })
 })
 
 test('payload runtype validation', () => {

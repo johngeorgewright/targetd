@@ -11,7 +11,7 @@ import { StaticRecord } from './types'
 export default class Config<
   Data extends Record<string, rt.Runtype>,
   Targeting extends Record<string, rt.Runtype>,
-  Query extends Record<Keys<Targeting>, rt.Runtype>
+  Query extends Record<string, rt.Runtype>
 > {
   readonly #data: rt.Static<ConfigItems<Data, Targeting>>
   readonly #dataValidators: Data
@@ -78,9 +78,9 @@ export default class Config<
     TV extends rt.Runtype,
     QV extends rt.Runtype
   >(targetingDescriptor: TargetingDescriptor<Name, TV, QV>) {
-    type NewTargeting = Targeting & Record<Name, TV>
-    type NewQuery = Query & Record<Keys<NewTargeting>, QV>
-    return new Config(
+    type NewTargeting = Targeting & { [K in Name]: TV }
+    type NewQuery = Query & { [K in Name]: QV }
+    return new Config<Data, NewTargeting, NewQuery>(
       this.#data as any,
       this.#dataValidators,
       {
@@ -89,16 +89,16 @@ export default class Config<
       } as any,
       {
         ...this.#targetingValidators,
-        [targetingDescriptor.name]: targetingDescriptor.validator,
-      } as NewTargeting,
+        [targetingDescriptor.name]: targetingDescriptor.targetingValidator,
+      },
       {
         ...this.#queryValidators,
         [targetingDescriptor.name]: targetingDescriptor.queryValidator,
-      } as NewQuery
+      } as any
     )
   }
 
-  getPayload(name: Keys<Data>, rawQuery: StaticRecord<Query>) {
+  getPayload(name: Keys<Data>, rawQuery: Partial<StaticRecord<Query>>) {
     const Query = rt.Partial(this.#queryValidators)
     const query = Query.check(rawQuery)
 

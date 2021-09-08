@@ -4075,7 +4075,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["browserslist", "npm:4.17.0"],
             ["caniuse-lite", "npm:1.0.30001255"],
             ["colorette", "npm:1.3.0"],
-            ["electron-to-chromium", "npm:1.3.830"],
+            ["electron-to-chromium", "npm:1.3.831"],
             ["escalade", "npm:3.1.1"],
             ["node-releases", "npm:1.1.75"]
           ],
@@ -5760,10 +5760,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["electron-to-chromium", [
-        ["npm:1.3.830", {
-          "packageLocation": "./.yarn/cache/electron-to-chromium-npm-1.3.830-1af06499e1-e231140e0d.zip/node_modules/electron-to-chromium/",
+        ["npm:1.3.831", {
+          "packageLocation": "./.yarn/cache/electron-to-chromium-npm-1.3.831-83d6907616-724d82f4e4.zip/node_modules/electron-to-chromium/",
           "packageDependencies": [
-            ["electron-to-chromium", "npm:1.3.830"]
+            ["electron-to-chromium", "npm:1.3.831"]
           ],
           "linkType": "HARD",
         }]
@@ -7081,7 +7081,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["minimist", "npm:1.2.5"],
             ["neo-async", "npm:2.6.2"],
             ["source-map", "npm:0.6.1"],
-            ["uglify-js", "npm:3.14.1"],
+            ["uglify-js", "npm:3.14.2"],
             ["wordwrap", "npm:1.0.0"]
           ],
           "linkType": "HARD",
@@ -14254,10 +14254,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["uglify-js", [
-        ["npm:3.14.1", {
-          "packageLocation": "./.yarn/cache/uglify-js-npm-3.14.1-f667b63dfd-2685f53bae.zip/node_modules/uglify-js/",
+        ["npm:3.14.2", {
+          "packageLocation": "./.yarn/cache/uglify-js-npm-3.14.2-a003e21395-4d8e5c63b2.zip/node_modules/uglify-js/",
           "packageDependencies": [
-            ["uglify-js", "npm:3.14.1"]
+            ["uglify-js", "npm:3.14.2"]
           ],
           "linkType": "HARD",
         }]

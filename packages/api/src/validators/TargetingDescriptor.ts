@@ -8,6 +8,6 @@ export default interface TargetingDescriptor<
 > {
   name: Name
   predicate: TargetingPredicate<QV, TV>
-  validator: TV
   queryValidator: QV
+  targetingValidator: TV
 }
