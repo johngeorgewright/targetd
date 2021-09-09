@@ -1,10 +1,10 @@
 import { Config, runtypes as rt } from '@config/api'
 import * as jestDate from 'jest-date-mock'
-import dateRangeTargetingDescriptor from '.'
+import dateRangeTargeting from '.'
 
 test('date range predicate', () => {
   const config = Config.create()
-    .useTargeting('dateRange', dateRangeTargetingDescriptor)
+    .useTargeting('dateRange', dateRangeTargeting)
     .useDataValidator('foo', rt.String)
     .addRules('foo', [
       {

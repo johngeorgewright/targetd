@@ -7,7 +7,7 @@ const DateRange = rt.Record({
 
 type DateRange = rt.Static<typeof DateRange>
 
-const dateRangeTargetingDescriptor = createTargetingDescriptor({
+const dateRangeTargeting = createTargetingDescriptor({
   predicate: (q) => (t) =>
     Array.isArray(t) ? dateRangesPredicate(t, q) : dateRangePredicate(t, q),
   queryValidator: DateRange,
@@ -15,7 +15,7 @@ const dateRangeTargetingDescriptor = createTargetingDescriptor({
   targetingValidator: DateRange.Or(rt.Array(DateRange)),
 })
 
-export default dateRangeTargetingDescriptor
+export default dateRangeTargeting
 
 function dateRangePredicate(t: DateRange, q?: DateRange) {
   return q?.start || q?.end ? queryDateRange(t, q) : queryDateRangeAgainstNow(t)
