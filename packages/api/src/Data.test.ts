@@ -4,7 +4,7 @@ import * as rt from 'runtypes'
 test('getPayload', () => {
   let now = ''
 
-  const config = Data.create()
+  const data = Data.create()
     .useDataValidator('foo', rt.String)
     .useTargeting('weather', {
       predicate: (q) => (t) => typeof q === 'string' && t.includes(q),
@@ -59,18 +59,18 @@ test('getPayload', () => {
       },
     ])
 
-  expect(config.getPayload('foo', {})).toBe('bar')
-  expect(config.getPayload('foo', { weather: 'sunny' })).toBe('😎')
-  expect(config.getPayload('foo', { weather: 'rainy' })).toBe('☂️')
-  expect(config.getPayload('foo', { highTide: true })).toBe('🏄‍♂️')
+  expect(data.getPayload('foo', {})).toBe('bar')
+  expect(data.getPayload('foo', { weather: 'sunny' })).toBe('😎')
+  expect(data.getPayload('foo', { weather: 'rainy' })).toBe('☂️')
+  expect(data.getPayload('foo', { highTide: true })).toBe('🏄‍♂️')
   // @ts-expect-error
-  config.getPayload('mung', {})
+  data.getPayload('mung', {})
   // @ts-expect-error
-  config.getPayload('foo', { nonExistantKey: 'some value' })
+  data.getPayload('foo', { nonExistantKey: 'some value' })
 })
 
 test('targeting without requiring a query', () => {
-  const config = Data.create()
+  const data = Data.create()
     .useDataValidator('foo', rt.String)
     .useTargeting('time', {
       predicate: () => (t) => t === 'now!',
@@ -90,7 +90,7 @@ test('targeting without requiring a query', () => {
       },
     ])
 
-  expect(config.getPayload('foo', {})).toBe('The time is now')
+  expect(data.getPayload('foo', {})).toBe('The time is now')
 })
 
 test('payload runtype validation', () => {

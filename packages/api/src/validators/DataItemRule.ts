@@ -11,12 +11,12 @@ function DataItemRule<
     payload: Payload,
   })
 
-  const ClientConfigItemRule = rt.Record({
+  const ClientDataItemRule = rt.Record({
     targeting: Targeting,
     client: rt.Array(RuleWithPayload),
   })
 
-  return RuleWithPayload.Or(ClientConfigItemRule)
+  return RuleWithPayload.Or(ClientDataItemRule)
 }
 
 type DataItemRule<

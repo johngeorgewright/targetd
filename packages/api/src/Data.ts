@@ -8,7 +8,7 @@ import DataItemRule from './validators/DataItemRule'
 import { Keys } from 'ts-toolbelt/out/Any/Keys'
 import { StaticRecord } from './types'
 
-export default class Config<
+export default class Data<
   DataValidators extends Record<string, rt.Runtype>,
   TargetingValidators extends Record<string, rt.Runtype>,
   QueryValidators extends Record<string, rt.Runtype>
@@ -23,7 +23,7 @@ export default class Config<
   readonly #queryValidators: QueryValidators
 
   static create() {
-    return new Config({}, {}, {}, {}, {})
+    return new Data({}, {}, {}, {}, {})
   }
 
   private constructor(
@@ -47,7 +47,7 @@ export default class Config<
     name: Name,
     validator: Validator
   ) {
-    return new Config<
+    return new Data<
       DataValidators & Record<Name, Validator>,
       TargetingValidators,
       QueryValidators
@@ -68,7 +68,7 @@ export default class Config<
     rules: rt.Static<DataItemRule<DataValidators[Name], TargetingValidators>>[]
   ) {
     const dataItem = (this.#data as any)[name] || {}
-    return new Config(
+    return new Data(
       DataItems(this.#dataValidators, this.#targetingValidators).check({
         ...this.#data,
         [name]: {
@@ -90,7 +90,7 @@ export default class Config<
   >(name: Name, targetingDescriptor: TargetingDescriptor<TV, QV>) {
     type NewTargeting = TargetingValidators & { [K in Name]: TV }
     type NewQuery = QueryValidators & { [K in Name]: QV }
-    return new Config<DataValidators, NewTargeting, NewQuery>(
+    return new Data<DataValidators, NewTargeting, NewQuery>(
       this.#data as any,
       this.#dataValidators,
       {

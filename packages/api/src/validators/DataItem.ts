@@ -1,12 +1,12 @@
 import * as rt from 'runtypes'
-import ConfigItemRule from './DataItemRule'
+import DataItemRule from './DataItemRule'
 
 function DataItem<P extends rt.Runtype, T extends Record<string, rt.Runtype>>(
   Payload: P,
   targeting: T
 ) {
   return rt.Record({
-    rules: rt.Array(ConfigItemRule(Payload, targeting)),
+    rules: rt.Array(DataItemRule(Payload, targeting)),
   })
 }
 
@@ -15,7 +15,7 @@ type DataItem<
   Targeting extends Record<string, rt.Runtype>
 > = rt.Record<
   {
-    rules: rt.Array<ConfigItemRule<Payload, Targeting>, false>
+    rules: rt.Array<DataItemRule<Payload, Targeting>, false>
   },
   false
 >
