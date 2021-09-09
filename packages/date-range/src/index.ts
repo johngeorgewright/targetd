@@ -7,20 +7,39 @@ const DateRange = rt.Record({
 
 type DateRange = rt.Static<typeof DateRange>
 
-export default createTargetingDescriptor(
-  'dateRange',
-  rt.Undefined,
-  DateRange.Or(rt.Array(DateRange)),
-  () => (t) => Array.isArray(t) ? dateRangesPredicate(t) : dateRangePredicate(t)
-)
+const dateRangeTargetingDescriptor = createTargetingDescriptor({
+  predicate: (q) => (t) =>
+    Array.isArray(t) ? dateRangesPredicate(t, q) : dateRangePredicate(t, q),
+  queryValidator: DateRange,
+  requiresQuery: false,
+  targetingValidator: DateRange.Or(rt.Array(DateRange)),
+})
 
-function dateRangePredicate(t: DateRange) {
+export default dateRangeTargetingDescriptor
+
+function dateRangePredicate(t: DateRange, q?: DateRange) {
+  return q?.start || q?.end ? queryDateRange(t, q) : queryDateRangeAgainstNow(t)
+}
+
+function dateRangesPredicate(ts: DateRange[], q?: DateRange) {
+  return (
+    Object.keys(ts).length === 0 || ts.some((t) => dateRangePredicate(t, q))
+  )
+}
+
+function queryDateRange(t: DateRange, q: DateRange) {
+  const qStart = q.start ? new Date(q.start).getTime() : 0
+  const tStart = t.start ? new Date(t.start).getTime() : 0
+  const qEnd = q.end ? new Date(q.end).getTime() : Infinity
+  const tEnd = t.end ? new Date(t.end).getTime() : Infinity
+  const tooLate = tEnd < qStart
+  const tooEarly = tStart > qEnd
+  return !tooLate && !tooEarly
+}
+
+function queryDateRangeAgainstNow(t: DateRange) {
   const now = Date.now()
   const tooLate = t.end && new Date(t.end).getTime() <= now
   const tooEarly = t.start && new Date(t.start).getTime() > now
   return !tooLate && !tooEarly
-}
-
-function dateRangesPredicate(ts: DateRange[]) {
-  return Object.keys(ts).length === 0 || ts.some((t) => dateRangePredicate(t))
 }
