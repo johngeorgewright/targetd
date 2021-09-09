@@ -1,24 +1,24 @@
 import * as rt from 'runtypes'
 import { objectMap } from '../util'
-import ConfigItem from './ConfigItem'
+import DataItem from './DataItem'
 
-function ConfigItems<
+function DataItems<
   D extends Record<string, rt.Runtype>,
   T extends Record<string, rt.Runtype>
 >(dataValidators: D, targeting: T) {
   return rt.Record(
-    objectMap(dataValidators, (Payload) => ConfigItem(Payload, targeting))
+    objectMap(dataValidators, (Payload) => DataItem(Payload, targeting))
   )
 }
 
-type ConfigItems<
+type DataItems<
   DataTypes extends Record<string, rt.Runtype>,
   Targeting extends Record<string, rt.Runtype>
 > = rt.Record<
   {
-    [Name in keyof DataTypes]: ConfigItem<DataTypes[Name], Targeting>
+    [Name in keyof DataTypes]: DataItem<DataTypes[Name], Targeting>
   },
   false
 >
 
-export default ConfigItems
+export default DataItems

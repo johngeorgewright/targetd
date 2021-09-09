@@ -1,7 +1,7 @@
 import * as rt from 'runtypes'
-import ConfigItemRule from './ConfigItemRule'
+import ConfigItemRule from './DataItemRule'
 
-function ConfigItem<P extends rt.Runtype, T extends Record<string, rt.Runtype>>(
+function DataItem<P extends rt.Runtype, T extends Record<string, rt.Runtype>>(
   Payload: P,
   targeting: T
 ) {
@@ -10,7 +10,7 @@ function ConfigItem<P extends rt.Runtype, T extends Record<string, rt.Runtype>>(
   })
 }
 
-type ConfigItem<
+type DataItem<
   Payload extends rt.Runtype,
   Targeting extends Record<string, rt.Runtype>
 > = rt.Record<
@@ -20,4 +20,4 @@ type ConfigItem<
   false
 >
 
-export default ConfigItem
+export default DataItem

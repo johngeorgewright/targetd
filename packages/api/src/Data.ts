@@ -2,9 +2,9 @@ import TargetingDescriptor from './validators/TargetingDescriptor'
 import * as rt from 'runtypes'
 import TargetingPredicates from './validators/TargetingPredicates'
 import { objectEvery, objectMap } from './util'
-import ConfigItems from './validators/ConfigItems'
-import ConfigItem from './validators/ConfigItem'
-import ConfigItemRule from './validators/ConfigItemRule'
+import DataItems from './validators/DataItems'
+import DataItem from './validators/DataItem'
+import DataItemRule from './validators/DataItemRule'
 import { Keys } from 'ts-toolbelt/out/Any/Keys'
 import { StaticRecord } from './types'
 
@@ -13,7 +13,7 @@ export default class Config<
   TargetingValidators extends Record<string, rt.Runtype>,
   QueryValidators extends Record<string, rt.Runtype>
 > {
-  readonly #data: rt.Static<ConfigItems<DataValidators, TargetingValidators>>
+  readonly #data: rt.Static<DataItems<DataValidators, TargetingValidators>>
   readonly #dataValidators: DataValidators
   readonly #targetingPredicates: TargetingPredicates<
     TargetingValidators,
@@ -27,7 +27,7 @@ export default class Config<
   }
 
   private constructor(
-    data: rt.Static<ConfigItems<DataValidators, TargetingValidators>>,
+    data: rt.Static<DataItems<DataValidators, TargetingValidators>>,
     dataValidators: DataValidators,
     targetingPredicates: TargetingPredicates<
       TargetingValidators,
@@ -65,13 +65,11 @@ export default class Config<
 
   addRules<Name extends Keys<DataValidators>>(
     name: Name,
-    rules: rt.Static<
-      ConfigItemRule<DataValidators[Name], TargetingValidators>
-    >[]
+    rules: rt.Static<DataItemRule<DataValidators[Name], TargetingValidators>>[]
   ) {
     const dataItem = (this.#data as any)[name] || {}
     return new Config(
-      ConfigItems(this.#dataValidators, this.#targetingValidators).check({
+      DataItems(this.#dataValidators, this.#targetingValidators).check({
         ...this.#data,
         [name]: {
           ...dataItem,
@@ -127,7 +125,7 @@ export default class Config<
       (
         this.#data as Record<
           string,
-          rt.Static<ConfigItem<rt.Unknown, TargetingValidators>>
+          rt.Static<DataItem<rt.Unknown, TargetingValidators>>
         >
       )[name]?.rules || []
 

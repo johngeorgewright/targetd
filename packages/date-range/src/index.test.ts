@@ -1,9 +1,9 @@
-import { Config, runtypes as rt } from '@target/api'
+import { Data, runtypes as rt } from '@target/api'
 import * as jestDate from 'jest-date-mock'
 import dateRangeTargeting from '.'
 
 test('date range predicate', () => {
-  const config = Config.create()
+  const config = Data.create()
     .useTargeting('dateRange', dateRangeTargeting)
     .useDataValidator('foo', rt.String)
     .addRules('foo', [

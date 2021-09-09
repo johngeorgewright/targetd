@@ -1,6 +1,6 @@
 import * as rt from 'runtypes'
 
-function ConfigItemRule<
+function DataItemRule<
   P extends rt.Runtype,
   T extends Record<string, rt.Runtype>
 >(Payload: P, targeting: T) {
@@ -19,7 +19,7 @@ function ConfigItemRule<
   return RuleWithPayload.Or(ClientConfigItemRule)
 }
 
-type ConfigItemRule<
+type DataItemRule<
   Payload extends rt.Runtype,
   Targeting extends Record<string, rt.Runtype>
 > = rt.Union<
@@ -50,4 +50,4 @@ type ConfigItemRule<
   ]
 >
 
-export default ConfigItemRule
+export default DataItemRule

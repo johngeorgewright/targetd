@@ -1,10 +1,10 @@
-import Config from './Config'
+import Data from './Data'
 import * as rt from 'runtypes'
 
 test('getPayload', () => {
   let now = ''
 
-  const config = Config.create()
+  const config = Data.create()
     .useDataValidator('foo', rt.String)
     .useTargeting('weather', {
       predicate: (q) => (t) => typeof q === 'string' && t.includes(q),
@@ -70,7 +70,7 @@ test('getPayload', () => {
 })
 
 test('targeting without requiring a query', () => {
-  const config = Config.create()
+  const config = Data.create()
     .useDataValidator('foo', rt.String)
     .useTargeting('time', {
       predicate: () => (t) => t === 'now!',
@@ -95,7 +95,7 @@ test('targeting without requiring a query', () => {
 
 test('payload runtype validation', () => {
   try {
-    Config.create()
+    Data.create()
       .useDataValidator(
         'foo',
         rt.String.withConstraint((x) => x === 'bar' || 'Should be bar')
