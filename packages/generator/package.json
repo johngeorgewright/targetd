@@ -1,5 +1,5 @@
 {
-  "name": "@config/generator",
+  "name": "@target/generator",
   "version": "0.0.0",
   "description": "Generates a MOL ads packages",
   "private": true,

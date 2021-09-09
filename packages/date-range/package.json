@@ -1,5 +1,5 @@
 {
-  "name": "@config/date-range",
+  "name": "@target/date-range",
   "version": "0.0.0",
   "description": "Adds date range targetin",
   "main": "dist/index.js",
@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/johngeorgewright/config#readme",
   "devDependencies": {
-    "@config/api": "workspace:packages/api",
+    "@target/api": "workspace:packages/api",
     "@types/jest": "27.0.1",
     "@types/node": "^16.9.0",
     "jest": "27.1.0",
@@ -30,6 +30,6 @@
     "tslib": "2.3.1"
   },
   "peerDependencies": {
-    "@config/api": "*"
+    "@target/api": "*"
   }
 }

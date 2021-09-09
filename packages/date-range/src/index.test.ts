@@ -1,4 +1,4 @@
-import { Config, runtypes as rt } from '@config/api'
+import { Config, runtypes as rt } from '@target/api'
 import * as jestDate from 'jest-date-mock'
 import dateRangeTargeting from '.'
 

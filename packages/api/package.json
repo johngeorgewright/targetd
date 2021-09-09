@@ -1,5 +1,5 @@
 {
-  "name": "@config/api",
+  "name": "@target/api",
   "version": "0.0.0",
   "description": "Load and query data",
   "main": "dist/index.js",

@@ -592,92 +592,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@config/api@workspace:packages/api":
-  version: 0.0.0-use.local
-  resolution: "@config/api@workspace:packages/api"
-  dependencies:
-    "@johngw/array": 3.1.5
-    "@types/jest": 27.0.1
-    "@types/node": 16.4.11
-    jest: 27.1.0
-    rimraf: 3.0.2
-    runtypes: 6.4.0
-    ts-jest: 27.0.5
-    ts-toolbelt: 9.6.0
-    tslib: 2.3.1
-    typescript: 4.4.2
-  languageName: unknown
-  linkType: soft
-
-"@config/date-range@workspace:packages/date-range":
-  version: 0.0.0-use.local
-  resolution: "@config/date-range@workspace:packages/date-range"
-  dependencies:
-    "@config/api": "workspace:packages/api"
-    "@types/jest": 27.0.1
-    "@types/node": ^16.9.0
-    jest: 27.1.0
-    jest-date-mock: ^1.0.8
-    rimraf: 3.0.2
-    ts-jest: 27.0.5
-    tslib: 2.3.1
-    typescript: 4.4.2
-  peerDependencies:
-    "@config/api": "*"
-  languageName: unknown
-  linkType: soft
-
-"@config/generator@workspace:packages/generator":
-  version: 0.0.0-use.local
-  resolution: "@config/generator@workspace:packages/generator"
-  dependencies:
-    "@semantic-release/commit-analyzer": 8.0.1
-    "@semantic-release/git": 9.0.1
-    "@semantic-release/github": 7.2.3
-    "@semantic-release/release-notes-generator": 9.0.3
-    "@types/jest": 27.0.1
-    "@types/prettier": 2.3.2
-    "@types/rimraf": 3.0.2
-    "@types/yeoman-generator": 5.2.5
-    change-case: 4.1.2
-    jest: 27.1.0
-    prettier: 2.3.2
-    rimraf: 3.0.2
-    semantic-release: 17.4.7
-    semantic-release-monorepo: 7.0.5
-    ts-jest: 27.0.5
-    tslib: 2.3.1
-    typescript: 4.4.2
-    yeoman-generator: 5.4.2
-  languageName: unknown
-  linkType: soft
-
-"@config/mono-repo@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "@config/mono-repo@workspace:."
-  dependencies:
-    "@commitlint/cli": 13.1.0
-    "@commitlint/config-conventional": 13.1.0
-    "@semantic-release/commit-analyzer": 8.0.1
-    "@semantic-release/git": 9.0.1
-    "@semantic-release/github": 7.2.3
-    "@semantic-release/release-notes-generator": 9.0.3
-    commitizen: 4.2.4
-    cz-conventional-changelog: 3.3.0
-    husky: 7.0.2
-    jest-runner: 27.1.0
-    lerna: 4.0.0
-    lint-staged: 11.1.2
-    prettier: 2.3.2
-    semantic-release: 17.4.7
-    semantic-release-monorepo: 7.0.5
-    slash: 4.0.0
-    tslib: 2.3.1
-    typescript: 4.4.2
-    yo: 4.3.0
-  languageName: unknown
-  linkType: soft
-
 "@gar/promisify@npm:^1.0.1":
   version: 1.1.2
   resolution: "@gar/promisify@npm:1.1.2"
@@ -2196,6 +2110,92 @@ __metadata:
   checksum: c84773d7973edad5511a31d2cc75023447b5cf714a84de9bb50eda45dda88a0d3bd2c30bf6e6e936da50a048d5352e2151c694e13e59b97d187ba1f329e9a00c
   languageName: node
   linkType: hard
+
+"@target/api@workspace:packages/api":
+  version: 0.0.0-use.local
+  resolution: "@target/api@workspace:packages/api"
+  dependencies:
+    "@johngw/array": 3.1.5
+    "@types/jest": 27.0.1
+    "@types/node": 16.4.11
+    jest: 27.1.0
+    rimraf: 3.0.2
+    runtypes: 6.4.0
+    ts-jest: 27.0.5
+    ts-toolbelt: 9.6.0
+    tslib: 2.3.1
+    typescript: 4.4.2
+  languageName: unknown
+  linkType: soft
+
+"@target/date-range@workspace:packages/date-range":
+  version: 0.0.0-use.local
+  resolution: "@target/date-range@workspace:packages/date-range"
+  dependencies:
+    "@target/api": "workspace:packages/api"
+    "@types/jest": 27.0.1
+    "@types/node": ^16.9.0
+    jest: 27.1.0
+    jest-date-mock: ^1.0.8
+    rimraf: 3.0.2
+    ts-jest: 27.0.5
+    tslib: 2.3.1
+    typescript: 4.4.2
+  peerDependencies:
+    "@target/api": "*"
+  languageName: unknown
+  linkType: soft
+
+"@target/generator@workspace:packages/generator":
+  version: 0.0.0-use.local
+  resolution: "@target/generator@workspace:packages/generator"
+  dependencies:
+    "@semantic-release/commit-analyzer": 8.0.1
+    "@semantic-release/git": 9.0.1
+    "@semantic-release/github": 7.2.3
+    "@semantic-release/release-notes-generator": 9.0.3
+    "@types/jest": 27.0.1
+    "@types/prettier": 2.3.2
+    "@types/rimraf": 3.0.2
+    "@types/yeoman-generator": 5.2.5
+    change-case: 4.1.2
+    jest: 27.1.0
+    prettier: 2.3.2
+    rimraf: 3.0.2
+    semantic-release: 17.4.7
+    semantic-release-monorepo: 7.0.5
+    ts-jest: 27.0.5
+    tslib: 2.3.1
+    typescript: 4.4.2
+    yeoman-generator: 5.4.2
+  languageName: unknown
+  linkType: soft
+
+"@target/mono-repo@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "@target/mono-repo@workspace:."
+  dependencies:
+    "@commitlint/cli": 13.1.0
+    "@commitlint/config-conventional": 13.1.0
+    "@semantic-release/commit-analyzer": 8.0.1
+    "@semantic-release/git": 9.0.1
+    "@semantic-release/github": 7.2.3
+    "@semantic-release/release-notes-generator": 9.0.3
+    commitizen: 4.2.4
+    cz-conventional-changelog: 3.3.0
+    husky: 7.0.2
+    jest-runner: 27.1.0
+    lerna: 4.0.0
+    lint-staged: 11.1.2
+    prettier: 2.3.2
+    semantic-release: 17.4.7
+    semantic-release-monorepo: 7.0.5
+    slash: 4.0.0
+    tslib: 2.3.1
+    typescript: 4.4.2
+    yo: 4.3.0
+  languageName: unknown
+  linkType: soft
 
 "@tootallnate/once@npm:1":
   version: 1.1.2

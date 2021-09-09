@@ -1,4 +1,4 @@
-import { createTargetingDescriptor, runtypes as rt } from '@config/api'
+import { createTargetingDescriptor, runtypes as rt } from '@target/api'
 
 const DateRange = rt.Record({
   end: rt.String.optional(),

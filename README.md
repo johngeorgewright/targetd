@@ -1,4 +1,4 @@
-# @config/mono-repo
+# @target/mono-repo
 
 This is a template repository for creating a TypeScript mono repo.
 

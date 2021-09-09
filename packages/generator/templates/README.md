@@ -1,3 +1,3 @@
-# @config/<%= name %>
+# @target/<%= name %>
 
 <%= description %>

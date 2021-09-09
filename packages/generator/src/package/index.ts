@@ -6,7 +6,7 @@ import prettier from 'prettier'
 import { writeFile } from 'fs/promises'
 
 export = class PackageGenerator extends Generator {
-  #namespace = '@config'
+  #namespace = '@target'
   #vsCodeWS = 'config.code-workspace'
   #answers: { description?: string; name?: string; public?: boolean } = {}
 

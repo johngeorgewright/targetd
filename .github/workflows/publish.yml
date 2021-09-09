@@ -17,7 +17,7 @@ jobs:
         uses: johngeorgewright/regex-action
         with:
           ref: ${{ github.ref }}
-          regex: ^refs/tags/(?P<package>@config/[a-zA-Z0-9_-]+)-v(?P<version>\d+.\d+.\d+)$
+          regex: ^refs/tags/(?P<package>@target/[a-zA-Z0-9_-]+)-v(?P<version>\d+.\d+.\d+)$
 
   npm:
     name: NPM

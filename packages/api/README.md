@@ -1,3 +1,3 @@
-# @config/api
+# @target/api
 
 Load and query data

@@ -1,3 +1,3 @@
-# @config/date-range
+# @target/date-range
 
 Adds date range targetin
