@@ -2160,7 +2160,7 @@ __metadata:
     "@types/yeoman-generator": 5.2.5
     change-case: 4.1.2
     jest: 27.1.1
-    prettier: 2.3.2
+    prettier: 2.4.0
     rimraf: 3.0.2
     semantic-release: 17.4.7
     semantic-release-monorepo: 7.0.5
@@ -2187,7 +2187,7 @@ __metadata:
     jest-runner: 27.1.1
     lerna: 4.0.0
     lint-staged: 11.1.2
-    prettier: 2.3.2
+    prettier: 2.4.0
     semantic-release: 17.4.7
     semantic-release-monorepo: 7.0.5
     slash: 4.0.0
@@ -10241,12 +10241,12 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"prettier@npm:2.3.2":
-  version: 2.3.2
-  resolution: "prettier@npm:2.3.2"
+"prettier@npm:2.4.0":
+  version: 2.4.0
+  resolution: "prettier@npm:2.4.0"
   bin:
     prettier: bin-prettier.js
-  checksum: 17ce5784ac67621c292df58e2da60b2ee150c2d6aebea22a6ad9e52fcd6a5e66c349d0a8436ea3bd8ff9d778920a5f68000d7625b74f43558718a49755aa5259
+  checksum: ac1bf07566dad5f58469e6d8a954bd5c0f833935597deb00330e9f673e14e4cf81e07dee7eff5776c0edebe11358d199f332d9940be40c8b455516034e553ce0
   languageName: node
   linkType: hard
 
