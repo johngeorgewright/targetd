@@ -6,7 +6,10 @@ type TargetingPredicates<
   Targeting extends Record<string, rt.Runtype>,
   Query extends Record<Keys<Targeting>, rt.Runtype>
 > = {
-  [Name in Keys<Targeting>]: TargetingPredicate<Query[Name], Targeting[Name]>
+  [Name in Keys<Targeting>]: {
+    predicate: TargetingPredicate<Query[Name], Targeting[Name]>
+    requiresQuery: boolean
+  }
 }
 
 export default TargetingPredicates

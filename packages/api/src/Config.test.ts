@@ -2,19 +2,25 @@ import Config from './Config'
 import * as rt from 'runtypes'
 
 test('getPayload', () => {
+  let now = ''
+
   const config = Config.create()
     .useDataValidator('foo', rt.String)
-    .usePredicate({
-      name: 'weather',
+    .useTargeting('weather', {
       predicate: (q) => (t) => typeof q === 'string' && t.includes(q),
       queryValidator: rt.String,
       targetingValidator: rt.Array(rt.String),
     })
-    .usePredicate({
-      name: 'highTide',
+    .useTargeting('highTide', {
       predicate: (q) => (t) => q === t,
       queryValidator: rt.Boolean,
       targetingValidator: rt.Boolean,
+    })
+    .useTargeting('time', {
+      predicate: () => (t) => t === now,
+      queryValidator: rt.Undefined,
+      requiresQuery: false,
+      targetingValidator: rt.Literal('now!'),
     })
     .addRules('foo', [
       {
@@ -36,6 +42,12 @@ test('getPayload', () => {
         payload: '🏄‍♂️',
       },
       {
+        targeting: {
+          time: 'now!',
+        },
+        payload: 'The time is now',
+      },
+      {
         payload: 'bar',
       },
       {
@@ -55,6 +67,30 @@ test('getPayload', () => {
   config.getPayload('mung', {})
   // @ts-expect-error
   config.getPayload('foo', { nonExistantKey: 'some value' })
+})
+
+test('targeting without requiring a query', () => {
+  const config = Config.create()
+    .useDataValidator('foo', rt.String)
+    .useTargeting('time', {
+      predicate: () => (t) => t === 'now!',
+      queryValidator: rt.Undefined,
+      requiresQuery: false,
+      targetingValidator: rt.Literal('now!'),
+    })
+    .addRules('foo', [
+      {
+        targeting: {
+          time: 'now!',
+        },
+        payload: 'The time is now',
+      },
+      {
+        payload: 'bar',
+      },
+    ])
+
+  expect(config.getPayload('foo', {})).toBe('The time is now')
 })
 
 test('payload runtype validation', () => {
