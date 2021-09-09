@@ -615,7 +615,9 @@ __metadata:
   dependencies:
     "@config/api": "workspace:packages/api"
     "@types/jest": 27.0.1
+    "@types/node": ^16.9.0
     jest: 27.1.0
+    jest-date-mock: ^1.0.8
     rimraf: 3.0.2
     ts-jest: 27.0.5
     tslib: 2.3.1
@@ -2416,6 +2418,13 @@ __metadata:
   version: 15.14.9
   resolution: "@types/node@npm:15.14.9"
   checksum: 49f7f0522a3af4b8389aee660e88426490cd54b86356672a1fedb49919a8797c00d090ec2dcc4a5df34edc2099d57fc2203d796c4e7fbd382f2022ccd789eee7
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^16.9.0":
+  version: 16.9.0
+  resolution: "@types/node@npm:16.9.0"
+  checksum: cb210bcfe201d6506f1ace9e940cf45307c1fc845ad1e67bb4a2dc39a2e3441382973e96b78568844c6f324cd0d2dddcb07639313d75cdb1ac5776c9255349fb
   languageName: node
   linkType: hard
 
@@ -7166,6 +7175,13 @@ fsevents@^2.3.2:
     ts-node:
       optional: true
   checksum: 1e078407435da2ee1c397a36fcc0cdb1e74bc5d603fe296682cfee4702eed47eb9e368b11eb1139ac3d80c09a9c10e0f83f3eb98f640bd864127b1ee73f6d0a2
+  languageName: node
+  linkType: hard
+
+"jest-date-mock@npm:^1.0.8":
+  version: 1.0.8
+  resolution: "jest-date-mock@npm:1.0.8"
+  checksum: 7b012870440b0df742d0b651435b91625dbbf02d916633a0c70c7deb5d5087f9aadc59847602312368826325909e70e95cd412896a0c9ee1d5ac382000bf5ef9
   languageName: node
   linkType: hard
 

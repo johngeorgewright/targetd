@@ -1069,7 +1069,9 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@config/date-range", "workspace:packages/date-range"],
             ["@config/api", "workspace:packages/api"],
             ["@types/jest", "npm:27.0.1"],
+            ["@types/node", "npm:16.9.0"],
             ["jest", "virtual:500290b2a563a9ad5085ac2b33055b60d235ff3ea55739f816c13d4f9bb9c1e4d024a42b8ede8dfb9aa13b35932d8bf41727407b9f1d9b92f3886061b55ff87a#npm:27.1.0"],
+            ["jest-date-mock", "npm:1.0.8"],
             ["rimraf", "npm:3.0.2"],
             ["ts-jest", "virtual:500290b2a563a9ad5085ac2b33055b60d235ff3ea55739f816c13d4f9bb9c1e4d024a42b8ede8dfb9aa13b35932d8bf41727407b9f1d9b92f3886061b55ff87a#npm:27.0.5"],
             ["tslib", "npm:2.3.1"],
@@ -3135,6 +3137,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@types-node-npm-16.7.13-08a1515fa1-15dc28aa44.zip/node_modules/@types/node/",
           "packageDependencies": [
             ["@types/node", "npm:16.7.13"]
+          ],
+          "linkType": "HARD",
+        }],
+        ["npm:16.9.0", {
+          "packageLocation": "./.yarn/cache/@types-node-npm-16.9.0-ab273afb1d-cb210bcfe2.zip/node_modules/@types/node/",
+          "packageDependencies": [
+            ["@types/node", "npm:16.9.0"]
           ],
           "linkType": "HARD",
         }]
@@ -8498,6 +8507,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packagePeers": [
             "@types/ts-node",
             "ts-node"
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["jest-date-mock", [
+        ["npm:1.0.8", {
+          "packageLocation": "./.yarn/cache/jest-date-mock-npm-1.0.8-ccfefdcb39-7b01287044.zip/node_modules/jest-date-mock/",
+          "packageDependencies": [
+            ["jest-date-mock", "npm:1.0.8"]
           ],
           "linkType": "HARD",
         }]
