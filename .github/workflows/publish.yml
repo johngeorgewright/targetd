@@ -28,10 +28,14 @@ jobs:
       - name: Checkout project
         uses: actions/checkout@v2
 
+      - name: Get Node Version from NVM
+        run: echo ::set-output name=NODE_VERSION::$(cat .nvmrc)
+        id: nvm
+
       - name: Install Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: 14
+          node-version: ${{ steps.nvm.outputs.NODE_VERSION }}
           registry-url: 'https://registry.npmjs.org'
 
       - name: Setup

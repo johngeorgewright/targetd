@@ -3,7 +3,6 @@
   "version": "0.0.0",
   "description": "Load and query data",
   "main": "dist/index.js",
-  "private": true,
   "scripts": {
     "build": "yarn clean && yarn tsc && yarn rimraf 'dist/**/?(__tests__|__mocks__|__setup__|*.test.*)'",
     "clean": "yarn rimraf dist",
