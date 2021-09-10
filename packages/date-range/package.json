@@ -1,6 +1,6 @@
 {
   "name": "@target/date-range",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Adds date range targetin",
   "main": "dist/index.js",
   "scripts": {
