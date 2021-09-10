@@ -4,7 +4,7 @@ import TargetingPredicates from './validators/TargetingPredicates'
 import { objectEvery, objectMap } from './util'
 import DataItems from './validators/DataItems'
 import DataItem from './validators/DataItem'
-import DataItemRule from './validators/DataItemRule'
+import DataItemRule, { RuleWithPayload } from './validators/DataItemRule'
 import { Keys } from 'ts-toolbelt/out/Any/Keys'
 import { StaticRecord } from './types'
 
@@ -117,19 +117,37 @@ export default class Data<
   getPayload<Name extends keyof DataValidators>(
     name: Name,
     rawQuery: Partial<StaticRecord<QueryValidators>>
-  ): rt.Static<DataValidators[Name]> {
+  ): Payload<DataValidators[Name], TargetingValidators> | undefined {
+    const rules = this.#getTargetableRules(name)
+    const rule = rules.find(this.#createRulePredicate(rawQuery))
+    return rule && this.#mapRule(rule)
+  }
+
+  getPayloads<Name extends keyof DataValidators>(
+    name: Name,
+    rawQuery: Partial<StaticRecord<QueryValidators>>
+  ): Array<Payload<DataValidators[Name], TargetingValidators>> {
+    const rules = this.#getTargetableRules(name)
+    const result = rules.filter(this.#createRulePredicate(rawQuery))
+    return result.map(this.#mapRule)
+  }
+
+  readonly #mapRule = <Name extends keyof DataValidators>(
+    rule: rt.Static<DataItemRule<DataValidators[Name], TargetingValidators>>
+  ) =>
+    hasPayload(rule)
+      ? rule.payload
+      : 'client' in rule
+      ? { __rules__: rule.client }
+      : undefined
+
+  #createRulePredicate<Name extends keyof DataValidators>(
+    rawQuery: Partial<StaticRecord<QueryValidators>>
+  ) {
     const QueryValidators = rt.Partial(this.#queryValidators)
     const query = QueryValidators.check(rawQuery)
-    const rules =
-      (
-        this.#data as unknown as {
-          [Name in keyof DataValidators]: rt.Static<
-            DataItem<DataValidators[Name], TargetingValidators>
-          >
-        }
-      )[name]?.rules || []
 
-    const customPredicates = objectMap(
+    const targeting = objectMap(
       this.#targetingPredicates,
       (target, targetingKey) => ({
         predicate: target.predicate(query[targetingKey]),
@@ -137,19 +155,22 @@ export default class Data<
       })
     )
 
-    const rule = rules.find(
-      (rule) =>
-        !('targeting' in rule) ||
-        this.#targetingPredicate(query, rule.targeting!, customPredicates)
-    )
-
     return (
-      rule &&
-      (hasPayload(rule)
-        ? rule.payload
-        : 'client' in rule
-        ? { __rules__: rule.client }
-        : undefined)
+      rule: rt.Static<DataItemRule<DataValidators[Name], TargetingValidators>>
+    ) =>
+      !('targeting' in rule) ||
+      this.#targetingPredicate(query, rule.targeting!, targeting)
+  }
+
+  #getTargetableRules<Name extends keyof DataValidators>(name: Name) {
+    return (
+      (
+        this.#data as unknown as {
+          [Name in keyof DataValidators]: rt.Static<
+            DataItem<DataValidators[Name], TargetingValidators>
+          >
+        }
+      )[name]?.rules || []
     )
   }
 
@@ -180,3 +201,11 @@ export default class Data<
 function hasPayload<Payload>(x: any): x is { payload: Payload } {
   return 'payload' in x
 }
+
+type ClientRules<P extends rt.Runtype, T extends Record<string, rt.Runtype>> = {
+  __rules__: rt.Static<RuleWithPayload<P, T>>[]
+}
+
+type Payload<P extends rt.Runtype, T extends Record<string, rt.Runtype>> =
+  | rt.Static<P>
+  | ClientRules<P, T>

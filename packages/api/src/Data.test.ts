@@ -2,8 +2,6 @@ import Data from './Data'
 import * as rt from 'runtypes'
 
 test('getPayload', () => {
-  let now = ''
-
   const data = Data.create()
     .useDataValidator('foo', rt.String)
     .useTargeting('weather', {
@@ -15,12 +13,6 @@ test('getPayload', () => {
       predicate: (q) => (t) => q === t,
       queryValidator: rt.Boolean,
       targetingValidator: rt.Boolean,
-    })
-    .useTargeting('time', {
-      predicate: () => (t) => t === now,
-      queryValidator: rt.Undefined,
-      requiresQuery: false,
-      targetingValidator: rt.Literal('now!'),
     })
     .addRules('foo', [
       {
@@ -40,12 +32,6 @@ test('getPayload', () => {
           highTide: true,
         },
         payload: '🏄‍♂️',
-      },
-      {
-        targeting: {
-          time: 'now!',
-        },
-        payload: 'The time is now',
       },
       {
         payload: 'bar',
@@ -91,6 +77,52 @@ test('targeting without requiring a query', () => {
     ])
 
   expect(data.getPayload('foo', {})).toBe('The time is now')
+})
+
+test('getPayloads', () => {
+  const data = Data.create()
+    .useDataValidator('foo', rt.String)
+    .useTargeting('weather', {
+      predicate: (q) => (t) => typeof q === 'string' && t.includes(q),
+      queryValidator: rt.String,
+      targetingValidator: rt.Array(rt.String),
+    })
+    .useTargeting('highTide', {
+      predicate: (q) => (t) => q === t,
+      queryValidator: rt.Boolean,
+      targetingValidator: rt.Boolean,
+    })
+    .addRules('foo', [
+      {
+        targeting: {
+          weather: ['sunny'],
+        },
+        payload: '😎',
+      },
+      {
+        targeting: {
+          weather: ['rainy', 'sunny'],
+        },
+        payload: '☂️',
+      },
+      {
+        targeting: {
+          highTide: true,
+        },
+        payload: '🏄‍♂️',
+      },
+      {
+        payload: 'bar',
+      },
+    ])
+
+  expect(data.getPayloads('foo', { weather: 'sunny' })).toMatchInlineSnapshot(`
+Array [
+  "😎",
+  "☂️",
+  "bar",
+]
+`)
 })
 
 test('payload runtype validation', () => {
