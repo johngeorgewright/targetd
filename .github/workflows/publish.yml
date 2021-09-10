@@ -14,7 +14,7 @@ jobs:
     steps:
       - name: Tag
         id: tag
-        uses: johngeorgewright/regex-action
+        uses: johngeorgewright/regex-action@v1.0.0
         with:
           ref: ${{ github.ref }}
           regex: ^refs/tags/(?P<package>@target/[a-zA-Z0-9_-]+)-v(?P<version>\d+.\d+.\d+)$
