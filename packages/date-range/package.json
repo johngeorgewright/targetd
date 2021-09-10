@@ -30,6 +30,6 @@
     "tslib": "2.3.1"
   },
   "peerDependencies": {
-    "@target/api": "*"
+    "@target/api": "^0.0.0"
   }
 }
