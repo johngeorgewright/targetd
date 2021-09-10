@@ -114,19 +114,19 @@ export default class Data<
     )
   }
 
-  getPayload(
-    name: Keys<DataValidators>,
+  getPayload<Name extends keyof DataValidators>(
+    name: Name,
     rawQuery: Partial<StaticRecord<QueryValidators>>
-  ) {
+  ): rt.Static<DataValidators[Name]> {
     const QueryValidators = rt.Partial(this.#queryValidators)
     const query = QueryValidators.check(rawQuery)
-
     const rules =
       (
-        this.#data as Record<
-          string,
-          rt.Static<DataItem<rt.Unknown, TargetingValidators>>
-        >
+        this.#data as unknown as {
+          [Name in keyof DataValidators]: rt.Static<
+            DataItem<DataValidators[Name], TargetingValidators>
+          >
+        }
       )[name]?.rules || []
 
     const customPredicates = objectMap(
@@ -139,13 +139,13 @@ export default class Data<
 
     const rule = rules.find(
       (rule) =>
-        !rule.targeting ||
-        this.#targetingPredicate(query, rule.targeting, customPredicates)
+        !('targeting' in rule) ||
+        this.#targetingPredicate(query, rule.targeting!, customPredicates)
     )
 
     return (
       rule &&
-      ('payload' in rule
+      (hasPayload(rule)
         ? rule.payload
         : 'client' in rule
         ? { __rules__: rule.client }
@@ -175,4 +175,8 @@ export default class Data<
       return false
     })
   }
+}
+
+function hasPayload<Payload>(x: any): x is { payload: Payload } {
+  return 'payload' in x
 }

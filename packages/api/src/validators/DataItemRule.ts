@@ -24,26 +24,11 @@ type DataItemRule<
   Targeting extends Record<string, rt.Runtype>
 > = rt.Union<
   [
+    RuleWithPayload<Payload, Targeting>,
     rt.Record<
       {
         targeting: rt.Optional<rt.Partial<Targeting, false>>
-        payload: Payload
-      },
-      false
-    >,
-    rt.Record<
-      {
-        targeting: rt.Optional<rt.Partial<Targeting, false>>
-        client: rt.Array<
-          rt.Record<
-            {
-              targeting: rt.Optional<rt.Partial<Targeting, false>>
-              payload: Payload
-            },
-            false
-          >,
-          false
-        >
+        client: rt.Array<RuleWithPayload<Payload, Targeting>, false>
       },
       false
     >
@@ -51,3 +36,14 @@ type DataItemRule<
 >
 
 export default DataItemRule
+
+export type RuleWithPayload<
+  Payload extends rt.Runtype,
+  Targeting extends Record<string, rt.Runtype>
+> = rt.Record<
+  {
+    targeting: rt.Optional<rt.Partial<Targeting, false>>
+    payload: Payload
+  },
+  false
+>
