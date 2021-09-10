@@ -91,7 +91,7 @@ export default class Data<
     type NewTargeting = TargetingValidators & { [K in Name]: TV }
     type NewQuery = QueryValidators & { [K in Name]: QV }
     return new Data<DataValidators, NewTargeting, NewQuery>(
-      this.#data as any,
+      this.#data,
       this.#dataValidators,
       {
         ...this.#targetingPredicates,
@@ -114,22 +114,33 @@ export default class Data<
     )
   }
 
+  getPayloadForEachName(rawQuery: Partial<StaticRecord<QueryValidators>>) {
+    return objectMap(this.#data, (_, name) =>
+      this.getPayload(name as keyof DataValidators, rawQuery)
+    ) as {
+      [Name in keyof DataValidators]:
+        | Payload<DataValidators[Name], TargetingValidators>
+        | undefined
+    }
+  }
+
   getPayload<Name extends keyof DataValidators>(
     name: Name,
     rawQuery: Partial<StaticRecord<QueryValidators>>
   ): Payload<DataValidators[Name], TargetingValidators> | undefined {
-    const rules = this.#getTargetableRules(name)
-    const rule = rules.find(this.#createRulePredicate(rawQuery))
+    const rule = this.#getTargetableRules(name).find(
+      this.#createRulePredicate(rawQuery)
+    )
     return rule && this.#mapRule(rule)
   }
 
   getPayloads<Name extends keyof DataValidators>(
     name: Name,
     rawQuery: Partial<StaticRecord<QueryValidators>>
-  ): Array<Payload<DataValidators[Name], TargetingValidators>> {
-    const rules = this.#getTargetableRules(name)
-    const result = rules.filter(this.#createRulePredicate(rawQuery))
-    return result.map(this.#mapRule)
+  ): Payload<DataValidators[Name], TargetingValidators>[] {
+    return this.#getTargetableRules(name)
+      .filter(this.#createRulePredicate(rawQuery))
+      .map(this.#mapRule)
   }
 
   readonly #mapRule = <Name extends keyof DataValidators>(
@@ -177,20 +188,17 @@ export default class Data<
   #targetingPredicate(
     query: Partial<StaticRecord<QueryValidators>>,
     targeting: Partial<StaticRecord<TargetingValidators>>,
-    customPredicates: Record<
+    predicates: Record<
       any,
       { predicate: (targeting: unknown) => boolean; requiresQuery: boolean }
     >
   ) {
     return objectEvery(targeting, (targetingKey) => {
-      if (
-        !(targetingKey in query) &&
-        customPredicates[targetingKey]?.requiresQuery
-      )
+      if (!(targetingKey in query) && predicates[targetingKey]?.requiresQuery)
         return false
 
-      if (targetingKey in customPredicates)
-        return customPredicates[targetingKey].predicate(targeting[targetingKey])
+      if (targetingKey in predicates)
+        return predicates[targetingKey].predicate(targeting[targetingKey])
       else console.warn(`Invalid targeting property ${targetingKey}`)
 
       return false

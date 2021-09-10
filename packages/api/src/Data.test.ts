@@ -117,12 +117,12 @@ test('getPayloads', () => {
     ])
 
   expect(data.getPayloads('foo', { weather: 'sunny' })).toMatchInlineSnapshot(`
-Array [
-  "😎",
-  "☂️",
-  "bar",
-]
-`)
+    Array [
+      "😎",
+      "☂️",
+      "bar",
+    ]
+  `)
 })
 
 test('payload runtype validation', () => {
@@ -139,16 +139,68 @@ test('payload runtype validation', () => {
       ])
   } catch (error: any) {
     expect(error.details).toMatchInlineSnapshot(`
-Object {
-  "foo": Object {
-    "rules": Array [
-      "Expected { targeting?: {}; payload: string; } | { targeting?: {}; client: { targeting?: {}; payload: string; }[]; }, but was object",
-    ],
-  },
-}
-`)
+      Object {
+        "foo": Object {
+          "rules": Array [
+            "Expected { targeting?: {}; payload: string; } | { targeting?: {}; client: { targeting?: {}; payload: string; }[]; }, but was object",
+          ],
+        },
+      }
+    `)
     return
   }
 
   throw new Error('Didnt error correctly')
+})
+
+test('getPayloadForEachName', () => {
+  const data = Data.create()
+    .useDataValidator('foo', rt.String)
+    .useDataValidator('bar', rt.String)
+    .useTargeting('weather', {
+      predicate: (q) => (t) => typeof q === 'string' && t.includes(q),
+      queryValidator: rt.String,
+      targetingValidator: rt.Array(rt.String),
+    })
+    .useTargeting('highTide', {
+      predicate: (q) => (t) => q === t,
+      queryValidator: rt.Boolean,
+      targetingValidator: rt.Boolean,
+    })
+    .addRules('foo', [
+      {
+        targeting: {
+          weather: ['sunny'],
+        },
+        payload: '😎',
+      },
+      {
+        targeting: {
+          weather: ['rainy'],
+        },
+        payload: '☂️',
+      },
+    ])
+    .addRules('bar', [
+      {
+        targeting: {
+          weather: ['rainy'],
+        },
+        payload: '😟',
+      },
+      {
+        targeting: {
+          weather: ['sunny'],
+        },
+        payload: '😁',
+      },
+    ])
+
+  expect(data.getPayloadForEachName({ weather: 'sunny' }))
+    .toMatchInlineSnapshot(`
+    Object {
+      "bar": "😁",
+      "foo": "😎",
+    }
+  `)
 })

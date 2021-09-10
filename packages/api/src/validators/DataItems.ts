@@ -6,7 +6,7 @@ function DataItems<
   D extends Record<string, rt.Runtype>,
   T extends Record<string, rt.Runtype>
 >(dataValidators: D, targeting: T) {
-  return rt.Record(
+  return rt.Partial(
     objectMap(dataValidators, (Payload) => DataItem(Payload, targeting))
   )
 }
@@ -14,7 +14,7 @@ function DataItems<
 type DataItems<
   DataTypes extends Record<string, rt.Runtype>,
   Targeting extends Record<string, rt.Runtype>
-> = rt.Record<
+> = rt.Partial<
   {
     [Name in keyof DataTypes]: DataItem<DataTypes[Name], Targeting>
   },
