@@ -2807,7 +2807,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/node", "npm:16.4.11"],
             ["jest", "virtual:e9cbaae6703a95e8b2906dc0d9a29012c1dd1495f7ecfefc21ee14a82aa9dd8783c94d4b28942c1c0acf79c8b7c32f6be368d7312d3acdf11af040af31633489#npm:27.2.0"],
             ["rimraf", "npm:3.0.2"],
-            ["runtypes", "npm:6.4.0"],
+            ["runtypes", "npm:6.4.1"],
             ["semantic-release", "npm:17.4.7"],
             ["semantic-release-monorepo", "virtual:66b28988c14a5a549cbadc1b40dc1a65c1d2e9bdcec67911443c442f01de42bf015ec66f439096ee491b8378ae3c6251cac15b2d6ae72e94030701110065dc3a#npm:7.0.5"],
             ["ts-jest", "virtual:e9cbaae6703a95e8b2906dc0d9a29012c1dd1495f7ecfefc21ee14a82aa9dd8783c94d4b28942c1c0acf79c8b7c32f6be368d7312d3acdf11af040af31633489#npm:27.0.5"],
@@ -12716,10 +12716,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["runtypes", [
-        ["npm:6.4.0", {
-          "packageLocation": "./.yarn/cache/runtypes-npm-6.4.0-fa62f0a6a8-5275302c7b.zip/node_modules/runtypes/",
+        ["npm:6.4.1", {
+          "packageLocation": "./.yarn/cache/runtypes-npm-6.4.1-454d693e43-9d703100c3.zip/node_modules/runtypes/",
           "packageDependencies": [
-            ["runtypes", "npm:6.4.0"]
+            ["runtypes", "npm:6.4.1"]
           ],
           "linkType": "HARD",
         }]

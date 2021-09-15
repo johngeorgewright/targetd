@@ -2125,7 +2125,7 @@ __metadata:
     "@types/node": 16.4.11
     jest: 27.2.0
     rimraf: 3.0.2
-    runtypes: 6.4.0
+    runtypes: 6.4.1
     semantic-release: 17.4.7
     semantic-release-monorepo: 7.0.5
     ts-jest: 27.0.5
@@ -11043,10 +11043,10 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"runtypes@npm:6.4.0":
-  version: 6.4.0
-  resolution: "runtypes@npm:6.4.0"
-  checksum: 5275302c7b5c5e0f561622f407ece96d2c02758cd7aa45cf768957f7568198fff098ed31f2176a7a0569aad928b5f5a0d982ed0e4924c8057aed2468702755ae
+"runtypes@npm:6.4.1":
+  version: 6.4.1
+  resolution: "runtypes@npm:6.4.1"
+  checksum: 9d703100c3fe43c1b5310d9230741cba0f5930b0850bc4e1d3c4060483a487c700ebce72c8e8cf082d13b7a3279f9f1bbab7b56acb5863729c97d49b8d5aafcb
   languageName: node
   linkType: hard
 
