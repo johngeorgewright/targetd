@@ -63,7 +63,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["jest-runner", "npm:27.2.0"],
             ["lerna", "npm:4.0.0"],
             ["lint-staged", "npm:11.1.2"],
-            ["prettier", "npm:2.4.0"],
+            ["prettier", "npm:2.4.1"],
             ["semantic-release", "npm:17.4.7"],
             ["semantic-release-monorepo", "virtual:66b28988c14a5a549cbadc1b40dc1a65c1d2e9bdcec67911443c442f01de42bf015ec66f439096ee491b8378ae3c6251cac15b2d6ae72e94030701110065dc3a#npm:7.0.5"],
             ["slash", "npm:4.0.0"],
@@ -2858,7 +2858,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/yeoman-generator", "npm:5.2.7"],
             ["change-case", "npm:4.1.2"],
             ["jest", "virtual:e9cbaae6703a95e8b2906dc0d9a29012c1dd1495f7ecfefc21ee14a82aa9dd8783c94d4b28942c1c0acf79c8b7c32f6be368d7312d3acdf11af040af31633489#npm:27.2.0"],
-            ["prettier", "npm:2.4.0"],
+            ["prettier", "npm:2.4.1"],
             ["rimraf", "npm:3.0.2"],
             ["semantic-release", "npm:17.4.7"],
             ["semantic-release-monorepo", "virtual:66b28988c14a5a549cbadc1b40dc1a65c1d2e9bdcec67911443c442f01de42bf015ec66f439096ee491b8378ae3c6251cac15b2d6ae72e94030701110065dc3a#npm:7.0.5"],
@@ -2888,7 +2888,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["jest-runner", "npm:27.2.0"],
             ["lerna", "npm:4.0.0"],
             ["lint-staged", "npm:11.1.2"],
-            ["prettier", "npm:2.4.0"],
+            ["prettier", "npm:2.4.1"],
             ["semantic-release", "npm:17.4.7"],
             ["semantic-release-monorepo", "virtual:66b28988c14a5a549cbadc1b40dc1a65c1d2e9bdcec67911443c442f01de42bf015ec66f439096ee491b8378ae3c6251cac15b2d6ae72e94030701110065dc3a#npm:7.0.5"],
             ["slash", "npm:4.0.0"],
@@ -11906,10 +11906,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["prettier", [
-        ["npm:2.4.0", {
-          "packageLocation": "./.yarn/cache/prettier-npm-2.4.0-9f056d9529-ac1bf07566.zip/node_modules/prettier/",
+        ["npm:2.4.1", {
+          "packageLocation": "./.yarn/cache/prettier-npm-2.4.1-623aac91ee-cc6830588b.zip/node_modules/prettier/",
           "packageDependencies": [
-            ["prettier", "npm:2.4.0"]
+            ["prettier", "npm:2.4.1"]
           ],
           "linkType": "HARD",
         }]
