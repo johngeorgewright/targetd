@@ -7,7 +7,7 @@ import { writeFile } from 'fs/promises'
 
 export = class PackageGenerator extends Generator {
   #namespace = '@targetd'
-  #vsCodeWS = 'config.code-workspace'
+  #vsCodeWS = 'targetd.code-workspace'
   #answers: { description?: string; name?: string; public?: boolean } = {}
 
   constructor(args: string | string[], opts: Record<string, unknown>) {
