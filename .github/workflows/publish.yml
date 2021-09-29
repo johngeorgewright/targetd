@@ -47,7 +47,7 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Build
-        run: yarn workspace ${{ needs.decipher.outputs.package }} build
+        run: yarn build
 
       - name: Publish
         run: yarn workspace ${{ needs.decipher.outputs.package }} npm publish --access public
