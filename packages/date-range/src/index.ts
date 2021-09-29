@@ -22,9 +22,7 @@ function dateRangePredicate(t: DateRange, q?: DateRange) {
 }
 
 function dateRangesPredicate(ts: DateRange[], q?: DateRange) {
-  return (
-    Object.keys(ts).length === 0 || ts.some((t) => dateRangePredicate(t, q))
-  )
+  return ts.length === 0 || ts.some((t) => dateRangePredicate(t, q))
 }
 
 function queryDateRange(t: DateRange, q: DateRange) {
