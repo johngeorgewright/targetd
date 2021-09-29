@@ -1,7 +1,7 @@
 {
   "name": "@targetd/date-range",
   "version": "1.0.0",
-  "description": "Adds date range targetin",
+  "description": "Adds date range targeting",
   "main": "dist/index.js",
   "scripts": {
     "build": "yarn clean && yarn tsc && yarn rimraf 'dist/**/?(__tests__|__mocks__|__setup__|*.test.*)'",
