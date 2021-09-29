@@ -1,3 +1,3 @@
-# @target/api
+# @targetd/api
 
 Load and query data

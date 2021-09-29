@@ -1,14 +1,14 @@
 {
   "folders": [
-    { "name": "✨ @target/mono-repo", "path": "." },
-    { "name": "🏗 @target/generator", "path": "packages/generator" },
-    { "name": "📦 @target/api", "path": "packages/api" },
-    { "name": "📦 @target/date-range", "path": "packages/date-range" }
+    { "name": "✨ @targetd/mono-repo", "path": "." },
+    { "name": "🏗 @targetd/generator", "path": "packages/generator" },
+    { "name": "📦 @targetd/api", "path": "packages/api" },
+    { "name": "📦 @targetd/date-range", "path": "packages/date-range" }
   ],
   "settings": {
     "search.exclude": { "**/dist": true, "**/.yarn": true, "**/.pnp.*": true },
     "prettier.prettierPath": ".yarn/sdks/prettier/index.js",
-    "typescript.tsdk": "✨ @target/mono-repo/.yarn/sdks/typescript/lib",
+    "typescript.tsdk": "✨ @targetd/mono-repo/.yarn/sdks/typescript/lib",
     "typescript.enablePromptUseWorkspaceTsdk": true,
     "jest.jestCommandLine": "yarn test"
   },

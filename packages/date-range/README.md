@@ -1,3 +1,3 @@
-# @target/date-range
+# @targetd/date-range
 
 Adds date range targetin

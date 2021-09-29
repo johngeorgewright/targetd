@@ -1,5 +1,5 @@
 {
-  "name": "@target/mono-repo",
+  "name": "@targetd/mono-repo",
   "version": "0.0.0",
   "description": "The MOL config system",
   "main": "index.js",
@@ -8,14 +8,14 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "yarn workspaces foreach --topological-dev --exclude @target/generator run build",
+    "build": "yarn workspaces foreach --topological-dev --exclude @targetd/generator run build",
     "clean": "yarn workspaces foreach run clean",
-    "build:generator": "yarn workspace @target/generator run build",
+    "build:generator": "yarn workspace @targetd/generator run build",
     "commit": "yarn git-cz",
     "package:generate": "yarn yo ./packages/generator/generators/package",
     "package:remove": "yarn yo ./packages/generator/generators/remove-package",
     "release": "yarn workspaces foreach --no-private --topological-dev run release",
-    "start": "yarn build && yarn workspaces foreach --exclude @target/generator --parallel --interlaced run start",
+    "start": "yarn build && yarn workspaces foreach --exclude @targetd/generator --parallel --interlaced run start",
     "test": "yarn workspaces foreach run test"
   },
   "author": "",

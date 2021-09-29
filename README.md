@@ -1,17 +1,17 @@
 [runtypes]: https://github.com/pelotom/runtypes 'runtypes'
 
-# @target
+# @targetd
 
 A speedy, highly extensible, typed, in-memory data store built in Node.js & Typescript.
 
 It's perfect for storing any shape of data that can be "targeted" with key/values.
 
-## When to use @target
+## When to use @targetd
 
 - Configuration
 - Small blogs/websites
 
-## When _not_ to use @target
+## When _not_ to use @targetd
 
 - With big data
 - For tokenising/searching data
@@ -42,7 +42,7 @@ The above example shows a payload which will **only** be found when a query will
 **BEFORE GOING FURTHER** please note that the `Data` class is entirely immutable meaning that you must use the returned value of every function. For exampe:
 
 ```typescript
-import { Data } from '@target/api'
+import { Data } from '@targetd/api'
 
 // THE BELOW IS INCORRECT!!! the data object has not had any targeting or rules added
 const data = Data.create()
@@ -62,10 +62,10 @@ data = data.addRules(...)
 
 ### Typing Data (payloads)
 
-All typing and validation is done using the awesome [runtypes][] project and is exported from the `@target/api` package. [Runtypes][runtypes] is an easy project to understand and you'll need to know some of the basics.
+All typing and validation is done using the awesome [runtypes][] project and is exported from the `@targetd/api` package. [Runtypes][runtypes] is an easy project to understand and you'll need to know some of the basics.
 
 ```typescript
-import { Data, runtypes as rt } from '@target/api'
+import { Data, runtypes as rt } from '@targetd/api'
 
 let data = Data.create().useDataValidator(
   'blog',
@@ -95,7 +95,7 @@ data = data.addRules([
 As mentioned above, all typing and validation is done using the [runtypes][] project.
 
 ```typescript
-import { Data, runtypes as rt } from '@target/api'
+import { Data, runtypes as rt } from '@targetd/api'
 
 let data = Data.create().useTargeting('category', {
   predicate: (q) => (t) => t.includes(q),
