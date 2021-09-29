@@ -2260,7 +2260,7 @@ __metadata:
     tslib: 2.3.1
     typescript: 4.4.3
   peerDependencies:
-    "@targetd/api": ^0.0.0
+    "@targetd/api": ^1.0.0
   languageName: unknown
   linkType: soft
 
