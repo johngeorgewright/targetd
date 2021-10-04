@@ -2302,12 +2302,12 @@ __metadata:
     commitizen: 4.2.4
     cz-conventional-changelog: 3.3.0
     husky: 7.0.2
-    isbinaryfile: ^4.0.8
+    isbinaryfile: 4.0.8
     jest-runner: 27.2.4
-    json-parse-even-better-errors: ^2.3.1
+    json-parse-even-better-errors: 2.3.1
     lerna: 4.0.0
     lint-staged: 11.2.0
-    mkdirp-infer-owner: ^2.0.0
+    mkdirp-infer-owner: 2.0.0
     prettier: 2.4.1
     semantic-release: 18.0.0
     semantic-release-monorepo: 7.0.5
@@ -7142,7 +7142,7 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"isbinaryfile@npm:^4.0.8":
+"isbinaryfile@npm:4.0.8, isbinaryfile@npm:^4.0.8":
   version: 4.0.8
   resolution: "isbinaryfile@npm:4.0.8"
   checksum: 606e3bb648d1a0dee23459d1d937bb2560e66a5281ec7c9ff50e585402d73321ac268d0f34cb7393125b3ebc4c7962d39e50a01cdb8904b52fce08b7ccd2bf9f
@@ -7882,7 +7882,7 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"json-parse-even-better-errors@npm:*, json-parse-even-better-errors@npm:^2.3.0, json-parse-even-better-errors@npm:^2.3.1":
+"json-parse-even-better-errors@npm:*, json-parse-even-better-errors@npm:2.3.1, json-parse-even-better-errors@npm:^2.3.0, json-parse-even-better-errors@npm:^2.3.1":
   version: 2.3.1
   resolution: "json-parse-even-better-errors@npm:2.3.1"
   checksum: 798ed4cf3354a2d9ccd78e86d2169515a0097a5c133337807cdf7f1fc32e1391d207ccfc276518cc1d7d8d4db93288b8a50ba4293d212ad1336e52a8ec0a941f
@@ -8992,7 +8992,7 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"mkdirp-infer-owner@npm:*, mkdirp-infer-owner@npm:^2.0.0":
+"mkdirp-infer-owner@npm:*, mkdirp-infer-owner@npm:2.0.0, mkdirp-infer-owner@npm:^2.0.0":
   version: 2.0.0
   resolution: "mkdirp-infer-owner@npm:2.0.0"
   dependencies:
