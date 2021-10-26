@@ -2250,7 +2250,7 @@ __metadata:
     "@semantic-release/npm": 8.0.2
     "@semantic-release/release-notes-generator": 10.0.2
     "@types/jest": 27.0.2
-    "@types/node": 16.4.11
+    "@types/node": 16.11.6
     jest: 27.3.1
     rimraf: 3.0.2
     runtypes: 6.4.1
@@ -2274,7 +2274,7 @@ __metadata:
     "@semantic-release/release-notes-generator": 10.0.2
     "@targetd/api": "workspace:packages/api"
     "@types/jest": 27.0.2
-    "@types/node": 16.9.0
+    "@types/node": 16.11.6
     jest: 27.3.1
     jest-date-mock: 1.0.8
     rimraf: 3.0.2
@@ -2553,17 +2553,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:16.9.0":
+"@types/node@npm:*":
   version: 16.9.0
   resolution: "@types/node@npm:16.9.0"
   checksum: cb210bcfe201d6506f1ace9e940cf45307c1fc845ad1e67bb4a2dc39a2e3441382973e96b78568844c6f324cd0d2dddcb07639313d75cdb1ac5776c9255349fb
   languageName: node
   linkType: hard
 
-"@types/node@npm:16.4.11":
-  version: 16.4.11
-  resolution: "@types/node@npm:16.4.11"
-  checksum: 9c50c79acc587d90be4d2a408772a53239d9532b7a4b88e27baadb652a15a4a57e3bb6a242a1b153a30b6cf55cb69db87992494f47b2aa2683f2f28cfd5c3bd4
+"@types/node@npm:16.11.6":
+  version: 16.11.6
+  resolution: "@types/node@npm:16.11.6"
+  checksum: 6e19634766ff589d3d2f361c2196b671f8f133cdadc5ad347a621c360d8994b6c4fbccfb2ad9c60c588c593831a96497c9c6b77d2b7e91be723384b94f6368e7
   languageName: node
   linkType: hard
 
