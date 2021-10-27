@@ -1397,10 +1397,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["@johngw/array", [
-        ["npm:3.2.0", {
-          "packageLocation": "./.yarn/cache/@johngw-array-npm-3.2.0-d9d53978e2-351ddf4f44.zip/node_modules/@johngw/array/",
+        ["npm:3.3.0", {
+          "packageLocation": "./.yarn/cache/@johngw-array-npm-3.3.0-4316213794-dc4ebc8d51.zip/node_modules/@johngw/array/",
           "packageDependencies": [
-            ["@johngw/array", "npm:3.2.0"],
+            ["@johngw/array", "npm:3.3.0"],
             ["tslib", "npm:2.3.1"]
           ],
           "linkType": "HARD",
@@ -2956,7 +2956,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./packages/api/",
           "packageDependencies": [
             ["@targetd/api", "workspace:packages/api"],
-            ["@johngw/array", "npm:3.2.0"],
+            ["@johngw/array", "npm:3.3.0"],
             ["@semantic-release/commit-analyzer", "virtual:26bef7164f48d044764cd43116294384229ad2f2c35b46556537f1ef43382b779f272bad9f935bedb8d5f0cd3bb5d71fbb788a0376f8f210aee6a1927e0d4392#npm:9.0.1"],
             ["@semantic-release/git", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:10.0.0"],
             ["@semantic-release/github", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:8.0.1"],
