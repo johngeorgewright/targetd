@@ -2207,7 +2207,30 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@semantic-release/npm@npm:8.0.2, @semantic-release/npm@npm:^8.0.0":
+"@semantic-release/npm@npm:8.0.3":
+  version: 8.0.3
+  resolution: "@semantic-release/npm@npm:8.0.3"
+  dependencies:
+    "@semantic-release/error": ^3.0.0
+    aggregate-error: ^3.0.0
+    execa: ^5.0.0
+    fs-extra: ^10.0.0
+    lodash: ^4.17.15
+    nerf-dart: ^1.0.0
+    normalize-url: ^6.0.0
+    npm: ^7.0.0
+    rc: ^1.2.8
+    read-pkg: ^5.0.0
+    registry-auth-token: ^4.0.0
+    semver: ^7.1.2
+    tempy: ^1.0.0
+  peerDependencies:
+    semantic-release: ">=18.0.0"
+  checksum: 6c1e178f0fdc1b6ab24d14f02fb012302c7220e64e192293be7d11346d309b00338bd5a42e076c7849af68a91745359e750c5a1d7c85c8f11e9941e4516bb413
+  languageName: node
+  linkType: hard
+
+"@semantic-release/npm@npm:^8.0.0":
   version: 8.0.2
   resolution: "@semantic-release/npm@npm:8.0.2"
   dependencies:
@@ -2283,7 +2306,7 @@ __metadata:
     "@semantic-release/commit-analyzer": 9.0.1
     "@semantic-release/git": 10.0.1
     "@semantic-release/github": 8.0.2
-    "@semantic-release/npm": 8.0.2
+    "@semantic-release/npm": 8.0.3
     "@semantic-release/release-notes-generator": 10.0.2
     "@types/jest": 27.0.2
     "@types/node": 16.11.6
@@ -2306,7 +2329,7 @@ __metadata:
     "@semantic-release/commit-analyzer": 9.0.1
     "@semantic-release/git": 10.0.1
     "@semantic-release/github": 8.0.2
-    "@semantic-release/npm": 8.0.2
+    "@semantic-release/npm": 8.0.3
     "@semantic-release/release-notes-generator": 10.0.2
     "@targetd/api": "workspace:packages/api"
     "@types/jest": 27.0.2
@@ -2358,7 +2381,7 @@ __metadata:
     "@semantic-release/commit-analyzer": 9.0.1
     "@semantic-release/git": 10.0.1
     "@semantic-release/github": 8.0.2
-    "@semantic-release/npm": 8.0.2
+    "@semantic-release/npm": 8.0.3
     "@semantic-release/release-notes-generator": 10.0.2
     commitizen: 4.2.4
     cz-conventional-changelog: 3.3.0
