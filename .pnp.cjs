@@ -3021,7 +3021,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@semantic-release/npm", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:8.0.3"],
             ["@semantic-release/release-notes-generator", "virtual:26bef7164f48d044764cd43116294384229ad2f2c35b46556537f1ef43382b779f272bad9f935bedb8d5f0cd3bb5d71fbb788a0376f8f210aee6a1927e0d4392#npm:10.0.2"],
             ["@types/jest", "npm:27.0.2"],
-            ["@types/node", "npm:16.11.6"],
+            ["@types/node", "npm:16.11.7"],
             ["jest", "virtual:78776105526f67704c5d821aa139591fbba11fdbd5f03f51d916c5f752b52ce5b35f9731aa4a7b9fc9fe491d6229cf4b9abfbb54db395f33bbe11c0e0b749fa6#npm:27.3.1"],
             ["rimraf", "npm:3.0.2"],
             ["runtypes", "npm:6.5.0"],
@@ -3047,7 +3047,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@semantic-release/release-notes-generator", "virtual:26bef7164f48d044764cd43116294384229ad2f2c35b46556537f1ef43382b779f272bad9f935bedb8d5f0cd3bb5d71fbb788a0376f8f210aee6a1927e0d4392#npm:10.0.2"],
             ["@targetd/api", "workspace:packages/api"],
             ["@types/jest", "npm:27.0.2"],
-            ["@types/node", "npm:16.11.6"],
+            ["@types/node", "npm:16.11.7"],
             ["jest", "virtual:78776105526f67704c5d821aa139591fbba11fdbd5f03f51d916c5f752b52ce5b35f9731aa4a7b9fc9fe491d6229cf4b9abfbb54db395f33bbe11c0e0b749fa6#npm:27.3.1"],
             ["jest-date-mock", "npm:1.0.8"],
             ["rimraf", "npm:3.0.2"],
@@ -3373,6 +3373,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@types-node-npm-16.11.6-3a38cc239a-6e19634766.zip/node_modules/@types/node/",
           "packageDependencies": [
             ["@types/node", "npm:16.11.6"]
+          ],
+          "linkType": "HARD",
+        }],
+        ["npm:16.11.7", {
+          "packageLocation": "./.yarn/cache/@types-node-npm-16.11.7-1799a0a435-2706403e6e.zip/node_modules/@types/node/",
+          "packageDependencies": [
+            ["@types/node", "npm:16.11.7"]
           ],
           "linkType": "HARD",
         }]
