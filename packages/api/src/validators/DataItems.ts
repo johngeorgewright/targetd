@@ -1,14 +1,15 @@
 import * as rt from 'runtypes'
-import { objectMap } from '../util'
 import DataItem from './DataItem'
 
 function DataItems<
   D extends Record<string, rt.Runtype>,
   T extends Record<string, rt.Runtype>
 >(dataValidators: D, targeting: T) {
-  return rt.Partial(
-    objectMap(dataValidators, (Payload) => DataItem(Payload, targeting))
-  )
+  const dataItems: Record<string, any> = {}
+  for (const [key, Payload] of Object.entries(dataValidators)) {
+    dataItems[key] = DataItem(Payload, targeting)
+  }
+  return dataItems as DataItems<D, T>
 }
 
 type DataItems<
