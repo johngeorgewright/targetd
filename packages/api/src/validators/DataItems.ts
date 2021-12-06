@@ -9,7 +9,7 @@ function DataItems<
   for (const [key, Payload] of Object.entries(dataValidators)) {
     dataItems[key] = DataItem(Payload, targeting)
   }
-  return dataItems as DataItems<D, T>
+  return rt.Partial(dataItems) as DataItems<D, T>
 }
 
 type DataItems<
