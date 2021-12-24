@@ -64,7 +64,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["jest-runner", "npm:27.4.5"],
             ["json-parse-even-better-errors", "npm:2.3.1"],
             ["lerna", "npm:4.0.0"],
-            ["lint-staged", "npm:12.1.3"],
+            ["lint-staged", "npm:12.1.4"],
             ["mkdirp-infer-owner", "npm:2.0.0"],
             ["prettier", "npm:2.5.1"],
             ["semantic-release", "npm:18.0.1"],
@@ -3163,7 +3163,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["jest-runner", "npm:27.4.5"],
             ["json-parse-even-better-errors", "npm:2.3.1"],
             ["lerna", "npm:4.0.0"],
-            ["lint-staged", "npm:12.1.3"],
+            ["lint-staged", "npm:12.1.4"],
             ["mkdirp-infer-owner", "npm:2.0.0"],
             ["prettier", "npm:2.5.1"],
             ["semantic-release", "npm:18.0.1"],
@@ -5694,20 +5694,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
           "linkType": "SOFT",
         }],
-        ["virtual:3517d2f5887a8d5c68f06b248925c123828f7058c1f4496bc3db0bc4acdd96ae44c100ded239220f77f2c04860b3201caafb80da7a15dd6cebc93d471fdac282#npm:4.3.3", {
-          "packageLocation": "./.yarn/__virtual__/debug-virtual-8e5d7cee0c/0/cache/debug-npm-4.3.3-710fd4cc7f-14472d56fe.zip/node_modules/debug/",
-          "packageDependencies": [
-            ["debug", "virtual:3517d2f5887a8d5c68f06b248925c123828f7058c1f4496bc3db0bc4acdd96ae44c100ded239220f77f2c04860b3201caafb80da7a15dd6cebc93d471fdac282#npm:4.3.3"],
-            ["@types/supports-color", null],
-            ["ms", "npm:2.1.2"],
-            ["supports-color", "npm:9.2.1"]
-          ],
-          "packagePeers": [
-            "@types/supports-color",
-            "supports-color"
-          ],
-          "linkType": "HARD",
-        }],
         ["virtual:41f14e3f0c413b9d0e5b88bf7f84d1e55b3357987f1864331974ff91f98401bdc89537ef39afef8ee1dbe0911d2464490ade175345b603198550111f29959c99#npm:3.2.7", {
           "packageLocation": "./.yarn/__virtual__/debug-virtual-3c19b4cebd/0/cache/debug-npm-3.2.7-754e818c7a-b3d8c59407.zip/node_modules/debug/",
           "packageDependencies": [
@@ -5743,6 +5729,20 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/supports-color", null],
             ["ms", "npm:2.0.0"],
             ["supports-color", null]
+          ],
+          "packagePeers": [
+            "@types/supports-color",
+            "supports-color"
+          ],
+          "linkType": "HARD",
+        }],
+        ["virtual:a366829e30360f0d063fd7f0bd47227af36d3a700e541777ddc81b1869d56bce097a06b0d2802b0eaeb5aefb7bac07ba207f269d704f6e4e69d0378e4e324749#npm:4.3.3", {
+          "packageLocation": "./.yarn/__virtual__/debug-virtual-574ad4d41b/0/cache/debug-npm-4.3.3-710fd4cc7f-14472d56fe.zip/node_modules/debug/",
+          "packageDependencies": [
+            ["debug", "virtual:a366829e30360f0d063fd7f0bd47227af36d3a700e541777ddc81b1869d56bce097a06b0d2802b0eaeb5aefb7bac07ba207f269d704f6e4e69d0378e4e324749#npm:4.3.3"],
+            ["@types/supports-color", null],
+            ["ms", "npm:2.1.2"],
+            ["supports-color", "npm:9.2.1"]
           ],
           "packagePeers": [
             "@types/supports-color",
@@ -9853,17 +9853,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["lint-staged", [
-        ["npm:12.1.3", {
-          "packageLocation": "./.yarn/cache/lint-staged-npm-12.1.3-3517d2f588-f42fea248f.zip/node_modules/lint-staged/",
+        ["npm:12.1.4", {
+          "packageLocation": "./.yarn/cache/lint-staged-npm-12.1.4-a366829e30-f1f829328f.zip/node_modules/lint-staged/",
           "packageDependencies": [
-            ["lint-staged", "npm:12.1.3"],
+            ["lint-staged", "npm:12.1.4"],
             ["cli-truncate", "npm:3.1.0"],
             ["colorette", "npm:2.0.16"],
             ["commander", "npm:8.3.0"],
-            ["debug", "virtual:3517d2f5887a8d5c68f06b248925c123828f7058c1f4496bc3db0bc4acdd96ae44c100ded239220f77f2c04860b3201caafb80da7a15dd6cebc93d471fdac282#npm:4.3.3"],
+            ["debug", "virtual:a366829e30360f0d063fd7f0bd47227af36d3a700e541777ddc81b1869d56bce097a06b0d2802b0eaeb5aefb7bac07ba207f269d704f6e4e69d0378e4e324749#npm:4.3.3"],
             ["execa", "npm:5.1.1"],
             ["lilconfig", "npm:2.0.4"],
-            ["listr2", "virtual:3517d2f5887a8d5c68f06b248925c123828f7058c1f4496bc3db0bc4acdd96ae44c100ded239220f77f2c04860b3201caafb80da7a15dd6cebc93d471fdac282#npm:3.13.5"],
+            ["listr2", "virtual:a366829e30360f0d063fd7f0bd47227af36d3a700e541777ddc81b1869d56bce097a06b0d2802b0eaeb5aefb7bac07ba207f269d704f6e4e69d0378e4e324749#npm:3.13.5"],
             ["micromatch", "npm:4.0.4"],
             ["normalize-path", "npm:3.0.0"],
             ["object-inspect", "npm:1.12.0"],
@@ -9882,10 +9882,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
           "linkType": "SOFT",
         }],
-        ["virtual:3517d2f5887a8d5c68f06b248925c123828f7058c1f4496bc3db0bc4acdd96ae44c100ded239220f77f2c04860b3201caafb80da7a15dd6cebc93d471fdac282#npm:3.13.5", {
-          "packageLocation": "./.yarn/__virtual__/listr2-virtual-3755595676/0/cache/listr2-npm-3.13.5-1d724f8ac3-c20203060b.zip/node_modules/listr2/",
+        ["virtual:a366829e30360f0d063fd7f0bd47227af36d3a700e541777ddc81b1869d56bce097a06b0d2802b0eaeb5aefb7bac07ba207f269d704f6e4e69d0378e4e324749#npm:3.13.5", {
+          "packageLocation": "./.yarn/__virtual__/listr2-virtual-9da30814bf/0/cache/listr2-npm-3.13.5-1d724f8ac3-c20203060b.zip/node_modules/listr2/",
           "packageDependencies": [
-            ["listr2", "virtual:3517d2f5887a8d5c68f06b248925c123828f7058c1f4496bc3db0bc4acdd96ae44c100ded239220f77f2c04860b3201caafb80da7a15dd6cebc93d471fdac282#npm:3.13.5"],
+            ["listr2", "virtual:a366829e30360f0d063fd7f0bd47227af36d3a700e541777ddc81b1869d56bce097a06b0d2802b0eaeb5aefb7bac07ba207f269d704f6e4e69d0378e4e324749#npm:3.13.5"],
             ["@types/enquirer", null],
             ["cli-truncate", "npm:2.1.0"],
             ["colorette", "npm:2.0.16"],
