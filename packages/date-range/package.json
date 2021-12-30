@@ -22,7 +22,7 @@
     "@semantic-release/npm": "8.0.3",
     "@semantic-release/release-notes-generator": "10.0.3",
     "@targetd/api": "workspace:packages/api",
-    "@types/jest": "27.0.3",
+    "@types/jest": "27.4.0",
     "@types/node": "16.11.17",
     "jest": "27.4.5",
     "jest-date-mock": "1.0.8",
