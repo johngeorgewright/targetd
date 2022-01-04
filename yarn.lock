@@ -2446,7 +2446,7 @@ __metadata:
     ts-jest: 27.1.2
     tslib: 2.3.1
     typescript: 4.5.4
-    yeoman-generator: 5.4.2
+    yeoman-generator: 5.5.2
   languageName: unknown
   linkType: soft
 
@@ -12007,7 +12007,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sort-keys@npm:^4.0.0":
+"sort-keys@npm:^4.0.0, sort-keys@npm:^4.2.0":
   version: 4.2.0
   resolution: "sort-keys@npm:4.2.0"
   dependencies:
@@ -13950,9 +13950,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"yeoman-generator@npm:5.4.2":
-  version: 5.4.2
-  resolution: "yeoman-generator@npm:5.4.2"
+"yeoman-generator@npm:5.5.2":
+  version: 5.5.2
+  resolution: "yeoman-generator@npm:5.5.2"
   dependencies:
     chalk: ^4.1.0
     dargs: ^7.0.0
@@ -13965,13 +13965,14 @@ __metadata:
     run-async: ^2.0.0
     semver: ^7.2.1
     shelljs: ^0.8.4
+    sort-keys: ^4.2.0
     text-table: ^0.2.0
   peerDependencies:
     yeoman-environment: ^3.2.0
   peerDependenciesMeta:
     yeoman-environment:
       optional: true
-  checksum: c9d734ba5861385675b3252e2ef30932e638491108b42f5a534f87ce008bb58eca7d4b0c8cbc8150b46383b71a6658acf8f785b05640a41ec783eeeff28c3eae
+  checksum: 75b463974aa55ceedbd3f15816f97e4dc36a207b0b7c1ee19c84e67509aef0eced5252ba3ca64d374dd8c718af31495c1d6b133873ea92b0121ede49610ca01b
   languageName: node
   linkType: hard
 
