@@ -64,7 +64,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["jest-runner", "npm:27.4.6"],
             ["json-parse-even-better-errors", "npm:2.3.1"],
             ["lerna", "npm:4.0.0"],
-            ["lint-staged", "npm:12.2.2"],
+            ["lint-staged", "npm:12.3.0"],
             ["mkdirp-infer-owner", "npm:2.0.0"],
             ["prettier", "npm:2.5.1"],
             ["semantic-release", "npm:19.0.2"],
@@ -3387,7 +3387,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["jest-runner", "npm:27.4.6"],
             ["json-parse-even-better-errors", "npm:2.3.1"],
             ["lerna", "npm:4.0.0"],
-            ["lint-staged", "npm:12.2.2"],
+            ["lint-staged", "npm:12.3.0"],
             ["mkdirp-infer-owner", "npm:2.0.0"],
             ["prettier", "npm:2.5.1"],
             ["semantic-release", "npm:19.0.2"],
@@ -6031,20 +6031,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
           "linkType": "SOFT",
         }],
-        ["virtual:2a29f60e8b0c7c2257bb561f186027b43840bd1b92fa23c1e8101e173eba69f90809da45fd6b5b9754ece613b2b31077333de649b4cc54d3af382eff8dd82a97#npm:4.3.3", {
-          "packageLocation": "./.yarn/__virtual__/debug-virtual-9aeea97ca1/0/cache/debug-npm-4.3.3-710fd4cc7f-14472d56fe.zip/node_modules/debug/",
-          "packageDependencies": [
-            ["debug", "virtual:2a29f60e8b0c7c2257bb561f186027b43840bd1b92fa23c1e8101e173eba69f90809da45fd6b5b9754ece613b2b31077333de649b4cc54d3af382eff8dd82a97#npm:4.3.3"],
-            ["@types/supports-color", null],
-            ["ms", "npm:2.1.2"],
-            ["supports-color", "npm:9.2.1"]
-          ],
-          "packagePeers": [
-            "@types/supports-color",
-            "supports-color"
-          ],
-          "linkType": "HARD",
-        }],
         ["virtual:41f14e3f0c413b9d0e5b88bf7f84d1e55b3357987f1864331974ff91f98401bdc89537ef39afef8ee1dbe0911d2464490ade175345b603198550111f29959c99#npm:3.2.7", {
           "packageLocation": "./.yarn/__virtual__/debug-virtual-3c19b4cebd/0/cache/debug-npm-3.2.7-754e818c7a-b3d8c59407.zip/node_modules/debug/",
           "packageDependencies": [
@@ -6066,6 +6052,20 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/supports-color", null],
             ["ms", "npm:2.1.2"],
             ["supports-color", null]
+          ],
+          "packagePeers": [
+            "@types/supports-color",
+            "supports-color"
+          ],
+          "linkType": "HARD",
+        }],
+        ["virtual:96fc73d990502c5ecf008e39432c8dadf8fbc673495950ac70b3bc96759395aa3c1b01a4a64871266ae699154d25d57641adf2226e69b8a2730e10fed184f99d#npm:4.3.3", {
+          "packageLocation": "./.yarn/__virtual__/debug-virtual-b9022be0ce/0/cache/debug-npm-4.3.3-710fd4cc7f-14472d56fe.zip/node_modules/debug/",
+          "packageDependencies": [
+            ["debug", "virtual:96fc73d990502c5ecf008e39432c8dadf8fbc673495950ac70b3bc96759395aa3c1b01a4a64871266ae699154d25d57641adf2226e69b8a2730e10fed184f99d#npm:4.3.3"],
+            ["@types/supports-color", null],
+            ["ms", "npm:2.1.2"],
+            ["supports-color", "npm:9.2.1"]
           ],
           "packagePeers": [
             "@types/supports-color",
@@ -10177,17 +10177,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["lint-staged", [
-        ["npm:12.2.2", {
-          "packageLocation": "./.yarn/cache/lint-staged-npm-12.2.2-2a29f60e8b-27db9c9e88.zip/node_modules/lint-staged/",
+        ["npm:12.3.0", {
+          "packageLocation": "./.yarn/cache/lint-staged-npm-12.3.0-96fc73d990-6cf29325dd.zip/node_modules/lint-staged/",
           "packageDependencies": [
-            ["lint-staged", "npm:12.2.2"],
+            ["lint-staged", "npm:12.3.0"],
             ["cli-truncate", "npm:3.1.0"],
             ["colorette", "npm:2.0.16"],
             ["commander", "npm:8.3.0"],
-            ["debug", "virtual:2a29f60e8b0c7c2257bb561f186027b43840bd1b92fa23c1e8101e173eba69f90809da45fd6b5b9754ece613b2b31077333de649b4cc54d3af382eff8dd82a97#npm:4.3.3"],
+            ["debug", "virtual:96fc73d990502c5ecf008e39432c8dadf8fbc673495950ac70b3bc96759395aa3c1b01a4a64871266ae699154d25d57641adf2226e69b8a2730e10fed184f99d#npm:4.3.3"],
             ["execa", "npm:5.1.1"],
             ["lilconfig", "npm:2.0.4"],
-            ["listr2", "virtual:2a29f60e8b0c7c2257bb561f186027b43840bd1b92fa23c1e8101e173eba69f90809da45fd6b5b9754ece613b2b31077333de649b4cc54d3af382eff8dd82a97#npm:3.13.5"],
+            ["listr2", "virtual:96fc73d990502c5ecf008e39432c8dadf8fbc673495950ac70b3bc96759395aa3c1b01a4a64871266ae699154d25d57641adf2226e69b8a2730e10fed184f99d#npm:3.13.5"],
             ["micromatch", "npm:4.0.4"],
             ["normalize-path", "npm:3.0.0"],
             ["object-inspect", "npm:1.12.0"],
@@ -10206,10 +10206,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
           "linkType": "SOFT",
         }],
-        ["virtual:2a29f60e8b0c7c2257bb561f186027b43840bd1b92fa23c1e8101e173eba69f90809da45fd6b5b9754ece613b2b31077333de649b4cc54d3af382eff8dd82a97#npm:3.13.5", {
-          "packageLocation": "./.yarn/__virtual__/listr2-virtual-b436ee6982/0/cache/listr2-npm-3.13.5-1d724f8ac3-c20203060b.zip/node_modules/listr2/",
+        ["virtual:96fc73d990502c5ecf008e39432c8dadf8fbc673495950ac70b3bc96759395aa3c1b01a4a64871266ae699154d25d57641adf2226e69b8a2730e10fed184f99d#npm:3.13.5", {
+          "packageLocation": "./.yarn/__virtual__/listr2-virtual-ccca2785ac/0/cache/listr2-npm-3.13.5-1d724f8ac3-c20203060b.zip/node_modules/listr2/",
           "packageDependencies": [
-            ["listr2", "virtual:2a29f60e8b0c7c2257bb561f186027b43840bd1b92fa23c1e8101e173eba69f90809da45fd6b5b9754ece613b2b31077333de649b4cc54d3af382eff8dd82a97#npm:3.13.5"],
+            ["listr2", "virtual:96fc73d990502c5ecf008e39432c8dadf8fbc673495950ac70b3bc96759395aa3c1b01a4a64871266ae699154d25d57641adf2226e69b8a2730e10fed184f99d#npm:3.13.5"],
             ["@types/enquirer", null],
             ["cli-truncate", "npm:2.1.0"],
             ["colorette", "npm:2.0.16"],
