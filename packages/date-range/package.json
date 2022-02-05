@@ -24,7 +24,7 @@
     "@targetd/api": "workspace:packages/api",
     "@types/jest": "27.4.0",
     "@types/node": "16.11.22",
-    "jest": "27.4.7",
+    "jest": "27.5.0",
     "jest-date-mock": "1.0.8",
     "rimraf": "3.0.2",
     "semantic-release": "19.0.2",
