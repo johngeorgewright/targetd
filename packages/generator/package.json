@@ -23,7 +23,7 @@
     "@types/jest": "27.4.0",
     "@types/prettier": "2.4.3",
     "@types/rimraf": "3.0.2",
-    "@types/yeoman-generator": "5.2.8",
+    "@types/yeoman-generator": "5.2.9",
     "jest": "27.4.7",
     "prettier": "2.5.1",
     "rimraf": "3.0.2",
