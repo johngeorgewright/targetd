@@ -24,7 +24,7 @@
     "@types/prettier": "2.4.3",
     "@types/rimraf": "3.0.2",
     "@types/yeoman-generator": "5.2.9",
-    "jest": "27.5.0",
+    "jest": "27.5.1",
     "prettier": "2.5.1",
     "rimraf": "3.0.2",
     "semantic-release": "19.0.2",
