@@ -26,7 +26,7 @@ jobs:
     if: needs.decipher.outputs.package != '' && needs.decipher.outputs.version != ''
     steps:
       - name: Checkout project
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Get Node Version from NVM
         run: echo ::set-output name=NODE_VERSION::$(cat .nvmrc)
