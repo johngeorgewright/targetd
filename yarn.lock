@@ -2694,7 +2694,7 @@ __metadata:
     commitizen: 4.2.4
     cz-conventional-changelog: 3.3.0
     husky: 7.0.4
-    isbinaryfile: 4.0.8
+    isbinaryfile: 4.0.9
     jest-runner: 27.5.1
     json-parse-even-better-errors: 2.3.1
     lerna: 4.0.0
@@ -7676,7 +7676,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"isbinaryfile@npm:4.0.8, isbinaryfile@npm:^4.0.8":
+"isbinaryfile@npm:4.0.9":
+  version: 4.0.9
+  resolution: "isbinaryfile@npm:4.0.9"
+  checksum: 2203e4595e74bbf25be5d97935062d241242f38a926e5ac435efd2865ff3e685691410b11e147922f3a846bcec9cd11a520d1e61bdea65da1a162d2393f6b062
+  languageName: node
+  linkType: hard
+
+"isbinaryfile@npm:^4.0.8":
   version: 4.0.8
   resolution: "isbinaryfile@npm:4.0.8"
   checksum: 606e3bb648d1a0dee23459d1d937bb2560e66a5281ec7c9ff50e585402d73321ac268d0f34cb7393125b3ebc4c7962d39e50a01cdb8904b52fce08b7ccd2bf9f
