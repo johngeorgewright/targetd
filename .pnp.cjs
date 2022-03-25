@@ -58,7 +58,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["commitizen", "npm:4.2.4"],\
             ["cz-conventional-changelog", "npm:3.3.0"],\
             ["husky", "npm:7.0.4"],\
-            ["isbinaryfile", "npm:4.0.9"],\
+            ["isbinaryfile", "npm:4.0.10"],\
             ["jest-runner", "npm:27.5.1"],\
             ["json-parse-even-better-errors", "npm:2.3.1"],\
             ["lerna", "npm:4.0.0"],\
@@ -3415,7 +3415,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["commitizen", "npm:4.2.4"],\
             ["cz-conventional-changelog", "npm:3.3.0"],\
             ["husky", "npm:7.0.4"],\
-            ["isbinaryfile", "npm:4.0.9"],\
+            ["isbinaryfile", "npm:4.0.10"],\
             ["jest-runner", "npm:27.5.1"],\
             ["json-parse-even-better-errors", "npm:2.3.1"],\
             ["lerna", "npm:4.0.0"],\
@@ -9025,17 +9025,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["isbinaryfile", [\
+        ["npm:4.0.10", {\
+          "packageLocation": "./.yarn/cache/isbinaryfile-npm-4.0.10-91d1251522-a6b28db7e2.zip/node_modules/isbinaryfile/",\
+          "packageDependencies": [\
+            ["isbinaryfile", "npm:4.0.10"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
         ["npm:4.0.8", {\
           "packageLocation": "./.yarn/cache/isbinaryfile-npm-4.0.8-62c71dd57b-606e3bb648.zip/node_modules/isbinaryfile/",\
           "packageDependencies": [\
             ["isbinaryfile", "npm:4.0.8"]\
-          ],\
-          "linkType": "HARD"\
-        }],\
-        ["npm:4.0.9", {\
-          "packageLocation": "./.yarn/cache/isbinaryfile-npm-4.0.9-9acf44dd44-2203e4595e.zip/node_modules/isbinaryfile/",\
-          "packageDependencies": [\
-            ["isbinaryfile", "npm:4.0.9"]\
           ],\
           "linkType": "HARD"\
         }]\
