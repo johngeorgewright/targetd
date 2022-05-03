@@ -36,7 +36,7 @@
     "cz-conventional-changelog": "3.3.0",
     "husky": "7.0.4",
     "isbinaryfile": "5.0.0",
-    "jest-runner": "27.5.1",
+    "jest-runner": "28.0.3",
     "json-parse-even-better-errors": "2.3.1",
     "lerna": "4.0.0",
     "lint-staged": "12.4.1",
