@@ -23,7 +23,7 @@
     "@semantic-release/release-notes-generator": "10.0.3",
     "@targetd/api": "workspace:packages/api",
     "@types/jest": "27.5.1",
-    "@types/node": "16.11.36",
+    "@types/node": "16.11.37",
     "jest": "28.1.0",
     "jest-date-mock": "1.0.8",
     "rimraf": "3.0.2",
