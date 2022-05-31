@@ -3457,7 +3457,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@semantic-release/npm", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:9.0.1"],\
             ["@semantic-release/release-notes-generator", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:10.0.3"],\
             ["@types/jest", "npm:27.5.1"],\
-            ["@types/node", "npm:16.11.37"],\
+            ["@types/node", "npm:16.11.38"],\
             ["jest", "virtual:78776105526f67704c5d821aa139591fbba11fdbd5f03f51d916c5f752b52ce5b35f9731aa4a7b9fc9fe491d6229cf4b9abfbb54db395f33bbe11c0e0b749fa6#npm:28.1.0"],\
             ["rimraf", "npm:3.0.2"],\
             ["runtypes", "npm:6.5.1"],\
@@ -3483,7 +3483,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@semantic-release/release-notes-generator", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:10.0.3"],\
             ["@targetd/api", "workspace:packages/api"],\
             ["@types/jest", "npm:27.5.1"],\
-            ["@types/node", "npm:16.11.37"],\
+            ["@types/node", "npm:16.11.38"],\
             ["jest", "virtual:78776105526f67704c5d821aa139591fbba11fdbd5f03f51d916c5f752b52ce5b35f9731aa4a7b9fc9fe491d6229cf4b9abfbb54db395f33bbe11c0e0b749fa6#npm:28.1.0"],\
             ["jest-date-mock", "npm:1.0.8"],\
             ["rimraf", "npm:3.0.2"],\
@@ -3841,10 +3841,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "HARD"\
         }],\
-        ["npm:16.11.37", {\
-          "packageLocation": "./.yarn/cache/@types-node-npm-16.11.37-80e0d1b4a9-33caefb66f.zip/node_modules/@types/node/",\
+        ["npm:16.11.38", {\
+          "packageLocation": "./.yarn/cache/@types-node-npm-16.11.38-1c4f053ff5-471df02016.zip/node_modules/@types/node/",\
           "packageDependencies": [\
-            ["@types/node", "npm:16.11.37"]\
+            ["@types/node", "npm:16.11.38"]\
           ],\
           "linkType": "HARD"\
         }],\
