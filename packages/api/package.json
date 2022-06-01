@@ -21,7 +21,7 @@
     "@semantic-release/github": "8.0.4",
     "@semantic-release/npm": "9.0.1",
     "@semantic-release/release-notes-generator": "10.0.3",
-    "@types/jest": "27.5.1",
+    "@types/jest": "27.5.2",
     "@types/node": "16.11.38",
     "jest": "28.1.0",
     "rimraf": "3.0.2",
