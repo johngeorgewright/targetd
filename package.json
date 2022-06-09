@@ -42,7 +42,7 @@
     "lint-staged": "12.5.0",
     "mkdirp-infer-owner": "2.0.0",
     "prettier": "2.6.2",
-    "semantic-release": "19.0.2",
+    "semantic-release": "19.0.3",
     "semantic-release-monorepo": "7.0.5",
     "slash": "4.0.0",
     "typescript": "4.6.4",
