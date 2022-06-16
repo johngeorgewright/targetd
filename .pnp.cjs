@@ -64,7 +64,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["lerna", "npm:4.0.0"],\
             ["lint-staged", "npm:12.5.0"],\
             ["mkdirp-infer-owner", "npm:2.0.0"],\
-            ["prettier", "npm:2.7.0"],\
+            ["prettier", "npm:2.7.1"],\
             ["semantic-release", "npm:19.0.3"],\
             ["semantic-release-monorepo", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:7.0.5"],\
             ["slash", "npm:4.0.0"],\
@@ -3512,7 +3512,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/yeoman-generator", "npm:5.2.10"],\
             ["change-case", "npm:4.1.2"],\
             ["jest", "virtual:78776105526f67704c5d821aa139591fbba11fdbd5f03f51d916c5f752b52ce5b35f9731aa4a7b9fc9fe491d6229cf4b9abfbb54db395f33bbe11c0e0b749fa6#npm:28.1.1"],\
-            ["prettier", "npm:2.7.0"],\
+            ["prettier", "npm:2.7.1"],\
             ["rimraf", "npm:3.0.2"],\
             ["semantic-release", "npm:19.0.3"],\
             ["semantic-release-monorepo", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:7.0.5"],\
@@ -3545,7 +3545,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["lerna", "npm:4.0.0"],\
             ["lint-staged", "npm:12.5.0"],\
             ["mkdirp-infer-owner", "npm:2.0.0"],\
-            ["prettier", "npm:2.7.0"],\
+            ["prettier", "npm:2.7.1"],\
             ["semantic-release", "npm:19.0.3"],\
             ["semantic-release-monorepo", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:7.0.5"],\
             ["slash", "npm:4.0.0"],\
@@ -12632,10 +12632,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["prettier", [\
-        ["npm:2.7.0", {\
-          "packageLocation": "./.yarn/cache/prettier-npm-2.7.0-77c945e313-5b55bb1dce.zip/node_modules/prettier/",\
+        ["npm:2.7.1", {\
+          "packageLocation": "./.yarn/cache/prettier-npm-2.7.1-d1f40f5e1a-55a4409182.zip/node_modules/prettier/",\
           "packageDependencies": [\
-            ["prettier", "npm:2.7.0"]\
+            ["prettier", "npm:2.7.1"]\
           ],\
           "linkType": "HARD"\
         }]\
