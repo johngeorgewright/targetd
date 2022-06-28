@@ -6,9 +6,9 @@
     "@semantic-release/commit-analyzer",
     "@semantic-release/release-notes-generator",
     [
-      "@semantic-release/npm",
+      "@semantic-release/exec",
       {
-        "npmPublish": false
+        "publishCmd": "yarn version ${nextRelease.version} && yarn npm publish"
       }
     ],
     [
