@@ -199,7 +199,7 @@ export default class Data<
 
       if (targetingKey in predicates)
         return predicates[targetingKey].predicate(targeting[targetingKey])
-      else console.warn(`Invalid targeting property ${targetingKey}`)
+      else console.warn(`Invalid targeting property ${String(targetingKey)}`)
 
       return false
     })
