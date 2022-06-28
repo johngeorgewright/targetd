@@ -32,3 +32,4 @@ jobs:
         run: yarn release
         env:
           GITHUB_TOKEN: ${{ secrets.PUSH_TOKEN }}
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
