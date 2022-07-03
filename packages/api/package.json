@@ -22,7 +22,7 @@
     "@semantic-release/github": "8.0.4",
     "@semantic-release/release-notes-generator": "10.0.3",
     "@types/jest": "27.5.2",
-    "@types/node": "16.11.42",
+    "@types/node": "16.11.43",
     "jest": "28.1.2",
     "rimraf": "3.0.2",
     "semantic-release": "19.0.3",
