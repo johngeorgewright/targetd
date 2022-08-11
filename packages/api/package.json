@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "@johngw/array": "3.3.0",
-    "runtypes": "6.5.1",
+    "runtypes": "6.6.0",
     "ts-toolbelt": "9.6.0",
     "tslib": "2.4.0"
   }
