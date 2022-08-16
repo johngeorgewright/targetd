@@ -2042,7 +2042,7 @@ __metadata:
     "@types/jest": 28.1.7
     "@types/prettier": 2.7.0
     "@types/rimraf": 3.0.2
-    "@types/yeoman-generator": 5.2.10
+    "@types/yeoman-generator": 5.2.11
     change-case: 4.1.2
     jest: 28.1.3
     prettier: 2.7.1
@@ -2224,6 +2224,15 @@ __metadata:
     "@types/through": "*"
     rxjs: ^7.2.0
   checksum: b2f9914d1380e60a9a6d890abdd24078db63069a4bd974e77a00c5660bf5cab33a60fba6f02b56f1b2e6418e287e4697361b12cb85704b13e76f1a23c934d203
+  languageName: node
+  linkType: hard
+
+"@types/inquirer@npm:^8":
+  version: 8.2.3
+  resolution: "@types/inquirer@npm:8.2.3"
+  dependencies:
+    "@types/through": "*"
+  checksum: 2978e749fbda061b85a56331a267f6c7f40380c17bce1b0f8b0bd1d86c88820e3bd7df4985c633647652b571f7ffd6b97b929cabe8b7d61259d354229e4c6c5b
   languageName: node
   linkType: hard
 
@@ -2483,17 +2492,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/yeoman-generator@npm:5.2.10":
-  version: 5.2.10
-  resolution: "@types/yeoman-generator@npm:5.2.10"
+"@types/yeoman-generator@npm:5.2.11":
+  version: 5.2.11
+  resolution: "@types/yeoman-generator@npm:5.2.11"
   dependencies:
     "@types/debug": "*"
     "@types/ejs": "*"
-    "@types/inquirer": "*"
+    "@types/inquirer": ^8
     "@types/mem-fs-editor": "*"
     "@types/yeoman-environment": "*"
     rxjs: ^6.4.0
-  checksum: 85744da9b4565e347c737a8490572d019457e0ef7da5ca3dae9b2c71f31fc973a3381e673ecc195499ad9db3101318af9a9afc4324393461854158953bbaf0ad
+  checksum: b7cfaf73480ad964d10e3254ad2935d1d6cc9235c9c34c41d58c225616a89077d66ff5f16c01cab3e632b3db994baaff2bcc847d3a95e08ed379ae6d93e51877
   languageName: node
   linkType: hard
 
