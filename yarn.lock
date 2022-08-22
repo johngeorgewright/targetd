@@ -1997,7 +1997,7 @@ __metadata:
     jest: 28.1.3
     rimraf: 3.0.2
     runtypes: 6.6.0
-    semantic-release: 19.0.3
+    semantic-release: 19.0.4
     semantic-release-monorepo: 7.0.5
     ts-jest: 28.0.8
     ts-toolbelt: 9.6.0
@@ -2021,7 +2021,7 @@ __metadata:
     jest: 28.1.3
     jest-date-mock: 1.0.8
     rimraf: 3.0.2
-    semantic-release: 19.0.3
+    semantic-release: 19.0.4
     semantic-release-monorepo: 7.0.5
     ts-jest: 28.0.8
     tslib: 2.4.0
@@ -2047,7 +2047,7 @@ __metadata:
     jest: 28.1.3
     prettier: 2.7.1
     rimraf: 3.0.2
-    semantic-release: 19.0.3
+    semantic-release: 19.0.4
     semantic-release-monorepo: 7.0.5
     ts-jest: 28.0.8
     tslib: 2.4.0
@@ -2076,7 +2076,7 @@ __metadata:
     lint-staged: 13.0.3
     mkdirp-infer-owner: 2.0.0
     prettier: 2.7.1
-    semantic-release: 19.0.3
+    semantic-release: 19.0.4
     semantic-release-monorepo: 7.0.5
     slash: 4.0.0
     tslib: 2.4.0
@@ -10334,9 +10334,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semantic-release@npm:19.0.3":
-  version: 19.0.3
-  resolution: "semantic-release@npm:19.0.3"
+"semantic-release@npm:19.0.4":
+  version: 19.0.4
+  resolution: "semantic-release@npm:19.0.4"
   dependencies:
     "@semantic-release/commit-analyzer": ^9.0.2
     "@semantic-release/error": ^3.0.0
@@ -10365,10 +10365,10 @@ __metadata:
     semver: ^7.3.2
     semver-diff: ^3.1.1
     signale: ^1.2.1
-    yargs: ^16.2.0
+    yargs: ^17.0.0
   bin:
     semantic-release: bin/semantic-release.js
-  checksum: 89afc3bba5b7addc503e92387de76274bf7f8b6c955ea4338760719f91ed730df9774ccfc58b28a0c739eb1eb3bed1f9c9bef393dda1156c4481197bb6671760
+  checksum: 46bc947a464ca9eb609731febc30b5868721209a7f97251279db10154a715d0523cc9dceb24206d08080f41036ce43a76f64b77073674a7dea5e268d7731616f
   languageName: node
   linkType: hard
 
@@ -12237,21 +12237,6 @@ __metadata:
   version: 21.0.1
   resolution: "yargs-parser@npm:21.0.1"
   checksum: c3ea2ed12cad0377ce3096b3f138df8267edf7b1aa7d710cd502fe16af417bafe4443dd71b28158c22fcd1be5dfd0e86319597e47badf42ff83815485887323a
-  languageName: node
-  linkType: hard
-
-"yargs@npm:^16.2.0":
-  version: 16.2.0
-  resolution: "yargs@npm:16.2.0"
-  dependencies:
-    cliui: ^7.0.2
-    escalade: ^3.1.1
-    get-caller-file: ^2.0.5
-    require-directory: ^2.1.1
-    string-width: ^4.2.0
-    y18n: ^5.0.5
-    yargs-parser: ^20.2.2
-  checksum: b14afbb51e3251a204d81937c86a7e9d4bdbf9a2bcee38226c900d00f522969ab675703bee2a6f99f8e20103f608382936034e64d921b74df82b63c07c5e8f59
   languageName: node
   linkType: hard
 
