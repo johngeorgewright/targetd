@@ -1992,7 +1992,7 @@ __metadata:
     "@semantic-release/git": 10.0.1
     "@semantic-release/github": 8.0.5
     "@semantic-release/release-notes-generator": 10.0.3
-    "@types/jest": 28.1.7
+    "@types/jest": 28.1.8
     "@types/node": 16.11.52
     jest: 28.1.3
     rimraf: 3.0.2
@@ -2016,7 +2016,7 @@ __metadata:
     "@semantic-release/github": 8.0.5
     "@semantic-release/release-notes-generator": 10.0.3
     "@targetd/api": "workspace:packages/api"
-    "@types/jest": 28.1.7
+    "@types/jest": 28.1.8
     "@types/node": 16.11.52
     jest: 28.1.3
     jest-date-mock: 1.0.8
@@ -2039,7 +2039,7 @@ __metadata:
     "@semantic-release/git": 10.0.1
     "@semantic-release/github": 8.0.5
     "@semantic-release/release-notes-generator": 10.0.3
-    "@types/jest": 28.1.7
+    "@types/jest": 28.1.8
     "@types/prettier": 2.7.0
     "@types/rimraf": 3.0.2
     "@types/yeoman-generator": 5.2.11
@@ -2261,13 +2261,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jest@npm:28.1.7":
-  version: 28.1.7
-  resolution: "@types/jest@npm:28.1.7"
+"@types/jest@npm:28.1.8":
+  version: 28.1.8
+  resolution: "@types/jest@npm:28.1.8"
   dependencies:
     expect: ^28.0.0
     pretty-format: ^28.0.0
-  checksum: 17c9bf9667cd4f062eba5aa9eaea248927bf6479da1cc009e0b7d26d501f460f068dd23eddb67d2602264e915a30b63ae7c9cbb516723ffd18589f6f9d267d43
+  checksum: d4cd36158a3ae1d4b42cc48a77c95de74bc56b84cf81e09af3ee0399c34f4a7da8ab9e787570f10004bd642f9e781b0033c37327fbbf4a8e4b6e37e8ee3693a7
   languageName: node
   linkType: hard
 
