@@ -7,7 +7,6 @@
     "build": "yarn clean && yarn tsc && yarn rimraf 'dist/**/?(__tests__|__mocks__|__setup__|*.test.*)'",
     "clean": "yarn rimraf dist",
     "start": "yarn tsc --watch --preserveWatchOutput",
-    "release": "yarn semantic-release -e semantic-release-monorepo",
     "test": "yarn jest --passWithNoTests"
   },
   "license": "MIT",
