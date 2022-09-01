@@ -1,49 +1,44 @@
-import * as rt from 'runtypes'
+import * as z from 'zod'
+import { ZodPartialObject } from '../types'
 
-function DataItemRule<
-  P extends rt.Runtype,
-  T extends Record<string, rt.Runtype>
->(Payload: P, targeting: T) {
-  const Targeting = rt.Partial(targeting).optional()
+function DataItemRule<P extends z.ZodTypeAny, T extends z.ZodRawShape>(
+  payload: P,
+  targetingRawShape: T
+) {
+  const targeting = z.object(targetingRawShape).partial().optional()
 
-  const RuleWithPayload = rt.Record({
-    targeting: Targeting,
-    payload: Payload,
+  const ruleWithPayload = z.object({
+    targeting,
+    payload,
   })
 
-  const ClientDataItemRule = rt.Record({
-    targeting: Targeting,
-    client: rt.Array(RuleWithPayload),
+  const clientDataItemRule = z.object({
+    targeting,
+    client: z.array(ruleWithPayload),
   })
 
-  return RuleWithPayload.Or(ClientDataItemRule)
+  return ruleWithPayload.or(clientDataItemRule)
 }
 
 type DataItemRule<
-  Payload extends rt.Runtype,
-  Targeting extends Record<string, rt.Runtype>
-> = rt.Union<
+  Payload extends z.ZodTypeAny,
+  Targeting extends z.ZodRawShape
+> = z.ZodUnion<
   [
     RuleWithPayload<Payload, Targeting>,
-    rt.Record<
-      {
-        targeting: rt.Optional<rt.Partial<Targeting, false>>
-        client: rt.Array<RuleWithPayload<Payload, Targeting>, false>
-      },
-      false
-    >
+    z.ZodObject<{
+      targeting: z.ZodOptional<ZodPartialObject<Targeting>>
+      client: z.ZodArray<RuleWithPayload<Payload, Targeting>>
+    }>
   ]
 >
 
 export default DataItemRule
 
 export type RuleWithPayload<
-  Payload extends rt.Runtype,
-  Targeting extends Record<string, rt.Runtype>
-> = rt.Record<
-  {
-    targeting: rt.Optional<rt.Partial<Targeting, false>>
-    payload: Payload
-  },
-  false
->
+  Payload extends z.ZodTypeAny,
+  Targeting extends z.ZodRawShape
+> = z.ZodObject<{
+  targeting: z.ZodOptional<ZodPartialObject<Targeting>>
+  payload: Payload
+}>

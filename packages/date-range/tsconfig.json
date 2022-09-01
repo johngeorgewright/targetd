@@ -2,12 +2,11 @@
   "compilerOptions": {
     "target": "es6",
     "module": "commonjs",
-    "lib": ["es2018"],
+    "lib": ["es2020"],
     "importHelpers": true,
     "declaration": true,
     "sourceMap": true,
     "outDir": "./dist",
-    "downlevelIteration": true,
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
@@ -17,5 +16,5 @@
     "esModuleInterop": true,
     "resolveJsonModule": true
   },
-  "include": ["src"]
+  "exclude": ["dist", "test", "jest.config.ts"]
 }

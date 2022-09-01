@@ -1,8 +1,8 @@
-import { Runtype, Static } from 'runtypes'
+import * as z from 'zod'
 import { MaybePromise } from '../types'
 
-type TargetingPredicate<QV extends Runtype, TV extends Runtype> = (
-  query?: Static<QV>
-) => MaybePromise<(targeting: Static<TV>) => MaybePromise<boolean>>
+type TargetingPredicate<QV extends z.ZodTypeAny, TV extends z.ZodTypeAny> = (
+  query?: z.infer<QV>
+) => MaybePromise<(targeting: z.infer<TV>) => MaybePromise<boolean>>
 
 export default TargetingPredicate

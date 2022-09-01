@@ -1,9 +1,9 @@
-import * as rt from 'runtypes'
+import * as z from 'zod'
 import TargetingPredicate from './TargetingPredicate'
 
 export default interface TargetingDescriptor<
-  TV extends rt.Runtype,
-  QV extends rt.Runtype
+  TV extends z.ZodTypeAny,
+  QV extends z.ZodTypeAny
 > {
   predicate: TargetingPredicate<QV, TV>
   queryValidator: QV

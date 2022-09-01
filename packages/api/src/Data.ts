@@ -1,5 +1,5 @@
 import TargetingDescriptor from './validators/TargetingDescriptor'
-import * as rt from 'runtypes'
+import * as z from 'zod'
 import TargetingPredicates from './validators/TargetingPredicates'
 import { objectEveryAsync, objectMap } from './util'
 import DataItems from './validators/DataItems'
@@ -9,11 +9,11 @@ import { Keys } from 'ts-toolbelt/out/Any/Keys'
 import { MaybePromise, StaticRecord } from './types'
 
 export default class Data<
-  DataValidators extends Record<string, rt.Runtype>,
-  TargetingValidators extends Record<string, rt.Runtype>,
-  QueryValidators extends Record<string, rt.Runtype>
+  DataValidators extends z.ZodRawShape,
+  TargetingValidators extends z.ZodRawShape,
+  QueryValidators extends z.ZodRawShape
 > {
-  readonly #data: rt.Static<DataItems<DataValidators, TargetingValidators>>
+  readonly #data: z.infer<DataItems<DataValidators, TargetingValidators>>
   readonly #dataValidators: DataValidators
   readonly #targetingPredicates: TargetingPredicates<
     TargetingValidators,
@@ -27,7 +27,7 @@ export default class Data<
   }
 
   private constructor(
-    data: rt.Static<DataItems<DataValidators, TargetingValidators>>,
+    data: z.infer<DataItems<DataValidators, TargetingValidators>>,
     dataValidators: DataValidators,
     targetingPredicates: TargetingPredicates<
       TargetingValidators,
@@ -43,7 +43,7 @@ export default class Data<
     this.#queryValidators = queryValidators
   }
 
-  useDataValidator<Name extends string, Validator extends rt.Runtype>(
+  useDataValidator<Name extends string, Validator extends z.ZodTypeAny>(
     name: Name,
     validator: Validator
   ) {
@@ -65,11 +65,11 @@ export default class Data<
 
   addRules<Name extends Keys<DataValidators>>(
     name: Name,
-    rules: rt.Static<DataItemRule<DataValidators[Name], TargetingValidators>>[]
+    rules: z.infer<DataItemRule<DataValidators[Name], TargetingValidators>>[]
   ) {
     const dataItem = (this.#data as any)[name] || {}
     return new Data(
-      DataItems(this.#dataValidators, this.#targetingValidators).check({
+      DataItems(this.#dataValidators, this.#targetingValidators).parse({
         ...this.#data,
         [name]: {
           ...dataItem,
@@ -85,8 +85,8 @@ export default class Data<
 
   useTargeting<
     Name extends string,
-    TV extends rt.Runtype,
-    QV extends rt.Runtype
+    TV extends z.ZodTypeAny,
+    QV extends z.ZodTypeAny
   >(name: Name, targetingDescriptor: TargetingDescriptor<TV, QV>) {
     type NewTargeting = TargetingValidators & { [K in Name]: TV }
     type NewQuery = QueryValidators & { [K in Name]: QV }
@@ -156,7 +156,7 @@ export default class Data<
   }
 
   readonly #mapRule = <Name extends keyof DataValidators>(
-    rule: rt.Static<DataItemRule<DataValidators[Name], TargetingValidators>>
+    rule: z.infer<DataItemRule<DataValidators[Name], TargetingValidators>>
   ) =>
     hasPayload(rule)
       ? rule.payload
@@ -167,8 +167,8 @@ export default class Data<
   #createRulePredicate<Name extends keyof DataValidators>(
     rawQuery: Partial<StaticRecord<QueryValidators>>
   ) {
-    const QueryValidators = rt.Partial(this.#queryValidators)
-    const query = QueryValidators.check(rawQuery)
+    const QueryValidators = z.object(this.#queryValidators).partial()
+    const query = QueryValidators.parse(rawQuery)
 
     const targeting = objectMap(
       this.#targetingPredicates,
@@ -179,17 +179,18 @@ export default class Data<
     )
 
     return (
-      rule: rt.Static<DataItemRule<DataValidators[Name], TargetingValidators>>
-    ) =>
+      rule: z.infer<DataItemRule<DataValidators[Name], TargetingValidators>>
+    ): boolean =>
       !('targeting' in rule) ||
-      this.#targetingPredicate(query, rule.targeting!, targeting)
+      // @ts-ignore
+      this.#targetingPredicate(query, rule.targeting, targeting)
   }
 
   #getTargetableRules<Name extends keyof DataValidators>(name: Name) {
     return (
       (
         this.#data as unknown as {
-          [Name in keyof DataValidators]: rt.Static<
+          [Name in keyof DataValidators]: z.infer<
             DataItem<DataValidators[Name], TargetingValidators>
           >
         }
@@ -227,10 +228,10 @@ function hasPayload<Payload>(x: any): x is { payload: Payload } {
   return 'payload' in x
 }
 
-type ClientRules<P extends rt.Runtype, T extends Record<string, rt.Runtype>> = {
-  __rules__: rt.Static<RuleWithPayload<P, T>>[]
+type ClientRules<P extends z.ZodTypeAny, T extends z.ZodRawShape> = {
+  __rules__: z.infer<RuleWithPayload<P, T>>[]
 }
 
-type Payload<P extends rt.Runtype, T extends Record<string, rt.Runtype>> =
-  | rt.Static<P>
+type Payload<P extends z.ZodTypeAny, T extends z.ZodRawShape> =
+  | z.infer<P>
   | ClientRules<P, T>

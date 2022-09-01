@@ -48,14 +48,26 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         [null, {\
           "packageLocation": "./",\
           "packageDependencies": [\
+<<<<<<< HEAD
             ["@commitlint/cli", "npm:17.1.2"],\
             ["@commitlint/config-conventional", "npm:17.1.0"],\
             ["@semantic-release/commit-analyzer", "virtual:93ff9e54e7e85ba03f8777529e2e31fd687b3208f0bfd29f9526626fccebedcf25fd704ae938492bcd5692d38a16927bd020804d445cde5885dc772e9e1e1ff9#npm:9.0.2"],\
+=======
+            ["@commitlint/cli", "npm:17.0.3"],\
+            ["@commitlint/config-conventional", "npm:17.0.3"],\
+            ["@jest/types", "npm:28.1.3"],\
+            ["@semantic-release/commit-analyzer", "virtual:c91fcd356d35829ced3f9cafcb7d70217b01982491547be46dbf92a34cc1c6f47f5022ecefa553004a9375335550e06b2a45e10dc96f6aba8aa030dc26a07d30#npm:9.0.2"],\
+>>>>>>> a1c9006 (refactor: migrate from runtypes to zod)
             ["@semantic-release/exec", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:6.0.3"],\
             ["@semantic-release/git", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:10.0.1"],\
             ["@semantic-release/github", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:8.0.6"],\
             ["@semantic-release/release-notes-generator", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:10.0.3"],\
+<<<<<<< HEAD
             ["commitizen", "npm:4.2.5"],\
+=======
+            ["@types/jest", "npm:28.1.6"],\
+            ["commitizen", "npm:4.2.4"],\
+>>>>>>> a1c9006 (refactor: migrate from runtypes to zod)
             ["cz-conventional-changelog", "npm:3.3.0"],\
             ["husky", "npm:8.0.1"],\
             ["isbinaryfile", "npm:5.0.0"],\
@@ -67,8 +79,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["semantic-release", "npm:19.0.5"],\
             ["semantic-release-monorepo", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:7.0.5"],\
             ["slash", "npm:4.0.0"],\
+            ["ts-node", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:10.9.1"],\
             ["tslib", "npm:2.4.0"],\
+<<<<<<< HEAD
             ["typescript", "patch:typescript@npm%3A4.8.2#~builtin<compat/typescript>::version=4.8.2&hash=a1c5e5"],\
+=======
+            ["typescript", "patch:typescript@npm%3A4.7.4#~builtin<compat/typescript>::version=4.7.4&hash=a1c5e5"],\
+>>>>>>> a1c9006 (refactor: migrate from runtypes to zod)
             ["yo", "npm:4.3.0"]\
           ],\
           "linkType": "SOFT"\
@@ -1231,7 +1248,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["cosmiconfig-typescript-loader", "virtual:2dba76a7868bb5073a95aa075752ebdbfb8f1d17c61e5be7ae5bc6a6776c19b2de1b0817cc913c9816084a7e02990f5acfffa9e8cfd192697d570da0c801867a#npm:4.0.0"],\
             ["lodash", "npm:4.17.21"],\
             ["resolve-from", "npm:5.0.0"],\
+<<<<<<< HEAD
             ["ts-node", "virtual:2dba76a7868bb5073a95aa075752ebdbfb8f1d17c61e5be7ae5bc6a6776c19b2de1b0817cc913c9816084a7e02990f5acfffa9e8cfd192697d570da0c801867a#npm:10.9.1"],\
+=======
+>>>>>>> a1c9006 (refactor: migrate from runtypes to zod)
             ["typescript", "patch:typescript@npm%3A4.6.4#~builtin<compat/typescript>::version=4.6.4&hash=a1c5e5"]\
           ],\
           "linkType": "HARD"\
@@ -1350,6 +1370,14 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@cspotcode/source-map-support", [\
+        ["npm:0.8.1", {\
+          "packageLocation": "./.yarn/cache/@cspotcode-source-map-support-npm-0.8.1-964f2de99d-5718f26708.zip/node_modules/@cspotcode/source-map-support/",\
+          "packageDependencies": [\
+            ["@cspotcode/source-map-support", "npm:0.8.1"],\
+            ["@jridgewell/trace-mapping", "npm:0.3.9"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
         ["npm:0.8.1", {\
           "packageLocation": "./.yarn/cache/@cspotcode-source-map-support-npm-0.8.1-964f2de99d-5718f26708.zip/node_modules/@cspotcode/source-map-support/",\
           "packageDependencies": [\
@@ -1613,7 +1641,11 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@jest-schemas-npm-28.1.3-231835b296-3cf1d4b66c.zip/node_modules/@jest/schemas/",\
           "packageDependencies": [\
             ["@jest/schemas", "npm:28.1.3"],\
+<<<<<<< HEAD
             ["@sinclair/typebox", "npm:0.24.19"]\
+=======
+            ["@sinclair/typebox", "npm:0.24.21"]\
+>>>>>>> a1c9006 (refactor: migrate from runtypes to zod)
           ],\
           "linkType": "HARD"\
         }]\
@@ -1686,6 +1718,19 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@jest/types", "npm:28.0.2"],\
             ["@jest/schemas", "npm:28.0.2"],\
+            ["@types/istanbul-lib-coverage", "npm:2.0.3"],\
+            ["@types/istanbul-reports", "npm:3.0.1"],\
+            ["@types/node", "npm:16.11.6"],\
+            ["@types/yargs", "npm:17.0.10"],\
+            ["chalk", "npm:4.1.2"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
+        ["npm:28.1.3", {\
+          "packageLocation": "./.yarn/cache/@jest-types-npm-28.1.3-422ad1bd71-1e258d9c06.zip/node_modules/@jest/types/",\
+          "packageDependencies": [\
+            ["@jest/types", "npm:28.1.3"],\
+            ["@jest/schemas", "npm:28.1.3"],\
             ["@types/istanbul-lib-coverage", "npm:2.0.3"],\
             ["@types/istanbul-reports", "npm:3.0.1"],\
             ["@types/node", "npm:16.11.6"],\
@@ -2628,10 +2673,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "HARD"\
         }],\
+<<<<<<< HEAD
         ["npm:0.24.19", {\
           "packageLocation": "./.yarn/cache/@sinclair-typebox-npm-0.24.19-71da094cb1-dff2a3ebe9.zip/node_modules/@sinclair/typebox/",\
           "packageDependencies": [\
             ["@sinclair/typebox", "npm:0.24.19"]\
+=======
+        ["npm:0.24.21", {\
+          "packageLocation": "./.yarn/cache/@sinclair-typebox-npm-0.24.21-04fd53f81f-e22b083cac.zip/node_modules/@sinclair/typebox/",\
+          "packageDependencies": [\
+            ["@sinclair/typebox", "npm:0.24.21"]\
+>>>>>>> a1c9006 (refactor: migrate from runtypes to zod)
           ],\
           "linkType": "HARD"\
         }]\
@@ -2675,9 +2727,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@semantic-release/git", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:10.0.1"],\
             ["@semantic-release/github", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:8.0.6"],\
             ["@semantic-release/release-notes-generator", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:10.0.3"],\
+<<<<<<< HEAD
             ["@types/jest", "npm:28.1.8"],\
             ["@types/node", "npm:16.11.56"],\
             ["jest", "virtual:78776105526f67704c5d821aa139591fbba11fdbd5f03f51d916c5f752b52ce5b35f9731aa4a7b9fc9fe491d6229cf4b9abfbb54db395f33bbe11c0e0b749fa6#npm:28.1.3"],\
+=======
+            ["@types/jest", "npm:27.5.2"],\
+            ["@types/node", "npm:16.11.46"],\
+            ["jest", "virtual:78776105526f67704c5d821aa139591fbba11fdbd5f03f51d916c5f752b52ce5b35f9731aa4a7b9fc9fe491d6229cf4b9abfbb54db395f33bbe11c0e0b749fa6#npm:28.1.1"],\
+>>>>>>> a1c9006 (refactor: migrate from runtypes to zod)
             ["rimraf", "npm:3.0.2"],\
             ["runtypes", "npm:6.6.0"],\
             ["semantic-release", "npm:19.0.5"],\
@@ -2685,7 +2743,12 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["ts-jest", "virtual:78776105526f67704c5d821aa139591fbba11fdbd5f03f51d916c5f752b52ce5b35f9731aa4a7b9fc9fe491d6229cf4b9abfbb54db395f33bbe11c0e0b749fa6#npm:28.0.8"],\
             ["ts-toolbelt", "npm:9.6.0"],\
             ["tslib", "npm:2.4.0"],\
+<<<<<<< HEAD
             ["typescript", "patch:typescript@npm%3A4.8.2#~builtin<compat/typescript>::version=4.8.2&hash=a1c5e5"]\
+=======
+            ["typescript", "patch:typescript@npm%3A4.7.4#~builtin<compat/typescript>::version=4.7.4&hash=a1c5e5"],\
+            ["zod", "npm:3.17.10"]\
+>>>>>>> a1c9006 (refactor: migrate from runtypes to zod)
           ],\
           "linkType": "SOFT"\
         }]\
@@ -2695,22 +2758,40 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./packages/date-range/",\
           "packageDependencies": [\
             ["@targetd/date-range", "workspace:packages/date-range"],\
+<<<<<<< HEAD
             ["@semantic-release/commit-analyzer", "virtual:93ff9e54e7e85ba03f8777529e2e31fd687b3208f0bfd29f9526626fccebedcf25fd704ae938492bcd5692d38a16927bd020804d445cde5885dc772e9e1e1ff9#npm:9.0.2"],\
+=======
+            ["@jest/types", "npm:28.1.1"],\
+            ["@semantic-release/commit-analyzer", "virtual:c91fcd356d35829ced3f9cafcb7d70217b01982491547be46dbf92a34cc1c6f47f5022ecefa553004a9375335550e06b2a45e10dc96f6aba8aa030dc26a07d30#npm:9.0.2"],\
+>>>>>>> a1c9006 (refactor: migrate from runtypes to zod)
             ["@semantic-release/exec", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:6.0.3"],\
             ["@semantic-release/git", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:10.0.1"],\
             ["@semantic-release/github", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:8.0.6"],\
             ["@semantic-release/release-notes-generator", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:10.0.3"],\
             ["@targetd/api", "workspace:packages/api"],\
+<<<<<<< HEAD
             ["@types/jest", "npm:28.1.8"],\
             ["@types/node", "npm:16.11.56"],\
             ["jest", "virtual:78776105526f67704c5d821aa139591fbba11fdbd5f03f51d916c5f752b52ce5b35f9731aa4a7b9fc9fe491d6229cf4b9abfbb54db395f33bbe11c0e0b749fa6#npm:28.1.3"],\
+=======
+            ["@types/jest", "npm:28.1.3"],\
+            ["@types/node", "npm:16.11.46"],\
+            ["jest", "virtual:78776105526f67704c5d821aa139591fbba11fdbd5f03f51d916c5f752b52ce5b35f9731aa4a7b9fc9fe491d6229cf4b9abfbb54db395f33bbe11c0e0b749fa6#npm:28.1.1"],\
+>>>>>>> a1c9006 (refactor: migrate from runtypes to zod)
             ["jest-date-mock", "npm:1.0.8"],\
             ["rimraf", "npm:3.0.2"],\
             ["semantic-release", "npm:19.0.5"],\
             ["semantic-release-monorepo", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:7.0.5"],\
+<<<<<<< HEAD
             ["ts-jest", "virtual:78776105526f67704c5d821aa139591fbba11fdbd5f03f51d916c5f752b52ce5b35f9731aa4a7b9fc9fe491d6229cf4b9abfbb54db395f33bbe11c0e0b749fa6#npm:28.0.8"],\
             ["tslib", "npm:2.4.0"],\
             ["typescript", "patch:typescript@npm%3A4.8.2#~builtin<compat/typescript>::version=4.8.2&hash=a1c5e5"]\
+=======
+            ["ts-jest", "virtual:fea913fd87ff0f6ebab4c283007477bfad30353ac0770cbf57b1c43aac5e48e6837d6a4b0fc4c7855b362e6b49d58fddba2d64771fc7c628d35ac0203f85cc5d#npm:28.0.5"],\
+            ["ts-node", "virtual:fea913fd87ff0f6ebab4c283007477bfad30353ac0770cbf57b1c43aac5e48e6837d6a4b0fc4c7855b362e6b49d58fddba2d64771fc7c628d35ac0203f85cc5d#npm:10.9.1"],\
+            ["tslib", "npm:2.4.0"],\
+            ["typescript", "patch:typescript@npm%3A4.7.4#~builtin<compat/typescript>::version=4.7.4&hash=a1c5e5"]\
+>>>>>>> a1c9006 (refactor: migrate from runtypes to zod)
           ],\
           "linkType": "SOFT"\
         }]\
@@ -2736,8 +2817,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["semantic-release-monorepo", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:7.0.5"],\
             ["ts-jest", "virtual:78776105526f67704c5d821aa139591fbba11fdbd5f03f51d916c5f752b52ce5b35f9731aa4a7b9fc9fe491d6229cf4b9abfbb54db395f33bbe11c0e0b749fa6#npm:28.0.8"],\
             ["tslib", "npm:2.4.0"],\
+<<<<<<< HEAD
             ["typescript", "patch:typescript@npm%3A4.8.2#~builtin<compat/typescript>::version=4.8.2&hash=a1c5e5"],\
             ["yeoman-generator", "virtual:5ae7deedd4c8c00c01451ed95d091e2a93b4290183a61657c818ea69f50e7ea2731ba2e1492a2001478d54a4bdf34612c919a7f21aaf1e9cf93bc57a2a3a31b8#npm:5.7.0"]\
+=======
+            ["typescript", "patch:typescript@npm%3A4.7.4#~builtin<compat/typescript>::version=4.7.4&hash=a1c5e5"],\
+            ["yeoman-generator", "virtual:5ae7deedd4c8c00c01451ed95d091e2a93b4290183a61657c818ea69f50e7ea2731ba2e1492a2001478d54a4bdf34612c919a7f21aaf1e9cf93bc57a2a3a31b8#npm:5.6.1"]\
+>>>>>>> a1c9006 (refactor: migrate from runtypes to zod)
           ],\
           "linkType": "SOFT"\
         }]\
@@ -2747,14 +2833,26 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./",\
           "packageDependencies": [\
             ["@targetd/mono-repo", "workspace:."],\
+<<<<<<< HEAD
             ["@commitlint/cli", "npm:17.1.2"],\
             ["@commitlint/config-conventional", "npm:17.1.0"],\
             ["@semantic-release/commit-analyzer", "virtual:93ff9e54e7e85ba03f8777529e2e31fd687b3208f0bfd29f9526626fccebedcf25fd704ae938492bcd5692d38a16927bd020804d445cde5885dc772e9e1e1ff9#npm:9.0.2"],\
+=======
+            ["@commitlint/cli", "npm:17.0.3"],\
+            ["@commitlint/config-conventional", "npm:17.0.3"],\
+            ["@jest/types", "npm:28.1.3"],\
+            ["@semantic-release/commit-analyzer", "virtual:c91fcd356d35829ced3f9cafcb7d70217b01982491547be46dbf92a34cc1c6f47f5022ecefa553004a9375335550e06b2a45e10dc96f6aba8aa030dc26a07d30#npm:9.0.2"],\
+>>>>>>> a1c9006 (refactor: migrate from runtypes to zod)
             ["@semantic-release/exec", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:6.0.3"],\
             ["@semantic-release/git", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:10.0.1"],\
             ["@semantic-release/github", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:8.0.6"],\
             ["@semantic-release/release-notes-generator", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:10.0.3"],\
+<<<<<<< HEAD
             ["commitizen", "npm:4.2.5"],\
+=======
+            ["@types/jest", "npm:28.1.6"],\
+            ["commitizen", "npm:4.2.4"],\
+>>>>>>> a1c9006 (refactor: migrate from runtypes to zod)
             ["cz-conventional-changelog", "npm:3.3.0"],\
             ["husky", "npm:8.0.1"],\
             ["isbinaryfile", "npm:5.0.0"],\
@@ -2766,8 +2864,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["semantic-release", "npm:19.0.5"],\
             ["semantic-release-monorepo", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:7.0.5"],\
             ["slash", "npm:4.0.0"],\
+            ["ts-node", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:10.9.1"],\
             ["tslib", "npm:2.4.0"],\
+<<<<<<< HEAD
             ["typescript", "patch:typescript@npm%3A4.8.2#~builtin<compat/typescript>::version=4.8.2&hash=a1c5e5"],\
+=======
+            ["typescript", "patch:typescript@npm%3A4.7.4#~builtin<compat/typescript>::version=4.7.4&hash=a1c5e5"],\
+>>>>>>> a1c9006 (refactor: migrate from runtypes to zod)
             ["yo", "npm:4.3.0"]\
           ],\
           "linkType": "SOFT"\
@@ -2985,6 +3088,24 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["pretty-format", "npm:28.1.3"]\
           ],\
           "linkType": "HARD"\
+        }],\
+        ["npm:28.1.3", {\
+          "packageLocation": "./.yarn/cache/@types-jest-npm-28.1.3-4e0f1f0cb8-28141f2d5b.zip/node_modules/@types/jest/",\
+          "packageDependencies": [\
+            ["@types/jest", "npm:28.1.3"],\
+            ["jest-matcher-utils", "npm:28.1.1"],\
+            ["pretty-format", "npm:28.1.1"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
+        ["npm:28.1.6", {\
+          "packageLocation": "./.yarn/cache/@types-jest-npm-28.1.6-58c8989dba-f2ba5fbefc.zip/node_modules/@types/jest/",\
+          "packageDependencies": [\
+            ["@types/jest", "npm:28.1.6"],\
+            ["jest-matcher-utils", "npm:28.1.1"],\
+            ["pretty-format", "npm:28.1.1"]\
+          ],\
+          "linkType": "HARD"\
         }]\
       ]],\
       ["@types/json-schema", [\
@@ -3074,10 +3195,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "HARD"\
         }],\
+<<<<<<< HEAD
         ["npm:16.11.56", {\
           "packageLocation": "./.yarn/cache/@types-node-npm-16.11.56-4025645476-b4efade16e.zip/node_modules/@types/node/",\
           "packageDependencies": [\
             ["@types/node", "npm:16.11.56"]\
+=======
+        ["npm:16.11.46", {\
+          "packageLocation": "./.yarn/cache/@types-node-npm-16.11.46-c889f68b34-9fff6b70fc.zip/node_modules/@types/node/",\
+          "packageDependencies": [\
+            ["@types/node", "npm:16.11.46"]\
+>>>>>>> a1c9006 (refactor: migrate from runtypes to zod)
           ],\
           "linkType": "HARD"\
         }],\
@@ -5067,7 +5195,11 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/ts-node", null],\
             ["@types/typescript", null],\
             ["cosmiconfig", "npm:7.0.1"],\
+<<<<<<< HEAD
             ["ts-node", "virtual:2dba76a7868bb5073a95aa075752ebdbfb8f1d17c61e5be7ae5bc6a6776c19b2de1b0817cc913c9816084a7e02990f5acfffa9e8cfd192697d570da0c801867a#npm:10.9.1"],\
+=======
+            ["ts-node", "virtual:e22b962eff53341d5f14fc4f6b486ebe1ab923c92cb43ae20e2c254acf5743d67db043bba6a13aef2cb64cd109fae18ceae0d23d8891cc5441fdd66778b4b94c#npm:10.7.0"],\
+>>>>>>> a1c9006 (refactor: migrate from runtypes to zod)
             ["typescript", "patch:typescript@npm%3A4.6.4#~builtin<compat/typescript>::version=4.6.4&hash=a1c5e5"]\
           ],\
           "packagePeers": [\
@@ -13237,7 +13369,48 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["lodash.memoize", "npm:4.1.2"],\
             ["make-error", "npm:1.3.6"],\
             ["semver", "npm:7.3.5"],\
+<<<<<<< HEAD
             ["typescript", "patch:typescript@npm%3A4.8.2#~builtin<compat/typescript>::version=4.8.2&hash=a1c5e5"],\
+=======
+            ["typescript", "patch:typescript@npm%3A4.7.4#~builtin<compat/typescript>::version=4.7.4&hash=a1c5e5"],\
+            ["yargs-parser", "npm:21.0.1"]\
+          ],\
+          "packagePeers": [\
+            "@babel/core",\
+            "@types/babel-jest",\
+            "@types/babel__core",\
+            "@types/esbuild",\
+            "@types/jest",\
+            "@types/typescript",\
+            "babel-jest",\
+            "esbuild",\
+            "jest",\
+            "typescript"\
+          ],\
+          "linkType": "HARD"\
+        }],\
+        ["virtual:fea913fd87ff0f6ebab4c283007477bfad30353ac0770cbf57b1c43aac5e48e6837d6a4b0fc4c7855b362e6b49d58fddba2d64771fc7c628d35ac0203f85cc5d#npm:28.0.5", {\
+          "packageLocation": "./.yarn/__virtual__/ts-jest-virtual-47dcf62faf/0/cache/ts-jest-npm-28.0.5-8c44d8b86f-53e05db5b7.zip/node_modules/ts-jest/",\
+          "packageDependencies": [\
+            ["ts-jest", "virtual:fea913fd87ff0f6ebab4c283007477bfad30353ac0770cbf57b1c43aac5e48e6837d6a4b0fc4c7855b362e6b49d58fddba2d64771fc7c628d35ac0203f85cc5d#npm:28.0.5"],\
+            ["@babel/core", null],\
+            ["@types/babel-jest", null],\
+            ["@types/babel__core", null],\
+            ["@types/esbuild", null],\
+            ["@types/jest", "npm:28.1.3"],\
+            ["@types/typescript", null],\
+            ["babel-jest", null],\
+            ["bs-logger", "npm:0.2.6"],\
+            ["esbuild", null],\
+            ["fast-json-stable-stringify", "npm:2.1.0"],\
+            ["jest", "virtual:78776105526f67704c5d821aa139591fbba11fdbd5f03f51d916c5f752b52ce5b35f9731aa4a7b9fc9fe491d6229cf4b9abfbb54db395f33bbe11c0e0b749fa6#npm:28.1.1"],\
+            ["jest-util", "npm:28.0.2"],\
+            ["json5", "npm:2.2.1"],\
+            ["lodash.memoize", "npm:4.1.2"],\
+            ["make-error", "npm:1.3.6"],\
+            ["semver", "npm:7.3.5"],\
+            ["typescript", "patch:typescript@npm%3A4.7.4#~builtin<compat/typescript>::version=4.7.4&hash=a1c5e5"],\
+>>>>>>> a1c9006 (refactor: migrate from runtypes to zod)
             ["yargs-parser", "npm:21.0.1"]\
           ],\
           "packagePeers": [\
@@ -13258,6 +13431,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["ts-node", [\
+        ["npm:10.9.1", {\
+          "packageLocation": "./.yarn/cache/ts-node-npm-10.9.1-6c268be7f4-090adff130.zip/node_modules/ts-node/",\
+          "packageDependencies": [\
+            ["ts-node", "npm:10.9.1"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
         ["npm:10.9.1", {\
           "packageLocation": "./.yarn/cache/ts-node-npm-10.9.1-6c268be7f4-090adff130.zip/node_modules/ts-node/",\
           "packageDependencies": [\
@@ -13291,8 +13471,49 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "HARD"\
         }],\
+<<<<<<< HEAD
         ["virtual:2dba76a7868bb5073a95aa075752ebdbfb8f1d17c61e5be7ae5bc6a6776c19b2de1b0817cc913c9816084a7e02990f5acfffa9e8cfd192697d570da0c801867a#npm:10.9.1", {\
           "packageLocation": "./.yarn/__virtual__/ts-node-virtual-3fac45d550/0/cache/ts-node-npm-10.9.1-6c268be7f4-090adff130.zip/node_modules/ts-node/",\
+=======
+        ["virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:10.9.1", {\
+          "packageLocation": "./.yarn/__virtual__/ts-node-virtual-f335fc3a25/0/cache/ts-node-npm-10.9.1-6c268be7f4-090adff130.zip/node_modules/ts-node/",\
+          "packageDependencies": [\
+            ["ts-node", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:10.9.1"],\
+            ["@cspotcode/source-map-support", "npm:0.8.1"],\
+            ["@swc/core", null],\
+            ["@swc/wasm", null],\
+            ["@tsconfig/node10", "npm:1.0.8"],\
+            ["@tsconfig/node12", "npm:1.0.9"],\
+            ["@tsconfig/node14", "npm:1.0.1"],\
+            ["@tsconfig/node16", "npm:1.0.2"],\
+            ["@types/node", null],\
+            ["@types/swc__core", null],\
+            ["@types/swc__wasm", null],\
+            ["@types/typescript", null],\
+            ["acorn", "npm:8.6.0"],\
+            ["acorn-walk", "npm:8.2.0"],\
+            ["arg", "npm:4.1.3"],\
+            ["create-require", "npm:1.1.1"],\
+            ["diff", "npm:4.0.2"],\
+            ["make-error", "npm:1.3.6"],\
+            ["typescript", "patch:typescript@npm%3A4.7.4#~builtin<compat/typescript>::version=4.7.4&hash=a1c5e5"],\
+            ["v8-compile-cache-lib", "npm:3.0.1"],\
+            ["yn", "npm:3.1.1"]\
+          ],\
+          "packagePeers": [\
+            "@swc/core",\
+            "@swc/wasm",\
+            "@types/node",\
+            "@types/swc__core",\
+            "@types/swc__wasm",\
+            "@types/typescript",\
+            "typescript"\
+          ],\
+          "linkType": "HARD"\
+        }],\
+        ["virtual:e22b962eff53341d5f14fc4f6b486ebe1ab923c92cb43ae20e2c254acf5743d67db043bba6a13aef2cb64cd109fae18ceae0d23d8891cc5441fdd66778b4b94c#npm:10.7.0", {\
+          "packageLocation": "./.yarn/__virtual__/ts-node-virtual-5e1b40d586/0/cache/ts-node-npm-10.7.0-ef39b1d45e-2a379e43f7.zip/node_modules/ts-node/",\
+>>>>>>> a1c9006 (refactor: migrate from runtypes to zod)
           "packageDependencies": [\
             ["ts-node", "virtual:2dba76a7868bb5073a95aa075752ebdbfb8f1d17c61e5be7ae5bc6a6776c19b2de1b0817cc913c9816084a7e02990f5acfffa9e8cfd192697d570da0c801867a#npm:10.9.1"],\
             ["@cspotcode/source-map-support", "npm:0.8.1"],\
@@ -13313,6 +13534,45 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["diff", "npm:4.0.2"],\
             ["make-error", "npm:1.3.6"],\
             ["typescript", "patch:typescript@npm%3A4.6.4#~builtin<compat/typescript>::version=4.6.4&hash=a1c5e5"],\
+<<<<<<< HEAD
+=======
+            ["v8-compile-cache-lib", "npm:3.0.1"],\
+            ["yn", "npm:3.1.1"]\
+          ],\
+          "packagePeers": [\
+            "@swc/core",\
+            "@swc/wasm",\
+            "@types/node",\
+            "@types/swc__core",\
+            "@types/swc__wasm",\
+            "@types/typescript",\
+            "typescript"\
+          ],\
+          "linkType": "HARD"\
+        }],\
+        ["virtual:fea913fd87ff0f6ebab4c283007477bfad30353ac0770cbf57b1c43aac5e48e6837d6a4b0fc4c7855b362e6b49d58fddba2d64771fc7c628d35ac0203f85cc5d#npm:10.9.1", {\
+          "packageLocation": "./.yarn/__virtual__/ts-node-virtual-73054fac72/0/cache/ts-node-npm-10.9.1-6c268be7f4-090adff130.zip/node_modules/ts-node/",\
+          "packageDependencies": [\
+            ["ts-node", "virtual:fea913fd87ff0f6ebab4c283007477bfad30353ac0770cbf57b1c43aac5e48e6837d6a4b0fc4c7855b362e6b49d58fddba2d64771fc7c628d35ac0203f85cc5d#npm:10.9.1"],\
+            ["@cspotcode/source-map-support", "npm:0.8.1"],\
+            ["@swc/core", null],\
+            ["@swc/wasm", null],\
+            ["@tsconfig/node10", "npm:1.0.8"],\
+            ["@tsconfig/node12", "npm:1.0.9"],\
+            ["@tsconfig/node14", "npm:1.0.1"],\
+            ["@tsconfig/node16", "npm:1.0.2"],\
+            ["@types/node", "npm:16.11.46"],\
+            ["@types/swc__core", null],\
+            ["@types/swc__wasm", null],\
+            ["@types/typescript", null],\
+            ["acorn", "npm:8.6.0"],\
+            ["acorn-walk", "npm:8.2.0"],\
+            ["arg", "npm:4.1.3"],\
+            ["create-require", "npm:1.1.1"],\
+            ["diff", "npm:4.0.2"],\
+            ["make-error", "npm:1.3.6"],\
+            ["typescript", "patch:typescript@npm%3A4.7.4#~builtin<compat/typescript>::version=4.7.4&hash=a1c5e5"],\
+>>>>>>> a1c9006 (refactor: migrate from runtypes to zod)
             ["v8-compile-cache-lib", "npm:3.0.1"],\
             ["yn", "npm:3.1.1"]\
           ],\
@@ -13509,10 +13769,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "HARD"\
         }],\
+<<<<<<< HEAD
         ["patch:typescript@npm%3A4.8.2#~builtin<compat/typescript>::version=4.8.2&hash=a1c5e5", {\
           "packageLocation": "./.yarn/cache/typescript-patch-d6cb78dce7-5cb0f02f41.zip/node_modules/typescript/",\
           "packageDependencies": [\
             ["typescript", "patch:typescript@npm%3A4.8.2#~builtin<compat/typescript>::version=4.8.2&hash=a1c5e5"]\
+=======
+        ["patch:typescript@npm%3A4.7.4#~builtin<compat/typescript>::version=4.7.4&hash=a1c5e5", {\
+          "packageLocation": "./.yarn/cache/typescript-patch-56273a7c66-9096d8f6c1.zip/node_modules/typescript/",\
+          "packageDependencies": [\
+            ["typescript", "patch:typescript@npm%3A4.7.4#~builtin<compat/typescript>::version=4.7.4&hash=a1c5e5"]\
+>>>>>>> a1c9006 (refactor: migrate from runtypes to zod)
           ],\
           "linkType": "HARD"\
         }]\
@@ -14323,6 +14590,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["strip-ansi", "npm:3.0.1"],\
             ["taketalk", "npm:1.0.0"],\
             ["wrap-ansi", "npm:2.1.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["zod", [\
+        ["npm:3.17.10", {\
+          "packageLocation": "./.yarn/cache/zod-npm-3.17.10-7952dcfecb-5de630b8ec.zip/node_modules/zod/",\
+          "packageDependencies": [\
+            ["zod", "npm:3.17.10"]\
           ],\
           "linkType": "HARD"\
         }]\

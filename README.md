@@ -1,4 +1,4 @@
-[runtypes]: https://github.com/pelotom/runtypes 'runtypes'
+[zod]: https://github.com/colinhacks/zod
 
 # @targetd
 
@@ -62,16 +62,16 @@ data = data.addRules(...)
 
 ### Typing Data (payloads)
 
-All typing and validation is done using the awesome [runtypes][] project and is exported from the `@targetd/api` package. [Runtypes][runtypes] is an easy project to understand and you'll need to know some of the basics.
+All typing and validation is done using the awesome [zod][] project and is exported from the `@targetd/api` package. [Zod][zod] is an easy project to understand and you'll need to know some of the basics.
 
 ```typescript
-import { Data, runtypes as rt } from '@targetd/api'
+import { Data, zod as z } from '@targetd/api'
 
 let data = Data.create().useDataValidator(
   'blog',
-  rt.Record({
-    title: rt.String,
-    body: rt.String,
+  z.object({
+    title: z.string(),
+    body: z.string(),
   })
 )
 ```
@@ -92,15 +92,15 @@ data = data.addRules([
 
 ### Typing Targeting
 
-As mentioned above, all typing and validation is done using the [runtypes][] project.
+As mentioned above, all typing and validation is done using the [zod][] project.
 
 ```typescript
-import { Data, runtypes as rt } from '@targetd/api'
+import { Data, zod as z } from '@targetd/api'
 
 let data = Data.create().useTargeting('category', {
   predicate: (q) => (t) => t.includes(q),
-  queryValidator: rt.String,
-  targetingValidator: rt.Array(rt.Literal('news').Or(rt.Literal('weather'))),
+  queryValidator: z.string(),
+  targetingValidator: z.array(z.literal('news').or(z.literal('weather'))),
 })
 ```
 
