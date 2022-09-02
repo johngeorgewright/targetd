@@ -1708,16 +1708,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
-      ["@johngw/array", [\
-        ["npm:3.3.0", {\
-          "packageLocation": "./.yarn/cache/@johngw-array-npm-3.3.0-4316213794-dc4ebc8d51.zip/node_modules/@johngw/array/",\
-          "packageDependencies": [\
-            ["@johngw/array", "npm:3.3.0"],\
-            ["tslib", "npm:2.3.1"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
       ["@jridgewell/gen-mapping", [\
         ["npm:0.1.1", {\
           "packageLocation": "./.yarn/cache/@jridgewell-gen-mapping-npm-0.1.1-3bad172ac6-3bcc21fe78.zip/node_modules/@jridgewell/gen-mapping/",\
@@ -2680,7 +2670,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./packages/api/",\
           "packageDependencies": [\
             ["@targetd/api", "workspace:packages/api"],\
-            ["@johngw/array", "npm:3.3.0"],\
             ["@semantic-release/commit-analyzer", "virtual:93ff9e54e7e85ba03f8777529e2e31fd687b3208f0bfd29f9526626fccebedcf25fd704ae938492bcd5692d38a16927bd020804d445cde5885dc772e9e1e1ff9#npm:9.0.2"],\
             ["@semantic-release/exec", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:6.0.3"],\
             ["@semantic-release/git", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:10.0.1"],\

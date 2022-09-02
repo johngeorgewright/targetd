@@ -1215,15 +1215,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@johngw/array@npm:3.3.0":
-  version: 3.3.0
-  resolution: "@johngw/array@npm:3.3.0"
-  dependencies:
-    tslib: ^2.3.1
-  checksum: dc4ebc8d5108e42f830553ef8050b15d2d947710f8c73aabbfb6fe4955c6057b89219530db8afde9d820be35e7c9948cc29707591fd5bbb8aadc715825b26b95
-  languageName: node
-  linkType: hard
-
 "@jridgewell/gen-mapping@npm:^0.1.0":
   version: 0.1.1
   resolution: "@jridgewell/gen-mapping@npm:0.1.1"
@@ -1981,7 +1972,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@targetd/api@workspace:packages/api"
   dependencies:
-    "@johngw/array": 3.3.0
     "@semantic-release/commit-analyzer": 9.0.2
     "@semantic-release/exec": 6.0.3
     "@semantic-release/git": 10.0.1
@@ -11527,7 +11517,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^2, tslib@npm:^2.0.3, tslib@npm:^2.1.0, tslib@npm:^2.3.1":
+"tslib@npm:^2, tslib@npm:^2.0.3, tslib@npm:^2.1.0":
   version: 2.3.1
   resolution: "tslib@npm:2.3.1"
   checksum: de17a98d4614481f7fcb5cd53ffc1aaf8654313be0291e1bfaee4b4bb31a20494b7d218ff2e15017883e8ea9626599b3b0e0229c18383ba9dce89da2adf15cb9
