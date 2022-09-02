@@ -1,12 +1,12 @@
 import TargetingDescriptor from './validators/TargetingDescriptor'
 import * as rt from 'runtypes'
 import TargetingPredicates from './validators/TargetingPredicates'
-import { objectEvery, objectMap } from './util'
+import { objectEveryAsync, objectMap } from './util'
 import DataItems from './validators/DataItems'
 import DataItem from './validators/DataItem'
 import DataItemRule, { RuleWithPayload } from './validators/DataItemRule'
 import { Keys } from 'ts-toolbelt/out/Any/Keys'
-import { StaticRecord } from './types'
+import { MaybePromise, StaticRecord } from './types'
 
 export default class Data<
   DataValidators extends Record<string, rt.Runtype>,
@@ -114,33 +114,45 @@ export default class Data<
     )
   }
 
-  getPayloadForEachName(rawQuery: Partial<StaticRecord<QueryValidators>>) {
-    return objectMap(this.#data, (_, name) =>
-      this.getPayload(name as keyof DataValidators, rawQuery)
-    ) as {
+  async getPayloadForEachName(
+    rawQuery: Partial<StaticRecord<QueryValidators>>
+  ) {
+    const payloads = {} as {
       [Name in keyof DataValidators]:
         | Payload<DataValidators[Name], TargetingValidators>
         | undefined
     }
-  }
 
-  getPayload<Name extends keyof DataValidators>(
-    name: Name,
-    rawQuery: Partial<StaticRecord<QueryValidators>>
-  ): Payload<DataValidators[Name], TargetingValidators> | undefined {
-    const rule = this.#getTargetableRules(name).find(
-      this.#createRulePredicate(rawQuery)
+    await Promise.all(
+      Object.keys(this.#data).map(async (name) => {
+        payloads[name as keyof DataValidators] = await this.getPayload(
+          name,
+          rawQuery
+        )
+      })
     )
-    return rule && this.#mapRule(rule)
+
+    return payloads
   }
 
-  getPayloads<Name extends keyof DataValidators>(
+  async getPayload<Name extends keyof DataValidators>(
     name: Name,
     rawQuery: Partial<StaticRecord<QueryValidators>>
-  ): Payload<DataValidators[Name], TargetingValidators>[] {
-    return this.#getTargetableRules(name)
-      .filter(this.#createRulePredicate(rawQuery))
-      .map(this.#mapRule)
+  ): Promise<Payload<DataValidators[Name], TargetingValidators> | void> {
+    const predicate = this.#createRulePredicate(rawQuery)
+    for (const rule of this.#getTargetableRules(name))
+      if (await predicate(rule)) return this.#mapRule(rule)
+  }
+
+  async getPayloads<Name extends keyof DataValidators>(
+    name: Name,
+    rawQuery: Partial<StaticRecord<QueryValidators>>
+  ): Promise<Payload<DataValidators[Name], TargetingValidators>[]> {
+    const payloads: Payload<DataValidators[Name], TargetingValidators>[] = []
+    const predicate = this.#createRulePredicate(rawQuery)
+    for (const rule of this.#getTargetableRules(name))
+      if (await predicate(rule)) payloads.push(this.#mapRule(rule))
+    return payloads
   }
 
   readonly #mapRule = <Name extends keyof DataValidators>(
@@ -190,15 +202,20 @@ export default class Data<
     targeting: Partial<StaticRecord<TargetingValidators>>,
     predicates: Record<
       any,
-      { predicate: (targeting: unknown) => boolean; requiresQuery: boolean }
+      {
+        predicate: MaybePromise<(targeting: unknown) => MaybePromise<boolean>>
+        requiresQuery: boolean
+      }
     >
   ) {
-    return objectEvery(targeting, (targetingKey) => {
+    return objectEveryAsync(targeting, async (targetingKey) => {
       if (!(targetingKey in query) && predicates[targetingKey]?.requiresQuery)
         return false
 
       if (targetingKey in predicates)
-        return predicates[targetingKey].predicate(targeting[targetingKey])
+        return (await predicates[targetingKey].predicate)(
+          targeting[targetingKey]
+        )
       else console.warn(`Invalid targeting property ${String(targetingKey)}`)
 
       return false

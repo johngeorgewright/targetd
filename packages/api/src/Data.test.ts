@@ -1,7 +1,8 @@
 import Data from './Data'
 import * as rt from 'runtypes'
+import { setTimeout } from 'node:timers/promises'
 
-test('getPayload', () => {
+test('getPayload', async () => {
   const data = Data.create()
     .useDataValidator('foo', rt.String)
     .useTargeting('weather', {
@@ -14,7 +15,19 @@ test('getPayload', () => {
       queryValidator: rt.Boolean,
       targetingValidator: rt.Boolean,
     })
+    .useTargeting('asyncThing', {
+      predicate: (q) => setTimeout(10, (t) => q === t && setTimeout(10, true)),
+      queryValidator: rt.Boolean,
+      targetingValidator: rt.Boolean,
+    })
     .addRules('foo', [
+      {
+        targeting: {
+          highTide: true,
+          weather: ['sunny'],
+        },
+        payload: '🏄‍♂️',
+      },
       {
         targeting: {
           weather: ['sunny'],
@@ -31,7 +44,13 @@ test('getPayload', () => {
         targeting: {
           highTide: true,
         },
-        payload: '🏄‍♂️',
+        payload: '🌊',
+      },
+      {
+        targeting: {
+          asyncThing: true,
+        },
+        payload: 'Async payload',
       },
       {
         payload: 'bar',
@@ -45,17 +64,23 @@ test('getPayload', () => {
       },
     ])
 
-  expect(data.getPayload('foo', {})).toBe('bar')
-  expect(data.getPayload('foo', { weather: 'sunny' })).toBe('😎')
-  expect(data.getPayload('foo', { weather: 'rainy' })).toBe('☂️')
-  expect(data.getPayload('foo', { highTide: true })).toBe('🏄‍♂️')
+  expect(await data.getPayload('foo', {})).toBe('bar')
+  expect(await data.getPayload('foo', { weather: 'sunny' })).toBe('😎')
+  expect(await data.getPayload('foo', { weather: 'rainy' })).toBe('☂️')
+  expect(await data.getPayload('foo', { highTide: true })).toBe('🌊')
+  expect(
+    await data.getPayload('foo', { highTide: true, weather: 'sunny' })
+  ).toBe('🏄‍♂️')
+  expect(await data.getPayload('foo', { asyncThing: true })).toBe(
+    'Async payload'
+  )
   // @ts-expect-error
-  data.getPayload('mung', {})
+  await data.getPayload('mung', {})
   // @ts-expect-error
-  data.getPayload('foo', { nonExistantKey: 'some value' })
+  await data.getPayload('foo', { nonExistantKey: 'some value' })
 })
 
-test('targeting without requiring a query', () => {
+test('targeting without requiring a query', async () => {
   const data = Data.create()
     .useDataValidator('foo', rt.String)
     .useTargeting('time', {
@@ -76,10 +101,10 @@ test('targeting without requiring a query', () => {
       },
     ])
 
-  expect(data.getPayload('foo', {})).toBe('The time is now')
+  expect(await data.getPayload('foo', {})).toBe('The time is now')
 })
 
-test('getPayloads', () => {
+test('getPayloads', async () => {
   const data = Data.create()
     .useDataValidator('foo', rt.String)
     .useTargeting('weather', {
@@ -116,7 +141,8 @@ test('getPayloads', () => {
       },
     ])
 
-  expect(data.getPayloads('foo', { weather: 'sunny' })).toMatchInlineSnapshot(`
+  expect(await data.getPayloads('foo', { weather: 'sunny' }))
+    .toMatchInlineSnapshot(`
     Array [
       "😎",
       "☂️",
@@ -153,7 +179,7 @@ test('payload runtype validation', () => {
   throw new Error('Didnt error correctly')
 })
 
-test('getPayloadForEachName', () => {
+test('getPayloadForEachName', async () => {
   const data = Data.create()
     .useDataValidator('foo', rt.String)
     .useDataValidator('bar', rt.String)
@@ -164,6 +190,11 @@ test('getPayloadForEachName', () => {
     })
     .useTargeting('highTide', {
       predicate: (q) => (t) => q === t,
+      queryValidator: rt.Boolean,
+      targetingValidator: rt.Boolean,
+    })
+    .useTargeting('asyncThing', {
+      predicate: (q) => setTimeout(10, (t) => q === t && setTimeout(10, true)),
       queryValidator: rt.Boolean,
       targetingValidator: rt.Boolean,
     })
@@ -194,13 +225,27 @@ test('getPayloadForEachName', () => {
         },
         payload: '😁',
       },
+      {
+        targeting: {
+          asyncThing: true,
+        },
+        payload: 'async payloads!',
+      },
     ])
 
-  expect(data.getPayloadForEachName({ weather: 'sunny' }))
+  expect(await data.getPayloadForEachName({ weather: 'sunny' }))
     .toMatchInlineSnapshot(`
     Object {
       "bar": "😁",
       "foo": "😎",
+    }
+  `)
+
+  expect(await data.getPayloadForEachName({ asyncThing: true }))
+    .toMatchInlineSnapshot(`
+    Object {
+      "bar": "async payloads!",
+      "foo": undefined,
     }
   `)
 })

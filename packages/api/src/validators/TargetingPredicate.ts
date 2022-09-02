@@ -1,7 +1,8 @@
 import { Runtype, Static } from 'runtypes'
+import { MaybePromise } from '../types'
 
 type TargetingPredicate<QV extends Runtype, TV extends Runtype> = (
   query?: Static<QV>
-) => (targeting: Static<TV>) => boolean
+) => MaybePromise<(targeting: Static<TV>) => MaybePromise<boolean>>
 
 export default TargetingPredicate

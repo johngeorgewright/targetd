@@ -1,30 +1,23 @@
 import { L } from 'ts-toolbelt'
+import { MaybePromise } from './types'
 
 export function objectMap<O extends Record<string, unknown>, R>(
   obj: O,
   fn: <K extends keyof O>(v: O[K], k: K) => R
 ): Record<keyof O, R> {
   const result: Record<string, any> = {}
-
-  for (const [key, value] of Object.entries(obj)) {
+  for (const [key, value] of Object.entries(obj))
     result[key] = fn(value as any, key)
-  }
-
   return result as Record<keyof O, R>
 }
 
-export function objectEvery<T extends Record<string, unknown>>(
+export async function objectEveryAsync<T extends Record<string, unknown>>(
   obj: T,
-  fn: <K extends keyof T>(key: K, value: T[K]) => boolean
+  fn: <K extends keyof T>(key: K, value: T[K]) => MaybePromise<boolean>
 ) {
-  for (const key in obj) {
-    if (Object.prototype.hasOwnProperty.call(obj, key)) {
-      if (!fn(key, obj[key])) {
-        return false
-      }
-    }
-  }
-
+  for (const key in obj)
+    if (Object.prototype.hasOwnProperty.call(obj, key))
+      if (!(await fn(key, obj[key]))) return false
   return true
 }
 
