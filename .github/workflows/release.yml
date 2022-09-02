@@ -1,23 +1,28 @@
-name: Release
+name: Publish
 
 on:
   push:
     branches: [master]
 
 jobs:
-  github:
-    name: Create GitHub Release
+  build:
+    name: Build
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14, 16, 18]
     steps:
       - name: Checkout project
         uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.PUSH_TOKEN }}
 
-      - name: Install Node.js
+      - name: NVM
+        id: nvm
+        run: echo "::set-output name=version::$(cat .nvmrc)"
+
+      - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
-          node-version-file: .nvmrc
+          node-version: ${{ matrix.node-version }}
 
       - name: Restore cache
         uses: actions/cache@v3
@@ -39,8 +44,65 @@ jobs:
       - name: Test
         run: yarn test
 
+      - name: Upload dists
+        uses: actions/upload-artifact@v3
+        if: matrix.node-version == steps.nvm.outputs.version
+        with:
+          if-no-files-found: error
+          name: dists
+          path: packages/**/dist
+
+  publish-npm:
+    name: NPM
+    if: github.actor != 'renovate[bot]'
+    needs: [build]
+    runs-on: ubuntu-latest
+    environment: NPM
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.PUSH_TOKEN }}
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: .nvmrc
+
+      - name: Setup Registries
+        run: |
+          yarn config set --home 'npmRegistries["https://registry.npmjs.org"].npmAuthToken' '${{ secrets.NPM_TOKEN }}'
+          yarn config set --home npmPublishRegistry https://registry.npmjs.org
+
+      - name: Restore cache
+        uses: actions/cache@v3
+        id: cache
+        with:
+          path: |
+            .yarn/unplugged
+            .yarn/install-state.gz
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: ${{ runner.os }}-yarn-
+
+      - name: Yarn
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: yarn install --immutable
+
+      - name: Download dists
+        uses: actions/download-artifact@v3
+        with:
+          name: dists
+          path: ~/dists
+
+      - name: Move dists to project
+        run: |
+          for package in ~/dists/*
+          do 
+            mv "$package/dist" "packages/${package/$HOME\/dists\//}"
+          done
+
       - name: Release
         run: yarn release
         env:
-          GITHUB_TOKEN: ${{ secrets.PUSH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
