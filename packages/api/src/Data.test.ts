@@ -1,6 +1,6 @@
 import Data from './Data'
 import * as rt from 'runtypes'
-import { setTimeout } from 'node:timers/promises'
+import { setTimeout } from 'timers/promises'
 
 test('getPayload', async () => {
   const data = Data.create()
