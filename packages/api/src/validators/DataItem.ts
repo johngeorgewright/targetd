@@ -4,7 +4,7 @@ import DataItemRule from './DataItemRule'
 function DataItem<P extends z.ZodTypeAny, T extends z.ZodRawShape>(
   payload: P,
   targeting: T
-) {
+): DataItem<P, T> {
   return z.object({
     rules: z.array(DataItemRule(payload, targeting)),
   })

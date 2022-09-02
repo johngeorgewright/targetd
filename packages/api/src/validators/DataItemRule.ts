@@ -4,7 +4,7 @@ import { ZodPartialObject } from '../types'
 function DataItemRule<P extends z.ZodTypeAny, T extends z.ZodRawShape>(
   payload: P,
   targetingRawShape: T
-) {
+): DataItemRule<P, T> {
   const targeting = z.object(targetingRawShape).partial().optional()
 
   const ruleWithPayload = z.object({

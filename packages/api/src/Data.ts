@@ -69,13 +69,15 @@ export default class Data<
   ) {
     const dataItem = (this.#data as any)[name] || {}
     return new Data(
-      DataItems(this.#dataValidators, this.#targetingValidators).parse({
+      {
         ...this.#data,
-        [name]: {
-          ...dataItem,
-          rules: [...(dataItem.rules || []), ...rules],
-        },
-      }),
+        ...DataItems(this.#dataValidators, this.#targetingValidators).parse({
+          [name]: {
+            ...dataItem,
+            rules: [...(dataItem.rules || []), ...rules],
+          },
+        }),
+      },
       this.#dataValidators,
       this.#targetingPredicates,
       this.#targetingValidators,
