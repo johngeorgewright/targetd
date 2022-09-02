@@ -18,9 +18,4 @@ type DataItems<
   [K in keyof DataTypes]: z.ZodOptional<DataItem<DataTypes[K], Targeting>>
 }>
 
-// type DataItems<
-//   DataTypes extends z.ZodRawShape,
-//   Targeting extends z.ZodRawShape
-// > = ReturnType<typeof DataItems<DataTypes, Targeting>>
-
 export default DataItems
