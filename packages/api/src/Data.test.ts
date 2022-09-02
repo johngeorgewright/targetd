@@ -1,6 +1,8 @@
 import Data from './Data'
 import * as rt from 'runtypes'
-import { setTimeout } from 'timers/promises'
+
+const timeout = <T>(ms: number, returnValue: T) =>
+  new Promise<T>((resolve) => setTimeout(() => resolve(returnValue), ms))
 
 test('getPayload', async () => {
   const data = Data.create()
@@ -16,7 +18,7 @@ test('getPayload', async () => {
       targetingValidator: rt.Boolean,
     })
     .useTargeting('asyncThing', {
-      predicate: (q) => setTimeout(10, (t) => q === t && setTimeout(10, true)),
+      predicate: (q) => timeout(10, (t) => q === t && timeout(10, true)),
       queryValidator: rt.Boolean,
       targetingValidator: rt.Boolean,
     })
@@ -194,7 +196,7 @@ test('getPayloadForEachName', async () => {
       targetingValidator: rt.Boolean,
     })
     .useTargeting('asyncThing', {
-      predicate: (q) => setTimeout(10, (t) => q === t && setTimeout(10, true)),
+      predicate: (q) => timeout(10, (t) => q === t && timeout(10, true)),
       queryValidator: rt.Boolean,
       targetingValidator: rt.Boolean,
     })
