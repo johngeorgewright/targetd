@@ -164,19 +164,4 @@ export = class PackageGenerator extends Generator {
 
     writeFile(file, prettier.format(JSON.stringify(vsCodeWS), prettierOptions))
   }
-
-  async install() {
-    this.spawnCommandSync('yarn', [])
-
-    if (this.#answers.public) {
-      this.spawnCommandSync('yarn', [
-        'workspace',
-        `${this.#namespace}/${paramCase(this.#answers.name!)}`,
-        'npm',
-        'publish',
-        '--access',
-        'public',
-      ])
-    }
-  }
 }
