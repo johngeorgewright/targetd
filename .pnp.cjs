@@ -62,7 +62,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["semantic-release", "npm:19.0.5"],\
             ["semantic-release-monorepo", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:7.0.5"],\
             ["slash", "npm:4.0.0"],\
-            ["tslib", "npm:2.4.0"],\
+            ["tslib", "npm:2.4.1"],\
             ["typescript", "patch:typescript@npm%3A4.8.4#~builtin<compat/typescript>::version=4.8.4&hash=701156"],\
             ["yo", "npm:4.3.1"]\
           ],\
@@ -2717,7 +2717,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["semantic-release-monorepo", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:7.0.5"],\
             ["ts-jest", "virtual:78776105526f67704c5d821aa139591fbba11fdbd5f03f51d916c5f752b52ce5b35f9731aa4a7b9fc9fe491d6229cf4b9abfbb54db395f33bbe11c0e0b749fa6#npm:28.0.8"],\
             ["ts-toolbelt", "npm:9.6.0"],\
-            ["tslib", "npm:2.4.0"],\
+            ["tslib", "npm:2.4.1"],\
             ["typescript", "patch:typescript@npm%3A4.8.4#~builtin<compat/typescript>::version=4.8.4&hash=701156"]\
           ],\
           "linkType": "SOFT"\
@@ -2742,7 +2742,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["semantic-release", "npm:19.0.5"],\
             ["semantic-release-monorepo", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:7.0.5"],\
             ["ts-jest", "virtual:78776105526f67704c5d821aa139591fbba11fdbd5f03f51d916c5f752b52ce5b35f9731aa4a7b9fc9fe491d6229cf4b9abfbb54db395f33bbe11c0e0b749fa6#npm:28.0.8"],\
-            ["tslib", "npm:2.4.0"],\
+            ["tslib", "npm:2.4.1"],\
             ["typescript", "patch:typescript@npm%3A4.8.4#~builtin<compat/typescript>::version=4.8.4&hash=701156"]\
           ],\
           "linkType": "SOFT"\
@@ -2768,7 +2768,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["semantic-release", "npm:19.0.5"],\
             ["semantic-release-monorepo", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:7.0.5"],\
             ["ts-jest", "virtual:78776105526f67704c5d821aa139591fbba11fdbd5f03f51d916c5f752b52ce5b35f9731aa4a7b9fc9fe491d6229cf4b9abfbb54db395f33bbe11c0e0b749fa6#npm:28.0.8"],\
-            ["tslib", "npm:2.4.0"],\
+            ["tslib", "npm:2.4.1"],\
             ["typescript", "patch:typescript@npm%3A4.8.4#~builtin<compat/typescript>::version=4.8.4&hash=701156"],\
             ["yeoman-generator", "virtual:5ae7deedd4c8c00c01451ed95d091e2a93b4290183a61657c818ea69f50e7ea2731ba2e1492a2001478d54a4bdf34612c919a7f21aaf1e9cf93bc57a2a3a31b8#npm:5.7.0"]\
           ],\
@@ -2799,7 +2799,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["semantic-release", "npm:19.0.5"],\
             ["semantic-release-monorepo", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:7.0.5"],\
             ["slash", "npm:4.0.0"],\
-            ["tslib", "npm:2.4.0"],\
+            ["tslib", "npm:2.4.1"],\
             ["typescript", "patch:typescript@npm%3A4.8.4#~builtin<compat/typescript>::version=4.8.4&hash=701156"],\
             ["yo", "npm:4.3.1"]\
           ],\
@@ -13549,10 +13549,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "HARD"\
         }],\
-        ["npm:2.4.0", {\
-          "packageLocation": "./.yarn/cache/tslib-npm-2.4.0-9cb6dc5030-8c4aa6a3c5.zip/node_modules/tslib/",\
+        ["npm:2.4.1", {\
+          "packageLocation": "./.yarn/cache/tslib-npm-2.4.1-36f0ed04db-19480d6e03.zip/node_modules/tslib/",\
           "packageDependencies": [\
-            ["tslib", "npm:2.4.0"]\
+            ["tslib", "npm:2.4.1"]\
           ],\
           "linkType": "HARD"\
         }]\
