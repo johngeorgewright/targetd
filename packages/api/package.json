@@ -32,6 +32,6 @@
   "dependencies": {
     "runtypes": "6.6.0",
     "ts-toolbelt": "9.6.0",
-    "tslib": "2.4.0"
+    "tslib": "2.4.1"
   }
 }
