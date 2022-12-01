@@ -14,6 +14,7 @@
     "commit": "yarn git-cz",
     "package:generate": "yarn yo ./packages/generator/generators/package",
     "package:remove": "yarn yo ./packages/generator/generators/remove-package",
+    "prepare": "husky install",
     "release": "yarn workspaces foreach --no-private --topological-dev run semantic-release",
     "start": "yarn build && yarn workspaces foreach --exclude @targetd/generator --parallel --interlaced run start",
     "test": "yarn workspaces foreach run test"
