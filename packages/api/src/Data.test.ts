@@ -145,7 +145,7 @@ test('getPayloads', async () => {
 
   expect(await data.getPayloads('foo', { weather: 'sunny' }))
     .toMatchInlineSnapshot(`
-    Array [
+    [
       "😎",
       "☂️",
       "bar",
@@ -167,9 +167,9 @@ test('payload runtype validation', () => {
       ])
   } catch (error: any) {
     expect(error.details).toMatchInlineSnapshot(`
-      Object {
-        "foo": Object {
-          "rules": Array [
+      {
+        "foo": {
+          "rules": [
             "Expected { targeting?: {}; payload: string; } | { targeting?: {}; client: { targeting?: {}; payload: string; }[]; }, but was object",
           ],
         },
@@ -237,7 +237,7 @@ test('getPayloadForEachName', async () => {
 
   expect(await data.getPayloadForEachName({ weather: 'sunny' }))
     .toMatchInlineSnapshot(`
-    Object {
+    {
       "bar": "😁",
       "foo": "😎",
     }
@@ -245,7 +245,7 @@ test('getPayloadForEachName', async () => {
 
   expect(await data.getPayloadForEachName({ asyncThing: true }))
     .toMatchInlineSnapshot(`
-    Object {
+    {
       "bar": "async payloads!",
       "foo": undefined,
     }
