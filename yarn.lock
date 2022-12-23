@@ -1215,6 +1215,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@johngw/fs@npm:2.0.1":
+  version: 2.0.1
+  resolution: "@johngw/fs@npm:2.0.1"
+  dependencies:
+    tslib: ^2.3.1
+  checksum: 0ede0ec212cf291e5f1c1931e804d1f895300494fa758cc0a0ca952d5fe015c05bc3b09912bc52e80e20bfe445ca71c39f0db68253708e7fd65da34a23cf3f9d
+  languageName: node
+  linkType: hard
+
 "@jridgewell/gen-mapping@npm:^0.1.0":
   version: 0.1.1
   resolution: "@jridgewell/gen-mapping@npm:0.1.1"
@@ -2017,7 +2026,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@targetd/api@workspace:packages/api":
+"@targetd/api@workspace:*, @targetd/api@workspace:packages/api":
   version: 0.0.0-use.local
   resolution: "@targetd/api@workspace:packages/api"
   dependencies:
@@ -2062,6 +2071,33 @@ __metadata:
     typescript: 4.9.4
   peerDependencies:
     "@targetd/api": ">=1.0.0"
+  languageName: unknown
+  linkType: soft
+
+"@targetd/fs@workspace:packages/fs":
+  version: 0.0.0-use.local
+  resolution: "@targetd/fs@workspace:packages/fs"
+  dependencies:
+    "@johngw/fs": 2.0.1
+    "@semantic-release/commit-analyzer": 9.0.2
+    "@semantic-release/exec": 6.0.3
+    "@semantic-release/git": 10.0.1
+    "@semantic-release/github": 8.0.7
+    "@semantic-release/release-notes-generator": 10.0.3
+    "@targetd/api": "workspace:*"
+    "@types/jest": 29.2.4
+    "@types/node": 18.11.17
+    jest: 29.3.1
+    rimraf: 3.0.2
+    semantic-release: 19.0.5
+    semantic-release-monorepo: 7.0.5
+    ts-jest: 29.0.3
+    ts-toolbelt: 9.6.0
+    tslib: 2.4.1
+    typescript: 4.9.4
+    yaml: 2.2.0
+  peerDependencies:
+    "@targetd/api": ^1.0.5
   languageName: unknown
   linkType: soft
 
@@ -2111,6 +2147,7 @@ __metadata:
     prettier: 2.8.1
     semantic-release: 19.0.5
     semantic-release-monorepo: 7.0.5
+    ts-node: 10.9.1
     tslib: 2.4.1
     typescript: 4.9.4
     yo: 4.3.1
@@ -11605,7 +11642,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-node@npm:^10.8.1":
+"ts-node@npm:10.9.1, ts-node@npm:^10.8.1":
   version: 10.9.1
   resolution: "ts-node@npm:10.9.1"
   dependencies:
@@ -11671,7 +11708,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:2.4.1":
+"tslib@npm:2.4.1, tslib@npm:^2.3.1":
   version: 2.4.1
   resolution: "tslib@npm:2.4.1"
   checksum: 19480d6e0313292bd6505d4efe096a6b31c70e21cf08b5febf4da62e95c265c8f571f7b36fcc3d1a17e068032f59c269fab3459d6cd3ed6949eafecf64315fca
@@ -12349,6 +12386,13 @@ __metadata:
   version: 4.0.0
   resolution: "yallist@npm:4.0.0"
   checksum: 343617202af32df2a15a3be36a5a8c0c8545208f3d3dfbc6bb7c3e3b7e8c6f8e7485432e4f3b88da3031a6e20afa7c711eded32ddfb122896ac5d914e75848d5
+  languageName: node
+  linkType: hard
+
+"yaml@npm:2.2.0":
+  version: 2.2.0
+  resolution: "yaml@npm:2.2.0"
+  checksum: 6c89da40c3c553648595a476f23f7082c17e51b268ecce7ee0464302cbc1ffc20ba86f1b876688eb9c7d8f4b71dc28efbd7b3b86bf414a959ce5150831a9233f
   languageName: node
   linkType: hard
 

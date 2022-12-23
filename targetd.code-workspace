@@ -4,6 +4,7 @@
     { "name": "🏗 @targetd/generator", "path": "packages/generator" },
     { "name": "📦 @targetd/api", "path": "packages/api" },
     { "name": "📦 @targetd/date-range", "path": "packages/date-range" },
+    { "name": "📦 @targetd/fs", "path": "packages/fs" },
     { "name": "🤖 github", "path": ".github" }
   ],
   "settings": {
