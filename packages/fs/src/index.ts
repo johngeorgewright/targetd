@@ -1,9 +1,10 @@
 import { readFiles } from '@johngw/fs'
+import { WithFileNamesResult } from '@johngw/fs/dist/readFiles'
 import YAML from 'yaml'
 import { Data, runtypes as rt } from '@targetd/api'
-import { Keys } from 'ts-toolbelt/out/Any/Keys'
 
 const FileData = rt.Dictionary(rt.Array(rt.Unknown), rt.String)
+type FileData = rt.Static<typeof FileData>
 
 export async function load<
   DataValidators extends Record<string, rt.Runtype>,
@@ -13,25 +14,33 @@ export async function load<
   data: Data<DataValidators, TargetingValidators, QueryValidators>,
   dir: string
 ) {
-  for await (const { contents, fileName } of readFiles(dir, {
+  for await (const contents of readFiles(dir, {
+    encoding: 'utf8',
     filter: (fileName) =>
       fileName.endsWith('.yaml') ||
       fileName.endsWith('.yml') ||
       fileName.endsWith('.json'),
     withFileNames: true,
   })) {
-    const fileData = FileData.check(
-      fileName.endsWith('.json')
-        ? JSON.parse(contents.toString())
-        : YAML.parse(contents.toString())
-    )
-
-    data = Object.entries(fileData).reduce(
-      (data, [name, dataItem]) =>
-        data.addRules(name as Keys<DataValidators>, dataItem as any[]),
-      data
-    )
+    data = addRules(data, parseFileContents(contents))
   }
 
   return data
+}
+
+function parseFileContents({
+  fileName,
+  contents,
+}: WithFileNamesResult<string>) {
+  return FileData.check(
+    fileName.endsWith('.json') ? JSON.parse(contents) : YAML.parse(contents)
+  )
+}
+
+function addRules(data: Data<any, any, any>, fileData: FileData) {
+  return Object.entries(fileData).reduce(
+    (data, [name, dataItem]) =>
+      data.addRules(name as keyof any, dataItem as any[]),
+    data
+  )
 }
