@@ -28,8 +28,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "reference": "workspace:packages/fs"\
       },\
       {\
-        "name": "@targetd/generator",\
-        "reference": "workspace:packages/generator"\
+        "name": "@targetd/scaffold",\
+        "reference": "workspace:packages/scaffold"\
       },\
       {\
         "name": "@targetd/server",\
@@ -42,8 +42,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ["@targetd/api", ["workspace:packages/api"]],\
       ["@targetd/date-range", ["workspace:packages/date-range"]],\
       ["@targetd/fs", ["workspace:packages/fs"]],\
-      ["@targetd/generator", ["workspace:packages/generator"]],\
       ["@targetd/mono-repo", ["workspace:."]],\
+      ["@targetd/scaffold", ["workspace:packages/scaffold"]],\
       ["@targetd/server", ["workspace:packages/server"]]\
     ],\
     "fallbackPool": [\
@@ -2838,33 +2838,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "SOFT"\
         }]\
       ]],\
-      ["@targetd/generator", [\
-        ["workspace:packages/generator", {\
-          "packageLocation": "./packages/generator/",\
-          "packageDependencies": [\
-            ["@targetd/generator", "workspace:packages/generator"],\
-            ["@semantic-release/commit-analyzer", "virtual:93ff9e54e7e85ba03f8777529e2e31fd687b3208f0bfd29f9526626fccebedcf25fd704ae938492bcd5692d38a16927bd020804d445cde5885dc772e9e1e1ff9#npm:9.0.2"],\
-            ["@semantic-release/git", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:10.0.1"],\
-            ["@semantic-release/github", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:8.0.7"],\
-            ["@semantic-release/release-notes-generator", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:10.0.3"],\
-            ["@types/jest", "npm:29.2.4"],\
-            ["@types/prettier", "npm:2.7.2"],\
-            ["@types/rimraf", "npm:3.0.2"],\
-            ["@types/yeoman-generator", "npm:5.2.11"],\
-            ["change-case", "npm:4.1.2"],\
-            ["jest", "virtual:78776105526f67704c5d821aa139591fbba11fdbd5f03f51d916c5f752b52ce5b35f9731aa4a7b9fc9fe491d6229cf4b9abfbb54db395f33bbe11c0e0b749fa6#npm:29.3.1"],\
-            ["prettier", "npm:2.8.1"],\
-            ["rimraf", "npm:3.0.2"],\
-            ["semantic-release", "npm:19.0.5"],\
-            ["semantic-release-monorepo", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:7.0.5"],\
-            ["ts-jest", "virtual:78776105526f67704c5d821aa139591fbba11fdbd5f03f51d916c5f752b52ce5b35f9731aa4a7b9fc9fe491d6229cf4b9abfbb54db395f33bbe11c0e0b749fa6#npm:29.0.3"],\
-            ["tslib", "npm:2.4.1"],\
-            ["typescript", "patch:typescript@npm%3A4.9.4#~builtin<compat/typescript>::version=4.9.4&hash=ad5954"],\
-            ["yeoman-generator", "virtual:5ae7deedd4c8c00c01451ed95d091e2a93b4290183a61657c818ea69f50e7ea2731ba2e1492a2001478d54a4bdf34612c919a7f21aaf1e9cf93bc57a2a3a31b8#npm:5.7.0"]\
-          ],\
-          "linkType": "SOFT"\
-        }]\
-      ]],\
       ["@targetd/mono-repo", [\
         ["workspace:.", {\
           "packageLocation": "./",\
@@ -2891,6 +2864,33 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["tslib", "npm:2.4.1"],\
             ["typescript", "patch:typescript@npm%3A4.9.4#~builtin<compat/typescript>::version=4.9.4&hash=ad5954"],\
             ["yo", "npm:4.3.1"]\
+          ],\
+          "linkType": "SOFT"\
+        }]\
+      ]],\
+      ["@targetd/scaffold", [\
+        ["workspace:packages/scaffold", {\
+          "packageLocation": "./packages/scaffold/",\
+          "packageDependencies": [\
+            ["@targetd/scaffold", "workspace:packages/scaffold"],\
+            ["@semantic-release/commit-analyzer", "virtual:93ff9e54e7e85ba03f8777529e2e31fd687b3208f0bfd29f9526626fccebedcf25fd704ae938492bcd5692d38a16927bd020804d445cde5885dc772e9e1e1ff9#npm:9.0.2"],\
+            ["@semantic-release/git", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:10.0.1"],\
+            ["@semantic-release/github", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:8.0.7"],\
+            ["@semantic-release/release-notes-generator", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:10.0.3"],\
+            ["@types/jest", "npm:29.2.4"],\
+            ["@types/prettier", "npm:2.7.2"],\
+            ["@types/rimraf", "npm:3.0.2"],\
+            ["@types/yeoman-generator", "npm:5.2.11"],\
+            ["change-case", "npm:4.1.2"],\
+            ["jest", "virtual:78776105526f67704c5d821aa139591fbba11fdbd5f03f51d916c5f752b52ce5b35f9731aa4a7b9fc9fe491d6229cf4b9abfbb54db395f33bbe11c0e0b749fa6#npm:29.3.1"],\
+            ["prettier", "npm:2.8.1"],\
+            ["rimraf", "npm:3.0.2"],\
+            ["semantic-release", "npm:19.0.5"],\
+            ["semantic-release-monorepo", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:7.0.5"],\
+            ["ts-jest", "virtual:78776105526f67704c5d821aa139591fbba11fdbd5f03f51d916c5f752b52ce5b35f9731aa4a7b9fc9fe491d6229cf4b9abfbb54db395f33bbe11c0e0b749fa6#npm:29.0.3"],\
+            ["tslib", "npm:2.4.1"],\
+            ["typescript", "patch:typescript@npm%3A4.9.4#~builtin<compat/typescript>::version=4.9.4&hash=ad5954"],\
+            ["yeoman-generator", "virtual:e385a280e32090a8ccd033eaf2df754a98b1289240d91e1df3ed68695e8080f0aa0c5798abd32cce453f8be19101f4f5a3164b8b933d99a99201221d9bdb78dc#npm:5.7.0"]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -15331,10 +15331,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "SOFT"\
         }],\
-        ["virtual:5ae7deedd4c8c00c01451ed95d091e2a93b4290183a61657c818ea69f50e7ea2731ba2e1492a2001478d54a4bdf34612c919a7f21aaf1e9cf93bc57a2a3a31b8#npm:5.7.0", {\
-          "packageLocation": "./.yarn/__virtual__/yeoman-generator-virtual-4f54e4616b/0/cache/yeoman-generator-npm-5.7.0-ab59b3fd69-16b779372d.zip/node_modules/yeoman-generator/",\
+        ["virtual:e385a280e32090a8ccd033eaf2df754a98b1289240d91e1df3ed68695e8080f0aa0c5798abd32cce453f8be19101f4f5a3164b8b933d99a99201221d9bdb78dc#npm:5.7.0", {\
+          "packageLocation": "./.yarn/__virtual__/yeoman-generator-virtual-4515412320/0/cache/yeoman-generator-npm-5.7.0-ab59b3fd69-16b779372d.zip/node_modules/yeoman-generator/",\
           "packageDependencies": [\
-            ["yeoman-generator", "virtual:5ae7deedd4c8c00c01451ed95d091e2a93b4290183a61657c818ea69f50e7ea2731ba2e1492a2001478d54a4bdf34612c919a7f21aaf1e9cf93bc57a2a3a31b8#npm:5.7.0"],\
+            ["yeoman-generator", "virtual:e385a280e32090a8ccd033eaf2df754a98b1289240d91e1df3ed68695e8080f0aa0c5798abd32cce453f8be19101f4f5a3164b8b933d99a99201221d9bdb78dc#npm:5.7.0"],\
             ["@types/yeoman-environment", null],\
             ["chalk", "npm:4.1.2"],\
             ["dargs", "npm:7.0.0"],\

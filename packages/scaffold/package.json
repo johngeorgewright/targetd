@@ -1,7 +1,7 @@
 {
-  "name": "@targetd/generator",
+  "name": "@targetd/scaffold",
   "version": "0.0.0",
-  "description": "Generates a MOL ads packages",
+  "description": "Scaffold utils for packages",
   "private": true,
   "files": [
     "generators/package"

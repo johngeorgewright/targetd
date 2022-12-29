@@ -8,15 +8,14 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "yarn workspaces foreach --topological-dev --exclude @targetd/generator run build",
+    "build": "yarn workspaces foreach --topological-dev --exclude @targetd/scaffold run build",
     "clean": "yarn workspaces foreach run clean",
-    "build:generator": "yarn workspace @targetd/generator run build",
     "commit": "yarn git-cz",
-    "package:generate": "node --require ts-node/register $(yarn bin yo) ./packages/generator/src/package",
-    "package:remove": "node --require ts-node/register $(yarn bin yo) ./packages/generator/src/remove-package",
+    "package:generate": "node --require ts-node/register $(yarn bin yo) ./packages/scaffold/src/package",
+    "package:remove": "node --require ts-node/register $(yarn bin yo) ./packages/scaffold/src/remove-package",
     "prepare": "husky install",
     "release": "yarn workspaces foreach --no-private --topological-dev run semantic-release",
-    "start": "yarn build && yarn workspaces foreach --exclude @targetd/generator --parallel --interlaced run start",
+    "start": "yarn build && yarn workspaces foreach --exclude @targetd/scaffold --parallel --interlaced run start",
     "test": "yarn workspaces foreach run test"
   },
   "author": "",
