@@ -5,6 +5,7 @@
     { "name": "📦 @targetd/api", "path": "packages/api" },
     { "name": "📦 @targetd/date-range", "path": "packages/date-range" },
     { "name": "📦 @targetd/fs", "path": "packages/fs" },
+    { "name": "📦 @targetd/server", "path": "packages/server" },
     { "name": "🤖 github", "path": ".github" }
   ],
   "settings": {
