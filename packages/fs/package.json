@@ -38,6 +38,6 @@
     "yaml": "2.2.0"
   },
   "peerDependencies": {
-    "@targetd/api": "^1.0.5"
+    "@targetd/api": ">=1.0.0"
   }
 }
