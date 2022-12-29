@@ -1,6 +1,6 @@
 {
   "name": "@targetd/date-range",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Adds date range targeting",
   "main": "dist/index.js",
   "scripts": {
@@ -35,6 +35,6 @@
     "tslib": "2.4.1"
   },
   "peerDependencies": {
-    "@targetd/api": ">=1.0.0"
+    "@targetd/api": ">=2.0.0"
   }
 }
