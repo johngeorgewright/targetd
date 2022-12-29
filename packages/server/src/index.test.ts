@@ -1,9 +1,11 @@
 import { Data, runtypes as rt } from '@targetd/api'
 import express from 'express'
-import { setTimeout } from 'node:timers/promises'
+import { promisify } from 'node:util'
+import { setTimeout } from 'node:timers'
 import request from 'supertest'
 import { createServer } from '.'
 
+const timeout = promisify(setTimeout)
 let app: express.Application
 
 beforeEach(() => {
@@ -22,8 +24,7 @@ beforeEach(() => {
         targetingValidator: rt.Boolean,
       })
       .useTargeting('asyncThing', {
-        predicate: (q) =>
-          setTimeout(10, (t) => q === t && setTimeout(10, true)),
+        predicate: (q) => timeout(10, (t) => q === t && timeout(10, true)),
         queryValidator: rt.Boolean,
         targetingValidator: rt.Boolean,
       })
