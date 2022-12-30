@@ -16,7 +16,7 @@ const data = Data.create()
   .useDataValidator('bar', rt.Number)
   .useDataValidator('foo', rt.String)
   .useTargeting('device', {
-    predicate: (q) => (t) => q === t,
+    predicate: (q) => (t) => typeof q === 'string' && t.includes(q),
     queryValidator: Device,
     targetingValidator: rt.Array(Device),
   })
