@@ -1,0 +1,41 @@
+{
+  "name": "@targetd/client",
+  "version": "0.0.0",
+  "description": "Using results from @targetd/server",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "yarn clean && yarn tsc && yarn rimraf 'dist/**/?(__tests__|__mocks__|__setup__|*.test.*)'",
+    "clean": "yarn rimraf dist",
+    "start": "yarn tsc --watch --preserveWatchOutput",
+    "release": "yarn semantic-release -e semantic-release-monorepo",
+    "test": "yarn jest --passWithNoTests"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/johngeorgewright/config/issues"
+  },
+  "homepage": "https://github.com/johngeorgewright/config#readme",
+  "devDependencies": {
+    "@semantic-release/commit-analyzer": "9.0.2",
+    "@semantic-release/exec": "6.0.3",
+    "@semantic-release/git": "10.0.1",
+    "@semantic-release/github": "8.0.7",
+    "@semantic-release/release-notes-generator": "10.0.3",
+    "@targetd/api": "workspace:*",
+    "@types/jest": "29.2.4",
+    "@types/node": "18.11.18",
+    "jest": "29.3.1",
+    "rimraf": "3.0.2",
+    "semantic-release": "19.0.5",
+    "semantic-release-monorepo": "7.0.5",
+    "ts-jest": "29.0.3",
+    "typescript": "4.9.4"
+  },
+  "dependencies": {
+    "ts-toolbelt": "9.6.0",
+    "tslib": "2.4.1"
+  },
+  "peerDependencies": {
+    "@targetd/api": ">=2.0.0"
+  }
+}

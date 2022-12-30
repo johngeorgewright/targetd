@@ -20,6 +20,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "reference": "workspace:packages/api"\
       },\
       {\
+        "name": "@targetd/client",\
+        "reference": "workspace:packages/client"\
+      },\
+      {\
         "name": "@targetd/date-range",\
         "reference": "workspace:packages/date-range"\
       },\
@@ -40,6 +44,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
     "ignorePatternData": "(^(?:\\\\.yarn\\\\/sdks(?:\\\\/(?!\\\\.{1,2}(?:\\\\/|$))(?:(?:(?!(?:^|\\\\/)\\\\.{1,2}(?:\\\\/|$)).)*?)|$))$)",\
     "fallbackExclusionList": [\
       ["@targetd/api", ["workspace:packages/api"]],\
+      ["@targetd/client", ["workspace:packages/client"]],\
       ["@targetd/date-range", ["workspace:packages/date-range"]],\
       ["@targetd/fs", ["workspace:packages/fs"]],\
       ["@targetd/mono-repo", ["workspace:."]],\
@@ -2776,6 +2781,31 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["jest", "virtual:78776105526f67704c5d821aa139591fbba11fdbd5f03f51d916c5f752b52ce5b35f9731aa4a7b9fc9fe491d6229cf4b9abfbb54db395f33bbe11c0e0b749fa6#npm:29.3.1"],\
             ["rimraf", "npm:3.0.2"],\
             ["runtypes", "npm:6.6.0"],\
+            ["semantic-release", "npm:19.0.5"],\
+            ["semantic-release-monorepo", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:7.0.5"],\
+            ["ts-jest", "virtual:78776105526f67704c5d821aa139591fbba11fdbd5f03f51d916c5f752b52ce5b35f9731aa4a7b9fc9fe491d6229cf4b9abfbb54db395f33bbe11c0e0b749fa6#npm:29.0.3"],\
+            ["ts-toolbelt", "npm:9.6.0"],\
+            ["tslib", "npm:2.4.1"],\
+            ["typescript", "patch:typescript@npm%3A4.9.4#~builtin<compat/typescript>::version=4.9.4&hash=ad5954"]\
+          ],\
+          "linkType": "SOFT"\
+        }]\
+      ]],\
+      ["@targetd/client", [\
+        ["workspace:packages/client", {\
+          "packageLocation": "./packages/client/",\
+          "packageDependencies": [\
+            ["@targetd/client", "workspace:packages/client"],\
+            ["@semantic-release/commit-analyzer", "virtual:93ff9e54e7e85ba03f8777529e2e31fd687b3208f0bfd29f9526626fccebedcf25fd704ae938492bcd5692d38a16927bd020804d445cde5885dc772e9e1e1ff9#npm:9.0.2"],\
+            ["@semantic-release/exec", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:6.0.3"],\
+            ["@semantic-release/git", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:10.0.1"],\
+            ["@semantic-release/github", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:8.0.7"],\
+            ["@semantic-release/release-notes-generator", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:10.0.3"],\
+            ["@targetd/api", "workspace:packages/api"],\
+            ["@types/jest", "npm:29.2.4"],\
+            ["@types/node", "npm:18.11.18"],\
+            ["jest", "virtual:78776105526f67704c5d821aa139591fbba11fdbd5f03f51d916c5f752b52ce5b35f9731aa4a7b9fc9fe491d6229cf4b9abfbb54db395f33bbe11c0e0b749fa6#npm:29.3.1"],\
+            ["rimraf", "npm:3.0.2"],\
             ["semantic-release", "npm:19.0.5"],\
             ["semantic-release-monorepo", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:7.0.5"],\
             ["ts-jest", "virtual:78776105526f67704c5d821aa139591fbba11fdbd5f03f51d916c5f752b52ce5b35f9731aa4a7b9fc9fe491d6229cf4b9abfbb54db395f33bbe11c0e0b749fa6#npm:29.0.3"],\
