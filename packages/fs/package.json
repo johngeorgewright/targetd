@@ -35,7 +35,7 @@
     "@johngw/fs": "2.0.1",
     "ts-toolbelt": "9.6.0",
     "tslib": "2.4.1",
-    "yaml": "2.2.0"
+    "yaml": "2.2.1"
   },
   "peerDependencies": {
     "@targetd/api": ">=2.0.0"
