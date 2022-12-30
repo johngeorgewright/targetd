@@ -52,12 +52,10 @@ const clientData = new ClientData(data).add(
 
 expect(await clientData.getPayloadForEachName({ device: 'mobile' })).toEqual({
   bar: 123,
-  foo: '‍📱'
+  foo: '‍📱',
 })
 
-expect(
-  await clientData.getPayloadForEachName({ device: 'desktop })
-).toEqual({
+expect(await clientData.getPayloadForEachName({ device: 'desktop' })).toEqual({
   bar: 123,
   foo: '🖥',
 })
