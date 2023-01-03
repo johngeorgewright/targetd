@@ -1,6 +1,6 @@
 {
   "name": "@targetd/fs",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Load rules from JSON and YAML files",
   "main": "dist/index.js",
   "scripts": {
