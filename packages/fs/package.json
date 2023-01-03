@@ -22,7 +22,7 @@
     "@semantic-release/github": "8.0.7",
     "@semantic-release/release-notes-generator": "10.0.3",
     "@targetd/api": "workspace:*",
-    "@types/jest": "29.2.4",
+    "@types/jest": "29.2.5",
     "@types/node": "18.11.18",
     "jest": "29.3.1",
     "rimraf": "3.0.2",
@@ -35,7 +35,7 @@
     "@johngw/fs": "2.0.1",
     "ts-toolbelt": "9.6.0",
     "tslib": "2.4.1",
-    "yaml": "2.2.0"
+    "yaml": "2.2.1"
   },
   "peerDependencies": {
     "@targetd/api": ">=2.0.0"
