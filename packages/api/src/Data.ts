@@ -36,11 +36,31 @@ export default class Data<
     targetingValidators: TargetingValidators,
     queryValidators: QueryValidators
   ) {
-    this.#data = data
-    this.#dataValidators = dataValidators
-    this.#targetingPredicates = targetingPredicates
-    this.#targetingValidators = targetingValidators
-    this.#queryValidators = queryValidators
+    this.#data = Object.freeze(data)
+    this.#dataValidators = Object.freeze(dataValidators)
+    this.#targetingPredicates = Object.freeze(targetingPredicates)
+    this.#targetingValidators = Object.freeze(targetingValidators)
+    this.#queryValidators = Object.freeze(queryValidators)
+  }
+
+  get data() {
+    return this.#data
+  }
+
+  get dataValidators() {
+    return this.#dataValidators
+  }
+
+  get targetingPredicates() {
+    return this.#targetingPredicate
+  }
+
+  get targetingValidators() {
+    return this.#targetingValidators
+  }
+
+  get queryValidators() {
+    return this.#queryValidators
   }
 
   useDataValidator<Name extends string, Validator extends z.ZodTypeAny>(
