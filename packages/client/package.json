@@ -1,6 +1,6 @@
 {
   "name": "@targetd/client",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Using results from @targetd/server",
   "main": "dist/index.js",
   "scripts": {
