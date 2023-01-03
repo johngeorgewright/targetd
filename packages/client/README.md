@@ -7,18 +7,18 @@ Sometimes you can't rely on one data service to fulfil all the target filtering.
 ## Example
 
 ```typescript
-import { Data, runtypes as rt } from '@targetd/api'
+import { Data, zod as z } from '@targetd/api'
 import { ClientData } from '@targetd/client'
 
-const Device = rt.Literal('desktop').Or(rt.Literal('mobile'))
+const Device = z.literal('desktop').or(z.literal('mobile'))
 
 const data = Data.create()
-  .useDataValidator('bar', rt.Number)
-  .useDataValidator('foo', rt.String)
+  .useDataValidator('bar', z.number())
+  .useDataValidator('foo', z.string())
   .useTargeting('device', {
     predicate: (q) => (t) => typeof q === 'string' && t.includes(q),
     queryValidator: Device,
-    targetingValidator: rt.Array(Device),
+    targetingValidator: z.array(Device),
   })
 
 const serverData = data

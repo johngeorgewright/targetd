@@ -1,12 +1,12 @@
 import { load } from '..'
 import * as path from 'path'
-import { Data, runtypes as rt } from '@targetd/api'
+import { Data, zod as z } from '@targetd/api'
 
 test('load', async () => {
   const data = await load(
     Data.create()
-      .useDataValidator('foo', rt.String)
-      .useDataValidator('b', rt.String),
+      .useDataValidator('foo', z.string())
+      .useDataValidator('b', z.string()),
     path.join(__dirname, 'fixtures')
   )
   expect(await data.getPayload('foo', {})).toBe('bar')

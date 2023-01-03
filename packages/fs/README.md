@@ -22,14 +22,14 @@ b:
 ```
 
 ```typescript
-import { Data } from '@targetd/api'
+import { Data, zod as z } from '@targetd/api'
 import { load } from '@targetd/fs'
 import * as path from 'node:path'
 
 const data = await load(
   Data.create()
-    .useDataValidator('foo', rt.String)
-    .useDataValidator('b', rt.String),
+    .useDataValidator('foo', z.string())
+    .useDataValidator('b', z.string()),
   path.join(__dirname, 'data')
 )
 

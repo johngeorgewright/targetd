@@ -1,13 +1,13 @@
-import { Data, runtypes as rt } from '@targetd/api'
+import { Data, zod as z } from '@targetd/api'
 import { StaticRecord } from '@targetd/api/dist/types'
 import { Keys } from 'ts-toolbelt/out/Any/Keys'
 import { ServedData } from './ServedData'
 import { RuleWithPayload } from '@targetd/api/dist/validators/DataItemRule'
 
 export class ClientData<
-  DataValidators extends Record<string, rt.Runtype>,
-  TargetingValidators extends Record<string, rt.Runtype>,
-  QueryValidators extends Record<string, rt.Runtype>
+  DataValidators extends z.ZodRawShape,
+  TargetingValidators extends z.ZodRawShape,
+  QueryValidators extends z.ZodRawShape
 > {
   readonly #data: Data<DataValidators, TargetingValidators, QueryValidators>
   readonly #query: Partial<StaticRecord<TargetingValidators>>
@@ -47,6 +47,6 @@ export class ClientData<
 
 function isTargetable(
   x: any
-): x is { __rules__: rt.Static<RuleWithPayload<any, any>>[] } {
+): x is { __rules__: z.infer<RuleWithPayload<any, any>>[] } {
   return typeof x === 'object' && x !== null && '__rules__' in x
 }

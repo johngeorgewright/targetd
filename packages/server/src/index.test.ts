@@ -1,4 +1,4 @@
-import { Data, runtypes as rt } from '@targetd/api'
+import { Data, zod as z } from '@targetd/api'
 import express from 'express'
 import { promisify } from 'node:util'
 import { setTimeout } from 'node:timers'
@@ -11,22 +11,22 @@ let app: express.Application
 beforeEach(() => {
   app = createServer(
     Data.create()
-      .useDataValidator('foo', rt.String)
-      .useDataValidator('bar', rt.Number)
+      .useDataValidator('foo', z.string())
+      .useDataValidator('bar', z.number())
       .useTargeting('weather', {
         predicate: (q) => (t) => typeof q === 'string' && t.includes(q),
-        queryValidator: rt.String,
-        targetingValidator: rt.Array(rt.String),
+        queryValidator: z.string(),
+        targetingValidator: z.array(z.string()),
       })
       .useTargeting('highTide', {
         predicate: (q) => (t) => q === t,
-        queryValidator: rt.Boolean,
-        targetingValidator: rt.Boolean,
+        queryValidator: z.boolean(),
+        targetingValidator: z.boolean(),
       })
       .useTargeting('asyncThing', {
         predicate: (q) => timeout(10, (t) => q === t && timeout(10, true)),
-        queryValidator: rt.Boolean,
-        targetingValidator: rt.Boolean,
+        queryValidator: z.boolean(),
+        targetingValidator: z.boolean(),
       })
       .addRules('foo', [
         {

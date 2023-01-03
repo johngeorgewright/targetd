@@ -1,15 +1,15 @@
 import { readFiles } from '@johngw/fs'
 import { WithFileNamesResult } from '@johngw/fs/dist/readFiles'
 import YAML from 'yaml'
-import { Data, runtypes as rt } from '@targetd/api'
+import { Data, zod as z } from '@targetd/api'
 
-const FileData = rt.Dictionary(rt.Array(rt.Unknown), rt.String)
-type FileData = rt.Static<typeof FileData>
+const FileData = z.record(z.string(), z.array(z.unknown()))
+type FileData = z.infer<typeof FileData>
 
 export async function load<
-  DataValidators extends Record<string, rt.Runtype>,
-  TargetingValidators extends Record<string, rt.Runtype>,
-  QueryValidators extends Record<string, rt.Runtype>
+  DataValidators extends z.ZodRawShape,
+  TargetingValidators extends z.ZodRawShape,
+  QueryValidators extends z.ZodRawShape
 >(
   data: Data<DataValidators, TargetingValidators, QueryValidators>,
   dir: string
@@ -32,7 +32,7 @@ function parseFileContents({
   fileName,
   contents,
 }: WithFileNamesResult<string>) {
-  return FileData.check(
+  return FileData.parse(
     fileName.endsWith('.json') ? JSON.parse(contents) : YAML.parse(contents)
   )
 }

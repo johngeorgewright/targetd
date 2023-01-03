@@ -5,12 +5,12 @@
 ## Exammple
 
 ```typescript
-import { Data } from '@targetd/api'
+import { Data, zod as z } from '@targetd/api',
 import { createServer } from '@targetd/server'
 
 const data = Data.create()
-  .useDataValidator('foo', rt.String)
-  .useDataValidator('b', rt.String)
+  .useDataValidator('foo', z.string())
+  .useDataValidator('b', z.string())
 
 createServer(data).listen(8080)
 ```
