@@ -1,6 +1,6 @@
 {
   "name": "@targetd/date-range",
-  "version": "1.0.4",
+  "version": "2.0.0",
   "description": "Adds date range targeting",
   "main": "dist/index.js",
   "scripts": {
