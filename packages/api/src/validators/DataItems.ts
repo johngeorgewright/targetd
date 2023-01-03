@@ -1,25 +1,23 @@
-import * as rt from 'runtypes'
+import z from 'zod'
+import { ZodPartialObject } from '../types'
 import DataItem from './DataItem'
 
-function DataItems<
-  D extends Record<string, rt.Runtype>,
-  T extends Record<string, rt.Runtype>
->(dataValidators: D, targeting: T) {
+function DataItems<D extends z.ZodRawShape, T extends z.ZodRawShape>(
+  dataValidators: D,
+  targeting: T
+): DataItems<D, T> {
   const dataItems: Record<string, any> = {}
   for (const [key, Payload] of Object.entries(dataValidators)) {
     dataItems[key] = DataItem(Payload, targeting)
   }
-  return rt.Partial(dataItems) as DataItems<D, T>
+  return z.object(dataItems).partial() as DataItems<D, T>
 }
 
 type DataItems<
-  DataTypes extends Record<string, rt.Runtype>,
-  Targeting extends Record<string, rt.Runtype>
-> = rt.Partial<
-  {
-    [Name in keyof DataTypes]: DataItem<DataTypes[Name], Targeting>
-  },
-  false
->
+  DataTypes extends z.ZodRawShape,
+  Targeting extends z.ZodRawShape
+> = ZodPartialObject<{
+  [Name in keyof DataTypes]: DataItem<DataTypes[Name], Targeting>
+}>
 
 export default DataItems

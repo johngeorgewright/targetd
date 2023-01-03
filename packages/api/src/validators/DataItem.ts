@@ -1,23 +1,20 @@
-import * as rt from 'runtypes'
+import z from 'zod'
 import DataItemRule from './DataItemRule'
 
-function DataItem<P extends rt.Runtype, T extends Record<string, rt.Runtype>>(
+function DataItem<P extends z.ZodTypeAny, T extends z.ZodRawShape>(
   Payload: P,
   targeting: T
-) {
-  return rt.Record({
-    rules: rt.Array(DataItemRule(Payload, targeting)),
+): DataItem<P, T> {
+  return z.object({
+    rules: z.array(DataItemRule(Payload, targeting)),
   })
 }
 
 type DataItem<
-  Payload extends rt.Runtype,
-  Targeting extends Record<string, rt.Runtype>
-> = rt.Record<
-  {
-    rules: rt.Array<DataItemRule<Payload, Targeting>, false>
-  },
-  false
->
+  Payload extends z.ZodTypeAny,
+  Targeting extends z.ZodRawShape
+> = z.ZodObject<{
+  rules: z.ZodArray<DataItemRule<Payload, Targeting>>
+}>
 
 export default DataItem
