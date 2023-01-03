@@ -65,6 +65,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@semantic-release/git", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:10.0.1"],\
             ["@semantic-release/github", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:8.0.7"],\
             ["@semantic-release/release-notes-generator", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:10.0.3"],\
+            ["@types/node", "npm:18.11.18"],\
             ["commitizen", "npm:4.2.6"],\
             ["cz-conventional-changelog", "npm:3.3.0"],\
             ["husky", "npm:8.0.2"],\
@@ -2880,6 +2881,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@semantic-release/git", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:10.0.1"],\
             ["@semantic-release/github", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:8.0.7"],\
             ["@semantic-release/release-notes-generator", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:10.0.3"],\
+            ["@types/node", "npm:18.11.18"],\
             ["commitizen", "npm:4.2.6"],\
             ["cz-conventional-changelog", "npm:3.3.0"],\
             ["husky", "npm:8.0.2"],\
@@ -14395,7 +14397,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@tsconfig/node12", "npm:1.0.11"],\
             ["@tsconfig/node14", "npm:1.0.3"],\
             ["@tsconfig/node16", "npm:1.0.3"],\
-            ["@types/node", null],\
+            ["@types/node", "npm:18.11.18"],\
             ["@types/swc__core", null],\
             ["@types/swc__wasm", null],\
             ["@types/typescript", null],\
