@@ -35,6 +35,6 @@
     "tslib": "2.4.1"
   },
   "peerDependencies": {
-    "@targetd/api": ">=2.0.0"
+    "@targetd/api": ">=3.0.0"
   }
 }

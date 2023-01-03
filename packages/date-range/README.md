@@ -5,12 +5,12 @@
 ## Example
 
 ```typescript
-import { Data } from '@targetd/api'
+import { Data, zod as z } from '@targetd/api'
 import dateRangeTargeting from '@targetd/date-range'
 
 const data = Data.create()
   .useTargeting('dateRange', dateRangeTargeting)
-  .useDataValidator('foo', rt.String)
+  .useDataValidator('foo', z.string())
   .addRules('foo', [
     {
       targeting: {
