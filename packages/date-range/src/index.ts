@@ -1,18 +1,28 @@
-import { createTargetingDescriptor, runtypes as rt } from '@targetd/api'
+import { createTargetingDescriptor, zod as z } from '@targetd/api'
 
-const DateRange = rt.Record({
-  end: rt.String.optional(),
-  start: rt.String.optional(),
-})
+const ISODateTime = z
+  .string()
+  .regex(
+    /^(-?(?:[1-9][0-9]*)?[0-9]{4})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])(T(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])(\.[0-9]+)?(Z|[+-](?:2[0-3]|[01][0-9]):[0-5][0-9])?)?$/,
+    'Must represent an ISO date'
+  )
 
-type DateRange = rt.Static<typeof DateRange>
+const DateRange = z
+  .object({
+    end: ISODateTime,
+    start: ISODateTime,
+  })
+  .partial()
+  .strict()
+
+type DateRange = z.infer<typeof DateRange>
 
 const dateRangeTargeting = createTargetingDescriptor({
   predicate: (q) => (t) =>
     Array.isArray(t) ? dateRangesPredicate(t, q) : dateRangePredicate(t, q),
   queryValidator: DateRange,
   requiresQuery: false,
-  targetingValidator: DateRange.Or(rt.Array(DateRange)),
+  targetingValidator: DateRange.or(z.array(DateRange)),
 })
 
 export default dateRangeTargeting

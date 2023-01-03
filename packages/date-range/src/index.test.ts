@@ -1,11 +1,11 @@
-import { Data, runtypes as rt } from '@targetd/api'
+import { Data, zod as z } from '@targetd/api'
 import * as jestDate from 'jest-date-mock'
 import dateRangeTargeting from '.'
 
 test('date range predicate', async () => {
   const data = Data.create()
     .useTargeting('dateRange', dateRangeTargeting)
-    .useDataValidator('foo', rt.String)
+    .useDataValidator('foo', z.string())
     .addRules('foo', [
       {
         targeting: {

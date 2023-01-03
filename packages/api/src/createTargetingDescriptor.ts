@@ -1,9 +1,9 @@
-import * as rt from 'runtypes'
+import z from 'zod'
 import TargetingDescriptor from './validators/TargetingDescriptor'
 
 export default function createTargetingDescriptor<
-  QV extends rt.Runtype,
-  TV extends rt.Runtype
+  QV extends z.ZodTypeAny,
+  TV extends z.ZodTypeAny
 >({
   predicate,
   queryValidator,

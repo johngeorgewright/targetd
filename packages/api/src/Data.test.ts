@@ -1,26 +1,26 @@
+import z from 'zod'
 import Data from './Data'
-import * as rt from 'runtypes'
 
 const timeout = <T>(ms: number, returnValue: T) =>
   new Promise<T>((resolve) => setTimeout(() => resolve(returnValue), ms))
 
 test('getPayload', async () => {
   const data = Data.create()
-    .useDataValidator('foo', rt.String)
+    .useDataValidator('foo', z.string())
     .useTargeting('weather', {
       predicate: (q) => (t) => typeof q === 'string' && t.includes(q),
-      queryValidator: rt.String,
-      targetingValidator: rt.Array(rt.String),
+      queryValidator: z.string(),
+      targetingValidator: z.array(z.string()),
     })
     .useTargeting('highTide', {
       predicate: (q) => (t) => q === t,
-      queryValidator: rt.Boolean,
-      targetingValidator: rt.Boolean,
+      queryValidator: z.boolean(),
+      targetingValidator: z.boolean(),
     })
     .useTargeting('asyncThing', {
       predicate: (q) => timeout(10, (t) => q === t && timeout(10, true)),
-      queryValidator: rt.Boolean,
-      targetingValidator: rt.Boolean,
+      queryValidator: z.boolean(),
+      targetingValidator: z.boolean(),
     })
     .addRules('foo', [
       {
@@ -84,12 +84,12 @@ test('getPayload', async () => {
 
 test('targeting without requiring a query', async () => {
   const data = Data.create()
-    .useDataValidator('foo', rt.String)
+    .useDataValidator('foo', z.string())
     .useTargeting('time', {
       predicate: () => (t) => t === 'now!',
-      queryValidator: rt.Undefined,
+      queryValidator: z.undefined(),
       requiresQuery: false,
-      targetingValidator: rt.Literal('now!'),
+      targetingValidator: z.literal('now!'),
     })
     .addRules('foo', [
       {
@@ -108,16 +108,16 @@ test('targeting without requiring a query', async () => {
 
 test('getPayloads', async () => {
   const data = Data.create()
-    .useDataValidator('foo', rt.String)
+    .useDataValidator('foo', z.string())
     .useTargeting('weather', {
       predicate: (q) => (t) => typeof q === 'string' && t.includes(q),
-      queryValidator: rt.String,
-      targetingValidator: rt.Array(rt.String),
+      queryValidator: z.string(),
+      targetingValidator: z.array(z.string()),
     })
     .useTargeting('highTide', {
       predicate: (q) => (t) => q === t,
-      queryValidator: rt.Boolean,
-      targetingValidator: rt.Boolean,
+      queryValidator: z.boolean(),
+      targetingValidator: z.boolean(),
     })
     .addRules('foo', [
       {
@@ -158,7 +158,7 @@ test('payload runtype validation', () => {
     Data.create()
       .useDataValidator(
         'foo',
-        rt.String.withConstraint((x) => x === 'bar' || 'Should be bar')
+        z.string().refine((x) => x === 'bar', 'Should be bar')
       )
       .addRules('foo', [
         {
@@ -166,14 +166,19 @@ test('payload runtype validation', () => {
         },
       ])
   } catch (error: any) {
-    expect(error.details).toMatchInlineSnapshot(`
-      {
-        "foo": {
-          "rules": [
-            "Expected { targeting?: {}; payload: string; } | { targeting?: {}; client: { targeting?: {}; payload: string; }[]; }, but was object",
-          ],
-        },
-      }
+    expect(error).toMatchInlineSnapshot(`
+      [ZodError: [
+        {
+          "code": "custom",
+          "message": "Should be bar",
+          "path": [
+            "foo",
+            "rules",
+            0,
+            "payload"
+          ]
+        }
+      ]]
     `)
     return
   }
@@ -183,22 +188,22 @@ test('payload runtype validation', () => {
 
 test('getPayloadForEachName', async () => {
   const data = Data.create()
-    .useDataValidator('foo', rt.String)
-    .useDataValidator('bar', rt.String)
+    .useDataValidator('foo', z.string())
+    .useDataValidator('bar', z.string())
     .useTargeting('weather', {
       predicate: (q) => (t) => typeof q === 'string' && t.includes(q),
-      queryValidator: rt.String,
-      targetingValidator: rt.Array(rt.String),
+      queryValidator: z.string(),
+      targetingValidator: z.array(z.string()),
     })
     .useTargeting('highTide', {
       predicate: (q) => (t) => q === t,
-      queryValidator: rt.Boolean,
-      targetingValidator: rt.Boolean,
+      queryValidator: z.boolean(),
+      targetingValidator: z.boolean(),
     })
     .useTargeting('asyncThing', {
       predicate: (q) => timeout(10, (t) => q === t && timeout(10, true)),
-      queryValidator: rt.Boolean,
-      targetingValidator: rt.Boolean,
+      queryValidator: z.boolean(),
+      targetingValidator: z.boolean(),
     })
     .addRules('foo', [
       {

@@ -1,18 +1,18 @@
-import { Data, runtypes as rt } from '@targetd/api'
+import { Data, zod as z } from '@targetd/api'
 import { ClientData } from '.'
 
 const data = Data.create()
-  .useDataValidator('bar', rt.Number)
-  .useDataValidator('foo', rt.String)
+  .useDataValidator('bar', z.number())
+  .useDataValidator('foo', z.string())
   .useTargeting('weather', {
     predicate: (q) => (t) => typeof q === 'string' && t.includes(q),
-    queryValidator: rt.String,
-    targetingValidator: rt.Array(rt.String),
+    queryValidator: z.string(),
+    targetingValidator: z.array(z.string()),
   })
   .useTargeting('highTide', {
     predicate: (q) => (t) => q === t,
-    queryValidator: rt.Boolean,
-    targetingValidator: rt.Boolean,
+    queryValidator: z.boolean(),
+    targetingValidator: z.boolean(),
   })
 
 const serverData = data
