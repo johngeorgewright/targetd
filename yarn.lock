@@ -2128,16 +2128,24 @@ __metadata:
     "@semantic-release/github": 8.0.7
     "@semantic-release/release-notes-generator": 10.0.3
     "@targetd/api": "workspace:*"
+    "@types/fs-extra": 9.0.13
     "@types/jest": 29.2.5
+    "@types/lodash": ^4
     "@types/node": 18.11.18
+    "@types/watch": ^1
+    fs-extra: 11.1.0
     jest: 29.3.1
+    lodash: 4.17.21
     rimraf: 3.0.2
     semantic-release: 19.0.5
     semantic-release-monorepo: 7.0.5
+    throat: 6.0.2
     ts-jest: 29.0.3
+    ts-node: 10.9.1
     ts-toolbelt: 9.6.0
     tslib: 2.4.1
     typescript: 4.9.4
+    watch: 1.0.2
     yaml: 2.2.1
   peerDependencies:
     "@targetd/api": ">=3.0.0"
@@ -2428,6 +2436,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/fs-extra@npm:9.0.13":
+  version: 9.0.13
+  resolution: "@types/fs-extra@npm:9.0.13"
+  dependencies:
+    "@types/node": "*"
+  checksum: add79e212acd5ac76b97b9045834e03a7996aef60a814185e0459088fd290519a3c1620865d588fa36c4498bf614210d2a703af5cf80aa1dbc125db78f6edac3
+  languageName: node
+  linkType: hard
+
 "@types/glob@npm:*":
   version: 7.2.0
   resolution: "@types/glob@npm:7.2.0"
@@ -2540,6 +2557,13 @@ __metadata:
   dependencies:
     "@types/node": "*"
   checksum: e009a2bfb50e90ca9b7c6e8f648f8464067271fd99116f881073fa6fa76dc8d0133181dd65e6614d5fb1220d671d67b0124aef7d97dc02d7e342ab143a47779d
+  languageName: node
+  linkType: hard
+
+"@types/lodash@npm:^4":
+  version: 4.14.191
+  resolution: "@types/lodash@npm:4.14.191"
+  checksum: ba0d5434e10690869f32d5ea49095250157cae502f10d57de0a723fd72229ce6c6a4979576f0f13e0aa9fbe3ce2457bfb9fa7d4ec3d6daba56730a51906d1491
   languageName: node
   linkType: hard
 
@@ -2750,6 +2774,15 @@ __metadata:
     "@types/expect": ^1.20.4
     "@types/node": "*"
   checksum: 5012fb61e3a29e7deaac7e66b6d8cb73d87d15965c8a38cb69277c2beb851a9a8ec09d4a1b07a3151e143afc2e3a102ca368b9a0e08f2f29de9183c97f9c7d85
+  languageName: node
+  linkType: hard
+
+"@types/watch@npm:^1":
+  version: 1.0.3
+  resolution: "@types/watch@npm:1.0.3"
+  dependencies:
+    "@types/node": "*"
+  checksum: 8655d45bb17089def1f777f82359eb10772652376b817a2c98b2e3b432868289f02817e8fe7d42ec5218719a1d5461b1465f33cda282e96e07b0ee6bf270d26f
   languageName: node
   linkType: hard
 
@@ -5239,6 +5272,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"exec-sh@npm:^0.2.0":
+  version: 0.2.2
+  resolution: "exec-sh@npm:0.2.2"
+  dependencies:
+    merge: ^1.2.0
+  checksum: 3ec5f99c8f7c4bebfeed1a797818f8754de00415d60a99f327e7f970834ca85252c449bf4b2efbff4c11e76eccc6b976a1956a5394a612d8e3d412185f59b0c0
+  languageName: node
+  linkType: hard
+
 "execa@npm:^0.8.0":
   version: 0.8.0
   resolution: "execa@npm:0.8.0"
@@ -5738,6 +5780,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"fs-extra@npm:11.1.0, fs-extra@npm:^11.0.0":
+  version: 11.1.0
+  resolution: "fs-extra@npm:11.1.0"
+  dependencies:
+    graceful-fs: ^4.2.0
+    jsonfile: ^6.0.1
+    universalify: ^2.0.0
+  checksum: 5ca476103fa1f5ff4a9b3c4f331548f8a3c1881edaae323a4415d3153b5dc11dc6a981c8d1dd93eec8367ceee27b53f8bd27eecbbf66ffcdd04927510c171e7f
+  languageName: node
+  linkType: hard
+
 "fs-extra@npm:8.1.0":
   version: 8.1.0
   resolution: "fs-extra@npm:8.1.0"
@@ -5769,17 +5822,6 @@ __metadata:
     jsonfile: ^6.0.1
     universalify: ^2.0.0
   checksum: 5285a3d8f34b917cf2b66af8c231a40c1623626e9d701a20051d3337be16c6d7cac94441c8b3732d47a92a2a027886ca93c69b6a4ae6aee3c89650d2a8880c0a
-  languageName: node
-  linkType: hard
-
-"fs-extra@npm:^11.0.0":
-  version: 11.1.0
-  resolution: "fs-extra@npm:11.1.0"
-  dependencies:
-    graceful-fs: ^4.2.0
-    jsonfile: ^6.0.1
-    universalify: ^2.0.0
-  checksum: 5ca476103fa1f5ff4a9b3c4f331548f8a3c1881edaae323a4415d3153b5dc11dc6a981c8d1dd93eec8367ceee27b53f8bd27eecbbf66ffcdd04927510c171e7f
   languageName: node
   linkType: hard
 
@@ -8736,6 +8778,13 @@ __metadata:
   version: 1.4.1
   resolution: "merge2@npm:1.4.1"
   checksum: 7268db63ed5169466540b6fb947aec313200bcf6d40c5ab722c22e242f651994619bcd85601602972d3c85bd2cc45a358a4c61937e9f11a061919a1da569b0c2
+  languageName: node
+  linkType: hard
+
+"merge@npm:^1.2.0":
+  version: 1.2.1
+  resolution: "merge@npm:1.2.1"
+  checksum: 2298c4fdcf64561f320b92338681f7ffcafafb579a6e294066ae3e7bd10ae25df363903d2f028072733b9f79a1f75d2b999aef98ad5d73de13641da39cda0913
   languageName: node
   linkType: hard
 
@@ -12201,6 +12250,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"throat@npm:6.0.2":
+  version: 6.0.2
+  resolution: "throat@npm:6.0.2"
+  checksum: 463093768d4884772020bb18b0f33d3fec8a2b4173f7da3958dfbe88ff0f1e686ffadf0f87333bf6f6db7306b1450efc7855df69c78bf0bfa61f6d84a3361fe8
+  languageName: node
+  linkType: hard
+
 "through2@npm:^4.0.0":
   version: 4.0.2
   resolution: "through2@npm:4.0.2"
@@ -12963,6 +13019,18 @@ __metadata:
   dependencies:
     makeerror: 1.0.12
   checksum: ad7a257ea1e662e57ef2e018f97b3c02a7240ad5093c392186ce0bcf1f1a60bbadd520d073b9beb921ed99f64f065efb63dfc8eec689a80e569f93c1c5d5e16c
+  languageName: node
+  linkType: hard
+
+"watch@npm:1.0.2":
+  version: 1.0.2
+  resolution: "watch@npm:1.0.2"
+  dependencies:
+    exec-sh: ^0.2.0
+    minimist: ^1.2.0
+  bin:
+    watch: ./cli.js
+  checksum: 7ffe99f8bdbd3311d84bdd80d90e74536da90d6b64b339a73dce57884c50527881b83e507e49ab85212682350791999c296fbf2a136b579530046fb97ffb9526
   languageName: node
   linkType: hard
 

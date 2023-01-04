@@ -2855,16 +2855,24 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@semantic-release/github", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:8.0.7"],\
             ["@semantic-release/release-notes-generator", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:10.0.3"],\
             ["@targetd/api", "workspace:packages/api"],\
+            ["@types/fs-extra", "npm:9.0.13"],\
             ["@types/jest", "npm:29.2.5"],\
+            ["@types/lodash", "npm:4.14.191"],\
             ["@types/node", "npm:18.11.18"],\
+            ["@types/watch", "npm:1.0.3"],\
+            ["fs-extra", "npm:11.1.0"],\
             ["jest", "virtual:78776105526f67704c5d821aa139591fbba11fdbd5f03f51d916c5f752b52ce5b35f9731aa4a7b9fc9fe491d6229cf4b9abfbb54db395f33bbe11c0e0b749fa6#npm:29.3.1"],\
+            ["lodash", "npm:4.17.21"],\
             ["rimraf", "npm:3.0.2"],\
             ["semantic-release", "npm:19.0.5"],\
             ["semantic-release-monorepo", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:7.0.5"],\
+            ["throat", "npm:6.0.2"],\
             ["ts-jest", "virtual:78776105526f67704c5d821aa139591fbba11fdbd5f03f51d916c5f752b52ce5b35f9731aa4a7b9fc9fe491d6229cf4b9abfbb54db395f33bbe11c0e0b749fa6#npm:29.0.3"],\
+            ["ts-node", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:10.9.1"],\
             ["ts-toolbelt", "npm:9.6.0"],\
             ["tslib", "npm:2.4.1"],\
             ["typescript", "patch:typescript@npm%3A4.9.4#~builtin<compat/typescript>::version=4.9.4&hash=ad5954"],\
+            ["watch", "npm:1.0.2"],\
             ["yaml", "npm:2.2.1"]\
           ],\
           "linkType": "SOFT"\
@@ -3186,6 +3194,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["@types/fs-extra", [\
+        ["npm:9.0.13", {\
+          "packageLocation": "./.yarn/cache/@types-fs-extra-npm-9.0.13-12fb7badd7-add79e212a.zip/node_modules/@types/fs-extra/",\
+          "packageDependencies": [\
+            ["@types/fs-extra", "npm:9.0.13"],\
+            ["@types/node", "npm:16.11.6"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["@types/glob", [\
         ["npm:7.2.0", {\
           "packageLocation": "./.yarn/cache/@types-glob-npm-7.2.0-772334bf9a-6ae717fedf.zip/node_modules/@types/glob/",\
@@ -3307,6 +3325,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@types/keyv", "npm:3.1.4"],\
             ["@types/node", "npm:16.11.6"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@types/lodash", [\
+        ["npm:4.14.191", {\
+          "packageLocation": "./.yarn/cache/@types-lodash-npm-4.14.191-67a04a969b-ba0d5434e1.zip/node_modules/@types/lodash/",\
+          "packageDependencies": [\
+            ["@types/lodash", "npm:4.14.191"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -3551,6 +3578,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@types/vinyl", "npm:2.0.6"],\
             ["@types/expect", "npm:1.20.4"],\
+            ["@types/node", "npm:16.11.6"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@types/watch", [\
+        ["npm:1.0.3", {\
+          "packageLocation": "./.yarn/cache/@types-watch-npm-1.0.3-295bbe11c5-8655d45bb1.zip/node_modules/@types/watch/",\
+          "packageDependencies": [\
+            ["@types/watch", "npm:1.0.3"],\
             ["@types/node", "npm:16.11.6"]\
           ],\
           "linkType": "HARD"\
@@ -6424,6 +6461,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/eventemitter3-npm-4.0.7-7afcdd74ae-1875311c42.zip/node_modules/eventemitter3/",\
           "packageDependencies": [\
             ["eventemitter3", "npm:4.0.7"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["exec-sh", [\
+        ["npm:0.2.2", {\
+          "packageLocation": "./.yarn/cache/exec-sh-npm-0.2.2-b2b857ac69-3ec5f99c8f.zip/node_modules/exec-sh/",\
+          "packageDependencies": [\
+            ["exec-sh", "npm:0.2.2"],\
+            ["merge", "npm:1.2.1"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -10325,6 +10372,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["merge", [\
+        ["npm:1.2.1", {\
+          "packageLocation": "./.yarn/cache/merge-npm-1.2.1-852b934216-2298c4fdcf.zip/node_modules/merge/",\
+          "packageDependencies": [\
+            ["merge", "npm:1.2.1"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
         ["npm:2.1.1", {\
           "packageLocation": "./.yarn/cache/merge-npm-2.1.1-90e7307c49-9c36b0e25a.zip/node_modules/merge/",\
           "packageDependencies": [\
@@ -14105,6 +14159,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["throat", [\
+        ["npm:6.0.2", {\
+          "packageLocation": "./.yarn/cache/throat-npm-6.0.2-1d5c2e1315-463093768d.zip/node_modules/throat/",\
+          "packageDependencies": [\
+            ["throat", "npm:6.0.2"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["through", [\
         ["npm:2.3.8", {\
           "packageLocation": "./.yarn/cache/through-npm-2.3.8-df5f72a16e-a38c3e0598.zip/node_modules/through/",\
@@ -15017,6 +15080,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["walker", "npm:1.0.8"],\
             ["makeerror", "npm:1.0.12"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["watch", [\
+        ["npm:1.0.2", {\
+          "packageLocation": "./.yarn/cache/watch-npm-1.0.2-5ae9e6a0db-7ffe99f8bd.zip/node_modules/watch/",\
+          "packageDependencies": [\
+            ["watch", "npm:1.0.2"],\
+            ["exec-sh", "npm:0.2.2"],\
+            ["minimist", "npm:1.2.5"]\
           ],\
           "linkType": "HARD"\
         }]\

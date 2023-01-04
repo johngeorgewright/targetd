@@ -105,6 +105,16 @@ export default class Data<
     )
   }
 
+  removeAllRules() {
+    return new Data(
+      DataItems(this.#dataValidators, this.#targetingValidators).parse({}),
+      this.#dataValidators,
+      this.#targetingPredicates,
+      this.#targetingValidators,
+      this.#queryValidators
+    )
+  }
+
   useTargeting<
     Name extends string,
     TV extends z.ZodTypeAny,

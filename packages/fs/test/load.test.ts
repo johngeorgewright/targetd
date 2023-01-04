@@ -1,4 +1,4 @@
-import { load } from '..'
+import { load } from '../src'
 import * as path from 'path'
 import { Data, zod as z } from '@targetd/api'
 
