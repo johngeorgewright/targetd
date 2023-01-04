@@ -23,16 +23,19 @@ b:
 
 ```typescript
 import { Data, zod as z } from '@targetd/api'
-import { load } from '@targetd/fs'
+import { watch } from '@targetd/fs'
 import * as path from 'node:path'
 
-const data = await load(
+watch(
   Data.create()
     .useDataValidator('foo', z.string())
     .useDataValidator('b', z.string()),
-  path.join(__dirname, 'data')
-)
 
-expect(await data.getPayload('foo', {})).toBe('bar')
-expect(await data.getPayload('b', {})).toBe('b is a letter')
+  path.join(__dirname, 'data'),
+
+  async (data) => {
+    expect(await data.getPayload('foo', {})).toBe('bar')
+    expect(await data.getPayload('b', {})).toBe('b is a letter')
+  }
+)
 ```
