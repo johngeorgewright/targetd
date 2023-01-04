@@ -1,5 +1,5 @@
 import z from 'zod'
-import Data from './Data'
+import Data from '../src/Data'
 
 const timeout = <T>(ms: number, returnValue: T) =>
   new Promise<T>((resolve) => setTimeout(() => resolve(returnValue), ms))

@@ -1,4 +1,4 @@
-import { arrayInit, arrayLast, objectEveryAsync, objectMap } from './util'
+import { arrayInit, arrayLast, objectEveryAsync, objectMap } from '../src/util'
 
 test('objectMap', () => {
   expect(

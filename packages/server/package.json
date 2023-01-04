@@ -4,7 +4,7 @@
   "description": "HTTP server for targetd data",
   "main": "dist/index.js",
   "scripts": {
-    "build": "yarn clean && yarn tsc && yarn rimraf 'dist/**/?(__tests__|__mocks__|__setup__|*.test.*)'",
+    "build": "yarn clean && yarn tsc",
     "clean": "yarn rimraf dist",
     "start": "yarn tsc --watch --preserveWatchOutput",
     "release": "yarn semantic-release -e semantic-release-monorepo",

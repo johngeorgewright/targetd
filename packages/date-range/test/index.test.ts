@@ -1,6 +1,6 @@
 import { Data, zod as z } from '@targetd/api'
 import * as jestDate from 'jest-date-mock'
-import dateRangeTargeting from '.'
+import dateRangeTargeting from '../src'
 
 test('date range predicate', async () => {
   const data = Data.create()

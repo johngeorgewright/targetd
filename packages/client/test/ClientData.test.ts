@@ -1,5 +1,5 @@
 import { Data, zod as z } from '@targetd/api'
-import { ClientData } from '.'
+import { ClientData } from '../src'
 
 const data = Data.create()
   .useDataValidator('bar', z.number())

@@ -43,7 +43,7 @@ export default class Data<
     this.#queryValidators = Object.freeze(queryValidators)
   }
 
-  get data() {
+  get data(): z.infer<DataItems<DataValidators, TargetingValidators>> {
     return this.#data
   }
 

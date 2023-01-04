@@ -1,5 +1,0 @@
-{
-  "preset": "ts-jest",
-  "passWithNoTests": true,
-  "setupFiles": ["jest-date-mock"]
-}

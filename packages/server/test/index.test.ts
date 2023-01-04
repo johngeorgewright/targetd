@@ -3,7 +3,7 @@ import express from 'express'
 import { promisify } from 'node:util'
 import { setTimeout } from 'node:timers'
 import request from 'supertest'
-import { createServer } from '.'
+import { createServer } from '../src'
 
 const timeout = promisify(setTimeout)
 let app: express.Application
