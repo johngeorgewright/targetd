@@ -5,14 +5,14 @@ function DataItemRule<P extends z.ZodTypeAny, T extends z.ZodRawShape>(
   Payload: P,
   targeting: T
 ): DataItemRule<P, T> {
-  const Targeting = z.object(targeting).partial().optional()
+  const Targeting = z.strictObject(targeting).partial().optional()
 
-  const RuleWithPayload = z.object({
+  const RuleWithPayload = z.strictObject({
     targeting: Targeting,
     payload: Payload,
   })
 
-  const ClientDataItemRule = z.object({
+  const ClientDataItemRule = z.strictObject({
     targeting: Targeting,
     client: z.array(RuleWithPayload),
   })
@@ -26,10 +26,13 @@ type DataItemRule<
 > = z.ZodUnion<
   [
     RuleWithPayload<Payload, Targeting>,
-    z.ZodObject<{
-      targeting: z.ZodOptional<ZodPartialObject<Targeting>>
-      client: z.ZodArray<RuleWithPayload<Payload, Targeting>>
-    }>
+    z.ZodObject<
+      {
+        targeting: z.ZodOptional<ZodPartialObject<Targeting, 'strict'>>
+        client: z.ZodArray<RuleWithPayload<Payload, Targeting>>
+      },
+      'strict'
+    >
   ]
 >
 
@@ -38,7 +41,10 @@ export default DataItemRule
 export type RuleWithPayload<
   Payload extends z.ZodTypeAny,
   Targeting extends z.ZodRawShape
-> = z.ZodObject<{
-  targeting: z.ZodOptional<ZodPartialObject<Targeting>>
-  payload: Payload
-}>
+> = z.ZodObject<
+  {
+    targeting: z.ZodOptional<ZodPartialObject<Targeting, 'strict'>>
+    payload: Payload
+  },
+  'strict'
+>

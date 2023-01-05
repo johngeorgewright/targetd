@@ -6,7 +6,7 @@ import DataItems from './validators/DataItems'
 import DataItem from './validators/DataItem'
 import DataItemRule, { RuleWithPayload } from './validators/DataItemRule'
 import { Keys } from 'ts-toolbelt/out/Any/Keys'
-import { MaybePromise, StaticRecord } from './types'
+import { MaybePromise, StaticRecord, ZodPartialObject } from './types'
 
 export default class Data<
   DataValidators extends z.ZodRawShape,
@@ -21,6 +21,7 @@ export default class Data<
   >
   readonly #targetingValidators: TargetingValidators
   readonly #queryValidators: QueryValidators
+  readonly #QueryValidator: ZodPartialObject<QueryValidators, 'strict'>
 
   static create() {
     return new Data({}, {}, {}, {}, {})
@@ -41,6 +42,7 @@ export default class Data<
     this.#targetingPredicates = Object.freeze(targetingPredicates)
     this.#targetingValidators = Object.freeze(targetingValidators)
     this.#queryValidators = Object.freeze(queryValidators)
+    this.#QueryValidator = z.strictObject(this.#queryValidators).partial()
   }
 
   get data(): z.infer<DataItems<DataValidators, TargetingValidators>> {
@@ -199,8 +201,7 @@ export default class Data<
   #createRulePredicate<Name extends keyof DataValidators>(
     rawQuery: Partial<StaticRecord<QueryValidators>>
   ) {
-    const QueryValidators = z.object(this.#queryValidators).partial()
-    const query = QueryValidators.parse(rawQuery)
+    const query = this.#QueryValidator.parse(rawQuery)
 
     const targeting = objectMap(
       this.#targetingPredicates,

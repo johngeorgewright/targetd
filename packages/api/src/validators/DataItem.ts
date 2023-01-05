@@ -5,7 +5,7 @@ function DataItem<P extends z.ZodTypeAny, T extends z.ZodRawShape>(
   Payload: P,
   targeting: T
 ): DataItem<P, T> {
-  return z.object({
+  return z.strictObject({
     rules: z.array(DataItemRule(Payload, targeting)),
   })
 }
@@ -13,8 +13,11 @@ function DataItem<P extends z.ZodTypeAny, T extends z.ZodRawShape>(
 type DataItem<
   Payload extends z.ZodTypeAny,
   Targeting extends z.ZodRawShape
-> = z.ZodObject<{
-  rules: z.ZodArray<DataItemRule<Payload, Targeting>>
-}>
+> = z.ZodObject<
+  {
+    rules: z.ZodArray<DataItemRule<Payload, Targeting>>
+  },
+  'strict'
+>
 
 export default DataItem
