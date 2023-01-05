@@ -1,6 +1,7 @@
-import { Data, zod as z } from '@targetd/api'
-import * as path from 'node:path'
+import { Data } from '@targetd/api'
 import { emptyDir, copy } from 'fs-extra'
+import * as path from 'node:path'
+import z from 'zod'
 import { watch } from '../src'
 
 let stopWatching: undefined | (() => void)

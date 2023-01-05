@@ -2063,6 +2063,8 @@ __metadata:
     tslib: 2.4.1
     typescript: 4.9.4
     zod: 3.20.2
+  peerDependencies:
+    zod: ^3.20.0
   languageName: unknown
   linkType: soft
 
@@ -2086,8 +2088,10 @@ __metadata:
     ts-toolbelt: 9.6.0
     tslib: 2.4.1
     typescript: 4.9.4
+    zod: 3.20.2
   peerDependencies:
     "@targetd/api": ">=3.0.0"
+    zod: ^3.20.0
   languageName: unknown
   linkType: soft
 
@@ -2111,8 +2115,10 @@ __metadata:
     ts-jest: 29.0.3
     tslib: 2.4.1
     typescript: 4.9.4
+    zod: 3.20.2
   peerDependencies:
     "@targetd/api": ">=3.0.0"
+    zod: ^3.20.0
   languageName: unknown
   linkType: soft
 
@@ -2146,8 +2152,10 @@ __metadata:
     typescript: 4.9.4
     watch: 1.0.2
     yaml: 2.2.1
+    zod: 3.20.2
   peerDependencies:
-    "@targetd/api": ">=3.0.0"
+    "@targetd/api": ">=3.1.0"
+    zod: ^3.20.0
   languageName: unknown
   linkType: soft
 
@@ -2236,8 +2244,10 @@ __metadata:
     ts-jest: 29.0.3
     tslib: 2.4.1
     typescript: 4.9.4
+    zod: 3.20.2
   peerDependencies:
     "@targetd/api": ">=3.0.0"
+    zod: ^3.20.0
   languageName: unknown
   linkType: soft
 

@@ -1,6 +1,7 @@
+import { Data } from '@targetd/api'
+import * as path from 'node:path'
+import z from 'zod'
 import { load } from '../src'
-import * as path from 'path'
-import { Data, zod as z } from '@targetd/api'
 
 test('load', async () => {
   const data = await load(

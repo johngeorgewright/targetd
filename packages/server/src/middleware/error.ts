@@ -1,5 +1,5 @@
-import { zod as z } from '@targetd/api'
 import express from 'express'
+import z from 'zod'
 
 export function errorHandler(): express.ErrorRequestHandler {
   return (err, _req, res, next) => {

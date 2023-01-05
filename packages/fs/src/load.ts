@@ -1,7 +1,8 @@
 import { readFiles } from '@johngw/fs'
 import { WithFileNamesResult } from '@johngw/fs/dist/readFiles'
+import { Data } from '@targetd/api'
 import YAML from 'yaml'
-import { Data, zod as z } from '@targetd/api'
+import z from 'zod'
 
 const FileData = z.record(z.string(), z.array(z.unknown()))
 type FileData = z.infer<typeof FileData>
