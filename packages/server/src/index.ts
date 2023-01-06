@@ -1,13 +1,20 @@
 import { Data } from '@targetd/api'
-import cors from 'cors'
+import cors, { CorsOptions } from 'cors'
 import express from 'express'
 import queryTypes from 'query-types'
 import { errorHandler } from './middleware/error'
 import { ResponseError } from './ResponseError'
 
-export function createServer(data: Data<any, any, any>) {
+export interface CreateServerOptions {
+  cors?: CorsOptions
+}
+
+export function createServer(
+  data: Data<any, any, any>,
+  { cors: corsOptions }: CreateServerOptions = {}
+) {
   return express()
-    .use(cors())
+    .use(cors(corsOptions))
 
     .get('/:name', queryTypes.middleware(), async (req, res, next) => {
       if (!(req.params.name in data.dataValidators)) {
