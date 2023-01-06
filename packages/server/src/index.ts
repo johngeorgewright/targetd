@@ -3,7 +3,7 @@ import cors from 'cors'
 import express from 'express'
 import queryTypes from 'query-types'
 import { errorHandler } from './middleware/error'
-import { StatusError } from './StatusError'
+import { ResponseError } from './ResponseError'
 
 export function createServer(data: Data<any, any, any>) {
   return express()
@@ -12,7 +12,7 @@ export function createServer(data: Data<any, any, any>) {
     .get('/:name', queryTypes.middleware(), async (req, res, next) => {
       if (!(req.params.name in data.dataValidators)) {
         return next(
-          new StatusError(404, `Unknown data property ${req.params.name}`)
+          new ResponseError(404, `Unknown data property ${req.params.name}`)
         )
       }
 
