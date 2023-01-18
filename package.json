@@ -58,7 +58,7 @@
     ]
   },
   "dependencies": {
-    "@types/jest": "29.2.5",
+    "@types/jest": "29.2.6",
     "tslib": "2.4.1"
   },
   "packageManager": "yarn@3.3.1"
