@@ -2952,7 +2952,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@targetd/api", "workspace:packages/api"],\
             ["@types/cors", "npm:2.8.13"],\
             ["@types/express", "npm:4.17.15"],\
-            ["@types/express-serve-static-core", "npm:4.17.32"],\
+            ["@types/express-serve-static-core", "npm:4.17.33"],\
             ["@types/jest", "npm:29.2.6"],\
             ["@types/node", "npm:18.11.18"],\
             ["@types/supertest", "npm:2.0.12"],\
@@ -3183,10 +3183,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "HARD"\
         }],\
-        ["npm:4.17.32", {\
-          "packageLocation": "./.yarn/cache/@types-express-serve-static-core-npm-4.17.32-df32b83158-70ec1b8f38.zip/node_modules/@types/express-serve-static-core/",\
+        ["npm:4.17.33", {\
+          "packageLocation": "./.yarn/cache/@types-express-serve-static-core-npm-4.17.33-0366bd5654-dce580d16b.zip/node_modules/@types/express-serve-static-core/",\
           "packageDependencies": [\
-            ["@types/express-serve-static-core", "npm:4.17.32"],\
+            ["@types/express-serve-static-core", "npm:4.17.33"],\
             ["@types/node", "npm:16.11.6"],\
             ["@types/qs", "npm:6.9.7"],\
             ["@types/range-parser", "npm:1.2.4"]\
