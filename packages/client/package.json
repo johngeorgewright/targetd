@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "ts-toolbelt": "9.6.0",
-    "tslib": "2.4.1"
+    "tslib": "2.5.0"
   },
   "peerDependencies": {
     "@targetd/api": ">=3.0.0"
