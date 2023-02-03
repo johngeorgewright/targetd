@@ -2987,7 +2987,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@semantic-release/release-notes-generator", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:10.0.3"],\
             ["@targetd/api", "workspace:packages/api"],\
             ["@types/cors", "npm:2.8.13"],\
-            ["@types/express", "npm:4.17.15"],\
+            ["@types/express", "npm:4.17.17"],\
             ["@types/express-serve-static-core", "npm:4.17.33"],\
             ["@types/jest", "npm:29.4.0"],\
             ["@types/node", "npm:18.11.18"],\
@@ -3196,12 +3196,12 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@types/express", [\
-        ["npm:4.17.15", {\
-          "packageLocation": "./.yarn/cache/@types-express-npm-4.17.15-f269888d96-b4acd8a836.zip/node_modules/@types/express/",\
+        ["npm:4.17.17", {\
+          "packageLocation": "./.yarn/cache/@types-express-npm-4.17.17-46fe8173db-0196dacc27.zip/node_modules/@types/express/",\
           "packageDependencies": [\
-            ["@types/express", "npm:4.17.15"],\
+            ["@types/express", "npm:4.17.17"],\
             ["@types/body-parser", "npm:1.19.2"],\
-            ["@types/express-serve-static-core", "npm:4.17.31"],\
+            ["@types/express-serve-static-core", "npm:4.17.33"],\
             ["@types/qs", "npm:6.9.7"],\
             ["@types/serve-static", "npm:1.15.0"]\
           ],\
@@ -3209,16 +3209,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@types/express-serve-static-core", [\
-        ["npm:4.17.31", {\
-          "packageLocation": "./.yarn/cache/@types-express-serve-static-core-npm-4.17.31-846873f446-009bfbe107.zip/node_modules/@types/express-serve-static-core/",\
-          "packageDependencies": [\
-            ["@types/express-serve-static-core", "npm:4.17.31"],\
-            ["@types/node", "npm:16.11.6"],\
-            ["@types/qs", "npm:6.9.7"],\
-            ["@types/range-parser", "npm:1.2.4"]\
-          ],\
-          "linkType": "HARD"\
-        }],\
         ["npm:4.17.33", {\
           "packageLocation": "./.yarn/cache/@types-express-serve-static-core-npm-4.17.33-0366bd5654-dce580d16b.zip/node_modules/@types/express-serve-static-core/",\
           "packageDependencies": [\
