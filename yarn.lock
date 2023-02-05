@@ -2093,7 +2093,7 @@ __metadata:
     "@semantic-release/github": 8.0.7
     "@semantic-release/release-notes-generator": 10.0.3
     "@types/jest": 29.4.0
-    "@types/node": 18.11.18
+    "@types/node": 18.11.19
     jest: 29.4.1
     rimraf: 3.0.2
     semantic-release: 19.0.5
@@ -2117,7 +2117,7 @@ __metadata:
     "@semantic-release/release-notes-generator": 10.0.3
     "@targetd/api": "workspace:*"
     "@types/jest": 29.4.0
-    "@types/node": 18.11.18
+    "@types/node": 18.11.19
     jest: 29.4.1
     rimraf: 3.0.2
     semantic-release: 19.0.5
@@ -2142,7 +2142,7 @@ __metadata:
     "@semantic-release/release-notes-generator": 10.0.3
     "@targetd/api": "workspace:packages/api"
     "@types/jest": 29.4.0
-    "@types/node": 18.11.18
+    "@types/node": 18.11.19
     jest: 29.4.1
     jest-date-mock: 1.0.8
     rimraf: 3.0.2
@@ -2170,7 +2170,7 @@ __metadata:
     "@types/fs-extra": 9.0.13
     "@types/jest": 29.4.0
     "@types/lodash": ^4
-    "@types/node": 18.11.18
+    "@types/node": 18.11.19
     "@types/watch": ^1
     fs-extra: 11.1.0
     jest: 29.4.1
@@ -2203,7 +2203,7 @@ __metadata:
     "@semantic-release/github": 8.0.7
     "@semantic-release/release-notes-generator": 10.0.3
     "@types/jest": 29.4.0
-    "@types/node": 18.11.18
+    "@types/node": 18.11.19
     commitizen: 4.3.0
     cz-conventional-changelog: 3.3.0
     husky: 8.0.3
@@ -2262,7 +2262,7 @@ __metadata:
     "@types/express": 4.17.17
     "@types/express-serve-static-core": 4.17.33
     "@types/jest": 29.4.0
-    "@types/node": 18.11.18
+    "@types/node": 18.11.19
     "@types/supertest": 2.0.12
     cors: 2.8.5
     express: 4.18.2
@@ -2644,10 +2644,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:18.11.18":
-  version: 18.11.18
-  resolution: "@types/node@npm:18.11.18"
-  checksum: 03f17f9480f8d775c8a72da5ea7e9383db5f6d85aa5fefde90dd953a1449bd5e4ffde376f139da4f3744b4c83942166d2a7603969a6f8ea826edfb16e6e3b49d
+"@types/node@npm:18.11.19":
+  version: 18.11.19
+  resolution: "@types/node@npm:18.11.19"
+  checksum: d7cd19fcfc59cbdd3f9ba0b4072cb7adc21bd575bd8eb7d7e698975e63564aaa83f03434f32b12331f84f73d0b369d9cbe2371e359d9d7f5c3361f4987f4f7da
   languageName: node
   linkType: hard
 
