@@ -2100,7 +2100,7 @@ __metadata:
     "@semantic-release/github": 8.0.7
     "@semantic-release/release-notes-generator": 10.0.3
     "@types/jest": 29.4.0
-    "@types/node": 18.13.0
+    "@types/node": 18.14.0
     jest: 29.4.3
     rimraf: 3.0.2
     semantic-release: 20.1.0
@@ -2124,7 +2124,7 @@ __metadata:
     "@semantic-release/release-notes-generator": 10.0.3
     "@targetd/api": "workspace:*"
     "@types/jest": 29.4.0
-    "@types/node": 18.13.0
+    "@types/node": 18.14.0
     jest: 29.4.3
     rimraf: 3.0.2
     semantic-release: 20.1.0
@@ -2149,7 +2149,7 @@ __metadata:
     "@semantic-release/release-notes-generator": 10.0.3
     "@targetd/api": "workspace:packages/api"
     "@types/jest": 29.4.0
-    "@types/node": 18.13.0
+    "@types/node": 18.14.0
     jest: 29.4.3
     jest-date-mock: 1.0.8
     rimraf: 3.0.2
@@ -2177,7 +2177,7 @@ __metadata:
     "@types/fs-extra": 9.0.13
     "@types/jest": 29.4.0
     "@types/lodash": ^4
-    "@types/node": 18.13.0
+    "@types/node": 18.14.0
     "@types/watch": ^1
     fs-extra: 11.1.0
     jest: 29.4.3
@@ -2210,7 +2210,7 @@ __metadata:
     "@semantic-release/github": 8.0.7
     "@semantic-release/release-notes-generator": 10.0.3
     "@types/jest": 29.4.0
-    "@types/node": 18.13.0
+    "@types/node": 18.14.0
     commitizen: 4.3.0
     cz-conventional-changelog: 3.3.0
     husky: 8.0.3
@@ -2269,7 +2269,7 @@ __metadata:
     "@types/express": 4.17.17
     "@types/express-serve-static-core": 4.17.33
     "@types/jest": 29.4.0
-    "@types/node": 18.13.0
+    "@types/node": 18.14.0
     "@types/supertest": 2.0.12
     cors: 2.8.5
     express: 4.18.2
@@ -2651,10 +2651,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:18.13.0":
-  version: 18.13.0
-  resolution: "@types/node@npm:18.13.0"
-  checksum: 4ea10f8802848b01672bce938f678b6774ca2cee0c9774f12275ab064ae07818419c3e2e41d6257ce7ba846d1ea26c63214aa1dfa4166fa3746291752b8c6416
+"@types/node@npm:18.14.0":
+  version: 18.14.0
+  resolution: "@types/node@npm:18.14.0"
+  checksum: d83fcf5e4ed544755dd9028f5cbb6b9d46235043159111bb2ad62223729aee581c0144a9f6df8ba73d74011db9ed4ebd7af2fd5e0996714e3beb508a5da8ac5c
   languageName: node
   linkType: hard
 
