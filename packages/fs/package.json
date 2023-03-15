@@ -23,7 +23,7 @@
     "@semantic-release/release-notes-generator": "10.0.3",
     "@targetd/api": "workspace:*",
     "@types/fs-extra": "9.0.13",
-    "@types/jest": "29.4.2",
+    "@types/jest": "29.4.4",
     "@types/lodash": "^4",
     "@types/node": "18.15.3",
     "@types/watch": "^1",
