@@ -2902,7 +2902,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@targetd/api", "workspace:packages/api"],\
             ["@types/fs-extra", "npm:9.0.13"],\
             ["@types/jest", "npm:29.5.0"],\
-            ["@types/lodash", "npm:4.14.191"],\
+            ["@types/lodash", "npm:4.14.192"],\
             ["@types/node", "npm:18.15.10"],\
             ["@types/watch", "npm:1.0.3"],\
             ["fs-extra", "npm:11.1.0"],\
@@ -3356,10 +3356,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@types/lodash", [\
-        ["npm:4.14.191", {\
-          "packageLocation": "./.yarn/cache/@types-lodash-npm-4.14.191-67a04a969b-ba0d5434e1.zip/node_modules/@types/lodash/",\
+        ["npm:4.14.192", {\
+          "packageLocation": "./.yarn/cache/@types-lodash-npm-4.14.192-07db4ce649-31e1f0543a.zip/node_modules/@types/lodash/",\
           "packageDependencies": [\
-            ["@types/lodash", "npm:4.14.191"]\
+            ["@types/lodash", "npm:4.14.192"]\
           ],\
           "linkType": "HARD"\
         }]\
