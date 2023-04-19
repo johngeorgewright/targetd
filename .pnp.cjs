@@ -2900,12 +2900,12 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@semantic-release/github", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:8.0.7"],\
             ["@semantic-release/release-notes-generator", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:10.0.3"],\
             ["@targetd/api", "workspace:packages/api"],\
-            ["@types/fs-extra", "npm:9.0.13"],\
+            ["@types/fs-extra", "npm:11.0.1"],\
             ["@types/jest", "npm:29.5.1"],\
             ["@types/lodash", "npm:4.14.194"],\
             ["@types/node", "npm:18.15.11"],\
             ["@types/watch", "npm:1.0.3"],\
-            ["fs-extra", "npm:11.1.0"],\
+            ["fs-extra", "npm:11.1.1"],\
             ["jest", "virtual:78776105526f67704c5d821aa139591fbba11fdbd5f03f51d916c5f752b52ce5b35f9731aa4a7b9fc9fe491d6229cf4b9abfbb54db395f33bbe11c0e0b749fa6#npm:29.5.0"],\
             ["lodash", "npm:4.17.21"],\
             ["rimraf", "npm:3.0.2"],\
@@ -3230,10 +3230,11 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@types/fs-extra", [\
-        ["npm:9.0.13", {\
-          "packageLocation": "./.yarn/cache/@types-fs-extra-npm-9.0.13-12fb7badd7-add79e212a.zip/node_modules/@types/fs-extra/",\
+        ["npm:11.0.1", {\
+          "packageLocation": "./.yarn/cache/@types-fs-extra-npm-11.0.1-f11620397b-3e930346e5.zip/node_modules/@types/fs-extra/",\
           "packageDependencies": [\
-            ["@types/fs-extra", "npm:9.0.13"],\
+            ["@types/fs-extra", "npm:11.0.1"],\
+            ["@types/jsonfile", "npm:6.1.1"],\
             ["@types/node", "npm:16.11.6"]\
           ],\
           "linkType": "HARD"\
@@ -3333,6 +3334,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@types-json-schema-npm-7.0.9-361918cff3-259d0e25f1.zip/node_modules/@types/json-schema/",\
           "packageDependencies": [\
             ["@types/json-schema", "npm:7.0.9"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@types/jsonfile", [\
+        ["npm:6.1.1", {\
+          "packageLocation": "./.yarn/cache/@types-jsonfile-npm-6.1.1-62ad833c58-0f8fe0a922.zip/node_modules/@types/jsonfile/",\
+          "packageDependencies": [\
+            ["@types/jsonfile", "npm:6.1.1"],\
+            ["@types/node", "npm:16.11.6"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -7183,6 +7194,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/fs-extra-npm-11.1.0-2cd157426f-5ca476103f.zip/node_modules/fs-extra/",\
           "packageDependencies": [\
             ["fs-extra", "npm:11.1.0"],\
+            ["graceful-fs", "npm:4.2.8"],\
+            ["jsonfile", "npm:6.1.0"],\
+            ["universalify", "npm:2.0.0"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
+        ["npm:11.1.1", {\
+          "packageLocation": "./.yarn/cache/fs-extra-npm-11.1.1-ca44602180-fb883c6824.zip/node_modules/fs-extra/",\
+          "packageDependencies": [\
+            ["fs-extra", "npm:11.1.1"],\
             ["graceful-fs", "npm:4.2.8"],\
             ["jsonfile", "npm:6.1.0"],\
             ["universalify", "npm:2.0.0"]\
