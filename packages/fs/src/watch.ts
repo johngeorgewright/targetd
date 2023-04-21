@@ -1,5 +1,6 @@
 import { Data, zod as z } from '@targetd/api'
 import { debounce } from 'lodash'
+import throat from 'throat'
 import { Options as WatchTreeOptions, unwatchTree, watchTree } from 'watch'
 import { load, pathIsLoadable } from './load'
 
@@ -58,15 +59,18 @@ export function watch<
       filter: pathIsLoadable,
       ...options,
     },
-    debounce(async () => {
-      try {
-        data = await load(data.removeAllRules(), dir)
-      } catch (error: any) {
-        return onLoad(error, data)
-      }
+    debounce(
+      throat(1, async () => {
+        try {
+          data = await load(data.removeAllRules(), dir)
+        } catch (error: any) {
+          return onLoad(error, data)
+        }
 
-      onLoad(null, data)
-    }, 300)
+        onLoad(null, data)
+      }),
+      300
+    )
   )
 
   return () => unwatchTree(dir)

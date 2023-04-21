@@ -1,7 +1,7 @@
 import z from 'zod'
 import TargetingDescriptor from './validators/TargetingDescriptor'
 import TargetingPredicates from './validators/TargetingPredicates'
-import { objectEveryAsync, objectMap } from './util'
+import { objectEveryAsync, objectKeys, objectMap } from './util'
 import DataItems from './validators/DataItems'
 import DataItem from './validators/DataItem'
 import DataItemRule, { RuleWithPayload } from './validators/DataItemRule'
@@ -149,18 +149,15 @@ export default class Data<
   async getPayloadForEachName(
     rawQuery: Partial<StaticRecord<QueryValidators>>
   ) {
-    const payloads = {} as {
+    const payloads = {} as Partial<{
       [Name in keyof DataValidators]:
         | Payload<DataValidators[Name], TargetingValidators>
         | undefined
-    }
+    }>
 
     await Promise.all(
-      Object.keys(this.#data).map(async (name) => {
-        payloads[name as keyof DataValidators] = await this.getPayload(
-          name,
-          rawQuery
-        )
+      objectKeys(this.#data).map(async (name) => {
+        payloads[name] = await this.getPayload(name, rawQuery)
       })
     )
 
@@ -240,14 +237,12 @@ export default class Data<
       }
     >
   ) {
-    return objectEveryAsync(targeting, async (targetingKey) => {
+    return objectEveryAsync(targeting, async (targetingValue, targetingKey) => {
       if (!(targetingKey in query) && predicates[targetingKey]?.requiresQuery)
         return false
 
       if (targetingKey in predicates)
-        return (await predicates[targetingKey].predicate)(
-          targeting[targetingKey]
-        )
+        return (await predicates[targetingKey].predicate)(targetingValue)
       else console.warn(`Invalid targeting property ${String(targetingKey)}`)
 
       return false

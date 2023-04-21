@@ -1,5 +1,5 @@
 import z from 'zod'
-import Data from '../src/Data'
+import { Data, equalsPredicate, targetIncludesPredicate } from '../src'
 
 const timeout = <T>(ms: number, returnValue: T) =>
   new Promise<T>((resolve) => setTimeout(() => resolve(returnValue), ms))
@@ -8,12 +8,12 @@ test('getPayload', async () => {
   const data = Data.create()
     .useDataValidator('foo', z.string())
     .useTargeting('weather', {
-      predicate: (q) => (t) => typeof q === 'string' && t.includes(q),
+      predicate: targetIncludesPredicate(),
       queryValidator: z.string(),
       targetingValidator: z.array(z.string()),
     })
     .useTargeting('highTide', {
-      predicate: (q) => (t) => q === t,
+      predicate: equalsPredicate(),
       queryValidator: z.boolean(),
       targetingValidator: z.boolean(),
     })
@@ -110,12 +110,12 @@ test('getPayloads', async () => {
   const data = Data.create()
     .useDataValidator('foo', z.string())
     .useTargeting('weather', {
-      predicate: (q) => (t) => typeof q === 'string' && t.includes(q),
+      predicate: targetIncludesPredicate(),
       queryValidator: z.string(),
       targetingValidator: z.array(z.string()),
     })
     .useTargeting('highTide', {
-      predicate: (q) => (t) => q === t,
+      predicate: equalsPredicate(),
       queryValidator: z.boolean(),
       targetingValidator: z.boolean(),
     })
@@ -191,12 +191,12 @@ test('getPayloadForEachName', async () => {
     .useDataValidator('foo', z.string())
     .useDataValidator('bar', z.string())
     .useTargeting('weather', {
-      predicate: (q) => (t) => typeof q === 'string' && t.includes(q),
+      predicate: targetIncludesPredicate(),
       queryValidator: z.string(),
       targetingValidator: z.array(z.string()),
     })
     .useTargeting('highTide', {
-      predicate: (q) => (t) => q === t,
+      predicate: equalsPredicate(),
       queryValidator: z.boolean(),
       targetingValidator: z.boolean(),
     })

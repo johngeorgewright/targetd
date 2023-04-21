@@ -6,4 +6,6 @@ export { default as createTargetingDescriptor } from './createTargetingDescripto
 export { default as TargetingDescriptor } from './validators/TargetingDescriptor'
 export { default as TargetingPredicate } from './validators/TargetingPredicate'
 export { default as TargetingPredicates } from './validators/TargetingPredicates'
+export { equalsPredicate } from './predicates/equals'
+export { targetIncludesPredicate } from './predicates/targetIncludes'
 export { default as zod } from 'zod'

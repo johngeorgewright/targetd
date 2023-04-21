@@ -24,7 +24,7 @@ test('objectEveryAsync', async () => {
         goo: 3,
         car: 4,
       },
-      (_key, value) => Promise.resolve(value).then((v) => v > 2)
+      (value) => Promise.resolve(value).then((v) => v > 2)
     )
   ).toBe(false)
   expect(
@@ -35,7 +35,7 @@ test('objectEveryAsync', async () => {
         goo: 3,
         car: 4,
       },
-      (_key, value) => Promise.resolve(value).then((v) => v > 0)
+      (value) => Promise.resolve(value).then((v) => v > 0)
     )
   ).toBe(true)
 })

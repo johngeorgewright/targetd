@@ -5,19 +5,47 @@ export function objectMap<O extends Record<string, unknown>, R>(
   obj: O,
   fn: <K extends keyof O>(v: O[K], k: K) => R
 ): Record<keyof O, R> {
-  const result: Record<string, any> = {}
-  for (const [key, value] of Object.entries(obj))
-    result[key] = fn(value as any, key)
-  return result as Record<keyof O, R>
+  return objectEntries(obj).reduce(
+    (result, [key, value]) => ({ ...result, [key]: fn(value, key) }),
+    {} as Record<keyof O, R>
+  )
 }
 
+export function objectKeys<O extends Record<string, unknown>>(
+  obj: O
+): (keyof O)[] {
+  return Object.keys(obj)
+}
+
+export function objectEntries<T extends Record<string, unknown>>(obj: T) {
+  return Object.entries(obj) as [keyof T, T[keyof T]][]
+}
+
+class EveryAsyncFail extends Error {}
+
+/**
+ * Call an asynchronous function on all key/value pairs.
+ * Returns true only if all calls return true.
+ *
+ * @example
+ * if (await objectEveryAsync({ foo: 'bar' }, (value) => Promise.resolve(value === 'bar'))) {
+ *   console.info('Everything is bar')
+ * }
+ */
 export async function objectEveryAsync<T extends Record<string, unknown>>(
   obj: T,
-  fn: <K extends keyof T>(key: K, value: T[K]) => MaybePromise<boolean>
+  fn: <K extends keyof T>(value: T[K], key: K) => MaybePromise<boolean>
 ) {
-  for (const key in obj)
-    if (Object.prototype.hasOwnProperty.call(obj, key))
-      if (!(await fn(key, obj[key]))) return false
+  try {
+    await Promise.all(
+      objectEntries(obj).map(async ([key, value]) => {
+        if (!(await Promise.resolve(fn(value, key)))) throw new EveryAsyncFail()
+      })
+    )
+  } catch (error) {
+    if (error instanceof EveryAsyncFail) return false
+    else throw error
+  }
   return true
 }
 
