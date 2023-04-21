@@ -72,7 +72,9 @@ export default class Data<
       TargetingValidators,
       QueryValidators
     >(
-      this.#data,
+      this.#data as z.infer<
+        DataItems<DataValidators & Record<Name, Validator>, TargetingValidators>
+      >,
       {
         ...this.#dataValidators,
         [name]: validator,
@@ -123,7 +125,7 @@ export default class Data<
     type NewTargeting = TargetingValidators & { [K in Name]: TV }
     type NewQuery = QueryValidators & { [K in Name]: QV }
     return new Data<DataValidators, NewTargeting, NewQuery>(
-      this.#data,
+      this.#data as z.infer<DataItems<DataValidators, NewTargeting>>,
       this.#dataValidators,
       {
         ...this.#targetingPredicates,
