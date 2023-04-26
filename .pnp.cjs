@@ -3163,7 +3163,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@targetd/api", "workspace:packages/api"],\
             ["@types/cors", "npm:2.8.13"],\
             ["@types/express", "npm:4.17.17"],\
-            ["@types/express-serve-static-core", "npm:4.17.33"],\
+            ["@types/express-serve-static-core", "npm:4.17.34"],\
             ["@types/jest", "npm:29.5.1"],\
             ["@types/node", "npm:18.16.1"],\
             ["@types/supertest", "npm:2.0.12"],\
@@ -3413,6 +3413,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/range-parser", "npm:1.2.4"]\
           ],\
           "linkType": "HARD"\
+        }],\
+        ["npm:4.17.34", {\
+          "packageLocation": "./.yarn/cache/@types-express-serve-static-core-npm-4.17.34-b1081fd10c-3b5242e7d6.zip/node_modules/@types/express-serve-static-core/",\
+          "packageDependencies": [\
+            ["@types/express-serve-static-core", "npm:4.17.34"],\
+            ["@types/node", "npm:16.11.6"],\
+            ["@types/qs", "npm:6.9.7"],\
+            ["@types/range-parser", "npm:1.2.4"],\
+            ["@types/send", "npm:0.17.1"]\
+          ],\
+          "linkType": "HARD"\
         }]\
       ]],\
       ["@types/fs-extra", [\
@@ -3588,6 +3599,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@types/mime", [\
+        ["npm:1.3.2", {\
+          "packageLocation": "./.yarn/cache/@types-mime-npm-1.3.2-ea71878ab3-0493368244.zip/node_modules/@types/mime/",\
+          "packageDependencies": [\
+            ["@types/mime", "npm:1.3.2"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
         ["npm:3.0.1", {\
           "packageLocation": "./.yarn/cache/@types-mime-npm-3.0.1-dec03536dc-4040fac73f.zip/node_modules/@types/mime/",\
           "packageDependencies": [\
@@ -3723,6 +3741,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@types/rimraf", "npm:4.0.5"],\
             ["rimraf", "npm:3.0.2"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@types/send", [\
+        ["npm:0.17.1", {\
+          "packageLocation": "./.yarn/cache/@types-send-npm-0.17.1-5f715ca966-10b620a596.zip/node_modules/@types/send/",\
+          "packageDependencies": [\
+            ["@types/send", "npm:0.17.1"],\
+            ["@types/mime", "npm:1.3.2"],\
+            ["@types/node", "npm:16.11.6"]\
           ],\
           "linkType": "HARD"\
         }]\
