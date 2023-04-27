@@ -1,0 +1,100 @@
+{
+  "type": "object",
+  "properties": {
+    "foo": {
+      "type": "object",
+      "properties": {
+        "rules": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "targeting": {
+                    "type": "object",
+                    "properties": {},
+                    "additionalProperties": false
+                  },
+                  "payload": {
+                    "type": "string"
+                  }
+                },
+                "required": ["payload"],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "targeting": {
+                    "$ref": "#/properties/foo/properties/rules/items/anyOf/0/properties/targeting"
+                  },
+                  "client": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/properties/foo/properties/rules/items/anyOf/0"
+                    }
+                  }
+                },
+                "required": ["client"],
+                "additionalProperties": false
+              }
+            ]
+          }
+        }
+      },
+      "required": ["rules"],
+      "additionalProperties": false
+    },
+    "b": {
+      "type": "object",
+      "properties": {
+        "rules": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "targeting": {
+                    "type": "object",
+                    "properties": {},
+                    "additionalProperties": false
+                  },
+                  "payload": {
+                    "type": "string"
+                  }
+                },
+                "required": ["payload"],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "targeting": {
+                    "$ref": "#/properties/b/properties/rules/items/anyOf/0/properties/targeting"
+                  },
+                  "client": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/properties/b/properties/rules/items/anyOf/0"
+                    }
+                  }
+                },
+                "required": ["client"],
+                "additionalProperties": false
+              }
+            ]
+          }
+        }
+      },
+      "required": ["rules"],
+      "additionalProperties": false
+    },
+    "$schema": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

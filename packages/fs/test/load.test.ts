@@ -1,14 +1,9 @@
 import { load } from '../src'
 import * as path from 'path'
-import { Data, zod as z } from '@targetd/api'
+import { data } from './fixtures/data'
 
 test('load', async () => {
-  const data = await load(
-    Data.create()
-      .useDataValidator('foo', z.string())
-      .useDataValidator('b', z.string()),
-    path.join(__dirname, 'fixtures')
-  )
-  expect(await data.getPayload('foo', {})).toBe('bar')
-  expect(await data.getPayload('b', {})).toBe('b is a letter')
+  const $data = await load(data, path.join(__dirname, 'fixtures'))
+  expect(await $data.getPayload('foo', {})).toBe('bar')
+  expect(await $data.getPayload('b', {})).toBe('b is a letter')
 })

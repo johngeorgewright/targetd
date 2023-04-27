@@ -4,7 +4,11 @@ import YAML from 'yaml'
 import { Data, zod as z } from '@targetd/api'
 import { Keys } from 'ts-toolbelt/out/Any/Keys'
 
-const FileData = z.record(z.string(), z.array(z.unknown()))
+const FileData = z.record(
+  z.string(),
+  z.strictObject({ rules: z.array(z.unknown()) })
+)
+
 type FileData = z.infer<typeof FileData>
 
 export async function load<
@@ -50,7 +54,7 @@ function addRules<
   fileData: FileData
 ) {
   return Object.entries(fileData).reduce(
-    (data, [name, rules]) =>
+    (data, [name, { rules }]) =>
       data.addRules(name as Keys<DataValidators>, rules as any[]),
     data
   )
