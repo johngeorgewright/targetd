@@ -1,17 +1,21 @@
-import { Data } from '@targetd/api'
+import { Data, zod as z } from '@targetd/api'
 import cors from 'cors'
 import express from 'express'
 import queryTypes from 'query-types'
 import { errorHandler } from './middleware/error'
 
-export function createServer(data: Data<any, any, any>) {
+export function createServer<
+  DataValidators extends z.ZodRawShape,
+  TargetingValidators extends z.ZodRawShape,
+  QueryValidators extends z.ZodRawShape
+>(data: Data<DataValidators, TargetingValidators, QueryValidators>) {
   return express()
     .use(cors())
 
     .get('/:name', queryTypes.middleware(), async (req, res, next) => {
       let payload: any
       try {
-        payload = await data.getPayload(req.params.name, req.query)
+        payload = await data.getPayload(req.params.name, req.query as any)
       } catch (err) {
         return next(err)
       }
@@ -21,7 +25,7 @@ export function createServer(data: Data<any, any, any>) {
     .get('/', queryTypes.middleware(), async (req, res, next) => {
       let payloads: Record<string, any>
       try {
-        payloads = await data.getPayloadForEachName(req.query)
+        payloads = await data.getPayloadForEachName(req.query as any)
       } catch (err) {
         return next(err)
       }

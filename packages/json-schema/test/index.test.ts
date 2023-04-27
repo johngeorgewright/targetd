@@ -17,9 +17,15 @@ test('json schema for simple data object', () => {
       "$schema": "http://json-schema.org/draft-07/schema#",
       "additionalProperties": false,
       "properties": {
+        "$schema": {
+          "type": "string",
+        },
         "foo": {
           "additionalProperties": false,
           "properties": {
+            "$schema": {
+              "type": "string",
+            },
             "rules": {
               "items": {
                 "anyOf": [

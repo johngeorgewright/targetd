@@ -7,9 +7,7 @@ export function dataJSONSchemas<
   QueryValidators extends z.ZodRawShape
 >(data: Data<DataValidators, TargetingValidators, QueryValidators>) {
   return zodToJSONSchema(
-    DataItems(data.dataValidators, data.targetingValidators).extend({
-      $schema: z.string().optional(),
-    })
+    DataItems(data.dataValidators, data.targetingValidators)
   )
 }
 
@@ -22,8 +20,6 @@ export function dataJSONSchema<
   name: keyof DataValidators
 ) {
   return zodToJSONSchema(
-    DataItem(data.dataValidators[name], data.targetingValidators).extend({
-      $schema: z.string().optional(),
-    })
+    DataItem(data.dataValidators[name], data.targetingValidators)
   )
 }

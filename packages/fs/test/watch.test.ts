@@ -32,5 +32,5 @@ test('watch', (done) => {
     done()
   })
 
-  copy(path.join(__dirname, 'fixtures'), dirTo)
+  copy(path.join(__dirname, 'fixtures', 'rules'), dirTo)
 })
