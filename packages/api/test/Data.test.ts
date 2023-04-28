@@ -57,13 +57,6 @@ test('getPayload', async () => {
       {
         payload: 'bar',
       },
-      {
-        targeting: {
-          // @ts-expect-error
-          nonExistantKey: 'some value',
-        },
-        payload: 'error',
-      },
     ])
 
   expect(await data.getPayload('foo', {})).toBe('bar')
@@ -76,10 +69,26 @@ test('getPayload', async () => {
   expect(await data.getPayload('foo', { asyncThing: true })).toBe(
     'Async payload'
   )
+
   // @ts-expect-error
   await data.getPayload('mung', {})
-  // @ts-expect-error
-  await data.getPayload('foo', { nonExistantKey: 'some value' })
+
+  expect(
+    // @ts-expect-error
+    data.getPayload('foo', { nonExistantKey: 'some value' })
+  ).rejects.toThrow()
+
+  expect(() =>
+    data.addRules('foo', [
+      {
+        targeting: {
+          // @ts-expect-error
+          nonExistantKey: 'some value',
+        },
+        payload: 'error',
+      },
+    ])
+  ).toThrow()
 })
 
 test('targeting without requiring a query', async () => {

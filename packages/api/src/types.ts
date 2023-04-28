@@ -6,6 +6,12 @@ export type StaticRecord<R extends z.ZodRawShape> = {
 
 export type MaybePromise<T> = T | Promise<T>
 
-export type ZodPartialObject<T extends z.ZodRawShape> = z.ZodObject<{
-  [K in keyof T]: z.ZodOptional<T[K]>
-}>
+export type ZodPartialObject<
+  T extends z.ZodRawShape,
+  UnknownKeys extends z.UnknownKeysParam = 'strip'
+> = z.ZodObject<
+  {
+    [K in keyof T]: z.ZodOptional<T[K]>
+  },
+  UnknownKeys
+>

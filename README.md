@@ -70,7 +70,7 @@ import z from 'zod'
 
 let data = Data.create().useDataValidator(
   'blog',
-  z.object({
+  z.strictObject({
     title: z.string(),
     body: z.string(),
   })
