@@ -1,7 +1,8 @@
 import { readFiles } from '@johngw/fs'
 import { WithFileNamesResult } from '@johngw/fs/dist/readFiles'
+import { Data } from '@targetd/api'
 import YAML from 'yaml'
-import { Data, zod as z } from '@targetd/api'
+import { Data } from '@targetd/api'
 import { Keys } from 'ts-toolbelt/out/Any/Keys'
 
 const FileData = z.record(z.string(), z.array(z.unknown()))

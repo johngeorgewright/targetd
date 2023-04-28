@@ -1,4 +1,5 @@
-import { Data, zod as z } from '@targetd/api'
+import { Data } from '@targetd/api'
+import z from 'zod'
 import { ClientData } from '../src'
 
 const data = Data.create()

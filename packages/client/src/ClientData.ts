@@ -1,8 +1,9 @@
-import { Data, zod as z } from '@targetd/api'
+import { Data } from '@targetd/api'
 import { StaticRecord } from '@targetd/api/dist/types'
-import { Keys } from 'ts-toolbelt/out/Any/Keys'
-import { ServedData } from './ServedData'
 import { RuleWithPayload } from '@targetd/api/dist/validators/DataItemRule'
+import { Keys } from 'ts-toolbelt/out/Any/Keys'
+import z from 'zod'
+import { ServedData } from './ServedData'
 
 export class ClientData<
   DataValidators extends z.ZodRawShape,

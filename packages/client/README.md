@@ -7,8 +7,9 @@ Sometimes you can't rely on one data service to fulfil all the target filtering.
 ## Example
 
 ```typescript
-import { Data, zod as z } from '@targetd/api'
+import { Data } from '@targetd/api'
 import { ClientData } from '@targetd/client'
+import z from 'zod'
 
 const Device = z.literal('desktop').or(z.literal('mobile'))
 

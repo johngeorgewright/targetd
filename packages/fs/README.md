@@ -22,16 +22,17 @@ b:
 ```
 
 ```typescript
-import { Data, zod as z } from '@targetd/api'
+import { Data } from '@targetd/api'
 import { watch } from '@targetd/fs'
 import * as path from 'node:path'
+import z from 'zod'
 
 watch(
   Data.create()
     .useDataValidator('foo', z.string())
     .useDataValidator('b', z.string()),
 
-  path.join(__dirname, 'data'),
+  path.join(__dirname, 'rules'),
 
   async (data) => {
     expect(await data.getPayload('foo', {})).toBe('bar')

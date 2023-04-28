@@ -5,8 +5,9 @@
 ## Example
 
 ```typescript
-import { Data, zod as z } from '@targetd/api'
+import { Data } from '@targetd/api'
 import dateRangeTargeting from '@targetd/date-range'
+import z from 'zod'
 
 const data = Data.create()
   .useTargeting('dateRange', dateRangeTargeting)
