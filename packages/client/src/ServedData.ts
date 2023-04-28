@@ -1,4 +1,4 @@
-import { zod as z } from '@targetd/api'
+import z from 'zod'
 import { RuleWithPayload } from '@targetd/api/dist/validators/DataItemRule'
 
 export type ServedData<

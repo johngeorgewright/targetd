@@ -27,11 +27,14 @@
     "semantic-release": "21.0.1",
     "semantic-release-monorepo": "7.0.5",
     "ts-jest": "29.1.0",
-    "typescript": "5.0.4"
+    "typescript": "5.0.4",
+    "zod": "3.21.4"
   },
   "dependencies": {
     "ts-toolbelt": "9.6.0",
-    "tslib": "2.5.0",
-    "zod": "3.21.4"
+    "tslib": "2.5.0"
+  },
+  "peerDependencies": {
+    "zod": "^3.20.0"
   }
 }

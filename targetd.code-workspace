@@ -1,37 +1,14 @@
 {
   "folders": [
-    {
-      "name": "✨ @targetd/mono-repo",
-      "path": "."
-    },
-    {
-      "name": "🏗 @targetd/scaffold",
-      "path": "packages/scaffold"
-    },
-    {
-      "name": "📦 @targetd/api",
-      "path": "packages/api"
-    },
-    {
-      "name": "📦 @targetd/client",
-      "path": "packages/client"
-    },
-    {
-      "name": "📦 @targetd/date-range",
-      "path": "packages/date-range"
-    },
-    {
-      "name": "📦 @targetd/fs",
-      "path": "packages/fs"
-    },
-    {
-      "name": "📦 @targetd/server",
-      "path": "packages/server"
-    },
-    {
-      "name": "🤖 github",
-      "path": ".github"
-    }
+    { "name": "✨ @targetd/mono-repo", "path": "." },
+    { "name": "🏗 @targetd/scaffold", "path": "packages/scaffold" },
+    { "name": "📦 @targetd/api", "path": "packages/api" },
+    { "name": "📦 @targetd/client", "path": "packages/client" },
+    { "name": "📦 @targetd/date-range", "path": "packages/date-range" },
+    { "name": "📦 @targetd/fs", "path": "packages/fs" },
+    { "name": "📦 @targetd/json-schema", "path": "packages/json-schema" },
+    { "name": "📦 @targetd/server", "path": "packages/server" },
+    { "name": "🤖 github", "path": ".github" }
   ],
   "settings": {
     "prettier.prettierPath": ".yarn/sdks/prettier/index.js",

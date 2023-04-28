@@ -1,8 +1,9 @@
-import { Data, zod as z } from '@targetd/api'
+import { Data } from '@targetd/api'
 import express from 'express'
 import { promisify } from 'node:util'
 import { setTimeout } from 'node:timers'
 import request from 'supertest'
+import z from 'zod'
 import { createServer } from '../src'
 
 const timeout = promisify(setTimeout)

@@ -5,8 +5,9 @@
 ## Exammple
 
 ```typescript
-import { Data, zod as z } from '@targetd/api',
+import { Data } from '@targetd/api',
 import { createServer } from '@targetd/server'
+import z from 'zod'
 
 const data = Data.create()
   .useDataValidator('foo', z.string())

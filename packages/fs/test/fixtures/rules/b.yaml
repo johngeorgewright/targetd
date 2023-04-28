@@ -1,0 +1,4 @@
+# yaml-language-server: $schema=../schema.json
+b:
+  rules:
+    - payload: b is a letter

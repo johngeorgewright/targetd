@@ -65,11 +65,12 @@ data = data.addRules(...)
 All typing and validation is done using the awesome [zod][] project and is exported from the `@targetd/api` package. [Zod][zod] is an easy project to understand and you'll need to know some of the basics.
 
 ```typescript
-import { Data, zod as z } from '@targetd/api'
+import { Data } from '@targetd/api'
+import z from 'zod'
 
 let data = Data.create().useDataValidator(
   'blog',
-  z.object({
+  z.strictObject({
     title: z.string(),
     body: z.string(),
   })
@@ -95,7 +96,8 @@ data = data.addRules([
 As mentioned above, all typing and validation is done using the [zod][] project.
 
 ```typescript
-import { Data, zod as z } from '@targetd/api'
+import { Data } from '@targetd/api'
+import z from 'zod'
 
 let data = Data.create().useTargeting('category', {
   predicate: (q) => (t) => t.includes(q),

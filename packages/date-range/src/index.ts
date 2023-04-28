@@ -1,4 +1,5 @@
-import { createTargetingDescriptor, zod as z } from '@targetd/api'
+import { createTargetingDescriptor } from '@targetd/api'
+import z from 'zod'
 
 const ISODateTime = z
   .string()

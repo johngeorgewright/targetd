@@ -32,7 +32,8 @@
     "semantic-release-monorepo": "7.0.5",
     "supertest": "6.3.3",
     "ts-jest": "29.1.0",
-    "typescript": "5.0.4"
+    "typescript": "5.0.4",
+    "zod": "3.21.4"
   },
   "dependencies": {
     "@johngw/error": "2.2.0",
@@ -46,6 +47,7 @@
     "tslib": "2.5.0"
   },
   "peerDependencies": {
-    "@targetd/api": ">=3.0.0"
+    "@targetd/api": ">=3.0.0",
+    "zod": "^3.20.0"
   }
 }
