@@ -1,8 +1,7 @@
-import { Data } from '@targetd/api'
-import { emptyDir, copy } from 'fs-extra'
 import * as path from 'node:path'
-import z from 'zod'
+import { emptyDir, copy } from 'fs-extra'
 import { watch } from '../src'
+import { data } from './fixtures/data'
 
 let stopWatching: undefined | (() => void)
 
@@ -20,10 +19,6 @@ afterEach(async () => {
 })
 
 test('watch', (done) => {
-  const data = Data.create()
-    .useDataValidator('foo', z.string())
-    .useDataValidator('b', z.string())
-
   let initiated = false
 
   stopWatching = watch(data, dirTo, async (error, data) => {
@@ -37,5 +32,5 @@ test('watch', (done) => {
     done()
   })
 
-  copy(path.join(__dirname, 'fixtures'), dirTo)
+  copy(path.join(__dirname, 'fixtures', 'rules'), dirTo)
 })

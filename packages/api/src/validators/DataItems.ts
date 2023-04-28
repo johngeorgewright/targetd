@@ -7,10 +7,12 @@ function DataItems<D extends z.ZodRawShape, T extends z.ZodRawShape>(
   targeting: T
 ): DataItems<D, T> {
   const dataItems: Record<string, any> = {}
-  for (const [key, Payload] of Object.entries(dataValidators)) {
+  for (const [key, Payload] of Object.entries(dataValidators))
     dataItems[key] = DataItem(Payload, targeting)
-  }
-  return z.strictObject(dataItems).partial() as DataItems<D, T>
+  return z
+    .strictObject(dataItems)
+    .extend({ $schema: z.string() })
+    .partial() as DataItems<D, T>
 }
 
 type DataItems<
@@ -19,7 +21,7 @@ type DataItems<
 > = ZodPartialObject<
   {
     [Name in keyof DataTypes]: DataItem<DataTypes[Name], Targeting>
-  },
+  } & { $schema: z.ZodString },
   'strict'
 >
 

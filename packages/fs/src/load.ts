@@ -2,10 +2,13 @@ import { readFiles } from '@johngw/fs'
 import { WithFileNamesResult } from '@johngw/fs/dist/readFiles'
 import { Data } from '@targetd/api'
 import YAML from 'yaml'
-import { Data } from '@targetd/api'
+import { z } from 'zod'
 import { Keys } from 'ts-toolbelt/out/Any/Keys'
 
-const FileData = z.record(z.string(), z.array(z.unknown()))
+const FileData = z
+  .object({ $schema: z.string().optional() })
+  .catchall(z.strictObject({ rules: z.array(z.unknown()) }))
+
 type FileData = z.infer<typeof FileData>
 
 export async function load<
@@ -51,8 +54,10 @@ function addRules<
   fileData: FileData
 ) {
   return Object.entries(fileData).reduce(
-    (data, [name, rules]) =>
-      data.addRules(name as Keys<DataValidators>, rules as any[]),
+    (data, [name, value]) =>
+      typeof value === 'object'
+        ? data.addRules(name as Keys<DataValidators>, value.rules as any[])
+        : data,
     data
   )
 }

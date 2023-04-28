@@ -6,6 +6,7 @@ function DataItem<P extends z.ZodTypeAny, T extends z.ZodRawShape>(
   targeting: T
 ): DataItem<P, T> {
   return z.strictObject({
+    $schema: z.string().optional(),
     rules: z.array(DataItemRule(Payload, targeting)),
   })
 }
@@ -15,6 +16,7 @@ type DataItem<
   Targeting extends z.ZodRawShape
 > = z.ZodObject<
   {
+    $schema: z.ZodOptional<z.ZodString>
     rules: z.ZodArray<DataItemRule<Payload, Targeting>>
   },
   'strict'
