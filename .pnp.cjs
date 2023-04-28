@@ -3152,7 +3152,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["typescript", "patch:typescript@npm%3A5.0.4#~builtin<compat/typescript>::version=5.0.4&hash=85af82"],\
             ["yargs", "npm:17.7.2"],\
             ["zod", "npm:3.21.4"],\
-            ["zod-to-json-schema", "virtual:659caa87d33ab88e9ed1cb569b7408c960a2f6005079eafaf1ff1411303e6211aa0f750b69155738e7cdda8f02669eca60098d12e1c88a4525149f95a87567f2#npm:3.20.4"]\
+            ["zod-to-json-schema", "virtual:659caa87d33ab88e9ed1cb569b7408c960a2f6005079eafaf1ff1411303e6211aa0f750b69155738e7cdda8f02669eca60098d12e1c88a4525149f95a87567f2#npm:3.21.0"]\
           ],\
           "packagePeers": [\
             "@targetd/api",\
@@ -3185,7 +3185,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["typescript", "patch:typescript@npm%3A5.0.4#~builtin<compat/typescript>::version=5.0.4&hash=85af82"],\
             ["yargs", "npm:17.7.2"],\
             ["zod", "npm:3.21.4"],\
-            ["zod-to-json-schema", "virtual:659caa87d33ab88e9ed1cb569b7408c960a2f6005079eafaf1ff1411303e6211aa0f750b69155738e7cdda8f02669eca60098d12e1c88a4525149f95a87567f2#npm:3.20.4"]\
+            ["zod-to-json-schema", "virtual:659caa87d33ab88e9ed1cb569b7408c960a2f6005079eafaf1ff1411303e6211aa0f750b69155738e7cdda8f02669eca60098d12e1c88a4525149f95a87567f2#npm:3.21.0"]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -17160,17 +17160,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["zod-to-json-schema", [\
-        ["npm:3.20.4", {\
-          "packageLocation": "./.yarn/cache/zod-to-json-schema-npm-3.20.4-0a14694f03-55bc649dbc.zip/node_modules/zod-to-json-schema/",\
+        ["npm:3.21.0", {\
+          "packageLocation": "./.yarn/cache/zod-to-json-schema-npm-3.21.0-b443951c1f-957a48a699.zip/node_modules/zod-to-json-schema/",\
           "packageDependencies": [\
-            ["zod-to-json-schema", "npm:3.20.4"]\
+            ["zod-to-json-schema", "npm:3.21.0"]\
           ],\
           "linkType": "SOFT"\
         }],\
-        ["virtual:659caa87d33ab88e9ed1cb569b7408c960a2f6005079eafaf1ff1411303e6211aa0f750b69155738e7cdda8f02669eca60098d12e1c88a4525149f95a87567f2#npm:3.20.4", {\
-          "packageLocation": "./.yarn/__virtual__/zod-to-json-schema-virtual-cd1829a914/0/cache/zod-to-json-schema-npm-3.20.4-0a14694f03-55bc649dbc.zip/node_modules/zod-to-json-schema/",\
+        ["virtual:659caa87d33ab88e9ed1cb569b7408c960a2f6005079eafaf1ff1411303e6211aa0f750b69155738e7cdda8f02669eca60098d12e1c88a4525149f95a87567f2#npm:3.21.0", {\
+          "packageLocation": "./.yarn/__virtual__/zod-to-json-schema-virtual-50955a8983/0/cache/zod-to-json-schema-npm-3.21.0-b443951c1f-957a48a699.zip/node_modules/zod-to-json-schema/",\
           "packageDependencies": [\
-            ["zod-to-json-schema", "virtual:659caa87d33ab88e9ed1cb569b7408c960a2f6005079eafaf1ff1411303e6211aa0f750b69155738e7cdda8f02669eca60098d12e1c88a4525149f95a87567f2#npm:3.20.4"],\
+            ["zod-to-json-schema", "virtual:659caa87d33ab88e9ed1cb569b7408c960a2f6005079eafaf1ff1411303e6211aa0f750b69155738e7cdda8f02669eca60098d12e1c88a4525149f95a87567f2#npm:3.21.0"],\
             ["@types/zod", null],\
             ["zod", "npm:3.21.4"]\
           ],\
