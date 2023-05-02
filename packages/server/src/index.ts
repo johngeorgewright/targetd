@@ -9,8 +9,16 @@ import { StatusError } from './StatusError'
 export function createServer<
   DataValidators extends z.ZodRawShape,
   TargetingValidators extends z.ZodRawShape,
-  QueryValidators extends z.ZodRawShape
->(data: Data<DataValidators, TargetingValidators, QueryValidators>) {
+  QueryValidators extends z.ZodRawShape,
+  ClientTargetingValidators extends z.ZodRawShape
+>(
+  data: Data<
+    DataValidators,
+    TargetingValidators,
+    QueryValidators,
+    ClientTargetingValidators
+  >
+) {
   return express()
     .use(cors())
 

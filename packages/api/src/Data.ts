@@ -1,5 +1,7 @@
 import z from 'zod'
-import TargetingDescriptor from './validators/TargetingDescriptor'
+import TargetingDescriptor, {
+  isTargetingDescriptor,
+} from './validators/TargetingDescriptor'
 import TargetingPredicates from './validators/TargetingPredicates'
 import { objectEveryAsync, objectKeys, objectMap } from './util'
 import DataItems from './validators/DataItems'
@@ -11,9 +13,13 @@ import { MaybePromise, StaticRecord, ZodPartialObject } from './types'
 export default class Data<
   DataValidators extends z.ZodRawShape,
   TargetingValidators extends z.ZodRawShape,
-  QueryValidators extends z.ZodRawShape
+  QueryValidators extends z.ZodRawShape,
+  ClientTargetingValidators extends z.ZodRawShape
 > {
-  readonly #data: z.infer<DataItems<DataValidators, TargetingValidators>>
+  readonly #clientTargetingValidators: ClientTargetingValidators
+  readonly #data: z.infer<
+    DataItems<DataValidators, TargetingValidators, ClientTargetingValidators>
+  >
   readonly #dataValidators: DataValidators
   readonly #targetingPredicates: TargetingPredicates<
     TargetingValidators,
@@ -24,19 +30,23 @@ export default class Data<
   readonly #QueryValidator: ZodPartialObject<QueryValidators, 'strict'>
 
   static create() {
-    return new Data({}, {}, {}, {}, {})
+    return new Data({}, {}, {}, {}, {}, {})
   }
 
   private constructor(
-    data: z.infer<DataItems<DataValidators, TargetingValidators>>,
+    data: z.infer<
+      DataItems<DataValidators, TargetingValidators, ClientTargetingValidators>
+    >,
     dataValidators: DataValidators,
     targetingPredicates: TargetingPredicates<
       TargetingValidators,
       QueryValidators
     >,
     targetingValidators: TargetingValidators,
-    queryValidators: QueryValidators
+    queryValidators: QueryValidators,
+    clientTargetingValidators: ClientTargetingValidators
   ) {
+    this.#clientTargetingValidators = Object.freeze(clientTargetingValidators)
     this.#data = Object.freeze(data)
     this.#dataValidators = Object.freeze(dataValidators)
     this.#targetingPredicates = Object.freeze(targetingPredicates)
@@ -45,7 +55,9 @@ export default class Data<
     this.#QueryValidator = z.strictObject(this.#queryValidators).partial()
   }
 
-  get data(): z.infer<DataItems<DataValidators, TargetingValidators>> {
+  get data(): z.infer<
+    DataItems<DataValidators, TargetingValidators, ClientTargetingValidators>
+  > {
     return this.#data
   }
 
@@ -65,6 +77,10 @@ export default class Data<
     return this.#queryValidators
   }
 
+  get clientTargetingValidators() {
+    return this.#clientTargetingValidators
+  }
+
   useDataValidator<Name extends string, Validator extends z.ZodTypeAny>(
     name: Name,
     validator: Validator
@@ -72,10 +88,15 @@ export default class Data<
     return new Data<
       DataValidators & Record<Name, Validator>,
       TargetingValidators,
-      QueryValidators
+      QueryValidators,
+      ClientTargetingValidators
     >(
       this.#data as z.infer<
-        DataItems<DataValidators & Record<Name, Validator>, TargetingValidators>
+        DataItems<
+          DataValidators & Record<Name, Validator>,
+          TargetingValidators,
+          ClientTargetingValidators
+        >
       >,
       {
         ...this.#dataValidators,
@@ -83,19 +104,30 @@ export default class Data<
       },
       this.#targetingPredicates,
       this.#targetingValidators,
-      this.#queryValidators
+      this.#queryValidators,
+      this.#clientTargetingValidators
     )
   }
 
   addRules<Name extends Keys<DataValidators>>(
     name: Name,
-    rules: z.infer<DataItemRule<DataValidators[Name], TargetingValidators>>[]
+    rules: z.infer<
+      DataItemRule<
+        DataValidators[Name],
+        TargetingValidators,
+        ClientTargetingValidators
+      >
+    >[]
   ) {
     const dataItem = (this.#data as any)[name] || {}
     return new Data(
       {
         ...this.#data,
-        ...DataItems(this.#dataValidators, this.#targetingValidators).parse({
+        ...DataItems(
+          this.#dataValidators,
+          this.#targetingValidators,
+          this.#clientTargetingValidators
+        ).parse({
           [name]: {
             ...dataItem,
             rules: [...(dataItem.rules || []), ...rules],
@@ -105,17 +137,23 @@ export default class Data<
       this.#dataValidators,
       this.#targetingPredicates,
       this.#targetingValidators,
-      this.#queryValidators
+      this.#queryValidators,
+      this.#clientTargetingValidators
     )
   }
 
   removeAllRules() {
     return new Data(
-      DataItems(this.#dataValidators, this.#targetingValidators).parse({}),
+      DataItems(
+        this.#dataValidators,
+        this.#targetingValidators,
+        this.#clientTargetingValidators
+      ).parse({}),
       this.#dataValidators,
       this.#targetingPredicates,
       this.#targetingValidators,
-      this.#queryValidators
+      this.#queryValidators,
+      this.#clientTargetingValidators
     )
   }
 
@@ -126,8 +164,15 @@ export default class Data<
   >(name: Name, targetingDescriptor: TargetingDescriptor<TV, QV>) {
     type NewTargeting = TargetingValidators & { [K in Name]: TV }
     type NewQuery = QueryValidators & { [K in Name]: QV }
-    return new Data<DataValidators, NewTargeting, NewQuery>(
-      this.#data as z.infer<DataItems<DataValidators, NewTargeting>>,
+    return new Data<
+      DataValidators,
+      NewTargeting,
+      NewQuery,
+      ClientTargetingValidators
+    >(
+      this.#data as z.infer<
+        DataItems<DataValidators, NewTargeting, ClientTargetingValidators>
+      >,
       this.#dataValidators,
       {
         ...this.#targetingPredicates,
@@ -146,12 +191,41 @@ export default class Data<
       {
         ...this.#queryValidators,
         [name]: targetingDescriptor.queryValidator,
-      } as any
+      },
+      this.#clientTargetingValidators
+    )
+  }
+
+  useClientTargeting<
+    Name extends string,
+    TV extends z.ZodTypeAny,
+    QV extends z.ZodTypeAny
+  >(name: Name, targetingValidator: TV | TargetingDescriptor<TV, QV>) {
+    type NewClientTargeting = ClientTargetingValidators & { [K in Name]: TV }
+    return new Data<
+      DataValidators,
+      TargetingValidators,
+      QueryValidators,
+      NewClientTargeting
+    >(
+      this.#data as z.infer<
+        DataItems<DataValidators, TargetingValidators, NewClientTargeting>
+      >,
+      this.#dataValidators,
+      this.#targetingPredicates,
+      this.#targetingValidators,
+      this.#queryValidators,
+      {
+        ...this.#clientTargetingValidators,
+        [name]: isTargetingDescriptor(targetingValidator)
+          ? targetingValidator.targetingValidator
+          : targetingValidator,
+      } as NewClientTargeting
     )
   }
 
   async getPayloadForEachName(
-    rawQuery: Partial<StaticRecord<QueryValidators>>
+    rawQuery: Partial<StaticRecord<QueryValidators>> = {}
   ) {
     const payloads = {} as Partial<{
       [Name in keyof DataValidators]:
@@ -170,7 +244,7 @@ export default class Data<
 
   async getPayload<Name extends keyof DataValidators>(
     name: Name,
-    rawQuery: Partial<StaticRecord<QueryValidators>>
+    rawQuery: Partial<StaticRecord<QueryValidators>> = {}
   ): Promise<Payload<DataValidators[Name], TargetingValidators> | void> {
     const predicate = this.#createRulePredicate(rawQuery)
     for (const rule of this.#getTargetableRules(name))
@@ -179,7 +253,7 @@ export default class Data<
 
   async getPayloads<Name extends keyof DataValidators>(
     name: Name,
-    rawQuery: Partial<StaticRecord<QueryValidators>>
+    rawQuery: Partial<StaticRecord<QueryValidators>> = {}
   ): Promise<Payload<DataValidators[Name], TargetingValidators>[]> {
     const payloads: Payload<DataValidators[Name], TargetingValidators>[] = []
     const predicate = this.#createRulePredicate(rawQuery)
@@ -189,7 +263,13 @@ export default class Data<
   }
 
   readonly #mapRule = <Name extends keyof DataValidators>(
-    rule: z.infer<DataItemRule<DataValidators[Name], TargetingValidators>>
+    rule: z.infer<
+      DataItemRule<
+        DataValidators[Name],
+        TargetingValidators,
+        ClientTargetingValidators
+      >
+    >
   ) =>
     hasPayload(rule)
       ? rule.payload
@@ -211,7 +291,13 @@ export default class Data<
     )
 
     return (
-      rule: z.infer<DataItemRule<DataValidators[Name], TargetingValidators>>
+      rule: z.infer<
+        DataItemRule<
+          DataValidators[Name],
+          TargetingValidators,
+          ClientTargetingValidators
+        >
+      >
     ) =>
       !('targeting' in rule) ||
       this.#targetingPredicate(query, rule.targeting!, targeting)
@@ -222,7 +308,11 @@ export default class Data<
       (
         this.#data as unknown as {
           [Name in keyof DataValidators]: z.infer<
-            DataItem<DataValidators[Name], TargetingValidators>
+            DataItem<
+              DataValidators[Name],
+              TargetingValidators,
+              ClientTargetingValidators
+            >
           >
         }
       )[name]?.rules || []

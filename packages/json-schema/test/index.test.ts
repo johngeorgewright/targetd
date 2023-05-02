@@ -52,7 +52,21 @@ test('json schema for simple data object', () => {
                     "properties": {
                       "client": {
                         "items": {
-                          "$ref": "#/properties/foo/properties/rules/items/anyOf/0",
+                          "additionalProperties": false,
+                          "properties": {
+                            "payload": {
+                              "$ref": "#/properties/foo/properties/rules/items/anyOf/0/properties/payload",
+                            },
+                            "targeting": {
+                              "additionalProperties": false,
+                              "properties": {},
+                              "type": "object",
+                            },
+                          },
+                          "required": [
+                            "payload",
+                          ],
+                          "type": "object",
                         },
                         "type": "array",
                       },

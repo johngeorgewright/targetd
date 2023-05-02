@@ -59,7 +59,7 @@ test('getPayload', async () => {
       },
     ])
 
-  expect(await data.getPayload('foo', {})).toBe('bar')
+  expect(await data.getPayload('foo')).toBe('bar')
   expect(await data.getPayload('foo', { weather: 'sunny' })).toBe('😎')
   expect(await data.getPayload('foo', { weather: 'rainy' })).toBe('☂️')
   expect(await data.getPayload('foo', { highTide: true })).toBe('🌊')
@@ -71,7 +71,7 @@ test('getPayload', async () => {
   )
 
   // @ts-expect-error
-  await data.getPayload('mung', {})
+  await data.getPayload('mung')
 
   expect(
     // @ts-expect-error
@@ -112,7 +112,7 @@ test('targeting without requiring a query', async () => {
       },
     ])
 
-  expect(await data.getPayload('foo', {})).toBe('The time is now')
+  expect(await data.getPayload('foo')).toBe('The time is now')
 })
 
 test('getPayloads', async () => {
@@ -262,6 +262,95 @@ test('getPayloadForEachName', async () => {
     {
       "bar": "async payloads!",
       "foo": undefined,
+    }
+  `)
+})
+
+test('client targeting', async () => {
+  const data = Data.create()
+    .useDataValidator('foo', z.string())
+    .useDataValidator('bar', z.string())
+    .useClientTargeting('weather', z.array(z.string()))
+    .useClientTargeting('highTide', z.boolean())
+    .addRules('foo', [
+      {
+        client: [
+          {
+            targeting: {
+              weather: ['sunny'],
+            },
+            payload: '😎',
+          },
+          {
+            targeting: {
+              weather: ['rainy'],
+            },
+            payload: '☂️',
+          },
+        ],
+      },
+    ])
+    .addRules('bar', [
+      {
+        client: [
+          {
+            targeting: {
+              weather: ['rainy'],
+            },
+            payload: '😟',
+          },
+          {
+            targeting: {
+              weather: ['sunny'],
+            },
+            payload: '😁',
+          },
+        ],
+      },
+    ])
+
+  expect(await data.getPayloadForEachName()).toMatchInlineSnapshot(`
+    {
+      "bar": {
+        "__rules__": [
+          {
+            "payload": "😟",
+            "targeting": {
+              "weather": [
+                "rainy",
+              ],
+            },
+          },
+          {
+            "payload": "😁",
+            "targeting": {
+              "weather": [
+                "sunny",
+              ],
+            },
+          },
+        ],
+      },
+      "foo": {
+        "__rules__": [
+          {
+            "payload": "😎",
+            "targeting": {
+              "weather": [
+                "sunny",
+              ],
+            },
+          },
+          {
+            "payload": "☂️",
+            "targeting": {
+              "weather": [
+                "rainy",
+              ],
+            },
+          },
+        ],
+      },
     }
   `)
 })

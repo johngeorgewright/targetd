@@ -7,22 +7,36 @@ Sometimes you can't rely on one data service to fulfil all the target filtering.
 ## Example
 
 ```typescript
+// ./device.ts
+import { createTargetingDescriptor } from '@targetd/api'
+import { z } from 'zod'
+
+export const Device = z.literal('desktop').or(z.literal('mobile'))
+
+export const deviceTargeting = createTargetingDescriptor({
+  predicate: (q) => (t) => typeof q === 'string' && t.includes(q),
+  queryValidator: Device,
+  targetingValidator: z.array(Device),
+})
+```
+
+```typescript
+// ./data.ts
 import { Data } from '@targetd/api'
-import { ClientData } from '@targetd/client'
 import z from 'zod'
+import { Device } from './device'
 
-const Device = z.literal('desktop').or(z.literal('mobile'))
-
-const data = Data.create()
+export const data = Data.create()
   .useDataValidator('bar', z.number())
   .useDataValidator('foo', z.string())
-  .useTargeting('device', {
-    predicate: (q) => (t) => typeof q === 'string' && t.includes(q),
-    queryValidator: Device,
-    targetingValidator: z.array(Device),
-  })
+```
 
-const serverData = data
+```typescript
+// ./serverData.ts
+import { data } from './data'
+
+export const serverData = data
+  .useClientTargeting('device', deviceTargeting)
   .addRules('bar', [
     {
       payload: 123,
@@ -46,10 +60,19 @@ const serverData = data
       ],
     },
   ])
+```
 
-const clientData = new ClientData(data).add(
-  await serverData.getPayloadForEachName({})
-)
+```typescript
+// ./clientData.ts
+import { ClientData } from '@targetd/client'
+import z from 'zod'
+import { data } from './data'
+import { deviceTargeting } from './device'
+import { serverData } from './serverData'
+
+const clientData = new ClientData(
+  data.useTargeting('device', deviceTargeting)
+).add(await serverData.getPayloadForEachName())
 
 expect(await clientData.getPayloadForEachName({ device: 'mobile' })).toEqual({
   bar: 123,

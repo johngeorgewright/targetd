@@ -1,22 +1,35 @@
-import { Data } from '@targetd/api'
+import {
+  createTargetingDescriptor,
+  Data,
+  targetIncludesPredicate,
+  equalsPredicate,
+} from '@targetd/api'
 import z from 'zod'
 import { ClientData } from '../src'
+
+const Weather = z.string()
+
+const weatherTargeting = createTargetingDescriptor({
+  predicate: targetIncludesPredicate(),
+  queryValidator: Weather,
+  targetingValidator: z.array(Weather),
+})
+
+const HighTide = z.boolean()
+
+const highTideTargeting = createTargetingDescriptor({
+  predicate: equalsPredicate(),
+  queryValidator: HighTide,
+  targetingValidator: HighTide,
+})
 
 const data = Data.create()
   .useDataValidator('bar', z.number())
   .useDataValidator('foo', z.string())
-  .useTargeting('weather', {
-    predicate: (q) => (t) => typeof q === 'string' && t.includes(q),
-    queryValidator: z.string(),
-    targetingValidator: z.array(z.string()),
-  })
-  .useTargeting('highTide', {
-    predicate: (q) => (t) => q === t,
-    queryValidator: z.boolean(),
-    targetingValidator: z.boolean(),
-  })
 
 const serverData = data
+  .useClientTargeting('weather', weatherTargeting)
+  .useClientTargeting('highTide', highTideTargeting)
   .addRules('bar', [
     {
       payload: 123,
@@ -54,7 +67,11 @@ const serverData = data
     },
   ])
 
-let clientData = new ClientData(data)
+let clientData = new ClientData(
+  data
+    .useTargeting('weather', weatherTargeting)
+    .useTargeting('highTide', highTideTargeting)
+)
 
 test('client data', async () => {
   clientData = clientData.add(await serverData.getPayloadForEachName({}))

@@ -14,9 +14,15 @@ type FileData = z.infer<typeof FileData>
 export async function load<
   DataValidators extends z.ZodRawShape,
   TargetingValidators extends z.ZodRawShape,
-  QueryValidators extends z.ZodRawShape
+  QueryValidators extends z.ZodRawShape,
+  ClientTargetingValidators extends z.ZodRawShape
 >(
-  data: Data<DataValidators, TargetingValidators, QueryValidators>,
+  data: Data<
+    DataValidators,
+    TargetingValidators,
+    QueryValidators,
+    ClientTargetingValidators
+  >,
   dir: string
 ) {
   for await (const contents of readFiles(dir, {
@@ -48,9 +54,15 @@ function parseFileContents({
 function addRules<
   DataValidators extends z.ZodRawShape,
   TargetingValidators extends z.ZodRawShape,
-  QueryValidators extends z.ZodRawShape
+  QueryValidators extends z.ZodRawShape,
+  ClientTargetingValidators extends z.ZodRawShape
 >(
-  data: Data<DataValidators, TargetingValidators, QueryValidators>,
+  data: Data<
+    DataValidators,
+    TargetingValidators,
+    QueryValidators,
+    ClientTargetingValidators
+  >,
   fileData: FileData
 ) {
   return Object.entries(fileData).reduce(
