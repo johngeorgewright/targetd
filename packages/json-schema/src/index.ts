@@ -5,22 +5,44 @@ import zodToJSONSchema from 'zod-to-json-schema'
 export function dataJSONSchemas<
   DataValidators extends z.ZodRawShape,
   TargetingValidators extends z.ZodRawShape,
-  QueryValidators extends z.ZodRawShape
->(data: Data<DataValidators, TargetingValidators, QueryValidators>) {
+  QueryValidators extends z.ZodRawShape,
+  ClientTargetingValidators extends z.ZodRawShape
+>(
+  data: Data<
+    DataValidators,
+    TargetingValidators,
+    QueryValidators,
+    ClientTargetingValidators
+  >
+) {
   return zodToJSONSchema(
-    DataItems(data.dataValidators, data.targetingValidators)
+    DataItems(
+      data.dataValidators,
+      data.targetingValidators,
+      data.clientTargetingValidators
+    )
   )
 }
 
 export function dataJSONSchema<
   DataValidators extends z.ZodRawShape,
   TargetingValidators extends z.ZodRawShape,
-  QueryValidators extends z.ZodRawShape
+  QueryValidators extends z.ZodRawShape,
+  ClientTargetingValidators extends z.ZodRawShape
 >(
-  data: Data<DataValidators, TargetingValidators, QueryValidators>,
+  data: Data<
+    DataValidators,
+    TargetingValidators,
+    QueryValidators,
+    ClientTargetingValidators
+  >,
   name: keyof DataValidators
 ) {
   return zodToJSONSchema(
-    DataItem(data.dataValidators[name], data.targetingValidators)
+    DataItem(
+      data.dataValidators[name],
+      data.targetingValidators,
+      data.clientTargetingValidators
+    )
   )
 }

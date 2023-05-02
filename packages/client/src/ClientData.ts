@@ -8,13 +8,24 @@ import { ServedData } from './ServedData'
 export class ClientData<
   DataValidators extends z.ZodRawShape,
   TargetingValidators extends z.ZodRawShape,
-  QueryValidators extends z.ZodRawShape
+  QueryValidators extends z.ZodRawShape,
+  ClientTargetingValidators extends z.ZodRawShape
 > {
-  readonly #data: Data<DataValidators, TargetingValidators, QueryValidators>
+  readonly #data: Data<
+    DataValidators,
+    TargetingValidators,
+    QueryValidators,
+    ClientTargetingValidators
+  >
   readonly #query: Partial<StaticRecord<TargetingValidators>>
 
   constructor(
-    data: Data<DataValidators, TargetingValidators, QueryValidators>,
+    data: Data<
+      DataValidators,
+      TargetingValidators,
+      QueryValidators,
+      ClientTargetingValidators
+    >,
     query: Partial<StaticRecord<TargetingValidators>> = {}
   ) {
     this.#data = data
@@ -30,7 +41,8 @@ export class ClientData<
             isTargetable(value) ? value.__rules__ : [{ payload: value } as any]
           ),
         this.#data
-      )
+      ),
+      this.#query
     )
   }
 

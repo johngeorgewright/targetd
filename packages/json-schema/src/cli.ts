@@ -38,7 +38,7 @@ import { dataJSONSchemas } from '.'
   if (outputFile) await writeFile(outputFile, jsonSchema)
   else console.info(jsonSchema)
 
-  function isDataLike(x: any): x is Data<any, any, any> {
+  function isDataLike(x: any): x is Data<any, any, any, any> {
     return 'dataValidators' in x && 'targetingValidators' in x
   }
 })().catch(console.error)
