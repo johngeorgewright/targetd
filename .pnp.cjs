@@ -1809,11 +1809,11 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@johngw/error", [\
-        ["npm:2.2.1", {\
-          "packageLocation": "./.yarn/cache/@johngw-error-npm-2.2.1-80284f7b98-8716340299.zip/node_modules/@johngw/error/",\
+        ["npm:2.2.2", {\
+          "packageLocation": "./.yarn/cache/@johngw-error-npm-2.2.2-77cb4d6605-b2beaf16a1.zip/node_modules/@johngw/error/",\
           "packageDependencies": [\
-            ["@johngw/error", "npm:2.2.1"],\
-            ["tslib", "npm:2.5.0"]\
+            ["@johngw/error", "npm:2.2.2"],\
+            ["tslib", "npm:2.5.2"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -3224,7 +3224,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./packages/server/",\
           "packageDependencies": [\
             ["@targetd/server", "workspace:packages/server"],\
-            ["@johngw/error", "npm:2.2.1"],\
+            ["@johngw/error", "npm:2.2.2"],\
             ["@plugola/query-params", "npm:1.5.0"],\
             ["@semantic-release/commit-analyzer", "virtual:97efea6e6ed679d1b12b286efdf34775793cf3fe0408c2b96c7601039dadfb9d5f6ecc6e60a79c0b5d97872c67aabf027b7d6fd8e25b4de748eccc6c0bfa17ee#npm:9.0.2"],\
             ["@semantic-release/exec", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:6.0.3"],\
@@ -15945,13 +15945,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/tslib-npm-2.4.1-36f0ed04db-19480d6e03.zip/node_modules/tslib/",\
           "packageDependencies": [\
             ["tslib", "npm:2.4.1"]\
-          ],\
-          "linkType": "HARD"\
-        }],\
-        ["npm:2.5.0", {\
-          "packageLocation": "./.yarn/cache/tslib-npm-2.5.0-bb364efebd-ae3ed5f9ce.zip/node_modules/tslib/",\
-          "packageDependencies": [\
-            ["tslib", "npm:2.5.0"]\
           ],\
           "linkType": "HARD"\
         }],\

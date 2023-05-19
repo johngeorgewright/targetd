@@ -36,7 +36,7 @@
     "zod": "3.21.4"
   },
   "dependencies": {
-    "@johngw/error": "2.2.1",
+    "@johngw/error": "2.2.2",
     "@plugola/query-params": "1.5.0",
     "@types/express": "4.17.17",
     "@types/express-serve-static-core": "4.17.35",
