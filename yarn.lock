@@ -2440,7 +2440,7 @@ __metadata:
     ts-jest: 29.1.0
     tslib: 2.5.2
     typescript: 5.0.4
-    yeoman-generator: 5.8.0
+    yeoman-generator: 5.9.0
   languageName: unknown
   linkType: soft
 
@@ -11301,6 +11301,34 @@ __metadata:
   languageName: node
   linkType: hard
 
+"pacote@npm:^15.2.0":
+  version: 15.2.0
+  resolution: "pacote@npm:15.2.0"
+  dependencies:
+    "@npmcli/git": ^4.0.0
+    "@npmcli/installed-package-contents": ^2.0.1
+    "@npmcli/promise-spawn": ^6.0.1
+    "@npmcli/run-script": ^6.0.0
+    cacache: ^17.0.0
+    fs-minipass: ^3.0.0
+    minipass: ^5.0.0
+    npm-package-arg: ^10.0.0
+    npm-packlist: ^7.0.0
+    npm-pick-manifest: ^8.0.0
+    npm-registry-fetch: ^14.0.0
+    proc-log: ^3.0.0
+    promise-retry: ^2.0.1
+    read-package-json: ^6.0.0
+    read-package-json-fast: ^3.0.0
+    sigstore: ^1.3.0
+    ssri: ^10.0.0
+    tar: ^6.1.11
+  bin:
+    pacote: lib/bin.js
+  checksum: c731572be2bf226b117eba076d242bd4cd8be7aa01e004af3374a304ad7ab330539e22644bc33de12d2a7d45228ccbcbf4d710f59c84414f3d09a1a95ee6f0bf
+  languageName: node
+  linkType: hard
+
 "pad-component@npm:0.0.1":
   version: 0.0.1
   resolution: "pad-component@npm:0.0.1"
@@ -14961,9 +14989,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"yeoman-generator@npm:5.8.0":
-  version: 5.8.0
-  resolution: "yeoman-generator@npm:5.8.0"
+"yeoman-generator@npm:5.9.0":
+  version: 5.9.0
+  resolution: "yeoman-generator@npm:5.9.0"
   dependencies:
     chalk: ^4.1.0
     dargs: ^7.0.0
@@ -14973,6 +15001,7 @@ __metadata:
     lodash: ^4.17.11
     mem-fs-editor: ^9.0.0
     minimist: ^1.2.5
+    pacote: ^15.2.0
     read-pkg-up: ^7.0.1
     run-async: ^2.0.0
     semver: ^7.2.1
@@ -14984,7 +15013,7 @@ __metadata:
   peerDependenciesMeta:
     yeoman-environment:
       optional: true
-  checksum: dd9fbbfca7c37cc002c794b897a92b4c83b3019b662896d92a12671823a1ad7f04da2c0d1b14c85afdabf691a2f38630afc08f5250de29ab1a5cadd6e792ad41
+  checksum: f9e76e21af33acf9b8421f889fccac45e6f335f7a3b8d6741f5efc0eb2f950e9e04a5cbb20897e0084fd8a52a4a12a8221200b1bd40b948c94e1f32204019fed
   languageName: node
   linkType: hard
 
