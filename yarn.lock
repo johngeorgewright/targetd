@@ -2124,6 +2124,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@semantic-release/error@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "@semantic-release/error@npm:4.0.0"
+  checksum: 01213195ae3b8e2490b0d0db79525f7abbb1cc795494b46b8022f81ab1f24f5eab6232b549528b437cff872a66d36649f2fb4f3b56eba351d947a02cccc81ecc
+  languageName: node
+  linkType: hard
+
 "@semantic-release/exec@npm:6.0.3":
   version: 6.0.3
   resolution: "@semantic-release/exec@npm:6.0.3"
@@ -2365,7 +2372,7 @@ __metadata:
     "@types/node": 18.16.16
     jest: 29.5.0
     rimraf: 5.0.1
-    semantic-release: 21.0.3
+    semantic-release: 21.0.5
     semantic-release-monorepo: 7.0.5
     ts-jest: 29.1.0
     ts-toolbelt: 9.6.0
@@ -2391,7 +2398,7 @@ __metadata:
     "@types/node": 18.16.16
     jest: 29.5.0
     rimraf: 5.0.1
-    semantic-release: 21.0.3
+    semantic-release: 21.0.5
     semantic-release-monorepo: 7.0.5
     ts-jest: 29.1.0
     ts-toolbelt: 9.6.0
@@ -2419,7 +2426,7 @@ __metadata:
     jest: 29.5.0
     jest-date-mock: 1.0.8
     rimraf: 5.0.1
-    semantic-release: 21.0.3
+    semantic-release: 21.0.5
     semantic-release-monorepo: 7.0.5
     ts-jest: 29.1.0
     tslib: 2.5.3
@@ -2452,7 +2459,7 @@ __metadata:
     jest: 29.5.0
     lodash: 4.17.21
     rimraf: 5.0.1
-    semantic-release: 21.0.3
+    semantic-release: 21.0.5
     semantic-release-monorepo: 7.0.5
     throat: 6.0.2
     ts-jest: 29.1.0
@@ -2484,7 +2491,7 @@ __metadata:
     "@types/yargs": ^17
     jest: 29.5.0
     rimraf: 5.0.1
-    semantic-release: 21.0.3
+    semantic-release: 21.0.5
     semantic-release-monorepo: 7.0.5
     ts-jest: 29.1.0
     ts-node: 10.9.1
@@ -2522,7 +2529,7 @@ __metadata:
     lint-staged: 13.2.2
     mkdirp-infer-owner: 2.0.0
     prettier: 2.8.8
-    semantic-release: 21.0.3
+    semantic-release: 21.0.5
     semantic-release-monorepo: 7.0.5
     ts-node: 10.9.1
     tslib: 2.5.3
@@ -2547,7 +2554,7 @@ __metadata:
     jest: 29.5.0
     prettier: 2.8.8
     rimraf: 5.0.1
-    semantic-release: 21.0.3
+    semantic-release: 21.0.5
     semantic-release-monorepo: 7.0.5
     ts-jest: 29.1.0
     tslib: 2.5.3
@@ -2580,7 +2587,7 @@ __metadata:
     jest: 29.5.0
     query-types: 0.1.4
     rimraf: 5.0.1
-    semantic-release: 21.0.3
+    semantic-release: 21.0.5
     semantic-release-monorepo: 7.0.5
     supertest: 6.3.3
     ts-jest: 29.1.0
@@ -9754,12 +9761,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"marked@npm:^4.1.0":
-  version: 4.2.12
-  resolution: "marked@npm:4.2.12"
+"marked@npm:^5.0.0":
+  version: 5.0.5
+  resolution: "marked@npm:5.0.5"
   bin:
     marked: bin/marked.js
-  checksum: bd551cd61028ee639d4ca2ccdfcc5a6ba4227c1b143c4538f3cde27f569dcb57df8e6313560394645b418b84a7336c07ab1e438b89b6324c29d7d8cdd3102d63
+  checksum: 0148b62895e93dff7f209469ec1d0d5cbb52e4d974c6ed02d35f9feaf75580c2daf16610486b0c36780c75d893b14103e74c8737f9921e54b3bd2b4d1dc51039
   languageName: node
   linkType: hard
 
@@ -12837,12 +12844,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semantic-release@npm:21.0.3":
-  version: 21.0.3
-  resolution: "semantic-release@npm:21.0.3"
+"semantic-release@npm:21.0.5":
+  version: 21.0.5
+  resolution: "semantic-release@npm:21.0.5"
   dependencies:
     "@semantic-release/commit-analyzer": ^10.0.0
-    "@semantic-release/error": ^3.0.0
+    "@semantic-release/error": ^4.0.0
     "@semantic-release/github": ^9.0.0
     "@semantic-release/npm": ^10.0.2
     "@semantic-release/release-notes-generator": ^11.0.0
@@ -12858,7 +12865,7 @@ __metadata:
     hook-std: ^3.0.0
     hosted-git-info: ^6.0.0
     lodash-es: ^4.17.21
-    marked: ^4.1.0
+    marked: ^5.0.0
     marked-terminal: ^5.1.1
     micromatch: ^4.0.2
     p-each-series: ^3.0.0
@@ -12871,7 +12878,7 @@ __metadata:
     yargs: ^17.5.1
   bin:
     semantic-release: bin/semantic-release.js
-  checksum: bbfed3497df4e4066374eca3c0162fbe4f38aa30a26fa402b5044b2d0b4dd17ec9656dd54236ba44835a6456b2d28bd196c8feca95b62cb0fcada2979526110c
+  checksum: 9b45d24392c24a7f147e4560d36a0f70447b719b0e7371c400834b9a1a98f4b6a3e23420480505f03b0b690c2eaaea2db53c870435a28f8946721ad96f63d3e1
   languageName: node
   linkType: hard
 
