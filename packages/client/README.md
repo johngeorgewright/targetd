@@ -1,5 +1,9 @@
 # @targetd/client
 
+## DEPRECATED
+
+All this package was made for can now be done with `Data.insert()`.
+
 > Using results from @targetd/server.
 
 Sometimes you can't rely on one data service to fulfil all the target filtering. For example, a server providing data might not be able to target by device. Therefore @targetd provides the option to pass targeting to the next phase (or the "client").
