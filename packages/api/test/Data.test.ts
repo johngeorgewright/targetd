@@ -354,3 +354,75 @@ test('client targeting', async () => {
     }
   `)
 })
+
+test('inserting data', async () => {
+  const data = Data.create()
+    .useDataValidator('moo', z.string())
+    .useDataValidator('foo', z.string())
+    .useDataValidator('bar', z.string())
+    .useTargeting('weather', {
+      predicate: targetIncludesPredicate(),
+      queryValidator: z.string(),
+      targetingValidator: z.array(z.string()),
+    })
+    .useClientTargeting('highTide', z.boolean())
+    .insert({
+      bar: {
+        __rules__: [
+          {
+            payload: '😟',
+            targeting: {
+              highTide: false,
+            },
+          },
+          {
+            payload: '😁',
+            targeting: {
+              highTide: true,
+            },
+          },
+        ],
+      },
+      foo: {
+        __rules__: [
+          {
+            payload: '😎',
+            targeting: {
+              weather: ['sunny'],
+            },
+          },
+          {
+            payload: '☂️',
+            targeting: {
+              weather: ['rainy'],
+            },
+          },
+        ],
+      },
+      moo: 'glue',
+    })
+
+  expect(await data.getPayloadForEachName({ weather: 'sunny' }))
+    .toMatchInlineSnapshot(`
+    {
+      "bar": {
+        "__rules__": [
+          {
+            "payload": "😟",
+            "targeting": {
+              "highTide": false,
+            },
+          },
+          {
+            "payload": "😁",
+            "targeting": {
+              "highTide": true,
+            },
+          },
+        ],
+      },
+      "foo": "😎",
+      "moo": "glue",
+    }
+  `)
+})

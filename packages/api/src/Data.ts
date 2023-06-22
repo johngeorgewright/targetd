@@ -109,6 +109,58 @@ export default class Data<
     )
   }
 
+  insert(
+    data: Partial<{
+      [Name in keyof DataValidators]:
+        | z.infer<DataValidators[Name]>
+        | ClientRules<DataValidators[Name], TargetingValidators>
+        | ClientRules<DataValidators[Name], ClientTargetingValidators>
+    }>
+  ) {
+    return Object.entries(data).reduce<
+      Data<
+        DataValidators,
+        TargetingValidators,
+        QueryValidators,
+        ClientTargetingValidators
+      >
+    >(
+      (d, [key, value]) =>
+        d.addRules(
+          key as Keys<DataValidators>,
+          this.#isClientRulesPayload(value)
+            ? this.#isConsumableClientRulesPayload(value)
+              ? value.__rules__
+              : [{ client: value.__rules__ }]
+            : [{ payload: value } as any]
+        ),
+      this
+    )
+  }
+
+  #isClientRulesPayload<Name extends keyof DataValidators>(
+    payload: Payload<z.infer<DataValidators[Name]>, TargetingValidators>
+  ): payload is ClientRules<
+    z.infer<DataValidators[Name]>,
+    TargetingValidators
+  > {
+    return (
+      typeof payload === 'object' && payload !== null && '__rules__' in payload
+    )
+  }
+
+  #isConsumableClientRulesPayload<Name extends keyof DataValidators>(
+    payload: ClientRules<z.infer<DataValidators[Name]>, TargetingValidators>
+  ) {
+    return payload.__rules__.every(
+      (rule) =>
+        !rule.targeting ||
+        Object.keys(rule.targeting).every(
+          (key) => key in this.#targetingValidators
+        )
+    )
+  }
+
   addRules<Name extends Keys<DataValidators>>(
     name: Name,
     rules: z.infer<
@@ -262,7 +314,7 @@ export default class Data<
     return payloads
   }
 
-  readonly #mapRule = <Name extends keyof DataValidators>(
+  #mapRule<Name extends keyof DataValidators>(
     rule: z.infer<
       DataItemRule<
         DataValidators[Name],
@@ -270,12 +322,13 @@ export default class Data<
         ClientTargetingValidators
       >
     >
-  ) =>
-    hasPayload(rule)
+  ) {
+    return hasPayload(rule)
       ? rule.payload
       : 'client' in rule
       ? { __rules__: rule.client }
       : undefined
+  }
 
   #createRulePredicate<Name extends keyof DataValidators>(
     rawQuery: Partial<StaticRecord<QueryValidators>>
