@@ -10,7 +10,7 @@ const timeout = promisify(setTimeout)
 let app: express.Application
 
 beforeEach(() => {
-  app = createServer(
+  app = createServer(() =>
     Data.create()
       .useDataValidator('foo', z.string())
       .useDataValidator('bar', z.number())
