@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [16, 18, 20]
+        node-version: [16.x, 18.x, 20.x]
     steps:
       - name: Checkout project
         uses: actions/checkout@v3
@@ -45,7 +45,7 @@ jobs:
 
       - name: Upload dists
         uses: actions/upload-artifact@v3
-        if: matrix.node-version == steps.nvm.outputs.version
+        if: startsWith(matrix.node-version, steps.nvm.outputs.version)
         with:
           if-no-files-found: error
           name: dists
