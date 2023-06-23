@@ -39,7 +39,7 @@
     "zod": "3.21.4"
   },
   "dependencies": {
-    "@johngw/fs": "2.0.1",
+    "@johngw/fs": "3.0.1",
     "lodash": "4.17.21",
     "throat": "6.0.2",
     "ts-toolbelt": "9.6.0",
