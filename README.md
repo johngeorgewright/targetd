@@ -96,13 +96,15 @@ data = data.addRules([
 As mentioned above, all typing and validation is done using the [zod][] project.
 
 ```typescript
-import { Data } from '@targetd/api'
-import z from 'zod'
-
-let data = Data.create().useTargeting('category', {
-  predicate: (q) => (t) => t.includes(q),
+data = data.useTargeting('category', {
+  // Restrict queries to be string
   queryValidator: z.string(),
-  targetingValidator: z.array(z.literal('news').or(z.literal('weather'))),
+
+  // Restrict stored targeting values as an array of "news" or "weather"
+  targetingValidator: z.array(z.enum(['news', 'weather'])),
+
+  // The targeting logic
+  predicate: (query) => (targeting) => targeting.includes(query),
 })
 ```
 
