@@ -919,12 +919,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@johngw/fs@npm:2.0.1":
-  version: 2.0.1
-  resolution: "@johngw/fs@npm:2.0.1"
+"@johngw/fs@npm:3.0.1":
+  version: 3.0.1
+  resolution: "@johngw/fs@npm:3.0.1"
   dependencies:
-    tslib: ^2.3.1
-  checksum: 0ede0ec212cf291e5f1c1931e804d1f895300494fa758cc0a0ca952d5fe015c05bc3b09912bc52e80e20bfe445ca71c39f0db68253708e7fd65da34a23cf3f9d
+    tslib: 2.5.2
+  checksum: 957a57bad4aa011fb2f14bdee0a37a3bf5c183ef7ee7b81af9b5bd42291beff11cf4687c1fd1ea289bba8267f3576dadad600cb544fc11db04a4c06bbc5e52c8
   languageName: node
   linkType: hard
 
@@ -2041,7 +2041,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@targetd/fs@workspace:packages/fs"
   dependencies:
-    "@johngw/fs": 2.0.1
+    "@johngw/fs": 3.0.1
     "@semantic-release/commit-analyzer": 9.0.2
     "@semantic-release/exec": 6.0.3
     "@semantic-release/git": 10.0.1

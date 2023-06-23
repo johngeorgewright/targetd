@@ -1453,11 +1453,11 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@johngw/fs", [\
-        ["npm:2.0.1", {\
-          "packageLocation": "./.yarn/cache/@johngw-fs-npm-2.0.1-bdbe69219e-0ede0ec212.zip/node_modules/@johngw/fs/",\
+        ["npm:3.0.1", {\
+          "packageLocation": "./.yarn/cache/@johngw-fs-npm-3.0.1-fb5a60434e-957a57bad4.zip/node_modules/@johngw/fs/",\
           "packageDependencies": [\
-            ["@johngw/fs", "npm:2.0.1"],\
-            ["tslib", "npm:2.5.3"]\
+            ["@johngw/fs", "npm:3.0.1"],\
+            ["tslib", "npm:2.5.2"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -2788,7 +2788,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./packages/fs/",\
           "packageDependencies": [\
             ["@targetd/fs", "workspace:packages/fs"],\
-            ["@johngw/fs", "npm:2.0.1"],\
+            ["@johngw/fs", "npm:3.0.1"],\
             ["@semantic-release/commit-analyzer", "virtual:93ff9e54e7e85ba03f8777529e2e31fd687b3208f0bfd29f9526626fccebedcf25fd704ae938492bcd5692d38a16927bd020804d445cde5885dc772e9e1e1ff9#npm:9.0.2"],\
             ["@semantic-release/exec", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:6.0.3"],\
             ["@semantic-release/git", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:10.0.1"],\
