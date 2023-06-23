@@ -11,7 +11,7 @@
     { "name": "🤖 github", "path": ".github" }
   ],
   "settings": {
-    "prettier.prettierPath": ".yarn/sdks/prettier/index.js",
+    "prettier.prettierPath": "../../.yarn/sdks/prettier/index.js",
     "search.exclude": { "**/dist": true, "**/.yarn": true, "**/.pnp.*": true },
     "typescript.tsdk": "✨ @targetd/mono-repo/.yarn/sdks/typescript/lib",
     "typescript.enablePromptUseWorkspaceTsdk": true

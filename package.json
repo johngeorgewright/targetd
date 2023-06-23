@@ -8,15 +8,15 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "yarn workspaces foreach --topological-dev --exclude @targetd/scaffold run build",
-    "clean": "yarn workspaces foreach run clean",
+    "build": "yarn workspaces foreach --topological-dev --exclude @targetd/scaffold --parallel --interlaced --verbose run build",
+    "clean": "yarn workspaces foreach --parallel --interlaced --verbose run clean",
     "commit": "yarn git-cz",
     "package:generate": "node --require ts-node/register $(yarn bin yo) ./packages/scaffold/src/package",
     "package:remove": "node --require ts-node/register $(yarn bin yo) ./packages/scaffold/src/remove-package",
     "prepare": "husky install",
     "release": "yarn workspaces foreach --no-private --topological-dev run semantic-release",
-    "start": "yarn build && yarn workspaces foreach --exclude @targetd/scaffold --parallel --interlaced run start",
-    "test": "yarn workspaces foreach run test"
+    "start": "yarn build && yarn workspaces foreach --exclude @targetd/scaffold --parallel --interlaced --verbose run start",
+    "test": "yarn workspaces foreach --parallel --interlaced --verbose run test"
   },
   "author": "",
   "license": "UNLICENSED",
@@ -41,7 +41,7 @@
     "lint-staged": "13.2.2",
     "mkdirp-infer-owner": "2.0.0",
     "prettier": "2.8.8",
-    "semantic-release": "21.0.5",
+    "semantic-release": "19.0.5",
     "semantic-release-monorepo": "7.0.5",
     "ts-node": "10.9.1",
     "typescript": "5.1.3",

@@ -1,4 +1,10 @@
-export { default as Data } from './Data'
+export {
+  default as Data,
+  DataValidators,
+  TargetingValidators,
+  QueryValidators,
+  ClientTargetingValidators,
+} from './Data'
 export { default as DataItem } from './validators/DataItem'
 export { default as DataItemRule } from './validators/DataItemRule'
 export { default as DataItems } from './validators/DataItems'

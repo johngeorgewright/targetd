@@ -12,17 +12,28 @@ export function createServer<
   QueryValidators extends z.ZodRawShape,
   ClientTargetingValidators extends z.ZodRawShape
 >(
-  data: Data<
-    DataValidators,
-    TargetingValidators,
-    QueryValidators,
-    ClientTargetingValidators
-  >
+  data:
+    | Data<
+        DataValidators,
+        TargetingValidators,
+        QueryValidators,
+        ClientTargetingValidators
+      >
+    | (() => Data<
+        DataValidators,
+        TargetingValidators,
+        QueryValidators,
+        ClientTargetingValidators
+      >)
 ) {
+  const getData = typeof data === 'function' ? data : () => data
+
   return express()
     .use(cors())
 
     .get('/:name', queryTypes.middleware(), async (req, res, next) => {
+      const data = getData()
+
       if (!(req.params.name in data.dataValidators)) {
         return next(
           new StatusError(404, `Unknown data property ${req.params.name}`)
@@ -41,7 +52,7 @@ export function createServer<
     .get('/', queryTypes.middleware(), async (req, res, next) => {
       let payloads: Record<string, any>
       try {
-        payloads = await data.getPayloadForEachName(req.query as any)
+        payloads = await getData().getPayloadForEachName(req.query as any)
       } catch (err) {
         return next(err)
       }

@@ -24,9 +24,6 @@ test('json schema for simple data object', () => {
         "foo": {
           "additionalProperties": false,
           "properties": {
-            "$schema": {
-              "type": "string",
-            },
             "rules": {
               "items": {
                 "anyOf": [

@@ -21,6 +21,19 @@ export function objectEntries<T extends Record<string, unknown>>(obj: T) {
   return Object.entries(obj) as [keyof T, T[keyof T]][]
 }
 
+export function omit<T extends Record<string, unknown>, K extends keyof T>(
+  obj: T,
+  keys: K[]
+): Omit<T, K> {
+  return keys.reduce(
+    (obj, key) => {
+      delete obj[key]
+      return obj
+    },
+    { ...obj }
+  )
+}
+
 class EveryAsyncFail extends Error {}
 
 /**

@@ -8,12 +8,11 @@ function DataItemRule<
 >(Payload: P, targeting: T, clientTargeting: CT): DataItemRule<P, T, CT> {
   const ServedRule = RuleWithPayload(Payload, targeting)
 
-  const ClientDataItemRule = z.strictObject({
-    targeting: ServedRule.shape.targeting,
+  const ClientRule = ServedRule.omit({ payload: true }).extend({
     client: z.array(RuleWithPayload(Payload, clientTargeting)),
   })
 
-  return ServedRule.or(ClientDataItemRule)
+  return ServedRule.or(ClientRule)
 }
 
 type DataItemRule<

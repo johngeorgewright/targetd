@@ -10,10 +10,7 @@ function DataItems<
   const dataItems: Record<string, any> = {}
   for (const [key, Payload] of Object.entries(dataValidators))
     dataItems[key] = DataItem(Payload, targeting, clientTargeting)
-  return z
-    .strictObject(dataItems)
-    .extend({ $schema: z.string() })
-    .partial() as DataItems<D, T, CT>
+  return z.strictObject(dataItems).partial() as DataItems<D, T, CT>
 }
 
 type DataItems<
@@ -27,7 +24,7 @@ type DataItems<
       Targeting,
       ClientTargeting
     >
-  } & { $schema: z.ZodString },
+  },
   'strict'
 >
 
