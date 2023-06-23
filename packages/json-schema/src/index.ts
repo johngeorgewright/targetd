@@ -20,7 +20,7 @@ export function dataJSONSchemas<
       data.dataValidators,
       data.targetingValidators,
       data.clientTargetingValidators
-    )
+    ).extend({ $schema: z.string() })
   )
 }
 
@@ -43,6 +43,6 @@ export function dataJSONSchema<
       data.dataValidators[name],
       data.targetingValidators,
       data.clientTargetingValidators
-    )
+    ).extend({ $schema: z.string() })
   )
 }

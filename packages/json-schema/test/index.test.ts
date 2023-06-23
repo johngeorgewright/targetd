@@ -13,7 +13,7 @@ test('json schema for simple data object', () => {
           },
         ])
     )
-  ).toMatchInlineSnapshot(`
+  ).toMatchInlineSnapshot(/*json*/ `
     {
       "$schema": "http://json-schema.org/draft-07/schema#",
       "additionalProperties": false,
