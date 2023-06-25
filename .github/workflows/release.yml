@@ -57,11 +57,14 @@ jobs:
     needs: [build]
     runs-on: ubuntu-latest
     environment: NPM
+    permissions:
+      contents: write # to be able to publish a GitHub release
+      issues: write # to be able to comment on released issues
+      pull-requests: write # to be able to comment on released pull requests
+      id-token: write # to enable use of OIDC for npm provenance
     steps:
       - name: Checkout project
         uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.PUSH_TOKEN }}
 
       - name: Install Node.js
         uses: actions/setup-node@v3
