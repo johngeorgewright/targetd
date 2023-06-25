@@ -2176,6 +2176,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@octokit/plugin-retry", "virtual:e8d88d592dda32930e6cd734b5de3e284c2ae24a39375fa0cc4369bbf55740acfcbeee4c4b3de6420ed7f1c7f68658c6f9e63a821c84d24956e7eb9c667f8e98#npm:4.1.6"],\
             ["@octokit/core", "npm:4.2.4"],\
+            ["@octokit/request-error", "npm:3.0.3"],\
             ["@octokit/types", "npm:9.3.2"],\
             ["@types/octokit__core", null],\
             ["bottleneck", "npm:2.19.5"]\
