@@ -2713,7 +2713,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/express", "npm:4.17.17"],\
             ["@types/jest", "npm:29.5.2"],\
             ["@types/node", "npm:18.16.19"],\
-            ["cross-fetch", "npm:3.1.6"],\
+            ["cross-fetch", "npm:3.1.7"],\
             ["express", "npm:4.18.2"],\
             ["jest", "virtual:78776105526f67704c5d821aa139591fbba11fdbd5f03f51d916c5f752b52ce5b35f9731aa4a7b9fc9fe491d6229cf4b9abfbb54db395f33bbe11c0e0b749fa6#npm:29.5.0"],\
             ["rimraf", "npm:5.0.1"],\
@@ -5610,11 +5610,11 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["cross-fetch", [\
-        ["npm:3.1.6", {\
-          "packageLocation": "./.yarn/cache/cross-fetch-npm-3.1.6-cdb982d446-704b3519ab.zip/node_modules/cross-fetch/",\
+        ["npm:3.1.7", {\
+          "packageLocation": "./.yarn/cache/cross-fetch-npm-3.1.7-06a2999034-398b5d0ece.zip/node_modules/cross-fetch/",\
           "packageDependencies": [\
-            ["cross-fetch", "npm:3.1.6"],\
-            ["node-fetch", "virtual:fbcbb43713b8d29847f83af8ca8e6903174c6e8a1da151b8f0af1a210ae14ed964860db184734df50ebf0661beb7dfb5de30e59b8bee2e6f5d434f43b286743a#npm:2.6.11"]\
+            ["cross-fetch", "npm:3.1.7"],\
+            ["node-fetch", "virtual:06a29990347111dd609ca3bd1877a9e72cb726ab24e9e76d6b4d20469f849031a559e0ea509cbaee9c8fa54790ba2977ed8c9464f8b307d9c337b372c2db8ded#npm:2.6.12"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -10770,6 +10770,27 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["node-fetch", "npm:2.6.11"]\
           ],\
           "linkType": "SOFT"\
+        }],\
+        ["npm:2.6.12", {\
+          "packageLocation": "./.yarn/cache/node-fetch-npm-2.6.12-48619ce9d6-3bc1655203.zip/node_modules/node-fetch/",\
+          "packageDependencies": [\
+            ["node-fetch", "npm:2.6.12"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:06a29990347111dd609ca3bd1877a9e72cb726ab24e9e76d6b4d20469f849031a559e0ea509cbaee9c8fa54790ba2977ed8c9464f8b307d9c337b372c2db8ded#npm:2.6.12", {\
+          "packageLocation": "./.yarn/__virtual__/node-fetch-virtual-bf0bc83695/0/cache/node-fetch-npm-2.6.12-48619ce9d6-3bc1655203.zip/node_modules/node-fetch/",\
+          "packageDependencies": [\
+            ["node-fetch", "virtual:06a29990347111dd609ca3bd1877a9e72cb726ab24e9e76d6b4d20469f849031a559e0ea509cbaee9c8fa54790ba2977ed8c9464f8b307d9c337b372c2db8ded#npm:2.6.12"],\
+            ["@types/encoding", null],\
+            ["encoding", null],\
+            ["whatwg-url", "npm:5.0.0"]\
+          ],\
+          "packagePeers": [\
+            "@types/encoding",\
+            "encoding"\
+          ],\
+          "linkType": "HARD"\
         }],\
         ["virtual:fbcbb43713b8d29847f83af8ca8e6903174c6e8a1da151b8f0af1a210ae14ed964860db184734df50ebf0661beb7dfb5de30e59b8bee2e6f5d434f43b286743a#npm:2.6.11", {\
           "packageLocation": "./.yarn/__virtual__/node-fetch-virtual-4a5d0f7c26/0/cache/node-fetch-npm-2.6.11-160e4174c3-249d0666a9.zip/node_modules/node-fetch/",\
