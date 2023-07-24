@@ -59,7 +59,7 @@
   },
   "dependencies": {
     "@types/jest": "29.5.3",
-    "tslib": "2.6.0"
+    "tslib": "2.6.1"
   },
   "packageManager": "yarn@3.6.1"
 }
