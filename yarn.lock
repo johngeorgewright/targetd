@@ -1766,12 +1766,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@plugola/query-params@npm:1.5.0":
-  version: 1.5.0
-  resolution: "@plugola/query-params@npm:1.5.0"
+"@plugola/query-params@npm:2.0.1":
+  version: 2.0.1
+  resolution: "@plugola/query-params@npm:2.0.1"
   dependencies:
-    tslib: ^2.3.1
-  checksum: 153f53d3b66efd2d16fe1b168b595a3c15a9333dde7c27e79dda5bee71855c2d810259305821f52ed5bf643c3bdffaa4b5d988b164eb755df82331dd0f0e8700
+    tslib: 2.6.1
+  checksum: 9572ef509ca09f3acad91bc933377e93fb8d573906d7465c2d04b2aece1cf32397e4c029905911031dd848654d425038ac69475dad1258314876c5dc89c4f521
   languageName: node
   linkType: hard
 
@@ -2232,7 +2232,7 @@ __metadata:
   resolution: "@targetd/server@workspace:packages/server"
   dependencies:
     "@johngw/error": 2.2.2
-    "@plugola/query-params": 1.5.0
+    "@plugola/query-params": 2.0.1
     "@semantic-release/commit-analyzer": 9.0.2
     "@semantic-release/exec": 6.0.3
     "@semantic-release/git": 10.0.1
@@ -12666,7 +12666,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^2.0.3, tslib@npm:^2.1.0, tslib@npm:^2.3.1":
+"tslib@npm:^2.0.3, tslib@npm:^2.1.0":
   version: 2.5.3
   resolution: "tslib@npm:2.5.3"
   checksum: 88902b309afaf83259131c1e13da1dceb0ad1682a213143a1346a649143924d78cf3760c448b84d796938fd76127183894f8d85cbb3bf9c4fddbfcc140c0003c
