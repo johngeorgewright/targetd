@@ -1,6 +1,6 @@
 {
   "name": "@targetd/fs",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "description": "Load rules from JSON and YAML files",
   "main": "dist/index.js",
   "scripts": {
@@ -48,7 +48,7 @@
     "yaml": "2.3.1"
   },
   "peerDependencies": {
-    "@targetd/api": ">=4.1.0",
+    "@targetd/api": ">=4.1.1",
     "zod": "^3.20.0"
   }
 }
