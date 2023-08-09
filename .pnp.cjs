@@ -2845,7 +2845,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@targetd/json-schema", "virtual:d3a13509bf0bdde0bdb604fbd5c32837fd3e38c0a8124a34b32ee1a2ede97c78f6c2f7d96b35a098cb1c736f505b5a271607ee7df28e5bb82c33fd616d4ce19b#workspace:packages/json-schema"],\
             ["@types/fs-extra", "npm:11.0.1"],\
             ["@types/jest", "npm:29.5.3"],\
-            ["@types/lodash", "npm:4.14.196"],\
+            ["@types/lodash", "npm:4.14.197"],\
             ["@types/node", "npm:18.17.4"],\
             ["@types/watch", "npm:1.0.3"],\
             ["fs-extra", "npm:11.1.1"],\
@@ -3421,10 +3421,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@types/lodash", [\
-        ["npm:4.14.196", {\
-          "packageLocation": "./.yarn/cache/@types-lodash-npm-4.14.196-06373ceef2-201d17c3e6.zip/node_modules/@types/lodash/",\
+        ["npm:4.14.197", {\
+          "packageLocation": "./.yarn/cache/@types-lodash-npm-4.14.197-8db1555bb5-53d7567d17.zip/node_modules/@types/lodash/",\
           "packageDependencies": [\
-            ["@types/lodash", "npm:4.14.196"]\
+            ["@types/lodash", "npm:4.14.197"]\
           ],\
           "linkType": "HARD"\
         }]\
