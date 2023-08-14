@@ -2038,7 +2038,7 @@ __metadata:
     ts-toolbelt: 9.6.0
     tslib: 2.6.1
     typescript: 5.1.6
-    zod: 3.21.4
+    zod: 3.22.0
   peerDependencies:
     zod: ^3.20.0
   languageName: unknown
@@ -2068,7 +2068,7 @@ __metadata:
     ts-toolbelt: 9.6.0
     tslib: 2.6.1
     typescript: 5.1.6
-    zod: 3.21.4
+    zod: 3.22.0
   peerDependencies:
     "@targetd/api": ">=4.1.1"
     zod: ^3.20.0
@@ -2095,7 +2095,7 @@ __metadata:
     ts-jest: 29.1.1
     tslib: 2.6.1
     typescript: 5.1.6
-    zod: 3.21.4
+    zod: 3.22.0
   peerDependencies:
     "@targetd/api": ">=4.1.1"
     zod: ^3.20.0
@@ -2133,7 +2133,7 @@ __metadata:
     typescript: 5.1.6
     watch: 1.0.2
     yaml: 2.3.1
-    zod: 3.21.4
+    zod: 3.22.0
   peerDependencies:
     "@targetd/api": ">=4.1.1"
     zod: ^3.20.0
@@ -2162,7 +2162,7 @@ __metadata:
     tslib: 2.6.1
     typescript: 5.1.6
     yargs: 17.7.2
-    zod: 3.21.4
+    zod: 3.22.0
     zod-to-json-schema: 3.21.4
   peerDependencies:
     "@targetd/api": ">=4.1.1"
@@ -2257,7 +2257,7 @@ __metadata:
     ts-jest: 29.1.1
     tslib: 2.6.1
     typescript: 5.1.6
-    zod: 3.21.4
+    zod: 3.22.0
   peerDependencies:
     "@targetd/api": ">=4.1.1"
     zod: ^3.20.0
@@ -13705,9 +13705,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:3.21.4":
-  version: 3.21.4
-  resolution: "zod@npm:3.21.4"
-  checksum: f185ba87342ff16f7a06686767c2b2a7af41110c7edf7c1974095d8db7a73792696bcb4a00853de0d2edeb34a5b2ea6a55871bc864227dace682a0a28de33e1f
+"zod@npm:3.22.0":
+  version: 3.22.0
+  resolution: "zod@npm:3.22.0"
+  checksum: b3974ac2c879e1597559d69ad11c331dd4961164fb3a4805d12fe2b3c5b0b6404e4b3acca997d514456f2035140d228f1e9c523a69852937faeb0027f94b6ec0
   languageName: node
   linkType: hard
