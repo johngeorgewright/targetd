@@ -2745,7 +2745,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["ts-toolbelt", "npm:9.6.0"],\
             ["tslib", "npm:2.6.1"],\
             ["typescript", "patch:typescript@npm%3A5.1.6#~builtin<compat/typescript>::version=5.1.6&hash=5da071"],\
-            ["zod", "npm:3.21.4"]\
+            ["zod", "npm:3.22.0"]\
           ],\
           "packagePeers": [\
             "@types/zod",\
@@ -2772,7 +2772,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["ts-toolbelt", "npm:9.6.0"],\
             ["tslib", "npm:2.6.1"],\
             ["typescript", "patch:typescript@npm%3A5.1.6#~builtin<compat/typescript>::version=5.1.6&hash=5da071"],\
-            ["zod", "npm:3.21.4"]\
+            ["zod", "npm:3.22.0"]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -2802,7 +2802,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["ts-toolbelt", "npm:9.6.0"],\
             ["tslib", "npm:2.6.1"],\
             ["typescript", "patch:typescript@npm%3A5.1.6#~builtin<compat/typescript>::version=5.1.6&hash=5da071"],\
-            ["zod", "npm:3.21.4"]\
+            ["zod", "npm:3.22.0"]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -2828,7 +2828,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["ts-jest", "virtual:78776105526f67704c5d821aa139591fbba11fdbd5f03f51d916c5f752b52ce5b35f9731aa4a7b9fc9fe491d6229cf4b9abfbb54db395f33bbe11c0e0b749fa6#npm:29.1.1"],\
             ["tslib", "npm:2.6.1"],\
             ["typescript", "patch:typescript@npm%3A5.1.6#~builtin<compat/typescript>::version=5.1.6&hash=5da071"],\
-            ["zod", "npm:3.21.4"]\
+            ["zod", "npm:3.22.0"]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -2865,7 +2865,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["typescript", "patch:typescript@npm%3A5.1.6#~builtin<compat/typescript>::version=5.1.6&hash=5da071"],\
             ["watch", "npm:1.0.2"],\
             ["yaml", "npm:2.3.1"],\
-            ["zod", "npm:3.21.4"]\
+            ["zod", "npm:3.22.0"]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -2895,7 +2895,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["tslib", "npm:2.6.1"],\
             ["typescript", "patch:typescript@npm%3A5.1.6#~builtin<compat/typescript>::version=5.1.6&hash=5da071"],\
             ["yargs", "npm:17.7.2"],\
-            ["zod", "npm:3.21.4"],\
+            ["zod", "npm:3.22.0"],\
             ["zod-to-json-schema", "virtual:659caa87d33ab88e9ed1cb569b7408c960a2f6005079eafaf1ff1411303e6211aa0f750b69155738e7cdda8f02669eca60098d12e1c88a4525149f95a87567f2#npm:3.21.4"]\
           ],\
           "packagePeers": [\
@@ -2928,7 +2928,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["tslib", "npm:2.6.1"],\
             ["typescript", "patch:typescript@npm%3A5.1.6#~builtin<compat/typescript>::version=5.1.6&hash=5da071"],\
             ["yargs", "npm:17.7.2"],\
-            ["zod", "npm:3.21.4"],\
+            ["zod", "npm:3.22.0"],\
             ["zod-to-json-schema", "virtual:659caa87d33ab88e9ed1cb569b7408c960a2f6005079eafaf1ff1411303e6211aa0f750b69155738e7cdda8f02669eca60098d12e1c88a4525149f95a87567f2#npm:3.21.4"]\
           ],\
           "linkType": "SOFT"\
@@ -3026,7 +3026,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["ts-jest", "virtual:78776105526f67704c5d821aa139591fbba11fdbd5f03f51d916c5f752b52ce5b35f9731aa4a7b9fc9fe491d6229cf4b9abfbb54db395f33bbe11c0e0b749fa6#npm:29.1.1"],\
             ["tslib", "npm:2.6.1"],\
             ["typescript", "patch:typescript@npm%3A5.1.6#~builtin<compat/typescript>::version=5.1.6&hash=5da071"],\
-            ["zod", "npm:3.21.4"]\
+            ["zod", "npm:3.22.0"]\
           ],\
           "packagePeers": [\
             "@targetd/api",\
@@ -3066,7 +3066,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["ts-jest", "virtual:78776105526f67704c5d821aa139591fbba11fdbd5f03f51d916c5f752b52ce5b35f9731aa4a7b9fc9fe491d6229cf4b9abfbb54db395f33bbe11c0e0b749fa6#npm:29.1.1"],\
             ["tslib", "npm:2.6.1"],\
             ["typescript", "patch:typescript@npm%3A5.1.6#~builtin<compat/typescript>::version=5.1.6&hash=5da071"],\
-            ["zod", "npm:3.21.4"]\
+            ["zod", "npm:3.22.0"]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -15867,10 +15867,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["zod", [\
-        ["npm:3.21.4", {\
-          "packageLocation": "./.yarn/cache/zod-npm-3.21.4-9f570b215c-f185ba8734.zip/node_modules/zod/",\
+        ["npm:3.22.0", {\
+          "packageLocation": "./.yarn/cache/zod-npm-3.22.0-2b23558752-b3974ac2c8.zip/node_modules/zod/",\
           "packageDependencies": [\
-            ["zod", "npm:3.21.4"]\
+            ["zod", "npm:3.22.0"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -15888,7 +15888,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["zod-to-json-schema", "virtual:659caa87d33ab88e9ed1cb569b7408c960a2f6005079eafaf1ff1411303e6211aa0f750b69155738e7cdda8f02669eca60098d12e1c88a4525149f95a87567f2#npm:3.21.4"],\
             ["@types/zod", null],\
-            ["zod", "npm:3.21.4"]\
+            ["zod", "npm:3.22.0"]\
           ],\
           "packagePeers": [\
             "@types/zod",\
