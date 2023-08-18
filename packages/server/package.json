@@ -44,7 +44,7 @@
     "express": "4.18.2",
     "express-query-boolean": "2.0.0",
     "query-types": "0.1.4",
-    "tslib": "2.6.1"
+    "tslib": "2.6.2"
   },
   "peerDependencies": {
     "@targetd/api": ">=4.1.1",
