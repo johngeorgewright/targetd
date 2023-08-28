@@ -2864,7 +2864,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["tslib", "npm:2.6.2"],\
             ["typescript", "patch:typescript@npm%3A5.2.2#~builtin<compat/typescript>::version=5.2.2&hash=f3b441"],\
             ["watch", "npm:1.0.2"],\
-            ["yaml", "npm:2.3.1"],\
+            ["yaml", "npm:2.3.2"],\
             ["zod", "npm:3.22.2"]\
           ],\
           "linkType": "SOFT"\
@@ -15658,6 +15658,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/yaml-npm-2.3.1-743f5688d1-2c7bc9a7cd.zip/node_modules/yaml/",\
           "packageDependencies": [\
             ["yaml", "npm:2.3.1"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
+        ["npm:2.3.2", {\
+          "packageLocation": "./.yarn/cache/yaml-npm-2.3.2-b844830a8b-acd80cc24d.zip/node_modules/yaml/",\
+          "packageDependencies": [\
+            ["yaml", "npm:2.3.2"]\
           ],\
           "linkType": "HARD"\
         }]\
