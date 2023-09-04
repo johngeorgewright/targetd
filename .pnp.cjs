@@ -3006,7 +3006,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@semantic-release/github", "virtual:93ff9e54e7e85ba03f8777529e2e31fd687b3208f0bfd29f9526626fccebedcf25fd704ae938492bcd5692d38a16927bd020804d445cde5885dc772e9e1e1ff9#npm:8.1.0"],\
             ["@semantic-release/release-notes-generator", "virtual:93ff9e54e7e85ba03f8777529e2e31fd687b3208f0bfd29f9526626fccebedcf25fd704ae938492bcd5692d38a16927bd020804d445cde5885dc772e9e1e1ff9#npm:10.0.3"],\
             ["@targetd/api", "virtual:049c1d28e5b9765667b7008f2694b3886d79f2113b2827f735bfa4f93e239d09c6d92193058dc55e737c58ebb15f0b8530088b5cf795627062174f566080b49f#workspace:packages/api"],\
-            ["@types/cors", "npm:2.8.13"],\
+            ["@types/cors", "npm:2.8.14"],\
             ["@types/express", "npm:4.17.17"],\
             ["@types/express-serve-static-core", "npm:4.17.36"],\
             ["@types/jest", "npm:29.5.4"],\
@@ -3048,7 +3048,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@semantic-release/github", "virtual:93ff9e54e7e85ba03f8777529e2e31fd687b3208f0bfd29f9526626fccebedcf25fd704ae938492bcd5692d38a16927bd020804d445cde5885dc772e9e1e1ff9#npm:8.1.0"],\
             ["@semantic-release/release-notes-generator", "virtual:93ff9e54e7e85ba03f8777529e2e31fd687b3208f0bfd29f9526626fccebedcf25fd704ae938492bcd5692d38a16927bd020804d445cde5885dc772e9e1e1ff9#npm:10.0.3"],\
             ["@targetd/api", "virtual:049c1d28e5b9765667b7008f2694b3886d79f2113b2827f735bfa4f93e239d09c6d92193058dc55e737c58ebb15f0b8530088b5cf795627062174f566080b49f#workspace:packages/api"],\
-            ["@types/cors", "npm:2.8.13"],\
+            ["@types/cors", "npm:2.8.14"],\
             ["@types/express", "npm:4.17.17"],\
             ["@types/express-serve-static-core", "npm:4.17.36"],\
             ["@types/jest", "npm:29.5.4"],\
@@ -3232,10 +3232,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@types/cors", [\
-        ["npm:2.8.13", {\
-          "packageLocation": "./.yarn/cache/@types-cors-npm-2.8.13-4b8ac1068f-7ef197ea19.zip/node_modules/@types/cors/",\
+        ["npm:2.8.14", {\
+          "packageLocation": "./.yarn/cache/@types-cors-npm-2.8.14-28a22a5678-119b8ea576.zip/node_modules/@types/cors/",\
           "packageDependencies": [\
-            ["@types/cors", "npm:2.8.13"],\
+            ["@types/cors", "npm:2.8.14"],\
             ["@types/node", "npm:20.3.1"]\
           ],\
           "linkType": "HARD"\

@@ -22,7 +22,7 @@
     "@semantic-release/github": "8.1.0",
     "@semantic-release/release-notes-generator": "10.0.3",
     "@targetd/api": "workspace:*",
-    "@types/cors": "2.8.13",
+    "@types/cors": "2.8.14",
     "@types/jest": "29.5.4",
     "@types/node": "18.17.14",
     "@types/supertest": "2.0.12",
