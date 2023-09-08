@@ -3,6 +3,7 @@
   "version": "3.1.2",
   "description": "Adds date range targeting",
   "main": "dist/index.js",
+  "sideEffects": false,
   "scripts": {
     "build": "yarn clean && yarn tsc",
     "clean": "yarn rimraf dist",

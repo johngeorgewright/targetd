@@ -3,6 +3,7 @@
   "version": "3.0.2",
   "description": "Typed querying of a @targetd/server",
   "main": "dist/index.js",
+  "sideEffects": false,
   "scripts": {
     "build": "yarn clean && yarn tsc && yarn rimraf 'dist/**/?(__tests__|__mocks__|__setup__|*.test.*)'",
     "clean": "yarn rimraf dist",
