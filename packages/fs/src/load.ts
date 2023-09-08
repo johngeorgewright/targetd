@@ -15,13 +15,13 @@ export async function load<
   DataValidators extends z.ZodRawShape,
   TargetingValidators extends z.ZodRawShape,
   QueryValidators extends z.ZodRawShape,
-  ClientTargetingValidators extends z.ZodRawShape
+  FallThroughTargetingValidators extends z.ZodRawShape
 >(
   data: Data<
     DataValidators,
     TargetingValidators,
     QueryValidators,
-    ClientTargetingValidators
+    FallThroughTargetingValidators
   >,
   dir: string
 ) {
@@ -55,13 +55,13 @@ function addRules<
   DataValidators extends z.ZodRawShape,
   TargetingValidators extends z.ZodRawShape,
   QueryValidators extends z.ZodRawShape,
-  ClientTargetingValidators extends z.ZodRawShape
+  FallThroughTargetingValidators extends z.ZodRawShape
 >(
   data: Data<
     DataValidators,
     TargetingValidators,
     QueryValidators,
-    ClientTargetingValidators
+    FallThroughTargetingValidators
   >,
   fileData: FileData
 ) {

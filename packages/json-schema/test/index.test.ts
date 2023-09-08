@@ -47,7 +47,7 @@ test('json schema for simple data object', () => {
                   {
                     "additionalProperties": false,
                     "properties": {
-                      "client": {
+                      "fallThrough": {
                         "items": {
                           "additionalProperties": false,
                           "properties": {
@@ -72,7 +72,7 @@ test('json schema for simple data object', () => {
                       },
                     },
                     "required": [
-                      "client",
+                      "fallThrough",
                     ],
                     "type": "object",
                   },

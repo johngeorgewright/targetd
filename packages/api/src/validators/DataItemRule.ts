@@ -5,27 +5,27 @@ function DataItemRule<
   P extends z.ZodTypeAny,
   T extends z.ZodRawShape,
   CT extends z.ZodRawShape
->(Payload: P, targeting: T, clientTargeting: CT): DataItemRule<P, T, CT> {
+>(Payload: P, targeting: T, fallThroughTargeting: CT): DataItemRule<P, T, CT> {
   const ServedRule = RuleWithPayload(Payload, targeting)
 
-  const ClientRule = ServedRule.omit({ payload: true }).extend({
-    client: z.array(RuleWithPayload(Payload, clientTargeting)),
+  const FallThroughRule = ServedRule.omit({ payload: true }).extend({
+    fallThrough: z.array(RuleWithPayload(Payload, fallThroughTargeting)),
   })
 
-  return ServedRule.or(ClientRule)
+  return ServedRule.or(FallThroughRule)
 }
 
 type DataItemRule<
   Payload extends z.ZodTypeAny,
   Targeting extends z.ZodRawShape,
-  ClientTargeting extends z.ZodRawShape
+  FallThroughTargeting extends z.ZodRawShape
 > = z.ZodUnion<
   [
     RuleWithPayload<Payload, Targeting>,
     z.ZodObject<
       {
         targeting: z.ZodOptional<ZodPartialObject<Targeting, 'strict'>>
-        client: z.ZodArray<RuleWithPayload<Payload, ClientTargeting>>
+        fallThrough: z.ZodArray<RuleWithPayload<Payload, FallThroughTargeting>>
       },
       'strict'
     >

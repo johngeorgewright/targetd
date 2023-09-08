@@ -9,14 +9,14 @@ export type OnLoad<
   DataValidators extends z.ZodRawShape,
   TargetingValidators extends z.ZodRawShape,
   QueryValidators extends z.ZodRawShape,
-  ClientTargetingValidators extends z.ZodRawShape
+  FallThroughTargetingValidators extends z.ZodRawShape
 > = (
   error: Error | null,
   data: Data<
     DataValidators,
     TargetingValidators,
     QueryValidators,
-    ClientTargetingValidators
+    FallThroughTargetingValidators
   >
 ) => any
 
@@ -24,13 +24,13 @@ export function watch<
   DataValidators extends z.ZodRawShape,
   TargetingValidators extends z.ZodRawShape,
   QueryValidators extends z.ZodRawShape,
-  ClientTargetingValidators extends z.ZodRawShape
+  FallThroughTargetingValidators extends z.ZodRawShape
 >(
   data: Data<
     DataValidators,
     TargetingValidators,
     QueryValidators,
-    ClientTargetingValidators
+    FallThroughTargetingValidators
   >,
   dir: string,
   options: WatchTreeOptions,
@@ -38,7 +38,7 @@ export function watch<
     DataValidators,
     TargetingValidators,
     QueryValidators,
-    ClientTargetingValidators
+    FallThroughTargetingValidators
   >
 ): () => void
 
@@ -46,20 +46,20 @@ export function watch<
   DataValidators extends z.ZodRawShape,
   TargetingValidators extends z.ZodRawShape,
   QueryValidators extends z.ZodRawShape,
-  ClientTargetingValidators extends z.ZodRawShape
+  FallThroughTargetingValidators extends z.ZodRawShape
 >(
   data: Data<
     DataValidators,
     TargetingValidators,
     QueryValidators,
-    ClientTargetingValidators
+    FallThroughTargetingValidators
   >,
   dir: string,
   onLoad: OnLoad<
     DataValidators,
     TargetingValidators,
     QueryValidators,
-    ClientTargetingValidators
+    FallThroughTargetingValidators
   >
 ): () => void
 
@@ -67,13 +67,13 @@ export function watch<
   DataValidators extends z.ZodRawShape,
   TargetingValidators extends z.ZodRawShape,
   QueryValidators extends z.ZodRawShape,
-  ClientTargetingValidators extends z.ZodRawShape
+  FallThroughTargetingValidators extends z.ZodRawShape
 >(
   data: Data<
     DataValidators,
     TargetingValidators,
     QueryValidators,
-    ClientTargetingValidators
+    FallThroughTargetingValidators
   >,
   dir: string,
   optionsOrOnLoad:
@@ -82,13 +82,13 @@ export function watch<
         DataValidators,
         TargetingValidators,
         QueryValidators,
-        ClientTargetingValidators
+        FallThroughTargetingValidators
       >,
   onLoadParam?: OnLoad<
     DataValidators,
     TargetingValidators,
     QueryValidators,
-    ClientTargetingValidators
+    FallThroughTargetingValidators
   >
 ) {
   const options = onLoadParam ? optionsOrOnLoad : {}
@@ -96,7 +96,7 @@ export function watch<
     DataValidators,
     TargetingValidators,
     QueryValidators,
-    ClientTargetingValidators
+    FallThroughTargetingValidators
   >
 
   watchTree(

@@ -266,15 +266,15 @@ test('getPayloadForEachName', async () => {
   `)
 })
 
-test('client targeting', async () => {
+test('fallThrough targeting', async () => {
   const data = Data.create()
     .useDataValidator('foo', z.string())
     .useDataValidator('bar', z.string())
-    .useClientTargeting('weather', z.array(z.string()))
-    .useClientTargeting('highTide', z.boolean())
+    .useFallThroughTargeting('weather', z.array(z.string()))
+    .useFallThroughTargeting('highTide', z.boolean())
     .addRules('foo', [
       {
-        client: [
+        fallThrough: [
           {
             targeting: {
               weather: ['sunny'],
@@ -292,7 +292,7 @@ test('client targeting', async () => {
     ])
     .addRules('bar', [
       {
-        client: [
+        fallThrough: [
           {
             targeting: {
               weather: ['rainy'],
@@ -365,7 +365,7 @@ test('inserting data', async () => {
       queryValidator: z.string(),
       targetingValidator: z.array(z.string()),
     })
-    .useClientTargeting('highTide', z.boolean())
+    .useFallThroughTargeting('highTide', z.boolean())
     .insert({
       bar: {
         __rules__: [

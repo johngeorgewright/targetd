@@ -6,20 +6,20 @@ export function dataJSONSchemas<
   DataValidators extends z.ZodRawShape,
   TargetingValidators extends z.ZodRawShape,
   QueryValidators extends z.ZodRawShape,
-  ClientTargetingValidators extends z.ZodRawShape
+  FallThroughTargetingValidators extends z.ZodRawShape
 >(
   data: Data<
     DataValidators,
     TargetingValidators,
     QueryValidators,
-    ClientTargetingValidators
+    FallThroughTargetingValidators
   >
 ) {
   return zodToJSONSchema(
     DataItems(
       data.dataValidators,
       data.targetingValidators,
-      data.clientTargetingValidators
+      data.fallThroughTargetingValidators
     ).extend({ $schema: z.string().optional() })
   )
 }
@@ -28,13 +28,13 @@ export function dataJSONSchema<
   DataValidators extends z.ZodRawShape,
   TargetingValidators extends z.ZodRawShape,
   QueryValidators extends z.ZodRawShape,
-  ClientTargetingValidators extends z.ZodRawShape
+  FallThroughTargetingValidators extends z.ZodRawShape
 >(
   data: Data<
     DataValidators,
     TargetingValidators,
     QueryValidators,
-    ClientTargetingValidators
+    FallThroughTargetingValidators
   >,
   name: keyof DataValidators
 ) {
@@ -42,7 +42,7 @@ export function dataJSONSchema<
     DataItem(
       data.dataValidators[name],
       data.targetingValidators,
-      data.clientTargetingValidators
+      data.fallThroughTargetingValidators
     ).extend({ $schema: z.string().optional() })
   )
 }
