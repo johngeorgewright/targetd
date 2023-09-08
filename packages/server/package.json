@@ -24,7 +24,7 @@
     "@targetd/api": "workspace:*",
     "@types/cors": "2.8.14",
     "@types/jest": "29.5.4",
-    "@types/node": "18.17.14",
+    "@types/node": "18.17.15",
     "@types/supertest": "2.0.12",
     "jest": "29.6.4",
     "rimraf": "5.0.1",
