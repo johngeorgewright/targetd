@@ -2850,7 +2850,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/jest", "npm:29.5.5"],\
             ["@types/lodash", "npm:4.14.199"],\
             ["@types/node", "npm:18.17.19"],\
-            ["@types/watch", "npm:1.0.3"],\
+            ["@types/watch", "npm:1.0.4"],\
             ["fs-extra", "npm:11.1.1"],\
             ["jest", "virtual:78776105526f67704c5d821aa139591fbba11fdbd5f03f51d916c5f752b52ce5b35f9731aa4a7b9fc9fe491d6229cf4b9abfbb54db395f33bbe11c0e0b749fa6#npm:29.7.0"],\
             ["lodash", "npm:4.17.21"],\
@@ -3691,10 +3691,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@types/watch", [\
-        ["npm:1.0.3", {\
-          "packageLocation": "./.yarn/cache/@types-watch-npm-1.0.3-295bbe11c5-8655d45bb1.zip/node_modules/@types/watch/",\
+        ["npm:1.0.4", {\
+          "packageLocation": "./.yarn/cache/@types-watch-npm-1.0.4-de14d6c67c-d7ff7d5f7a.zip/node_modules/@types/watch/",\
           "packageDependencies": [\
-            ["@types/watch", "npm:1.0.3"],\
+            ["@types/watch", "npm:1.0.4"],\
             ["@types/node", "npm:20.3.1"]\
           ],\
           "linkType": "HARD"\
