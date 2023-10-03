@@ -31,7 +31,7 @@
     "semantic-release-monorepo": "7.0.5",
     "ts-jest": "29.1.1",
     "typescript": "5.2.2",
-    "zod": "3.22.2"
+    "zod": "3.22.3"
   },
   "dependencies": {
     "tslib": "2.6.2"
