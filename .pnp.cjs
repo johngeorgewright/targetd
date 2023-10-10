@@ -2789,7 +2789,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@semantic-release/release-notes-generator", "virtual:93ff9e54e7e85ba03f8777529e2e31fd687b3208f0bfd29f9526626fccebedcf25fd704ae938492bcd5692d38a16927bd020804d445cde5885dc772e9e1e1ff9#npm:10.0.3"],\
             ["@targetd/api", "virtual:049c1d28e5b9765667b7008f2694b3886d79f2113b2827f735bfa4f93e239d09c6d92193058dc55e737c58ebb15f0b8530088b5cf795627062174f566080b49f#workspace:packages/api"],\
             ["@targetd/server", "virtual:049c1d28e5b9765667b7008f2694b3886d79f2113b2827f735bfa4f93e239d09c6d92193058dc55e737c58ebb15f0b8530088b5cf795627062174f566080b49f#workspace:packages/server"],\
-            ["@types/express", "npm:4.17.18"],\
+            ["@types/express", "npm:4.17.19"],\
             ["@types/jest", "npm:29.5.5"],\
             ["@types/node", "npm:18.18.4"],\
             ["cross-fetch", "npm:4.0.0"],\
@@ -3007,7 +3007,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@semantic-release/release-notes-generator", "virtual:93ff9e54e7e85ba03f8777529e2e31fd687b3208f0bfd29f9526626fccebedcf25fd704ae938492bcd5692d38a16927bd020804d445cde5885dc772e9e1e1ff9#npm:10.0.3"],\
             ["@targetd/api", "virtual:049c1d28e5b9765667b7008f2694b3886d79f2113b2827f735bfa4f93e239d09c6d92193058dc55e737c58ebb15f0b8530088b5cf795627062174f566080b49f#workspace:packages/api"],\
             ["@types/cors", "npm:2.8.14"],\
-            ["@types/express", "npm:4.17.18"],\
+            ["@types/express", "npm:4.17.19"],\
             ["@types/express-serve-static-core", "npm:4.17.37"],\
             ["@types/jest", "npm:29.5.5"],\
             ["@types/node", "npm:18.18.4"],\
@@ -3049,7 +3049,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@semantic-release/release-notes-generator", "virtual:93ff9e54e7e85ba03f8777529e2e31fd687b3208f0bfd29f9526626fccebedcf25fd704ae938492bcd5692d38a16927bd020804d445cde5885dc772e9e1e1ff9#npm:10.0.3"],\
             ["@targetd/api", "virtual:049c1d28e5b9765667b7008f2694b3886d79f2113b2827f735bfa4f93e239d09c6d92193058dc55e737c58ebb15f0b8530088b5cf795627062174f566080b49f#workspace:packages/api"],\
             ["@types/cors", "npm:2.8.14"],\
-            ["@types/express", "npm:4.17.18"],\
+            ["@types/express", "npm:4.17.19"],\
             ["@types/express-serve-static-core", "npm:4.17.37"],\
             ["@types/jest", "npm:29.5.5"],\
             ["@types/node", "npm:18.18.4"],\
@@ -3279,10 +3279,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@types/express", [\
-        ["npm:4.17.18", {\
-          "packageLocation": "./.yarn/cache/@types-express-npm-4.17.18-c095318854-8c178da4f0.zip/node_modules/@types/express/",\
+        ["npm:4.17.19", {\
+          "packageLocation": "./.yarn/cache/@types-express-npm-4.17.19-4471e6ee35-3d39d0655e.zip/node_modules/@types/express/",\
           "packageDependencies": [\
-            ["@types/express", "npm:4.17.18"],\
+            ["@types/express", "npm:4.17.19"],\
             ["@types/body-parser", "npm:1.19.2"],\
             ["@types/express-serve-static-core", "npm:4.17.35"],\
             ["@types/qs", "npm:6.9.7"],\
