@@ -29,7 +29,7 @@
     "semantic-release-monorepo": "7.0.5",
     "ts-jest": "29.1.1",
     "typescript": "5.2.2",
-    "zod": "3.22.3"
+    "zod": "3.22.4"
   },
   "dependencies": {
     "ts-toolbelt": "9.6.0",
