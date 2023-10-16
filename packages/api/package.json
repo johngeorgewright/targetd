@@ -1,6 +1,6 @@
 {
   "name": "@targetd/api",
-  "version": "4.1.2",
+  "version": "5.0.0",
   "description": "Load and query data",
   "main": "dist/index.js",
   "sideEffects": false,
