@@ -134,3 +134,47 @@ console.info(
 )
 // { title: 'A new thing', body: "Here's the body" }
 ```
+
+### Fall through payloads
+
+Sometimes you may not be able to successfully target certain payloads in one service. When this happens you'll need to allow targeted payloads to "fall through" to the next service. To allow this to happen, you can add "fall through" targeting.
+
+```typescript
+// data.ts
+import { Data } from '@targetd/api'
+
+export const data = Data.create().useDataValidator('foo', z.string())
+```
+
+```typescript
+// service-1.ts
+import { targetIncludes } from '@targeted/api'
+import { z } from 'zod'
+import { data } from './data'
+
+export const service1Data = data
+  .useTargeting('weather', targetIncludes(z.string()))
+  .useFallthroughTargeting('browser', targetIncludes(z.string()))
+  .addRules('foo', [
+    {
+      targeting: {
+        // Targeting "browser" cannot be targeted by this server
+        // and therefore will be passed to service-2
+        browser: ['chrome'],
+        weather: ['sunny'],
+      },
+      payload: 'Chrome and sunny',
+    },
+  ])
+```
+
+```typescript
+// service-2.ts
+import { targetIncludes } from '@targeted/api'
+import { z } from 'zod'
+import { data } from './data'
+
+export const service2Data = data
+  .useTargeting('browser', targetIncludes(z.string()))
+  .insert(data.getPayloadForEachName({ weather: 'sunny' }))
+```
