@@ -5,30 +5,26 @@ function DataItemRule<
   P extends z.ZodTypeAny,
   T extends z.ZodRawShape,
   CT extends z.ZodRawShape
->(Payload: P, targeting: T, clientTargeting: CT): DataItemRule<P, T, CT> {
+>(Payload: P, targeting: T, fallThroughTargeting: CT): DataItemRule<P, T, CT> {
   const ServedRule = RuleWithPayload(Payload, targeting)
 
-  const ClientRule = ServedRule.omit({ payload: true }).extend({
-    client: z.array(RuleWithPayload(Payload, clientTargeting)),
-  })
+  const FallThroughRule = RuleWithFallThrough(
+    Payload,
+    targeting,
+    fallThroughTargeting
+  )
 
-  return ServedRule.or(ClientRule)
+  return ServedRule.or(FallThroughRule)
 }
 
 type DataItemRule<
   Payload extends z.ZodTypeAny,
   Targeting extends z.ZodRawShape,
-  ClientTargeting extends z.ZodRawShape
+  FallThroughTargeting extends z.ZodRawShape
 > = z.ZodUnion<
   [
     RuleWithPayload<Payload, Targeting>,
-    z.ZodObject<
-      {
-        targeting: z.ZodOptional<ZodPartialObject<Targeting, 'strict'>>
-        client: z.ZodArray<RuleWithPayload<Payload, ClientTargeting>>
-      },
-      'strict'
-    >
+    RuleWithFallThrough<Payload, Targeting, FallThroughTargeting>
   ]
 >
 
@@ -52,5 +48,32 @@ export function RuleWithPayload<
   return z.strictObject({
     targeting: z.strictObject(targeting).partial().optional(),
     payload: Payload,
+  })
+}
+
+export type RuleWithFallThrough<
+  Payload extends z.ZodTypeAny,
+  Targeting extends z.ZodRawShape,
+  FallThroughTargeting extends z.ZodRawShape
+> = z.ZodObject<
+  {
+    targeting: z.ZodOptional<ZodPartialObject<Targeting, 'strict'>>
+    fallThrough: z.ZodArray<RuleWithPayload<Payload, FallThroughTargeting>>
+  },
+  'strict'
+>
+
+export function RuleWithFallThrough<
+  Payload extends z.ZodTypeAny,
+  Targeting extends z.ZodRawShape,
+  FallThroughTargeting extends z.ZodRawShape
+>(
+  payload: Payload,
+  targeting: Targeting,
+  fallThroughTargeting: FallThroughTargeting
+): RuleWithFallThrough<Payload, Targeting, FallThroughTargeting> {
+  return z.strictObject({
+    targeting: z.strictObject(targeting).partial().optional(),
+    fallThrough: RuleWithPayload(payload, fallThroughTargeting).array(),
   })
 }

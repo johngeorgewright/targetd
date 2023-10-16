@@ -1,5 +1,5 @@
 import {
-  ClientTargetingValidators,
+  FallThroughTargetingValidators,
   Data,
   DataValidators,
   QueryValidators,
@@ -14,7 +14,7 @@ export class Client<
   DataValidators extends z.ZodRawShape,
   TargetingValidators extends z.ZodRawShape,
   QueryValidators extends z.ZodRawShape,
-  ClientTargetingValidators extends z.ZodRawShape
+  FallThroughTargetingValidators extends z.ZodRawShape
 > {
   #baseURL: string
 
@@ -22,7 +22,7 @@ export class Client<
     DataValidators,
     TargetingValidators,
     QueryValidators,
-    ClientTargetingValidators
+    FallThroughTargetingValidators
   >
 
   #init?: RequestInit
@@ -33,7 +33,7 @@ export class Client<
       DataValidators,
       TargetingValidators,
       QueryValidators,
-      ClientTargetingValidators
+      FallThroughTargetingValidators
     >,
     init?: RequestInit
   ) {
@@ -86,7 +86,7 @@ export type ClientWithData<
   DataValidators<D>,
   TargetingValidators<D>,
   QueryValidators<D>,
-  ClientTargetingValidators<D>
+  FallThroughTargetingValidators<D>
 >
 
 function queryToURLSearchParams(query: Record<string, unknown>) {

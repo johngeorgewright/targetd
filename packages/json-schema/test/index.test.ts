@@ -26,57 +26,21 @@ test('json schema for simple data object', () => {
           "properties": {
             "rules": {
               "items": {
-                "anyOf": [
-                  {
+                "additionalProperties": false,
+                "properties": {
+                  "payload": {
+                    "type": "string",
+                  },
+                  "targeting": {
                     "additionalProperties": false,
-                    "properties": {
-                      "payload": {
-                        "type": "string",
-                      },
-                      "targeting": {
-                        "additionalProperties": false,
-                        "properties": {},
-                        "type": "object",
-                      },
-                    },
-                    "required": [
-                      "payload",
-                    ],
+                    "properties": {},
                     "type": "object",
                   },
-                  {
-                    "additionalProperties": false,
-                    "properties": {
-                      "client": {
-                        "items": {
-                          "additionalProperties": false,
-                          "properties": {
-                            "payload": {
-                              "$ref": "#/properties/foo/properties/rules/items/anyOf/0/properties/payload",
-                            },
-                            "targeting": {
-                              "additionalProperties": false,
-                              "properties": {},
-                              "type": "object",
-                            },
-                          },
-                          "required": [
-                            "payload",
-                          ],
-                          "type": "object",
-                        },
-                        "type": "array",
-                      },
-                      "targeting": {
-                        "$ref": "#/properties/foo/properties/rules/items/anyOf/0/properties/targeting",
-                      },
-                    },
-                    "required": [
-                      "client",
-                    ],
-                    "type": "object",
-                  },
+                },
+                "required": [
+                  "payload",
                 ],
+                "type": "object",
               },
               "type": "array",
             },

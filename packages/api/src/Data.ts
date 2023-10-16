@@ -9,16 +9,21 @@ import DataItem from './validators/DataItem'
 import DataItemRule, { RuleWithPayload } from './validators/DataItemRule'
 import { Keys } from 'ts-toolbelt/out/Any/Keys'
 import { MaybePromise, StaticRecord, ZodPartialObject } from './types'
+import DataItemRules from './validators/DataItemRules'
 
 export default class Data<
   DataValidators extends z.ZodRawShape,
   TargetingValidators extends z.ZodRawShape,
   QueryValidators extends z.ZodRawShape,
-  ClientTargetingValidators extends z.ZodRawShape
+  FallThroughTargetingValidators extends z.ZodRawShape
 > {
-  readonly #clientTargetingValidators: ClientTargetingValidators
+  readonly #fallThroughTargetingValidators: FallThroughTargetingValidators
   readonly #data: z.infer<
-    DataItems<DataValidators, TargetingValidators, ClientTargetingValidators>
+    DataItems<
+      DataValidators,
+      TargetingValidators,
+      FallThroughTargetingValidators
+    >
   >
   readonly #dataValidators: DataValidators
   readonly #targetingPredicates: TargetingPredicates<
@@ -35,7 +40,11 @@ export default class Data<
 
   private constructor(
     data: z.infer<
-      DataItems<DataValidators, TargetingValidators, ClientTargetingValidators>
+      DataItems<
+        DataValidators,
+        TargetingValidators,
+        FallThroughTargetingValidators
+      >
     >,
     dataValidators: DataValidators,
     targetingPredicates: TargetingPredicates<
@@ -44,9 +53,11 @@ export default class Data<
     >,
     targetingValidators: TargetingValidators,
     queryValidators: QueryValidators,
-    clientTargetingValidators: ClientTargetingValidators
+    fallThroughTargetingValidators: FallThroughTargetingValidators
   ) {
-    this.#clientTargetingValidators = Object.freeze(clientTargetingValidators)
+    this.#fallThroughTargetingValidators = Object.freeze(
+      fallThroughTargetingValidators
+    )
     this.#data = Object.freeze(data)
     this.#dataValidators = Object.freeze(dataValidators)
     this.#targetingPredicates = Object.freeze(targetingPredicates)
@@ -56,7 +67,11 @@ export default class Data<
   }
 
   get data(): z.infer<
-    DataItems<DataValidators, TargetingValidators, ClientTargetingValidators>
+    DataItems<
+      DataValidators,
+      TargetingValidators,
+      FallThroughTargetingValidators
+    >
   > {
     return this.#data
   }
@@ -81,8 +96,8 @@ export default class Data<
     return this.#QueryValidator
   }
 
-  get clientTargetingValidators() {
-    return this.#clientTargetingValidators
+  get fallThroughTargetingValidators() {
+    return this.#fallThroughTargetingValidators
   }
 
   useDataValidator<Name extends string, Validator extends z.ZodTypeAny>(
@@ -98,26 +113,26 @@ export default class Data<
       DataValidators & Record<Name, Validator>,
       TargetingValidators,
       QueryValidators,
-      ClientTargetingValidators
+      FallThroughTargetingValidators
     >(
       (name in this.#data
         ? DataItems(
             dataValidators,
             this.#targetingValidators,
-            this.#clientTargetingValidators
+            this.#fallThroughTargetingValidators
           ).parse(this.#data)
         : this.#data) as z.infer<
         DataItems<
           DataValidators & Record<Name, Validator>,
           TargetingValidators,
-          ClientTargetingValidators
+          FallThroughTargetingValidators
         >
       >,
       dataValidators,
       this.#targetingPredicates,
       this.#targetingValidators,
       this.#queryValidators,
-      this.#clientTargetingValidators
+      this.#fallThroughTargetingValidators
     )
   }
 
@@ -125,8 +140,8 @@ export default class Data<
     data: Partial<{
       [Name in keyof DataValidators]:
         | z.infer<DataValidators[Name]>
-        | ClientRules<DataValidators[Name], TargetingValidators>
-        | ClientRules<DataValidators[Name], ClientTargetingValidators>
+        | FallThroughRules<DataValidators[Name], TargetingValidators>
+        | FallThroughRules<DataValidators[Name], FallThroughTargetingValidators>
     }>
   ) {
     return Object.entries(omit(data, ['$schema'])).reduce<
@@ -134,25 +149,23 @@ export default class Data<
         DataValidators,
         TargetingValidators,
         QueryValidators,
-        ClientTargetingValidators
+        FallThroughTargetingValidators
       >
     >(
       (d, [key, value]) =>
         d.addRules(
           key as Keys<DataValidators>,
-          this.#isClientRulesPayload(value)
-            ? this.#isConsumableClientRulesPayload(value)
-              ? value.__rules__
-              : [{ client: value.__rules__ }]
+          this.#isFallThroughRulesPayload(value)
+            ? value.__rules__
             : [{ payload: value } as any]
         ),
       this
     )
   }
 
-  #isClientRulesPayload<Name extends keyof DataValidators>(
+  #isFallThroughRulesPayload<Name extends keyof DataValidators>(
     payload: Payload<z.infer<DataValidators[Name]>, TargetingValidators>
-  ): payload is ClientRules<
+  ): payload is FallThroughRules<
     z.infer<DataValidators[Name]>,
     TargetingValidators
   > {
@@ -161,40 +174,28 @@ export default class Data<
     )
   }
 
-  #isConsumableClientRulesPayload<Name extends keyof DataValidators>(
-    payload: ClientRules<z.infer<DataValidators[Name]>, TargetingValidators>
-  ) {
-    return payload.__rules__.every(
-      (rule) =>
-        !rule.targeting ||
-        Object.keys(rule.targeting).every(
-          (key) => key in this.#targetingValidators
-        )
-    )
-  }
-
   addRules<Name extends Keys<DataValidators>>(
     name: Name,
-    rules: z.infer<
-      DataItemRule<
+    rules: z.input<
+      DataItemRules<
         DataValidators[Name],
         TargetingValidators,
-        ClientTargetingValidators
+        FallThroughTargetingValidators
       >
-    >[]
+    >
   ) {
-    const dataItem = (this.#data as any)[name] || {}
+    const dataItem = this.#data[name] || { rules: [] }
     return new Data(
       {
         ...this.#data,
         ...DataItems(
           this.#dataValidators,
           this.#targetingValidators,
-          this.#clientTargetingValidators
+          this.#fallThroughTargetingValidators
         ).parse({
           [name]: {
             ...dataItem,
-            rules: [...(dataItem.rules || []), ...rules],
+            rules: [...dataItem.rules, ...rules],
           },
         }),
       },
@@ -202,7 +203,7 @@ export default class Data<
       this.#targetingPredicates,
       this.#targetingValidators,
       this.#queryValidators,
-      this.#clientTargetingValidators
+      this.#fallThroughTargetingValidators
     )
   }
 
@@ -211,13 +212,13 @@ export default class Data<
       DataItems(
         this.#dataValidators,
         this.#targetingValidators,
-        this.#clientTargetingValidators
+        this.#fallThroughTargetingValidators
       ).parse({}),
       this.#dataValidators,
       this.#targetingPredicates,
       this.#targetingValidators,
       this.#queryValidators,
-      this.#clientTargetingValidators
+      this.#fallThroughTargetingValidators
     )
   }
 
@@ -238,14 +239,14 @@ export default class Data<
       DataValidators,
       NewTargeting,
       NewQuery,
-      ClientTargetingValidators
+      FallThroughTargetingValidators
     >(
       DataItems(
         this.#dataValidators,
         targetingValidators,
-        this.#clientTargetingValidators
+        this.#fallThroughTargetingValidators
       ).parse(this.#data) as z.infer<
-        DataItems<DataValidators, NewTargeting, ClientTargetingValidators>
+        DataItems<DataValidators, NewTargeting, FallThroughTargetingValidators>
       >,
       this.#dataValidators,
       {
@@ -263,42 +264,44 @@ export default class Data<
         ...this.#queryValidators,
         [name]: targetingDescriptor.queryValidator,
       },
-      this.#clientTargetingValidators
+      this.#fallThroughTargetingValidators
     )
   }
 
-  useClientTargeting<
+  useFallThroughTargeting<
     Name extends string,
     TV extends z.ZodTypeAny,
     QV extends z.ZodTypeAny
   >(name: Name, targetingValidator: TV | TargetingDescriptor<TV, QV>) {
-    type NewClientTargeting = ClientTargetingValidators & { [K in Name]: TV }
+    type NewFallThroughTargeting = FallThroughTargetingValidators & {
+      [K in Name]: TV
+    }
 
-    const clientTargetingValidators = {
-      ...this.#clientTargetingValidators,
+    const fallThroughTargetingValidators = {
+      ...this.#fallThroughTargetingValidators,
       [name]: isTargetingDescriptor(targetingValidator)
         ? targetingValidator.targetingValidator
         : targetingValidator,
-    } as NewClientTargeting
+    } as NewFallThroughTargeting
 
     return new Data<
       DataValidators,
       TargetingValidators,
       QueryValidators,
-      NewClientTargeting
+      NewFallThroughTargeting
     >(
       DataItems(
         this.#dataValidators,
         this.#targetingValidators,
-        clientTargetingValidators
+        fallThroughTargetingValidators
       ).parse(this.#data) as z.infer<
-        DataItems<DataValidators, TargetingValidators, NewClientTargeting>
+        DataItems<DataValidators, TargetingValidators, NewFallThroughTargeting>
       >,
       this.#dataValidators,
       this.#targetingPredicates,
       this.#targetingValidators,
       this.#queryValidators,
-      clientTargetingValidators
+      fallThroughTargetingValidators
     )
   }
 
@@ -345,14 +348,14 @@ export default class Data<
       DataItemRule<
         DataValidators[Name],
         TargetingValidators,
-        ClientTargetingValidators
+        FallThroughTargetingValidators
       >
     >
   ) {
     return hasPayload(rule)
       ? rule.payload
-      : 'client' in rule
-      ? { __rules__: rule.client }
+      : 'fallThrough' in rule
+      ? { __rules__: rule.fallThrough }
       : undefined
   }
 
@@ -374,7 +377,7 @@ export default class Data<
         DataItemRule<
           DataValidators[Name],
           TargetingValidators,
-          ClientTargetingValidators
+          FallThroughTargetingValidators
         >
       >
     ) =>
@@ -390,7 +393,7 @@ export default class Data<
             DataItem<
               DataValidators[Name],
               TargetingValidators,
-              ClientTargetingValidators
+              FallThroughTargetingValidators
             >
           >
         }
@@ -426,13 +429,16 @@ function hasPayload<Payload>(x: any): x is { payload: Payload } {
   return 'payload' in x
 }
 
-export type ClientRules<P extends z.ZodTypeAny, T extends z.ZodRawShape> = {
+export type FallThroughRules<
+  P extends z.ZodTypeAny,
+  T extends z.ZodRawShape
+> = {
   __rules__: z.infer<RuleWithPayload<P, T>>[]
 }
 
 export type Payload<P extends z.ZodTypeAny, T extends z.ZodRawShape> =
   | z.infer<P>
-  | ClientRules<P, T>
+  | FallThroughRules<P, T>
 
 export type DataValidators<
   D extends Data<ZodRawShape, ZodRawShape, ZodRawShape, ZodRawShape>
@@ -446,6 +452,6 @@ export type QueryValidators<
   D extends Data<ZodRawShape, ZodRawShape, ZodRawShape, ZodRawShape>
 > = D extends Data<ZodRawShape, ZodRawShape, infer V, ZodRawShape> ? V : never
 
-export type ClientTargetingValidators<
+export type FallThroughTargetingValidators<
   D extends Data<ZodRawShape, ZodRawShape, ZodRawShape, ZodRawShape>
 > = D extends Data<ZodRawShape, ZodRawShape, ZodRawShape, infer V> ? V : never

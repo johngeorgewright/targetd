@@ -3,7 +3,7 @@ export {
   DataValidators,
   TargetingValidators,
   QueryValidators,
-  ClientTargetingValidators,
+  FallThroughTargetingValidators,
 } from './Data'
 export { default as DataItem } from './validators/DataItem'
 export { default as DataItemRule } from './validators/DataItemRule'
@@ -12,5 +12,8 @@ export { default as createTargetingDescriptor } from './createTargetingDescripto
 export { default as TargetingDescriptor } from './validators/TargetingDescriptor'
 export { default as TargetingPredicate } from './validators/TargetingPredicate'
 export { default as TargetingPredicates } from './validators/TargetingPredicates'
-export { equalsPredicate } from './predicates/equals'
-export { targetIncludesPredicate } from './predicates/targetIncludes'
+export { equalsPredicate, targetEquals } from './predicates/equals'
+export {
+  targetIncludesPredicate,
+  targetIncludes,
+} from './predicates/targetIncludes'

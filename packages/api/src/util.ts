@@ -17,6 +17,10 @@ export function objectKeys<O extends Record<string, unknown>>(
   return Object.keys(obj)
 }
 
+export function objectSize(obj: Record<string, unknown>) {
+  return Object.keys(obj).length
+}
+
 export function objectEntries<T extends Record<string, unknown>>(obj: T) {
   return Object.entries(obj) as [keyof T, T[keyof T]][]
 }
@@ -31,6 +35,17 @@ export function omit<T extends Record<string, unknown>, K extends keyof T>(
       return obj
     },
     { ...obj }
+  )
+}
+
+export function objectFitler<T extends Record<string, unknown>>(
+  obj: T,
+  predicate: <K extends keyof T>(value: T[K], key: K) => boolean
+): Partial<T> {
+  return objectKeys(obj).reduce(
+    (newObj, key) =>
+      predicate(obj[key], key) ? { ...newObj, [key]: obj[key] } : newObj,
+    {}
   )
 }
 

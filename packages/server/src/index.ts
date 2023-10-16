@@ -10,20 +10,20 @@ export function createServer<
   DataValidators extends z.ZodRawShape,
   TargetingValidators extends z.ZodRawShape,
   QueryValidators extends z.ZodRawShape,
-  ClientTargetingValidators extends z.ZodRawShape
+  FallThroughTargetingValidators extends z.ZodRawShape
 >(
   data:
     | Data<
         DataValidators,
         TargetingValidators,
         QueryValidators,
-        ClientTargetingValidators
+        FallThroughTargetingValidators
       >
     | (() => Data<
         DataValidators,
         TargetingValidators,
         QueryValidators,
-        ClientTargetingValidators
+        FallThroughTargetingValidators
       >)
 ) {
   const getData = typeof data === 'function' ? data : () => data
