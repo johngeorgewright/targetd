@@ -1,4 +1,4 @@
-import { Data } from '@targetd/api'
+import { Data, targetIncludes } from '@targetd/api'
 import { z } from 'zod'
 import { dataJSONSchemas } from '../src'
 
@@ -7,6 +7,8 @@ test('json schema for simple data object', () => {
     dataJSONSchemas(
       Data.create()
         .useDataValidator('foo', z.string())
+        .useTargeting('weather', targetIncludes(z.string()))
+        .useFallThroughTargeting('browser', targetIncludes(z.string()))
         .addRules('foo', [
           {
             payload: 'bar',
@@ -33,7 +35,20 @@ test('json schema for simple data object', () => {
                   },
                   "targeting": {
                     "additionalProperties": false,
-                    "properties": {},
+                    "properties": {
+                      "browser": {
+                        "items": {
+                          "type": "string",
+                        },
+                        "type": "array",
+                      },
+                      "weather": {
+                        "items": {
+                          "type": "string",
+                        },
+                        "type": "array",
+                      },
+                    },
                     "type": "object",
                   },
                 },
