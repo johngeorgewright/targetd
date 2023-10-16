@@ -20,7 +20,10 @@ export function dataJSONSchemas<
       data.dataValidators,
       data.targetingValidators,
       data.fallThroughTargetingValidators
-    ).extend({ $schema: z.string().optional() })
+    ).extend({ $schema: z.string().optional() }),
+    {
+      effectStrategy: 'input',
+    }
   )
 }
 
@@ -43,6 +46,9 @@ export function dataJSONSchema<
       data.dataValidators[name],
       data.targetingValidators,
       data.fallThroughTargetingValidators
-    ).extend({ $schema: z.string().optional() })
+    ).extend({ $schema: z.string().optional() }),
+    {
+      effectStrategy: 'input',
+    }
   )
 }
