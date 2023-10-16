@@ -9,6 +9,7 @@ import DataItem from './validators/DataItem'
 import DataItemRule, { RuleWithPayload } from './validators/DataItemRule'
 import { Keys } from 'ts-toolbelt/out/Any/Keys'
 import { MaybePromise, StaticRecord, ZodPartialObject } from './types'
+import DataItemRules from './validators/DataItemRules'
 
 export default class Data<
   DataValidators extends z.ZodRawShape,
@@ -155,9 +156,7 @@ export default class Data<
         d.addRules(
           key as Keys<DataValidators>,
           this.#isFallThroughRulesPayload(value)
-            ? this.#isConsumableFallThroughRulesPayload(value)
-              ? value.__rules__
-              : [{ fallThrough: value.__rules__ }]
+            ? value.__rules__
             : [{ payload: value } as any]
         ),
       this
@@ -175,32 +174,17 @@ export default class Data<
     )
   }
 
-  #isConsumableFallThroughRulesPayload<Name extends keyof DataValidators>(
-    payload: FallThroughRules<
-      z.infer<DataValidators[Name]>,
-      TargetingValidators
-    >
-  ) {
-    return payload.__rules__.every(
-      (rule) =>
-        !rule.targeting ||
-        Object.keys(rule.targeting).every(
-          (key) => key in this.#targetingValidators
-        )
-    )
-  }
-
   addRules<Name extends Keys<DataValidators>>(
     name: Name,
-    rules: z.infer<
-      DataItemRule<
+    rules: z.input<
+      DataItemRules<
         DataValidators[Name],
         TargetingValidators,
         FallThroughTargetingValidators
       >
-    >[]
+    >
   ) {
-    const dataItem = (this.#data as any)[name] || {}
+    const dataItem = this.#data[name] || { rules: [] }
     return new Data(
       {
         ...this.#data,
@@ -211,7 +195,7 @@ export default class Data<
         ).parse({
           [name]: {
             ...dataItem,
-            rules: [...(dataItem.rules || []), ...rules],
+            rules: [...dataItem.rules, ...rules],
           },
         }),
       },

@@ -8,9 +8,11 @@ function DataItemRule<
 >(Payload: P, targeting: T, fallThroughTargeting: CT): DataItemRule<P, T, CT> {
   const ServedRule = RuleWithPayload(Payload, targeting)
 
-  const FallThroughRule = ServedRule.omit({ payload: true }).extend({
-    fallThrough: z.array(RuleWithPayload(Payload, fallThroughTargeting)),
-  })
+  const FallThroughRule = RuleWithFallThrough(
+    Payload,
+    targeting,
+    fallThroughTargeting
+  )
 
   return ServedRule.or(FallThroughRule)
 }
@@ -22,13 +24,7 @@ type DataItemRule<
 > = z.ZodUnion<
   [
     RuleWithPayload<Payload, Targeting>,
-    z.ZodObject<
-      {
-        targeting: z.ZodOptional<ZodPartialObject<Targeting, 'strict'>>
-        fallThrough: z.ZodArray<RuleWithPayload<Payload, FallThroughTargeting>>
-      },
-      'strict'
-    >
+    RuleWithFallThrough<Payload, Targeting, FallThroughTargeting>
   ]
 >
 
@@ -52,5 +48,32 @@ export function RuleWithPayload<
   return z.strictObject({
     targeting: z.strictObject(targeting).partial().optional(),
     payload: Payload,
+  })
+}
+
+export type RuleWithFallThrough<
+  Payload extends z.ZodTypeAny,
+  Targeting extends z.ZodRawShape,
+  FallThroughTargeting extends z.ZodRawShape
+> = z.ZodObject<
+  {
+    targeting: z.ZodOptional<ZodPartialObject<Targeting, 'strict'>>
+    fallThrough: z.ZodArray<RuleWithPayload<Payload, FallThroughTargeting>>
+  },
+  'strict'
+>
+
+export function RuleWithFallThrough<
+  Payload extends z.ZodTypeAny,
+  Targeting extends z.ZodRawShape,
+  FallThroughTargeting extends z.ZodRawShape
+>(
+  payload: Payload,
+  targeting: Targeting,
+  fallThroughTargeting: FallThroughTargeting
+): RuleWithFallThrough<Payload, Targeting, FallThroughTargeting> {
+  return z.strictObject({
+    targeting: z.strictObject(targeting).partial().optional(),
+    fallThrough: RuleWithPayload(payload, fallThroughTargeting).array(),
   })
 }

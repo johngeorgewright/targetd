@@ -1,5 +1,5 @@
 import z from 'zod'
-import { Data, equalsPredicate, targetIncludesPredicate } from '../src'
+import { Data, targetEquals, targetIncludes } from '../src'
 
 const timeout = <T>(ms: number, returnValue: T) =>
   new Promise<T>((resolve) => setTimeout(() => resolve(returnValue), ms))
@@ -7,16 +7,8 @@ const timeout = <T>(ms: number, returnValue: T) =>
 test('getPayload', async () => {
   const data = Data.create()
     .useDataValidator('foo', z.string())
-    .useTargeting('weather', {
-      predicate: targetIncludesPredicate(),
-      queryValidator: z.string(),
-      targetingValidator: z.array(z.string()),
-    })
-    .useTargeting('highTide', {
-      predicate: equalsPredicate(),
-      queryValidator: z.boolean(),
-      targetingValidator: z.boolean(),
-    })
+    .useTargeting('weather', targetIncludes(z.string()))
+    .useTargeting('highTide', targetEquals(z.boolean()))
     .useTargeting('asyncThing', {
       predicate: (q) => timeout(10, (t) => q === t && timeout(10, true)),
       queryValidator: z.boolean(),
@@ -118,16 +110,8 @@ test('targeting without requiring a query', async () => {
 test('getPayloads', async () => {
   const data = Data.create()
     .useDataValidator('foo', z.string())
-    .useTargeting('weather', {
-      predicate: targetIncludesPredicate(),
-      queryValidator: z.string(),
-      targetingValidator: z.array(z.string()),
-    })
-    .useTargeting('highTide', {
-      predicate: equalsPredicate(),
-      queryValidator: z.boolean(),
-      targetingValidator: z.boolean(),
-    })
+    .useTargeting('weather', targetIncludes(z.string()))
+    .useTargeting('highTide', targetEquals(z.boolean()))
     .addRules('foo', [
       {
         targeting: {
@@ -199,16 +183,8 @@ test('getPayloadForEachName', async () => {
   const data = Data.create()
     .useDataValidator('foo', z.string())
     .useDataValidator('bar', z.string())
-    .useTargeting('weather', {
-      predicate: targetIncludesPredicate(),
-      queryValidator: z.string(),
-      targetingValidator: z.array(z.string()),
-    })
-    .useTargeting('highTide', {
-      predicate: equalsPredicate(),
-      queryValidator: z.boolean(),
-      targetingValidator: z.boolean(),
-    })
+    .useTargeting('weather', targetIncludes(z.string()))
+    .useTargeting('highTide', targetIncludes(z.boolean()))
     .useTargeting('asyncThing', {
       predicate: (q) => timeout(10, (t) => q === t && timeout(10, true)),
       queryValidator: z.boolean(),
@@ -270,84 +246,110 @@ test('fallThrough targeting', async () => {
   const data = Data.create()
     .useDataValidator('foo', z.string())
     .useDataValidator('bar', z.string())
+    .useTargeting('surf', targetIncludes(z.string()))
     .useFallThroughTargeting('weather', z.array(z.string()))
-    .useFallThroughTargeting('highTide', z.boolean())
     .addRules('foo', [
       {
-        fallThrough: [
-          {
-            targeting: {
-              weather: ['sunny'],
-            },
-            payload: '😎',
-          },
-          {
-            targeting: {
-              weather: ['rainy'],
-            },
-            payload: '☂️',
-          },
-        ],
+        targeting: {
+          surf: ['strong'],
+          weather: ['sunny'],
+        },
+        payload: '🏄‍♂️',
+      },
+      {
+        targeting: {
+          weather: ['sunny'],
+        },
+        payload: '😎',
+      },
+      {
+        targeting: {
+          weather: ['rainy'],
+        },
+        payload: '☂️',
       },
     ])
     .addRules('bar', [
       {
-        fallThrough: [
-          {
-            targeting: {
-              weather: ['rainy'],
-            },
-            payload: '😟',
-          },
-          {
-            targeting: {
-              weather: ['sunny'],
-            },
-            payload: '😁',
-          },
-        ],
+        targeting: {
+          weather: ['rainy'],
+        },
+        payload: '😟',
+      },
+      {
+        targeting: {
+          weather: ['sunny'],
+        },
+        payload: '😁',
       },
     ])
 
-  expect(await data.getPayloadForEachName()).toMatchInlineSnapshot(`
+  expect(data.data).toMatchInlineSnapshot(`
     {
       "bar": {
-        "__rules__": [
+        "rules": [
           {
-            "payload": "😟",
-            "targeting": {
-              "weather": [
-                "rainy",
-              ],
-            },
-          },
-          {
-            "payload": "😁",
-            "targeting": {
-              "weather": [
-                "sunny",
-              ],
-            },
+            "fallThrough": [
+              {
+                "payload": "😟",
+                "targeting": {
+                  "weather": [
+                    "rainy",
+                  ],
+                },
+              },
+              {
+                "payload": "😁",
+                "targeting": {
+                  "weather": [
+                    "sunny",
+                  ],
+                },
+              },
+            ],
+            "targeting": {},
           },
         ],
       },
       "foo": {
-        "__rules__": [
+        "rules": [
           {
-            "payload": "😎",
+            "fallThrough": [
+              {
+                "payload": "🏄‍♂️",
+                "targeting": {
+                  "weather": [
+                    "sunny",
+                  ],
+                },
+              },
+            ],
             "targeting": {
-              "weather": [
-                "sunny",
+              "surf": [
+                "strong",
               ],
             },
           },
           {
-            "payload": "☂️",
-            "targeting": {
-              "weather": [
-                "rainy",
-              ],
-            },
+            "fallThrough": [
+              {
+                "payload": "😎",
+                "targeting": {
+                  "weather": [
+                    "sunny",
+                  ],
+                },
+              },
+              {
+                "payload": "☂️",
+                "targeting": {
+                  "weather": [
+                    "rainy",
+                  ],
+                },
+              },
+            ],
+            "targeting": {},
           },
         ],
       },
@@ -360,11 +362,7 @@ test('inserting data', async () => {
     .useDataValidator('moo', z.string())
     .useDataValidator('foo', z.string())
     .useDataValidator('bar', z.string())
-    .useTargeting('weather', {
-      predicate: targetIncludesPredicate(),
-      queryValidator: z.string(),
-      targetingValidator: z.array(z.string()),
-    })
+    .useTargeting('weather', targetIncludes(z.string()))
     .useFallThroughTargeting('highTide', z.boolean())
     .insert({
       bar: {

@@ -1,13 +1,13 @@
 import z from 'zod'
-import DataItemRule from './DataItemRule'
+import DataItemRules from './DataItemRules'
 
 function DataItem<
   P extends z.ZodTypeAny,
   T extends z.ZodRawShape,
-  CT extends z.ZodRawShape
->(Payload: P, targeting: T, fallThroughTargeting: CT): DataItem<P, T, CT> {
+  FTT extends z.ZodRawShape
+>(Payload: P, targeting: T, fallThroughTargeting: FTT): DataItem<P, T, FTT> {
   return z.strictObject({
-    rules: z.array(DataItemRule(Payload, targeting, fallThroughTargeting)),
+    rules: DataItemRules(Payload, targeting, fallThroughTargeting),
   })
 }
 
@@ -17,7 +17,7 @@ type DataItem<
   FallThroughTargeting extends z.ZodRawShape
 > = z.ZodObject<
   {
-    rules: z.ZodArray<DataItemRule<Payload, Targeting, FallThroughTargeting>>
+    rules: DataItemRules<Payload, Targeting, FallThroughTargeting>
   },
   'strict'
 >
