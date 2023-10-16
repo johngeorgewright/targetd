@@ -49,6 +49,13 @@ export function objectFitler<T extends Record<string, unknown>>(
   )
 }
 
+export function objectSome<T extends Record<string, unknown>>(
+  obj: T,
+  predicate: <K extends keyof T>(value: T[K], key: K) => boolean
+): boolean {
+  return objectKeys(obj).some((key) => predicate(obj[key], key))
+}
+
 class EveryAsyncFail extends Error {}
 
 /**

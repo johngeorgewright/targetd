@@ -3,7 +3,13 @@ import DataItemRule, {
   RuleWithFallThrough,
   RuleWithPayload,
 } from './DataItemRule'
-import { arrayLast, objectFitler, objectKeys, objectSize } from '../util'
+import {
+  arrayLast,
+  objectFitler,
+  objectKeys,
+  objectSize,
+  objectSome,
+} from '../util'
 
 function DataItemRules<
   P extends z.ZodTypeAny,
@@ -103,8 +109,9 @@ function adaptRule<
   rule: z.infer<RuleWithPayload<P, T & FTT>>
 ): z.infer<DataItemRule<P, T, FTT>> {
   return (
-    objectSize(
-      filterTargeting(fallThroughTargetingValidators, rule.targeting || {})
+    objectSome(
+      fallThroughTargetingValidators,
+      (_, name) => name in (rule.targeting || {})
     )
       ? adaptRuleIntoFallThroughRule(
           targetingValidators,
