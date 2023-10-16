@@ -2,7 +2,10 @@ import { Data } from '@targetd/api'
 import yargs from 'yargs'
 import * as path from 'node:path'
 import { writeFile } from 'node:fs/promises'
+import { register as registerTSNode } from 'ts-node'
 import { dataJSONSchemas } from '.'
+
+registerTSNode()
 ;(async () => {
   const { dataExport, inputModule, outputFile } = await yargs
     .usage('$0 <cmd> [args]')
@@ -28,6 +31,7 @@ import { dataJSONSchemas } from '.'
     })
     .help().argv
 
+  console.info(path.resolve(inputModule))
   const input = require(path.resolve(inputModule))
   const data = input[dataExport]
   if (!isDataLike(data))
