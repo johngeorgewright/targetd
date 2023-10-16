@@ -7,51 +7,19 @@
         "rules": {
           "type": "array",
           "items": {
-            "anyOf": [
-              {
+            "type": "object",
+            "properties": {
+              "targeting": {
                 "type": "object",
-                "properties": {
-                  "targeting": {
-                    "type": "object",
-                    "properties": {},
-                    "additionalProperties": false
-                  },
-                  "payload": {
-                    "type": "string"
-                  }
-                },
-                "required": ["payload"],
+                "properties": {},
                 "additionalProperties": false
               },
-              {
-                "type": "object",
-                "properties": {
-                  "targeting": {
-                    "$ref": "#/properties/foo/properties/rules/items/anyOf/0/properties/targeting"
-                  },
-                  "fallThrough": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "targeting": {
-                          "type": "object",
-                          "properties": {},
-                          "additionalProperties": false
-                        },
-                        "payload": {
-                          "$ref": "#/properties/foo/properties/rules/items/anyOf/0/properties/payload"
-                        }
-                      },
-                      "required": ["payload"],
-                      "additionalProperties": false
-                    }
-                  }
-                },
-                "required": ["fallThrough"],
-                "additionalProperties": false
+              "payload": {
+                "type": "string"
               }
-            ]
+            },
+            "required": ["payload"],
+            "additionalProperties": false
           }
         }
       },
@@ -64,51 +32,19 @@
         "rules": {
           "type": "array",
           "items": {
-            "anyOf": [
-              {
+            "type": "object",
+            "properties": {
+              "targeting": {
                 "type": "object",
-                "properties": {
-                  "targeting": {
-                    "type": "object",
-                    "properties": {},
-                    "additionalProperties": false
-                  },
-                  "payload": {
-                    "type": "string"
-                  }
-                },
-                "required": ["payload"],
+                "properties": {},
                 "additionalProperties": false
               },
-              {
-                "type": "object",
-                "properties": {
-                  "targeting": {
-                    "$ref": "#/properties/b/properties/rules/items/anyOf/0/properties/targeting"
-                  },
-                  "fallThrough": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "targeting": {
-                          "type": "object",
-                          "properties": {},
-                          "additionalProperties": false
-                        },
-                        "payload": {
-                          "$ref": "#/properties/b/properties/rules/items/anyOf/0/properties/payload"
-                        }
-                      },
-                      "required": ["payload"],
-                      "additionalProperties": false
-                    }
-                  }
-                },
-                "required": ["fallThrough"],
-                "additionalProperties": false
+              "payload": {
+                "type": "string"
               }
-            ]
+            },
+            "required": ["payload"],
+            "additionalProperties": false
           }
         }
       },
@@ -119,7 +55,6 @@
       "type": "string"
     }
   },
-  "required": ["$schema"],
   "additionalProperties": false,
   "$schema": "http://json-schema.org/draft-07/schema#"
 }

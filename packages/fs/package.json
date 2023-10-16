@@ -5,6 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "yarn clean && yarn tsc",
+    "build:test-schema": "",
     "clean": "yarn rimraf dist",
     "start": "yarn tsc --watch --preserveWatchOutput",
     "release": "yarn semantic-release -e semantic-release-monorepo",
