@@ -32,7 +32,7 @@
     "typescript": "5.2.2"
   },
   "dependencies": {
-    "change-case": "4.1.2",
+    "change-case": "5.0.2",
     "tslib": "2.6.2",
     "yeoman-generator": "5.9.0"
   }
