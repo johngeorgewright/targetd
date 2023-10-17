@@ -8,7 +8,7 @@ import TargetingDescriptor from '../validators/TargetingDescriptor'
 export function targetIncludesPredicate<
   QV extends z.ZodTypeAny,
   TV extends z.ZodTypeAny
->(): TargetingPredicate<QV, TV> {
+>(): TargetingPredicate<QV, z.ZodArray<TV>> {
   return (q) => (t) => t.includes(q)
 }
 
