@@ -2999,7 +2999,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/express-serve-static-core", "npm:4.17.37"],\
             ["@types/jest", "npm:29.5.6"],\
             ["@types/node", "npm:18.18.5"],\
-            ["@types/supertest", "npm:2.0.14"],\
+            ["@types/supertest", "npm:2.0.15"],\
             ["@types/targetd__api", null],\
             ["@types/zod", null],\
             ["cors", "npm:2.8.5"],\
@@ -3041,7 +3041,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/express-serve-static-core", "npm:4.17.37"],\
             ["@types/jest", "npm:29.5.6"],\
             ["@types/node", "npm:18.18.5"],\
-            ["@types/supertest", "npm:2.0.14"],\
+            ["@types/supertest", "npm:2.0.15"],\
             ["cors", "npm:2.8.5"],\
             ["express", "npm:4.18.2"],\
             ["express-query-boolean", "npm:2.0.0"],\
@@ -3657,10 +3657,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@types/supertest", [\
-        ["npm:2.0.14", {\
-          "packageLocation": "./.yarn/cache/@types-supertest-npm-2.0.14-c53201eddd-9f6850a22b.zip/node_modules/@types/supertest/",\
+        ["npm:2.0.15", {\
+          "packageLocation": "./.yarn/cache/@types-supertest-npm-2.0.15-3ef0b10014-89c1983662.zip/node_modules/@types/supertest/",\
           "packageDependencies": [\
-            ["@types/supertest", "npm:2.0.14"],\
+            ["@types/supertest", "npm:2.0.15"],\
             ["@types/superagent", "npm:4.1.18"]\
           ],\
           "linkType": "HARD"\
