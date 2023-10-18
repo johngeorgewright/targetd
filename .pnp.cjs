@@ -2996,7 +2996,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@targetd/api", "virtual:049c1d28e5b9765667b7008f2694b3886d79f2113b2827f735bfa4f93e239d09c6d92193058dc55e737c58ebb15f0b8530088b5cf795627062174f566080b49f#workspace:packages/api"],\
             ["@types/cors", "npm:2.8.15"],\
             ["@types/express", "npm:4.17.20"],\
-            ["@types/express-serve-static-core", "npm:4.17.37"],\
+            ["@types/express-serve-static-core", "npm:4.17.38"],\
             ["@types/jest", "npm:29.5.6"],\
             ["@types/node", "npm:18.18.5"],\
             ["@types/supertest", "npm:2.0.15"],\
@@ -3038,7 +3038,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@targetd/api", "virtual:049c1d28e5b9765667b7008f2694b3886d79f2113b2827f735bfa4f93e239d09c6d92193058dc55e737c58ebb15f0b8530088b5cf795627062174f566080b49f#workspace:packages/api"],\
             ["@types/cors", "npm:2.8.15"],\
             ["@types/express", "npm:4.17.20"],\
-            ["@types/express-serve-static-core", "npm:4.17.37"],\
+            ["@types/express-serve-static-core", "npm:4.17.38"],\
             ["@types/jest", "npm:29.5.6"],\
             ["@types/node", "npm:18.18.5"],\
             ["@types/supertest", "npm:2.0.15"],\
@@ -3278,10 +3278,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "HARD"\
         }],\
-        ["npm:4.17.37", {\
-          "packageLocation": "./.yarn/cache/@types-express-serve-static-core-npm-4.17.37-efde1e3db3-2dab1380e4.zip/node_modules/@types/express-serve-static-core/",\
+        ["npm:4.17.38", {\
+          "packageLocation": "./.yarn/cache/@types-express-serve-static-core-npm-4.17.38-4dce1e5ae7-22d057c9e8.zip/node_modules/@types/express-serve-static-core/",\
           "packageDependencies": [\
-            ["@types/express-serve-static-core", "npm:4.17.37"],\
+            ["@types/express-serve-static-core", "npm:4.17.38"],\
             ["@types/node", "npm:20.3.1"],\
             ["@types/qs", "npm:6.9.7"],\
             ["@types/range-parser", "npm:1.2.4"],\
