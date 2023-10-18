@@ -2834,7 +2834,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@semantic-release/release-notes-generator", "virtual:93ff9e54e7e85ba03f8777529e2e31fd687b3208f0bfd29f9526626fccebedcf25fd704ae938492bcd5692d38a16927bd020804d445cde5885dc772e9e1e1ff9#npm:10.0.3"],\
             ["@targetd/api", "virtual:049c1d28e5b9765667b7008f2694b3886d79f2113b2827f735bfa4f93e239d09c6d92193058dc55e737c58ebb15f0b8530088b5cf795627062174f566080b49f#workspace:packages/api"],\
             ["@targetd/json-schema", "virtual:d3a13509bf0bdde0bdb604fbd5c32837fd3e38c0a8124a34b32ee1a2ede97c78f6c2f7d96b35a098cb1c736f505b5a271607ee7df28e5bb82c33fd616d4ce19b#workspace:packages/json-schema"],\
-            ["@types/fs-extra", "npm:11.0.2"],\
+            ["@types/fs-extra", "npm:11.0.3"],\
             ["@types/jest", "npm:29.5.6"],\
             ["@types/lodash", "npm:4.14.200"],\
             ["@types/node", "npm:18.18.6"],\
@@ -3291,10 +3291,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@types/fs-extra", [\
-        ["npm:11.0.2", {\
-          "packageLocation": "./.yarn/cache/@types-fs-extra-npm-11.0.2-8c72477942-5b3e30343e.zip/node_modules/@types/fs-extra/",\
+        ["npm:11.0.3", {\
+          "packageLocation": "./.yarn/cache/@types-fs-extra-npm-11.0.3-c401cb7c41-f196bc2169.zip/node_modules/@types/fs-extra/",\
           "packageDependencies": [\
-            ["@types/fs-extra", "npm:11.0.2"],\
+            ["@types/fs-extra", "npm:11.0.3"],\
             ["@types/jsonfile", "npm:6.1.1"],\
             ["@types/node", "npm:20.3.1"]\
           ],\
