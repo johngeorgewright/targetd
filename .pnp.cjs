@@ -77,7 +77,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["husky", "npm:8.0.3"],\
             ["isbinaryfile", "npm:5.0.0"],\
             ["jest-runner", "npm:29.7.0"],\
-            ["lint-staged", "npm:15.0.1"],\
+            ["lint-staged", "npm:15.0.2"],\
             ["mkdirp-infer-owner", "npm:2.0.0"],\
             ["prettier", "npm:2.8.8"],\
             ["semantic-release", "npm:19.0.5"],\
@@ -2941,7 +2941,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["husky", "npm:8.0.3"],\
             ["isbinaryfile", "npm:5.0.0"],\
             ["jest-runner", "npm:29.7.0"],\
-            ["lint-staged", "npm:15.0.1"],\
+            ["lint-staged", "npm:15.0.2"],\
             ["mkdirp-infer-owner", "npm:2.0.0"],\
             ["prettier", "npm:2.8.8"],\
             ["semantic-release", "npm:19.0.5"],\
@@ -9929,29 +9929,29 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["lint-staged", [\
-        ["npm:15.0.1", {\
-          "packageLocation": "./.yarn/cache/lint-staged-npm-15.0.1-184c064350-4ef972b8fb.zip/node_modules/lint-staged/",\
+        ["npm:15.0.2", {\
+          "packageLocation": "./.yarn/cache/lint-staged-npm-15.0.2-9a94018c19-437bc006a1.zip/node_modules/lint-staged/",\
           "packageDependencies": [\
-            ["lint-staged", "npm:15.0.1"],\
+            ["lint-staged", "npm:15.0.2"],\
             ["chalk", "npm:5.3.0"],\
             ["commander", "npm:11.1.0"],\
             ["debug", "virtual:071d471ccd267160a6f0ec15e4cdc2874728a012db8f34521faf9e64a516aa918ee9ebab3c4c084d955ab74aaac5b8be9afb7a168813c9f210acdb7d88754ab9#npm:4.3.4"],\
             ["execa", "npm:8.0.1"],\
             ["lilconfig", "npm:2.1.0"],\
-            ["listr2", "npm:7.0.1"],\
+            ["listr2", "npm:7.0.2"],\
             ["micromatch", "npm:4.0.5"],\
             ["pidtree", "npm:0.6.0"],\
             ["string-argv", "npm:0.3.2"],\
-            ["yaml", "npm:2.3.2"]\
+            ["yaml", "npm:2.3.3"]\
           ],\
           "linkType": "HARD"\
         }]\
       ]],\
       ["listr2", [\
-        ["npm:7.0.1", {\
-          "packageLocation": "./.yarn/cache/listr2-npm-7.0.1-ccc624130b-ad6a64b952.zip/node_modules/listr2/",\
+        ["npm:7.0.2", {\
+          "packageLocation": "./.yarn/cache/listr2-npm-7.0.2-42ddc71dba-1734c6b936.zip/node_modules/listr2/",\
           "packageDependencies": [\
-            ["listr2", "npm:7.0.1"],\
+            ["listr2", "npm:7.0.2"],\
             ["cli-truncate", "npm:3.1.0"],\
             ["colorette", "npm:2.0.20"],\
             ["eventemitter3", "npm:5.0.1"],\
@@ -15822,13 +15822,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/yaml-npm-1.10.2-0e780aebdf-ce4ada136e.zip/node_modules/yaml/",\
           "packageDependencies": [\
             ["yaml", "npm:1.10.2"]\
-          ],\
-          "linkType": "HARD"\
-        }],\
-        ["npm:2.3.2", {\
-          "packageLocation": "./.yarn/cache/yaml-npm-2.3.2-b844830a8b-acd80cc24d.zip/node_modules/yaml/",\
-          "packageDependencies": [\
-            ["yaml", "npm:2.3.2"]\
           ],\
           "linkType": "HARD"\
         }],\
