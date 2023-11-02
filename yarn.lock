@@ -2028,7 +2028,7 @@ __metadata:
     "@semantic-release/github": 8.1.0
     "@semantic-release/release-notes-generator": 10.0.3
     "@types/jest": 29.5.7
-    "@types/node": 18.18.8
+    "@types/node": 20.8.10
     jest: 29.7.0
     rimraf: 5.0.5
     semantic-release: 19.0.5
@@ -2056,7 +2056,7 @@ __metadata:
     "@targetd/server": "workspace:*"
     "@types/express": 4.17.20
     "@types/jest": 29.5.7
-    "@types/node": 18.18.8
+    "@types/node": 20.8.10
     cross-fetch: 4.0.0
     express: 4.18.2
     jest: 29.7.0
@@ -2085,7 +2085,7 @@ __metadata:
     "@semantic-release/release-notes-generator": 10.0.3
     "@targetd/api": "workspace:packages/api"
     "@types/jest": 29.5.7
-    "@types/node": 18.18.8
+    "@types/node": 20.8.10
     jest: 29.7.0
     jest-date-mock: 1.0.8
     rimraf: 5.0.5
@@ -2116,7 +2116,7 @@ __metadata:
     "@types/fs-extra": 11.0.3
     "@types/jest": 29.5.7
     "@types/lodash": ^4.14.194
-    "@types/node": 18.18.8
+    "@types/node": 20.8.10
     "@types/watch": ^1.0.3
     fs-extra: 11.1.1
     jest: 29.7.0
@@ -2150,7 +2150,7 @@ __metadata:
     "@semantic-release/release-notes-generator": 10.0.3
     "@targetd/api": "workspace:*"
     "@types/jest": 29.5.7
-    "@types/node": 18.18.8
+    "@types/node": 20.8.10
     "@types/yargs": ^17
     jest: 29.7.0
     rimraf: 5.0.5
@@ -2183,7 +2183,7 @@ __metadata:
     "@semantic-release/github": 8.1.0
     "@semantic-release/release-notes-generator": 10.0.3
     "@types/jest": 29.5.7
-    "@types/node": 18.18.8
+    "@types/node": 20.8.10
     commitizen: 4.3.0
     cz-conventional-changelog: 3.3.0
     husky: 8.0.3
@@ -2242,7 +2242,7 @@ __metadata:
     "@types/express": 4.17.20
     "@types/express-serve-static-core": 4.17.39
     "@types/jest": 29.5.7
-    "@types/node": 18.18.8
+    "@types/node": 20.8.10
     "@types/supertest": 2.0.15
     cors: 2.8.5
     express: 4.18.2
@@ -2658,12 +2658,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:18.18.8, @types/node@npm:^18.11.9":
-  version: 18.18.8
-  resolution: "@types/node@npm:18.18.8"
+"@types/node@npm:20.8.10":
+  version: 20.8.10
+  resolution: "@types/node@npm:20.8.10"
   dependencies:
     undici-types: ~5.26.4
-  checksum: d6a82bfc28bca8e4e32ffc9526798d1aea62f6993ea3a535cd3f47ac3f725a48efe3f484d68168dd154af0001c89935e4e1d77e7b1809c3824c6382bf99b86f6
+  checksum: 7c61190e43e8074a1b571e52ff14c880bc67a0447f2fe5ed0e1a023eb8a23d5f815658edb98890f7578afe0f090433c4a635c7c87311762544e20dd78723e515
   languageName: node
   linkType: hard
 
@@ -2678,6 +2678,15 @@ __metadata:
   version: 16.18.58
   resolution: "@types/node@npm:16.18.58"
   checksum: 6d8404abc6c97bacd220f606441727adea923f3bd010d07d869f0dc6c4c6dc016430880af1f270edf1b84ae637a7fa5339e6adb3abba210a4820ac5e28f34067
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^18.11.9":
+  version: 18.18.8
+  resolution: "@types/node@npm:18.18.8"
+  dependencies:
+    undici-types: ~5.26.4
+  checksum: d6a82bfc28bca8e4e32ffc9526798d1aea62f6993ea3a535cd3f47ac3f725a48efe3f484d68168dd154af0001c89935e4e1d77e7b1809c3824c6382bf99b86f6
   languageName: node
   linkType: hard
 
