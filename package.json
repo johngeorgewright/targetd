@@ -8,15 +8,15 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "yarn workspaces foreach --topological-dev --exclude @targetd/scaffold --parallel --interlaced --verbose run build",
-    "clean": "yarn workspaces foreach --parallel --interlaced --verbose run clean",
+    "build": "yarn workspaces foreach --all --topological-dev --exclude @targetd/scaffold --parallel --interlaced --verbose run build",
+    "clean": "yarn workspaces foreach --all --parallel --interlaced --verbose run clean",
     "commit": "yarn git-cz",
     "package:generate": "node --require ts-node/register $(yarn bin yo) ./packages/scaffold/src/package",
     "package:remove": "node --require ts-node/register $(yarn bin yo) ./packages/scaffold/src/remove-package",
     "prepare": "husky install",
-    "release": "yarn workspaces foreach --no-private --topological-dev run semantic-release",
-    "start": "yarn build && yarn workspaces foreach --exclude @targetd/scaffold --parallel --interlaced --verbose run start",
-    "test": "yarn workspaces foreach --parallel --interlaced --verbose run test"
+    "release": "yarn workspaces foreach --all --no-private --topological-dev run semantic-release",
+    "start": "yarn build && yarn workspaces foreach --all --exclude @targetd/scaffold --parallel --interlaced --verbose run start",
+    "test": "yarn workspaces foreach --all --parallel --interlaced --verbose run test"
   },
   "author": "",
   "license": "UNLICENSED",
@@ -61,5 +61,5 @@
     "@types/jest": "29.5.7",
     "tslib": "2.6.2"
   },
-  "packageManager": "yarn@3.6.4"
+  "packageManager": "yarn@4.0.1"
 }
