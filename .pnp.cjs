@@ -3005,7 +3005,7 @@ const RAW_RUNTIME_STATE =
           ["@semantic-release/github", "virtual:93ff9e54e7e85ba03f8777529e2e31fd687b3208f0bfd29f9526626fccebedcf25fd704ae938492bcd5692d38a16927bd020804d445cde5885dc772e9e1e1ff9#npm:8.1.0"],\
           ["@semantic-release/release-notes-generator", "virtual:93ff9e54e7e85ba03f8777529e2e31fd687b3208f0bfd29f9526626fccebedcf25fd704ae938492bcd5692d38a16927bd020804d445cde5885dc772e9e1e1ff9#npm:10.0.3"],\
           ["@targetd/api", "virtual:049c1d28e5b9765667b7008f2694b3886d79f2113b2827f735bfa4f93e239d09c6d92193058dc55e737c58ebb15f0b8530088b5cf795627062174f566080b49f#workspace:packages/api"],\
-          ["@types/cors", "npm:2.8.15"],\
+          ["@types/cors", "npm:2.8.17"],\
           ["@types/express", "npm:4.17.20"],\
           ["@types/express-serve-static-core", "npm:4.17.39"],\
           ["@types/jest", "npm:29.5.7"],\
@@ -3047,7 +3047,7 @@ const RAW_RUNTIME_STATE =
           ["@semantic-release/github", "virtual:93ff9e54e7e85ba03f8777529e2e31fd687b3208f0bfd29f9526626fccebedcf25fd704ae938492bcd5692d38a16927bd020804d445cde5885dc772e9e1e1ff9#npm:8.1.0"],\
           ["@semantic-release/release-notes-generator", "virtual:93ff9e54e7e85ba03f8777529e2e31fd687b3208f0bfd29f9526626fccebedcf25fd704ae938492bcd5692d38a16927bd020804d445cde5885dc772e9e1e1ff9#npm:10.0.3"],\
           ["@targetd/api", "virtual:049c1d28e5b9765667b7008f2694b3886d79f2113b2827f735bfa4f93e239d09c6d92193058dc55e737c58ebb15f0b8530088b5cf795627062174f566080b49f#workspace:packages/api"],\
-          ["@types/cors", "npm:2.8.15"],\
+          ["@types/cors", "npm:2.8.17"],\
           ["@types/express", "npm:4.17.20"],\
           ["@types/express-serve-static-core", "npm:4.17.39"],\
           ["@types/jest", "npm:29.5.7"],\
@@ -3211,10 +3211,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@types/cors", [\
-      ["npm:2.8.15", {\
-        "packageLocation": "./.yarn/cache/@types-cors-npm-2.8.15-31347a057a-ef7b0aba4c.zip/node_modules/@types/cors/",\
+      ["npm:2.8.17", {\
+        "packageLocation": "./.yarn/cache/@types-cors-npm-2.8.17-2556d16051-469bd85e29.zip/node_modules/@types/cors/",\
         "packageDependencies": [\
-          ["@types/cors", "npm:2.8.15"],\
+          ["@types/cors", "npm:2.8.17"],\
           ["@types/node", "npm:20.3.1"]\
         ],\
         "linkType": "HARD"\
