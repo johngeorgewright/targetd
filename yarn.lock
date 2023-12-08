@@ -2212,7 +2212,7 @@ __metadata:
     "@types/jest": "npm:29.5.11"
     "@types/prettier": "npm:2.7.3"
     "@types/rimraf": "npm:4.0.5"
-    "@types/yeoman-generator": "npm:5.2.13"
+    "@types/yeoman-generator": "npm:5.2.14"
     change-case: "npm:5.1.2"
     jest: "npm:29.7.0"
     prettier: "npm:2.8.8"
@@ -2897,9 +2897,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/yeoman-generator@npm:5.2.13":
-  version: 5.2.13
-  resolution: "@types/yeoman-generator@npm:5.2.13"
+"@types/yeoman-generator@npm:5.2.14":
+  version: 5.2.14
+  resolution: "@types/yeoman-generator@npm:5.2.14"
   dependencies:
     "@types/debug": "npm:*"
     "@types/ejs": "npm:*"
@@ -2908,7 +2908,7 @@ __metadata:
     "@types/node": "npm:*"
     "@types/yeoman-environment": "npm:*"
     rxjs: "npm:^6.4.0"
-  checksum: f418a53ea28bf6882c7754e1ea1c15c6421f7b369e43e6fb6d23b642199ce8fcee9bed9533989ff89e0228e21c1410af31253f9153d916c9e702a2cc9a7338d7
+  checksum: 7827ee9ef9d602b67dda58db9fd49c92c71f953616010cccf4684d93eda5197afaf20440954db8be7bc12bd0b3538e8af62ccb44c0254a0736aa71585ff83111
   languageName: node
   linkType: hard
 
