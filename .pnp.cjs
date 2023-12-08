@@ -2845,12 +2845,12 @@ const RAW_RUNTIME_STATE =
           ["@semantic-release/release-notes-generator", "virtual:93ff9e54e7e85ba03f8777529e2e31fd687b3208f0bfd29f9526626fccebedcf25fd704ae938492bcd5692d38a16927bd020804d445cde5885dc772e9e1e1ff9#npm:10.0.3"],\
           ["@targetd/api", "virtual:049c1d28e5b9765667b7008f2694b3886d79f2113b2827f735bfa4f93e239d09c6d92193058dc55e737c58ebb15f0b8530088b5cf795627062174f566080b49f#workspace:packages/api"],\
           ["@targetd/json-schema", "virtual:d3a13509bf0bdde0bdb604fbd5c32837fd3e38c0a8124a34b32ee1a2ede97c78f6c2f7d96b35a098cb1c736f505b5a271607ee7df28e5bb82c33fd616d4ce19b#workspace:packages/json-schema"],\
-          ["@types/fs-extra", "npm:11.0.3"],\
+          ["@types/fs-extra", "npm:11.0.4"],\
           ["@types/jest", "npm:29.5.11"],\
           ["@types/lodash", "npm:4.14.202"],\
           ["@types/node", "npm:20.8.10"],\
           ["@types/watch", "npm:1.0.6"],\
-          ["fs-extra", "npm:11.1.1"],\
+          ["fs-extra", "npm:11.2.0"],\
           ["jest", "virtual:78776105526f67704c5d821aa139591fbba11fdbd5f03f51d916c5f752b52ce5b35f9731aa4a7b9fc9fe491d6229cf4b9abfbb54db395f33bbe11c0e0b749fa6#npm:29.7.0"],\
           ["lodash", "npm:4.17.21"],\
           ["rimraf", "npm:5.0.5"],\
@@ -3302,10 +3302,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@types/fs-extra", [\
-      ["npm:11.0.3", {\
-        "packageLocation": "./.yarn/cache/@types-fs-extra-npm-11.0.3-c401cb7c41-da06cafdfe.zip/node_modules/@types/fs-extra/",\
+      ["npm:11.0.4", {\
+        "packageLocation": "./.yarn/cache/@types-fs-extra-npm-11.0.4-e30a7fec50-acc4c1eb0c.zip/node_modules/@types/fs-extra/",\
         "packageDependencies": [\
-          ["@types/fs-extra", "npm:11.0.3"],\
+          ["@types/fs-extra", "npm:11.0.4"],\
           ["@types/jsonfile", "npm:6.1.1"],\
           ["@types/node", "npm:20.3.1"]\
         ],\
@@ -7228,6 +7228,16 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/fs-extra-npm-11.1.1-ca44602180-c4e9fabf97.zip/node_modules/fs-extra/",\
         "packageDependencies": [\
           ["fs-extra", "npm:11.1.1"],\
+          ["graceful-fs", "npm:4.2.11"],\
+          ["jsonfile", "npm:6.1.0"],\
+          ["universalify", "npm:2.0.0"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:11.2.0", {\
+        "packageLocation": "./.yarn/cache/fs-extra-npm-11.2.0-6783080799-0579bf6726.zip/node_modules/fs-extra/",\
+        "packageDependencies": [\
+          ["fs-extra", "npm:11.2.0"],\
           ["graceful-fs", "npm:4.2.11"],\
           ["jsonfile", "npm:6.1.0"],\
           ["universalify", "npm:2.0.0"]\
