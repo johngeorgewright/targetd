@@ -8,7 +8,7 @@ import { dataJSONSchemas } from '.'
 registerTSNode()
 ;(async () => {
   const { dataExport, inputModule, outputFile } = await yargs
-    .usage('$0 <cmd> [args]')
+    .usage('targetd-json-schema [args]')
     .options({
       dataExport: {
         alias: 'e',

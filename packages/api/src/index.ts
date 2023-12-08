@@ -3,6 +3,7 @@ export {
   DataValidators,
   TargetingValidators,
   QueryValidators,
+  FallThroughData,
   FallThroughTargetingValidators,
 } from './Data'
 export { default as DataItem } from './validators/DataItem'
