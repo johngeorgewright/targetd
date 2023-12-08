@@ -455,3 +455,12 @@ export type QueryValidators<
 export type FallThroughTargetingValidators<
   D extends Data<ZodRawShape, ZodRawShape, ZodRawShape, ZodRawShape>
 > = D extends Data<ZodRawShape, ZodRawShape, ZodRawShape, infer V> ? V : never
+
+export type FallThroughData<
+  D extends Data<ZodRawShape, ZodRawShape, ZodRawShape, ZodRawShape>
+> = Data<
+  DataValidators<D>,
+  { [K in keyof FallThroughTargetingValidators<D>]: z.ZodType },
+  Omit<QueryValidators<D>, keyof TargetingValidators<D>>,
+  {}
+>
