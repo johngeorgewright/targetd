@@ -3007,7 +3007,7 @@ const RAW_RUNTIME_STATE =
           ["@targetd/api", "virtual:049c1d28e5b9765667b7008f2694b3886d79f2113b2827f735bfa4f93e239d09c6d92193058dc55e737c58ebb15f0b8530088b5cf795627062174f566080b49f#workspace:packages/api"],\
           ["@types/cors", "npm:2.8.17"],\
           ["@types/express", "npm:4.17.21"],\
-          ["@types/express-serve-static-core", "npm:4.17.39"],\
+          ["@types/express-serve-static-core", "npm:4.17.41"],\
           ["@types/jest", "npm:29.5.11"],\
           ["@types/node", "npm:20.8.10"],\
           ["@types/supertest", "npm:2.0.16"],\
@@ -3049,7 +3049,7 @@ const RAW_RUNTIME_STATE =
           ["@targetd/api", "virtual:049c1d28e5b9765667b7008f2694b3886d79f2113b2827f735bfa4f93e239d09c6d92193058dc55e737c58ebb15f0b8530088b5cf795627062174f566080b49f#workspace:packages/api"],\
           ["@types/cors", "npm:2.8.17"],\
           ["@types/express", "npm:4.17.21"],\
-          ["@types/express-serve-static-core", "npm:4.17.39"],\
+          ["@types/express-serve-static-core", "npm:4.17.41"],\
           ["@types/jest", "npm:29.5.11"],\
           ["@types/node", "npm:20.8.10"],\
           ["@types/supertest", "npm:2.0.16"],\
@@ -3289,10 +3289,10 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "HARD"\
       }],\
-      ["npm:4.17.39", {\
-        "packageLocation": "./.yarn/cache/@types-express-serve-static-core-npm-4.17.39-d4788cef7b-5988b79a44.zip/node_modules/@types/express-serve-static-core/",\
+      ["npm:4.17.41", {\
+        "packageLocation": "./.yarn/cache/@types-express-serve-static-core-npm-4.17.41-7d196a92fa-7647e19d9c.zip/node_modules/@types/express-serve-static-core/",\
         "packageDependencies": [\
-          ["@types/express-serve-static-core", "npm:4.17.39"],\
+          ["@types/express-serve-static-core", "npm:4.17.41"],\
           ["@types/node", "npm:20.3.1"],\
           ["@types/qs", "npm:6.9.7"],\
           ["@types/range-parser", "npm:1.2.4"],\
