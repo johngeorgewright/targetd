@@ -2788,7 +2788,7 @@ const RAW_RUNTIME_STATE =
           ["@semantic-release/release-notes-generator", "virtual:93ff9e54e7e85ba03f8777529e2e31fd687b3208f0bfd29f9526626fccebedcf25fd704ae938492bcd5692d38a16927bd020804d445cde5885dc772e9e1e1ff9#npm:10.0.3"],\
           ["@targetd/api", "virtual:049c1d28e5b9765667b7008f2694b3886d79f2113b2827f735bfa4f93e239d09c6d92193058dc55e737c58ebb15f0b8530088b5cf795627062174f566080b49f#workspace:packages/api"],\
           ["@targetd/server", "virtual:049c1d28e5b9765667b7008f2694b3886d79f2113b2827f735bfa4f93e239d09c6d92193058dc55e737c58ebb15f0b8530088b5cf795627062174f566080b49f#workspace:packages/server"],\
-          ["@types/express", "npm:4.17.20"],\
+          ["@types/express", "npm:4.17.21"],\
           ["@types/jest", "npm:29.5.11"],\
           ["@types/node", "npm:20.8.10"],\
           ["cross-fetch", "npm:4.0.0"],\
@@ -3006,7 +3006,7 @@ const RAW_RUNTIME_STATE =
           ["@semantic-release/release-notes-generator", "virtual:93ff9e54e7e85ba03f8777529e2e31fd687b3208f0bfd29f9526626fccebedcf25fd704ae938492bcd5692d38a16927bd020804d445cde5885dc772e9e1e1ff9#npm:10.0.3"],\
           ["@targetd/api", "virtual:049c1d28e5b9765667b7008f2694b3886d79f2113b2827f735bfa4f93e239d09c6d92193058dc55e737c58ebb15f0b8530088b5cf795627062174f566080b49f#workspace:packages/api"],\
           ["@types/cors", "npm:2.8.17"],\
-          ["@types/express", "npm:4.17.20"],\
+          ["@types/express", "npm:4.17.21"],\
           ["@types/express-serve-static-core", "npm:4.17.39"],\
           ["@types/jest", "npm:29.5.11"],\
           ["@types/node", "npm:20.8.10"],\
@@ -3048,7 +3048,7 @@ const RAW_RUNTIME_STATE =
           ["@semantic-release/release-notes-generator", "virtual:93ff9e54e7e85ba03f8777529e2e31fd687b3208f0bfd29f9526626fccebedcf25fd704ae938492bcd5692d38a16927bd020804d445cde5885dc772e9e1e1ff9#npm:10.0.3"],\
           ["@targetd/api", "virtual:049c1d28e5b9765667b7008f2694b3886d79f2113b2827f735bfa4f93e239d09c6d92193058dc55e737c58ebb15f0b8530088b5cf795627062174f566080b49f#workspace:packages/api"],\
           ["@types/cors", "npm:2.8.17"],\
-          ["@types/express", "npm:4.17.20"],\
+          ["@types/express", "npm:4.17.21"],\
           ["@types/express-serve-static-core", "npm:4.17.39"],\
           ["@types/jest", "npm:29.5.11"],\
           ["@types/node", "npm:20.8.10"],\
@@ -3265,10 +3265,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@types/express", [\
-      ["npm:4.17.20", {\
-        "packageLocation": "./.yarn/cache/@types-express-npm-4.17.20-a63c9e93d3-7dba63831c.zip/node_modules/@types/express/",\
+      ["npm:4.17.21", {\
+        "packageLocation": "./.yarn/cache/@types-express-npm-4.17.21-be92a0245e-7a6d26cf6f.zip/node_modules/@types/express/",\
         "packageDependencies": [\
-          ["@types/express", "npm:4.17.20"],\
+          ["@types/express", "npm:4.17.21"],\
           ["@types/body-parser", "npm:1.19.2"],\
           ["@types/express-serve-static-core", "npm:4.17.35"],\
           ["@types/qs", "npm:6.9.7"],\
