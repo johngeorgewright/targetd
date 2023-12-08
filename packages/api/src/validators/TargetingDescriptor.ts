@@ -23,3 +23,11 @@ export function isTargetingDescriptor<
     'targetingValidator' in x
   )
 }
+
+export type TargetingDescriptorTargetingValidator<
+  TD extends TargetingDescriptor<any, any>
+> = TD extends TargetingDescriptor<infer TV, any> ? TV : never
+
+export type TargetingDescriptorQueryValidator<
+  TD extends TargetingDescriptor<any, any>
+> = TD extends TargetingDescriptor<any, infer QV> ? QV : never

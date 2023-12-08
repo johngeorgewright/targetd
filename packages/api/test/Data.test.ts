@@ -110,8 +110,10 @@ test('targeting without requiring a query', async () => {
 test('getPayloads', async () => {
   const data = Data.create()
     .useDataValidator('foo', z.string())
-    .useTargeting('weather', targetIncludes(z.string()))
-    .useTargeting('highTide', targetEquals(z.boolean()))
+    .useTargetingDescriptors({
+      weather: targetIncludes(z.string()),
+      highTide: targetEquals(z.boolean()),
+    })
     .addRules('foo', [
       {
         targeting: {
@@ -183,12 +185,14 @@ test('getPayloadForEachName', async () => {
   const data = Data.create()
     .useDataValidator('foo', z.string())
     .useDataValidator('bar', z.string())
-    .useTargeting('weather', targetIncludes(z.string()))
-    .useTargeting('highTide', targetIncludes(z.boolean()))
-    .useTargeting('asyncThing', {
-      predicate: (q) => timeout(10, (t) => q === t && timeout(10, true)),
-      queryValidator: z.boolean(),
-      targetingValidator: z.boolean(),
+    .useTargetingDescriptors({
+      weather: targetIncludes(z.string()),
+      highTide: targetIncludes(z.boolean()),
+      asyncThing: {
+        predicate: (q) => timeout(10, (t) => q === t && timeout(10, true)),
+        queryValidator: z.boolean(),
+        targetingValidator: z.boolean(),
+      },
     })
     .addRules('foo', [
       {
@@ -363,7 +367,9 @@ test('inserting data', async () => {
     .useDataValidator('foo', z.string())
     .useDataValidator('bar', z.string())
     .useTargeting('weather', targetIncludes(z.string()))
-    .useFallThroughTargeting('highTide', z.boolean())
+    .useFallThroughTargetingDescriptors({
+      highTide: targetEquals(z.boolean()),
+    })
     .insert({
       bar: {
         __rules__: [
