@@ -3010,7 +3010,7 @@ const RAW_RUNTIME_STATE =
           ["@types/express-serve-static-core", "npm:4.17.39"],\
           ["@types/jest", "npm:29.5.11"],\
           ["@types/node", "npm:20.8.10"],\
-          ["@types/supertest", "npm:2.0.15"],\
+          ["@types/supertest", "npm:2.0.16"],\
           ["@types/targetd__api", null],\
           ["@types/zod", null],\
           ["cors", "npm:2.8.5"],\
@@ -3052,7 +3052,7 @@ const RAW_RUNTIME_STATE =
           ["@types/express-serve-static-core", "npm:4.17.39"],\
           ["@types/jest", "npm:29.5.11"],\
           ["@types/node", "npm:20.8.10"],\
-          ["@types/supertest", "npm:2.0.15"],\
+          ["@types/supertest", "npm:2.0.16"],\
           ["cors", "npm:2.8.5"],\
           ["express", "npm:4.18.2"],\
           ["express-query-boolean", "npm:2.0.0"],\
@@ -3677,10 +3677,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@types/supertest", [\
-      ["npm:2.0.15", {\
-        "packageLocation": "./.yarn/cache/@types-supertest-npm-2.0.15-3ef0b10014-89c1983662.zip/node_modules/@types/supertest/",\
+      ["npm:2.0.16", {\
+        "packageLocation": "./.yarn/cache/@types-supertest-npm-2.0.16-2ccc258659-2fc998ea69.zip/node_modules/@types/supertest/",\
         "packageDependencies": [\
-          ["@types/supertest", "npm:2.0.15"],\
+          ["@types/supertest", "npm:2.0.16"],\
           ["@types/superagent", "npm:4.1.18"]\
         ],\
         "linkType": "HARD"\
