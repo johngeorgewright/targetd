@@ -2849,7 +2849,7 @@ const RAW_RUNTIME_STATE =
           ["@types/jest", "npm:29.5.11"],\
           ["@types/lodash", "npm:4.14.200"],\
           ["@types/node", "npm:20.8.10"],\
-          ["@types/watch", "npm:1.0.5"],\
+          ["@types/watch", "npm:1.0.6"],\
           ["fs-extra", "npm:11.1.1"],\
           ["jest", "virtual:78776105526f67704c5d821aa139591fbba11fdbd5f03f51d916c5f752b52ce5b35f9731aa4a7b9fc9fe491d6229cf4b9abfbb54db395f33bbe11c0e0b749fa6#npm:29.7.0"],\
           ["lodash", "npm:4.17.21"],\
@@ -3726,10 +3726,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@types/watch", [\
-      ["npm:1.0.5", {\
-        "packageLocation": "./.yarn/cache/@types-watch-npm-1.0.5-9e82902080-f1cfeb8466.zip/node_modules/@types/watch/",\
+      ["npm:1.0.6", {\
+        "packageLocation": "./.yarn/cache/@types-watch-npm-1.0.6-f303c4357e-4ccc4bc9a1.zip/node_modules/@types/watch/",\
         "packageDependencies": [\
-          ["@types/watch", "npm:1.0.5"],\
+          ["@types/watch", "npm:1.0.6"],\
           ["@types/node", "npm:20.3.1"]\
         ],\
         "linkType": "HARD"\
