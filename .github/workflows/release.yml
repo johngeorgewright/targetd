@@ -44,7 +44,7 @@ jobs:
         run: yarn test
 
       - name: Upload dists
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: startsWith(matrix.node-version, steps.nvm.outputs.version)
         with:
           if-no-files-found: error
