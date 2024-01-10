@@ -2211,7 +2211,7 @@ __metadata:
     "@types/prettier": "npm:2.7.3"
     "@types/rimraf": "npm:4.0.5"
     "@types/yeoman-generator": "npm:5.2.14"
-    change-case: "npm:5.4.0"
+    change-case: "npm:5.4.1"
     jest: "npm:29.7.0"
     prettier: "npm:2.8.8"
     rimraf: "npm:5.0.5"
@@ -3907,10 +3907,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"change-case@npm:5.4.0":
-  version: 5.4.0
-  resolution: "change-case@npm:5.4.0"
-  checksum: 06938d26a1dd4e33d4a3f885892908038c5fdbf5682cda0c160841a35e9bb225a6f1c818bbd596fb43c5a48c8c10eb3b2034e07bb9624b835910f71fdd2acb38
+"change-case@npm:5.4.1":
+  version: 5.4.1
+  resolution: "change-case@npm:5.4.1"
+  checksum: 2dc862382e667fa31239e6b752dfff5ba5f74fb6b394924c4564b8d5d0321e613a173e7a16e2484da9cb0b10faad906b63bf34c6bfe8a2cc0fb6259d3c6da3eb
   languageName: node
   linkType: hard
 
