@@ -2976,7 +2976,7 @@ const RAW_RUNTIME_STATE =
           ["@types/prettier", "npm:2.7.3"],\
           ["@types/rimraf", "npm:4.0.5"],\
           ["@types/yeoman-generator", "npm:5.2.14"],\
-          ["change-case", "npm:5.4.0"],\
+          ["change-case", "npm:5.4.1"],\
           ["jest", "virtual:78776105526f67704c5d821aa139591fbba11fdbd5f03f51d916c5f752b52ce5b35f9731aa4a7b9fc9fe491d6229cf4b9abfbb54db395f33bbe11c0e0b749fa6#npm:29.7.0"],\
           ["prettier", "npm:2.8.8"],\
           ["rimraf", "npm:5.0.5"],\
@@ -4941,10 +4941,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["change-case", [\
-      ["npm:5.4.0", {\
-        "packageLocation": "./.yarn/cache/change-case-npm-5.4.0-fd3a299d08-06938d26a1.zip/node_modules/change-case/",\
+      ["npm:5.4.1", {\
+        "packageLocation": "./.yarn/cache/change-case-npm-5.4.1-e6ddd060f8-2dc862382e.zip/node_modules/change-case/",\
         "packageDependencies": [\
-          ["change-case", "npm:5.4.0"]\
+          ["change-case", "npm:5.4.1"]\
         ],\
         "linkType": "HARD"\
       }]\
