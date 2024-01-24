@@ -3008,7 +3008,7 @@ const RAW_RUNTIME_STATE =
           ["@types/express-serve-static-core", "npm:4.17.41"],\
           ["@types/jest", "npm:29.5.11"],\
           ["@types/node", "npm:20.11.6"],\
-          ["@types/supertest", "npm:2.0.16"],\
+          ["@types/supertest", "npm:6.0.2"],\
           ["@types/targetd__api", null],\
           ["@types/zod", null],\
           ["cors", "npm:2.8.5"],\
@@ -3019,7 +3019,7 @@ const RAW_RUNTIME_STATE =
           ["rimraf", "npm:5.0.5"],\
           ["semantic-release", "npm:19.0.5"],\
           ["semantic-release-monorepo", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:7.0.8"],\
-          ["supertest", "npm:6.3.3"],\
+          ["supertest", "npm:6.3.4"],\
           ["ts-jest", "virtual:78776105526f67704c5d821aa139591fbba11fdbd5f03f51d916c5f752b52ce5b35f9731aa4a7b9fc9fe491d6229cf4b9abfbb54db395f33bbe11c0e0b749fa6#npm:29.1.2"],\
           ["tslib", "npm:2.6.2"],\
           ["typescript", "patch:typescript@npm%3A5.3.3#optional!builtin<compat/typescript>::version=5.3.3&hash=e012d7"],\
@@ -3050,7 +3050,7 @@ const RAW_RUNTIME_STATE =
           ["@types/express-serve-static-core", "npm:4.17.41"],\
           ["@types/jest", "npm:29.5.11"],\
           ["@types/node", "npm:20.11.6"],\
-          ["@types/supertest", "npm:2.0.16"],\
+          ["@types/supertest", "npm:6.0.2"],\
           ["cors", "npm:2.8.5"],\
           ["express", "npm:4.18.2"],\
           ["express-query-boolean", "npm:2.0.0"],\
@@ -3059,7 +3059,7 @@ const RAW_RUNTIME_STATE =
           ["rimraf", "npm:5.0.5"],\
           ["semantic-release", "npm:19.0.5"],\
           ["semantic-release-monorepo", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:7.0.8"],\
-          ["supertest", "npm:6.3.3"],\
+          ["supertest", "npm:6.3.4"],\
           ["ts-jest", "virtual:78776105526f67704c5d821aa139591fbba11fdbd5f03f51d916c5f752b52ce5b35f9731aa4a7b9fc9fe491d6229cf4b9abfbb54db395f33bbe11c0e0b749fa6#npm:29.1.2"],\
           ["tslib", "npm:2.6.2"],\
           ["typescript", "patch:typescript@npm%3A5.3.3#optional!builtin<compat/typescript>::version=5.3.3&hash=e012d7"],\
@@ -3200,10 +3200,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@types/cookiejar", [\
-      ["npm:2.1.2", {\
-        "packageLocation": "./.yarn/cache/@types-cookiejar-npm-2.1.2-2588120a7c-f6e1903454.zip/node_modules/@types/cookiejar/",\
+      ["npm:2.1.5", {\
+        "packageLocation": "./.yarn/cache/@types-cookiejar-npm-2.1.5-f36531e52d-04d5990e87.zip/node_modules/@types/cookiejar/",\
         "packageDependencies": [\
-          ["@types/cookiejar", "npm:2.1.2"]\
+          ["@types/cookiejar", "npm:2.1.5"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -3470,6 +3470,15 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["@types/methods", [\
+      ["npm:1.1.4", {\
+        "packageLocation": "./.yarn/cache/@types-methods-npm-1.1.4-8565dc8af4-ad2a717848.zip/node_modules/@types/methods/",\
+        "packageDependencies": [\
+          ["@types/methods", "npm:1.1.4"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["@types/mime", [\
       ["npm:1.3.2", {\
         "packageLocation": "./.yarn/cache/@types-mime-npm-1.3.2-ea71878ab3-0493368244.zip/node_modules/@types/mime/",\
@@ -3656,22 +3665,24 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@types/superagent", [\
-      ["npm:4.1.18", {\
-        "packageLocation": "./.yarn/cache/@types-superagent-npm-4.1.18-9a0c411a15-4f92104e30.zip/node_modules/@types/superagent/",\
+      ["npm:8.1.2", {\
+        "packageLocation": "./.yarn/cache/@types-superagent-npm-8.1.2-2d11359c2f-45b4b2db94.zip/node_modules/@types/superagent/",\
         "packageDependencies": [\
-          ["@types/superagent", "npm:4.1.18"],\
-          ["@types/cookiejar", "npm:2.1.2"],\
+          ["@types/superagent", "npm:8.1.2"],\
+          ["@types/cookiejar", "npm:2.1.5"],\
+          ["@types/methods", "npm:1.1.4"],\
           ["@types/node", "npm:20.3.1"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["@types/supertest", [\
-      ["npm:2.0.16", {\
-        "packageLocation": "./.yarn/cache/@types-supertest-npm-2.0.16-2ccc258659-2fc998ea69.zip/node_modules/@types/supertest/",\
+      ["npm:6.0.2", {\
+        "packageLocation": "./.yarn/cache/@types-supertest-npm-6.0.2-1f239669e4-4b67fb2d1b.zip/node_modules/@types/supertest/",\
         "packageDependencies": [\
-          ["@types/supertest", "npm:2.0.16"],\
-          ["@types/superagent", "npm:4.1.18"]\
+          ["@types/supertest", "npm:6.0.2"],\
+          ["@types/methods", "npm:1.1.4"],\
+          ["@types/superagent", "npm:8.1.2"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -14593,10 +14604,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["superagent", [\
-      ["npm:8.0.9", {\
-        "packageLocation": "./.yarn/cache/superagent-npm-8.0.9-da05128b97-e5127a1de1.zip/node_modules/superagent/",\
+      ["npm:8.1.2", {\
+        "packageLocation": "./.yarn/cache/superagent-npm-8.1.2-44190e1fe9-33d0072e05.zip/node_modules/superagent/",\
         "packageDependencies": [\
-          ["superagent", "npm:8.0.9"],\
+          ["superagent", "npm:8.1.2"],\
           ["component-emitter", "npm:1.3.0"],\
           ["cookiejar", "npm:2.1.4"],\
           ["debug", "virtual:071d471ccd267160a6f0ec15e4cdc2874728a012db8f34521faf9e64a516aa918ee9ebab3c4c084d955ab74aaac5b8be9afb7a168813c9f210acdb7d88754ab9#npm:4.3.4"],\
@@ -14612,12 +14623,12 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["supertest", [\
-      ["npm:6.3.3", {\
-        "packageLocation": "./.yarn/cache/supertest-npm-6.3.3-2e2b5bc83a-7a7da05bf0.zip/node_modules/supertest/",\
+      ["npm:6.3.4", {\
+        "packageLocation": "./.yarn/cache/supertest-npm-6.3.4-ddb2a7be36-93015318f5.zip/node_modules/supertest/",\
         "packageDependencies": [\
-          ["supertest", "npm:6.3.3"],\
+          ["supertest", "npm:6.3.4"],\
           ["methods", "npm:1.1.2"],\
-          ["superagent", "npm:8.0.9"]\
+          ["superagent", "npm:8.1.2"]\
         ],\
         "linkType": "HARD"\
       }]\
