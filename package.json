@@ -40,7 +40,7 @@
     "jest-runner": "29.7.0",
     "lint-staged": "15.2.0",
     "mkdirp-infer-owner": "2.0.0",
-    "prettier": "2.8.8",
+    "prettier": "3.2.5",
     "semantic-release": "19.0.5",
     "semantic-release-monorepo": "7.0.8",
     "ts-node": "10.9.2",
