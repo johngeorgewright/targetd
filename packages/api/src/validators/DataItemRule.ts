@@ -48,30 +48,29 @@ type DataItemRule<
 
 export default DataItemRule
 
-type SingularRuleTargeting<Targeting extends z.ZodRawShape> = z.ZodOptional<
-  ZodPartialObject<Targeting, 'strict'>
+type SingularRuleTargeting<Targeting extends z.ZodRawShape> = ZodPartialObject<
+  Targeting,
+  'strict'
 >
 
 function SingularRuleTargeting<Targeting extends z.ZodRawShape>(
   targeting: Targeting
-) {
+): SingularRuleTargeting<Targeting> {
   return z.strictObject(targeting).partial()
 }
 
-type MultipleRuleTargeting<Targeting extends z.ZodRawShape> = z.ZodOptional<
-  z.ZodUnion<
-    [
-      ZodPartialObject<Targeting, 'strict'>,
-      z.ZodArray<ZodPartialObject<Targeting, 'strict'>>
-    ]
-  >
+type MultipleRuleTargeting<Targeting extends z.ZodRawShape> = z.ZodUnion<
+  [
+    ZodPartialObject<Targeting, 'strict'>,
+    z.ZodArray<ZodPartialObject<Targeting, 'strict'>>
+  ]
 >
 
 function MultipleRuleTargeting<Targeting extends z.ZodRawShape>(
   targeting: Targeting
 ): MultipleRuleTargeting<Targeting> {
   const t = z.strictObject(targeting).partial()
-  return t.or(t.array()).optional()
+  return t.or(t.array())
 }
 
 export type RuleWithPayload<
@@ -80,9 +79,11 @@ export type RuleWithPayload<
   AllowMultipleTargeting extends boolean = true
 > = z.ZodObject<
   {
-    targeting: AllowMultipleTargeting extends true
-      ? MultipleRuleTargeting<Targeting>
-      : SingularRuleTargeting<Targeting>
+    targeting: z.ZodOptional<
+      AllowMultipleTargeting extends true
+        ? MultipleRuleTargeting<Targeting>
+        : SingularRuleTargeting<Targeting>
+    >
     payload: Payload
   },
   'strict'
@@ -98,9 +99,10 @@ export function RuleWithPayload<
   allowMultipleTargeting = true
 ): RuleWithPayload<P, T, AllowMultipleTargeting> {
   return z.strictObject({
-    targeting: allowMultipleTargeting
+    targeting: (allowMultipleTargeting
       ? MultipleRuleTargeting(targeting)
-      : SingularRuleTargeting(targeting),
+      : SingularRuleTargeting(targeting)
+    ).optional(),
     payload: Payload,
   }) as RuleWithPayload<P, T, AllowMultipleTargeting>
 }
