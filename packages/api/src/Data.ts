@@ -324,7 +324,7 @@ export default class Data<
   }
 
   useFallThroughTargetingDescriptors<
-    TDs extends Record<string, TargetingDescriptor<z.ZodTypeAny, z.ZodTypeAny>>
+    TDs extends Record<string, TargetingDescriptor<any, any>>
   >(targeting: TDs) {
     type NewFallThroughTargetingValidators = FallThroughTargetingValidators & {
       [K in keyof TDs]: TargetingDescriptorTargetingValidator<TDs[K]>
@@ -493,9 +493,11 @@ export default class Data<
     )
   }
 
-  #targetingPredicate(
+  async #targetingPredicate(
     query: Partial<StaticRecord<QueryValidators>>,
-    targeting: Partial<StaticRecord<TargetingValidators>>,
+    targeting:
+      | Partial<StaticRecord<TargetingValidators>>
+      | Partial<StaticRecord<TargetingValidators>>[],
     predicates: Record<
       any,
       {
@@ -504,16 +506,29 @@ export default class Data<
       }
     >
   ) {
-    return objectEveryAsync(targeting, async (targetingValue, targetingKey) => {
-      if (!(targetingKey in query) && predicates[targetingKey]?.requiresQuery)
-        return false
+    const targetings = Array.isArray(targeting) ? targeting : [targeting]
+    for (const targeting of targetings)
+      if (
+        await objectEveryAsync(
+          targeting,
+          async (targetingValue, targetingKey) => {
+            if (
+              !(targetingKey in query) &&
+              predicates[targetingKey]?.requiresQuery
+            )
+              return false
 
-      if (targetingKey in predicates)
-        return (await predicates[targetingKey].predicate)(targetingValue)
-      else console.warn(`Invalid targeting property ${String(targetingKey)}`)
+            if (targetingKey in predicates)
+              return (await predicates[targetingKey].predicate)(targetingValue)
+            else
+              console.warn(`Invalid targeting property ${String(targetingKey)}`)
 
-      return false
-    })
+            return false
+          }
+        )
+      )
+        return true
+    return false
   }
 }
 
