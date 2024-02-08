@@ -11,7 +11,7 @@ function DataItemRule<
   targeting: T,
   fallThroughTargeting: CT,
   allowMultipleTargeting = true
-): DataItemRule<P, T, CT, AllowMultipleTargeting> {
+) {
   const Rule = RuleWithPayload(Payload, targeting, allowMultipleTargeting)
 
   const FallThroughRule = RuleWithFallThrough(
@@ -93,11 +93,7 @@ export function RuleWithPayload<
   P extends z.ZodTypeAny,
   T extends z.ZodRawShape,
   AllowMultipleTargeting extends boolean = true
->(
-  Payload: P,
-  targeting: T,
-  allowMultipleTargeting = true
-): RuleWithPayload<P, T, AllowMultipleTargeting> {
+>(Payload: P, targeting: T, allowMultipleTargeting = true) {
   return z.strictObject({
     targeting: (allowMultipleTargeting
       ? MultipleRuleTargeting(targeting)
@@ -134,12 +130,7 @@ export function RuleWithFallThrough<
   targeting: Targeting,
   fallThroughTargeting: FallThroughTargeting,
   allowMultipleTargeting = true
-): RuleWithFallThrough<
-  Payload,
-  Targeting,
-  FallThroughTargeting,
-  AllowMultipleTargeting
-> {
+) {
   return z.strictObject({
     targeting: allowMultipleTargeting
       ? MultipleRuleTargeting(targeting)

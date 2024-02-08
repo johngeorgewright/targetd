@@ -19,7 +19,7 @@ function DataItemRules<
   payloadValidator: P,
   targetingValidators: T,
   fallThroughTargetingValidators: FTT
-): DataItemRules<P, T, FTT> {
+) {
   return RuleWithPayload<P, T & FTT>(payloadValidator, {
     ...targetingValidators,
     ...fallThroughTargetingValidators,
@@ -138,7 +138,7 @@ function adaptRule<
   targetingValidators: T,
   fallThroughTargetingValidators: FTT,
   rule: z.infer<RuleWithPayload<P, T & FTT, false>>
-): z.infer<DataItemRule<P, T, FTT, false>> {
+) {
   return (
     someKeysIntersect(fallThroughTargetingValidators, rule.targeting || {})
       ? adaptRuleIntoFallThroughRule(

@@ -6,11 +6,7 @@ function DataItems<
   D extends z.ZodRawShape,
   T extends z.ZodRawShape,
   CT extends z.ZodRawShape
->(
-  dataValidators: D,
-  targeting: T,
-  fallThroughTargeting: CT
-): DataItems<D, T, CT> {
+>(dataValidators: D, targeting: T, fallThroughTargeting: CT) {
   const dataItems: Record<string, any> = {}
   for (const [key, Payload] of Object.entries(dataValidators))
     dataItems[key] = DataItem(Payload, targeting, fallThroughTargeting)
