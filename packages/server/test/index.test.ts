@@ -1,4 +1,5 @@
 import { Data } from '@targetd/api'
+import dateRangeTargeting from '@targetd/date-range'
 import express from 'express'
 import { promisify } from 'node:util'
 import { setTimeout } from 'node:timers'
@@ -14,6 +15,7 @@ beforeEach(() => {
     Data.create()
       .useDataValidator('foo', z.string())
       .useDataValidator('bar', z.number())
+      .useDataValidator('timed', z.string())
       .useTargeting('weather', {
         predicate: (q) => (t) => typeof q === 'string' && t.includes(q),
         queryValidator: z.string(),
@@ -29,6 +31,7 @@ beforeEach(() => {
         queryValidator: z.boolean(),
         targetingValidator: z.boolean(),
       })
+      .useTargeting('date', dateRangeTargeting)
       .addRules('foo', [
         {
           targeting: {
@@ -70,6 +73,17 @@ beforeEach(() => {
           payload: 123,
         },
       ])
+      .addRules('timed', [
+        {
+          targeting: {
+            date: { start: '2001-01-01', end: '2010-01-01' },
+          },
+          payload: 'in time',
+        },
+        {
+          payload: 'out of time',
+        },
+      ])
   )
 })
 
@@ -109,6 +123,18 @@ test('get one data point', async () => {
     .expect('Content-Type', /json/)
     .expect(200)
   expect(response.body).toBe('Async payload')
+
+  response = await request(app)
+    .get('/timed?date[start]=2002-01-01')
+    .expect('Content-Type', /json/)
+    .expect(200)
+  expect(response.body).toBe('in time')
+
+  response = await request(app)
+    .get('/timed?date[start]=2012-01-01')
+    .expect('Content-Type', /json/)
+    .expect(200)
+  expect(response.body).toBe('out of time')
 })
 
 test('get all', async () => {
@@ -120,6 +146,7 @@ test('get all', async () => {
     {
       "bar": 123,
       "foo": "bar",
+      "timed": "out of time",
     }
   `)
 
@@ -131,6 +158,7 @@ test('get all', async () => {
     {
       "bar": 123,
       "foo": "😎",
+      "timed": "out of time",
     }
   `)
 
@@ -142,6 +170,7 @@ test('get all', async () => {
     {
       "bar": 123,
       "foo": "☂️",
+      "timed": "out of time",
     }
   `)
 
@@ -153,6 +182,7 @@ test('get all', async () => {
     {
       "bar": 123,
       "foo": "🌊",
+      "timed": "out of time",
     }
   `)
 
@@ -164,6 +194,7 @@ test('get all', async () => {
     {
       "bar": 123,
       "foo": "🏄‍♂️",
+      "timed": "out of time",
     }
   `)
 
@@ -175,6 +206,7 @@ test('get all', async () => {
     {
       "bar": 123,
       "foo": "Async payload",
+      "timed": "out of time",
     }
   `)
 })
