@@ -34,22 +34,32 @@ test('json schema for simple data object', () => {
                     "type": "string",
                   },
                   "targeting": {
-                    "additionalProperties": false,
-                    "properties": {
-                      "browser": {
+                    "anyOf": [
+                      {
+                        "additionalProperties": false,
+                        "properties": {
+                          "browser": {
+                            "items": {
+                              "type": "string",
+                            },
+                            "type": "array",
+                          },
+                          "weather": {
+                            "items": {
+                              "type": "string",
+                            },
+                            "type": "array",
+                          },
+                        },
+                        "type": "object",
+                      },
+                      {
                         "items": {
-                          "type": "string",
+                          "$ref": "#/properties/foo/properties/rules/items/properties/targeting/anyOf/0",
                         },
                         "type": "array",
                       },
-                      "weather": {
-                        "items": {
-                          "type": "string",
-                        },
-                        "type": "array",
-                      },
-                    },
-                    "type": "object",
+                    ],
                   },
                 },
                 "required": [

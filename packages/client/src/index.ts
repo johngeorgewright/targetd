@@ -55,10 +55,11 @@ export class Client<
         ...this.#init,
       }
     )
-    const json = await response.json()
-    return json === undefined
-      ? json
-      : this.#data.insert({ [name]: json } as any).getPayload(name)
+    return response.status === 204
+      ? undefined
+      : this.#data
+          .insert({ [name]: await response.json() } as any)
+          .getPayload(name)
   }
 
   async getPayloadForEachName(
@@ -90,10 +91,25 @@ export type ClientWithData<
 >
 
 function queryToURLSearchParams(query: Record<string, unknown>) {
-  const params: [string, string][] = []
-  for (const [key, value] of Object.entries(query)) {
-    if (Array.isArray(value)) for (const item of value) params.push([key, item])
-    else params.push([key, String(value)])
-  }
-  return new URLSearchParams(params)
+  const urlSearchParams = new URLSearchParams()
+  for (const [key, value] of Object.entries(query))
+    for (const [n, v] of queryValueToParams(key, value))
+      urlSearchParams.append(n, v)
+  return urlSearchParams
+}
+
+function* queryValueToParams(
+  key: string,
+  value: unknown
+): Generator<[string, string]> {
+  if (Array.isArray(value))
+    for (const item of value) yield* queryValueToParams(key, item)
+  else if (isObject(value))
+    for (const [k, v] of Object.entries(value))
+      yield* queryValueToParams(`${key}[${k}]`, v)
+  else yield [key, String(value)]
+}
+
+function isObject(x: unknown): x is Record<string, unknown> {
+  return typeof x === 'object' && x !== null
 }

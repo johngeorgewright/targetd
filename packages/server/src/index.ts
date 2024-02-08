@@ -46,7 +46,8 @@ export function createServer<
       } catch (err) {
         return next(err)
       }
-      res.json(payload)
+      if (payload === undefined) res.sendStatus(204)
+      else res.json(payload)
     })
 
     .get('/', queryTypes.middleware(), async (req, res, next) => {

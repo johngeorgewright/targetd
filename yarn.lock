@@ -2051,6 +2051,7 @@ __metadata:
     "@semantic-release/github": "npm:8.1.0"
     "@semantic-release/release-notes-generator": "npm:10.0.3"
     "@targetd/api": "workspace:*"
+    "@targetd/date-range": "workspace:*"
     "@targetd/server": "workspace:*"
     "@types/express": "npm:4.17.21"
     "@types/jest": "npm:29.5.11"
@@ -2072,7 +2073,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@targetd/date-range@workspace:packages/date-range":
+"@targetd/date-range@workspace:*, @targetd/date-range@workspace:packages/date-range":
   version: 0.0.0-use.local
   resolution: "@targetd/date-range@workspace:packages/date-range"
   dependencies:
@@ -2236,6 +2237,7 @@ __metadata:
     "@semantic-release/github": "npm:8.1.0"
     "@semantic-release/release-notes-generator": "npm:10.0.3"
     "@targetd/api": "workspace:*"
+    "@targetd/date-range": "workspace:*"
     "@types/cors": "npm:2.8.17"
     "@types/express": "npm:4.17.21"
     "@types/express-serve-static-core": "npm:4.17.41"

@@ -5,10 +5,10 @@ import DataItemRule, {
 } from './DataItemRule'
 import {
   arrayLast,
-  objectFitler,
-  objectKeys,
+  intersection,
+  intersectionKeys,
   objectSize,
-  objectSome,
+  someKeysIntersect,
 } from '../util'
 
 function DataItemRules<
@@ -19,16 +19,18 @@ function DataItemRules<
   payloadValidator: P,
   targetingValidators: T,
   fallThroughTargetingValidators: FTT
-): DataItemRules<P, T, FTT> {
+) {
   return RuleWithPayload<P, T & FTT>(payloadValidator, {
     ...targetingValidators,
     ...fallThroughTargetingValidators,
   })
     .array()
-    .transform<z.infer<DataItemRule<P, T, FTT>>[]>((rules) => {
-      let $rules: z.infer<DataItemRule<P, T, FTT>>[] = []
+    .transform<z.infer<DataItemRule<P, T, FTT, false>>[]>((rules) => {
+      const singularTargetedRules = spreadMultiTargetsToSeparateRules(rules)
 
-      for (const rule of rules) {
+      let $rules: z.infer<DataItemRule<P, T, FTT, false>>[] = []
+
+      for (const rule of singularTargetedRules) {
         const prevRule = arrayLast($rules)
 
         if (!prevRule) {
@@ -38,21 +40,14 @@ function DataItemRules<
           continue
         }
 
-        const prevTargeting = prevRule.targeting
-          ? objectKeys(filterTargeting(targetingValidators, prevRule.targeting))
-          : []
+        const thisRuleAndPrevRuleCanCombine = canRulesCombine(
+          targetingValidators,
+          prevRule,
+          rule
+        )
 
-        const targeting = rule.targeting
-          ? objectKeys(filterTargeting(targetingValidators, rule.targeting))
-          : []
-
-        const matchesFallThroughRule =
-          prevTargeting.every((key) => targeting.includes(key)) &&
-          (targeting.length !== objectSize(rule.targeting || {}) ||
-            prevTargeting.length !== objectSize(prevRule.targeting || {}))
-
-        if (matchesFallThroughRule) {
-          const adaptedLastRule = adaptRuleIntoFallThroughRule(
+        if (thisRuleAndPrevRuleCanCombine) {
+          const adaptedPrevRule = adaptRuleIntoFallThroughRule(
             targetingValidators,
             fallThroughTargetingValidators,
             prevRule
@@ -61,12 +56,12 @@ function DataItemRules<
           const adaptedRule = adaptRuleIntoFallThroughRule(
             targetingValidators,
             fallThroughTargetingValidators,
-            rule as z.infer<DataItemRule<P, T, FTT>>
+            rule as z.infer<DataItemRule<P, T, FTT, false>>
           )
 
-          adaptedLastRule.fallThrough.push(...adaptedRule.fallThrough)
+          adaptedPrevRule.fallThrough.push(...adaptedRule.fallThrough)
 
-          $rules = [...$rules.slice(0, -1), adaptedLastRule]
+          $rules = [...$rules.slice(0, -1), adaptedPrevRule]
         } else {
           $rules.push(
             adaptRule(targetingValidators, fallThroughTargetingValidators, rule)
@@ -92,11 +87,47 @@ type DataItemRules<
 
 export default DataItemRules
 
-function filterTargeting(
+function spreadMultiTargetsToSeparateRules<
+  P extends z.ZodTypeAny,
+  T extends z.ZodRawShape,
+  FTT extends z.ZodRawShape
+>(rules: z.infer<RuleWithPayload<P, T & FTT>>[]) {
+  return rules.reduce<z.infer<RuleWithPayload<P, T & FTT, false>>[]>(
+    (rules, rule) => {
+      if (Array.isArray(rule.targeting)) {
+        for (const targeting of rule.targeting) {
+          rules.push({
+            payload: rule.payload,
+            targeting,
+          })
+        }
+        return rules
+      } else {
+        return [...rules, rule as z.infer<RuleWithPayload<P, T & FTT, false>>]
+      }
+    },
+    []
+  )
+}
+
+function canRulesCombine(
   targetingValidators: z.ZodRawShape,
-  targeting: Record<string, unknown>
+  a: z.infer<RuleWithPayload<z.ZodTypeAny, z.ZodRawShape, false>>,
+  b: z.infer<RuleWithPayload<z.ZodTypeAny, z.ZodRawShape, false>>
 ) {
-  return objectFitler(targeting, (_, name) => name in targetingValidators)
+  const aTargetingKeys = a.targeting
+    ? intersectionKeys(a.targeting, targetingValidators)
+    : []
+
+  const bTargetingKeys = b.targeting
+    ? intersectionKeys(b.targeting, targetingValidators)
+    : []
+
+  return (
+    aTargetingKeys.every((key) => bTargetingKeys.includes(key)) &&
+    (bTargetingKeys.length !== objectSize(b.targeting || {}) ||
+      aTargetingKeys.length !== objectSize(a.targeting || {}))
+  )
 }
 
 function adaptRule<
@@ -106,20 +137,17 @@ function adaptRule<
 >(
   targetingValidators: T,
   fallThroughTargetingValidators: FTT,
-  rule: z.infer<RuleWithPayload<P, T & FTT>>
-): z.infer<DataItemRule<P, T, FTT>> {
+  rule: z.infer<RuleWithPayload<P, T & FTT, false>>
+) {
   return (
-    objectSome(
-      fallThroughTargetingValidators,
-      (_, name) => name in (rule.targeting || {})
-    )
+    someKeysIntersect(fallThroughTargetingValidators, rule.targeting || {})
       ? adaptRuleIntoFallThroughRule(
           targetingValidators,
           fallThroughTargetingValidators,
-          rule as z.infer<DataItemRule<P, T, FTT>>
+          rule as z.infer<DataItemRule<P, T, FTT, false>>
         )
       : rule
-  ) as z.infer<DataItemRule<P, T, FTT>>
+  ) as z.infer<DataItemRule<P, T, FTT, false>>
 }
 
 function adaptRuleIntoFallThroughRule<
@@ -129,19 +157,19 @@ function adaptRuleIntoFallThroughRule<
 >(
   targetingValidators: T,
   fallThroughTargetingValidators: FTT,
-  rule: z.infer<DataItemRule<P, T, FTT>>
-): z.infer<RuleWithFallThrough<P, T, FTT>> {
+  rule: z.infer<DataItemRule<P, T, FTT, false>>
+): z.infer<RuleWithFallThrough<P, T, FTT, false>> {
   if ('fallThrough' in rule) return rule
   return {
-    targeting: filterTargeting(targetingValidators, rule.targeting || {}),
+    targeting: intersection(rule.targeting || {}, targetingValidators),
     fallThrough: [
       {
         payload: rule.payload,
-        targeting: filterTargeting(
-          fallThroughTargetingValidators,
-          rule.targeting || {}
+        targeting: intersection(
+          rule.targeting || {},
+          fallThroughTargetingValidators
         ),
       },
     ],
-  } as z.infer<RuleWithFallThrough<P, T, FTT>>
+  } as z.infer<RuleWithFallThrough<P, T, FTT, false>>
 }

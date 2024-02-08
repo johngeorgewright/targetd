@@ -22,7 +22,7 @@ export function objectSize(obj: Record<string, unknown>) {
 }
 
 export function objectEntries<T extends Record<string, unknown>>(obj: T) {
-  return Object.entries(obj) as [keyof T, T[keyof T]][]
+  return Object.entries(obj) as Entries<T>[]
 }
 
 export function omit<T extends Record<string, unknown>, K extends keyof T>(
@@ -38,22 +38,56 @@ export function omit<T extends Record<string, unknown>, K extends keyof T>(
   )
 }
 
+export function* objectIterator<T extends Record<string, unknown>>(
+  obj: T
+): Generator<Entries<T>> {
+  for (const key in obj)
+    if (Object.prototype.hasOwnProperty.call(obj, key)) yield [key, obj[key]]
+}
+
 export function objectFitler<T extends Record<string, unknown>>(
   obj: T,
   predicate: <K extends keyof T>(value: T[K], key: K) => boolean
 ): Partial<T> {
-  return objectKeys(obj).reduce(
-    (newObj, key) =>
-      predicate(obj[key], key) ? { ...newObj, [key]: obj[key] } : newObj,
-    {}
-  )
+  const result: Partial<T> = {}
+
+  for (const [key, value] of objectIterator(obj))
+    if (predicate(value, key)) result[key] = value
+
+  return result
 }
 
 export function objectSome<T extends Record<string, unknown>>(
   obj: T,
   predicate: <K extends keyof T>(value: T[K], key: K) => boolean
 ): boolean {
-  return objectKeys(obj).some((key) => predicate(obj[key], key))
+  for (const [key, value] of objectIterator(obj))
+    if (predicate(value, key)) return true
+
+  return false
+}
+
+export function someKeysIntersect(
+  aObj: Record<string, unknown>,
+  bObj: Record<string, unknown>
+) {
+  return objectSome(aObj, (_, key) => key in bObj)
+}
+
+export function intersection<T extends Record<string, unknown>>(
+  aObj: T,
+  bObj: Record<string, unknown>
+) {
+  return objectFitler(aObj, (_, key) => key in bObj)
+}
+
+export function intersectionKeys<T extends Record<string, unknown>>(
+  aObj: T,
+  bObj: Record<string, unknown>
+): (keyof Partial<T>)[] {
+  const keys: (keyof Partial<T>)[] = []
+  for (const [key] of objectIterator(aObj)) if (key in bObj) keys.push(key)
+  return keys
 }
 
 class EveryAsyncFail extends Error {}
@@ -91,3 +125,7 @@ export function arrayInit<T extends unknown[]>(array: T) {
 export function arrayLast<T extends unknown[]>(array: T): L.Last<T> {
   return array[array.length - 1]
 }
+
+type Entries<T extends Record<string | symbol, unknown>> = {
+  [K in keyof T]: [K, T[K]]
+}[keyof T]

@@ -83,6 +83,37 @@ test('getPayload', async () => {
   ).toThrow()
 })
 
+test('targeting with multiple conditions', async () => {
+  const data = Data.create()
+    .useDataValidator('foo', z.string())
+    .useTargeting('weather', targetIncludes(z.string()))
+    .useTargeting('highTide', targetEquals(z.boolean()))
+    .addRules('foo', [
+      {
+        targeting: [
+          {
+            weather: ['sunny'],
+          },
+          {
+            highTide: true,
+          },
+        ],
+        payload: 'The time is now',
+      },
+      {
+        payload: 'bar',
+      },
+    ])
+
+  expect(await data.getPayload('foo', { weather: 'sunny' })).toBe(
+    'The time is now'
+  )
+  expect(await data.getPayload('foo', { highTide: true })).toBe(
+    'The time is now'
+  )
+  expect(await data.getPayload('foo')).toBe('bar')
+})
+
 test('targeting without requiring a query', async () => {
   const data = Data.create()
     .useDataValidator('foo', z.string())
