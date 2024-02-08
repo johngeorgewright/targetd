@@ -2053,6 +2053,7 @@ __metadata:
     "@semantic-release/github": "npm:8.1.0"
     "@semantic-release/release-notes-generator": "npm:10.0.3"
     "@targetd/api": "workspace:*"
+    "@targetd/date-range": "workspace:*"
     "@targetd/server": "workspace:*"
     "@types/express": "npm:4.17.20"
     "@types/jest": "npm:29.5.7"

@@ -1,4 +1,5 @@
 import { Data } from '@targetd/api'
+import dateRangeTargeting from '@targetd/date-range'
 import { createServer } from '@targetd/server'
 import { Server } from 'node:http'
 import { setTimeout } from 'node:timers/promises'
@@ -8,6 +9,7 @@ import { Client, ClientWithData } from '../src'
 const data = Data.create()
   .useDataValidator('foo', z.string())
   .useDataValidator('bar', z.number())
+  .useDataValidator('timed', z.string())
   .useTargeting('weather', {
     predicate: (q) => (t) => typeof q === 'string' && t.includes(q),
     queryValidator: z.string(),
@@ -23,6 +25,7 @@ const data = Data.create()
     queryValidator: z.boolean(),
     targetingValidator: z.boolean(),
   })
+  .useTargeting('date', dateRangeTargeting)
   .addRules('foo', [
     {
       targeting: {
@@ -64,6 +67,14 @@ const data = Data.create()
       payload: 123,
     },
   ])
+  .addRules('timed', [
+    {
+      targeting: {
+        date: { start: '2001-01-01', end: '2010-01-01' },
+      },
+      payload: 'in time',
+    },
+  ])
 
 let client: ClientWithData<typeof data>
 let server: Server
@@ -88,6 +99,12 @@ test('get one data point', async () => {
   expect(
     await client.getPayload('foo', { asyncThing: true })
   ).toMatchInlineSnapshot(`"Async payload"`)
+  expect(
+    await client.getPayload('timed', { date: { start: '2002-01-01' } })
+  ).toMatchInlineSnapshot(`"in time"`)
+  expect(
+    await client.getPayload('timed', { date: { start: '2012-01-01' } })
+  ).toBe(undefined)
 })
 
 test('get all', async () => {
