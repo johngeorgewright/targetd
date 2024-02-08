@@ -90,13 +90,12 @@ export type ClientWithData<
   FallThroughTargetingValidators<D>
 >
 
-function queryToURLSearchParams(
-  query: Record<string, unknown>,
-  params: [string, string][] = []
-) {
+function queryToURLSearchParams(query: Record<string, unknown>) {
+  const urlSearchParams = new URLSearchParams()
   for (const [key, value] of Object.entries(query))
-    for (const param of queryValueToParams(key, value)) params.push(param)
-  return new URLSearchParams(params)
+    for (const [n, v] of queryValueToParams(key, value))
+      urlSearchParams.append(n, v)
+  return urlSearchParams
 }
 
 function* queryValueToParams(
