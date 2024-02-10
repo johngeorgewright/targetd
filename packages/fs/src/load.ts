@@ -15,15 +15,19 @@ export async function load<
   DataValidators extends z.ZodRawShape,
   TargetingValidators extends z.ZodRawShape,
   QueryValidators extends z.ZodRawShape,
-  FallThroughTargetingValidators extends z.ZodRawShape
+  FallThroughTargetingValidators extends z.ZodRawShape,
+  StateValidators extends z.ZodRawShape,
+  StateTargetingValidators extends z.ZodRawShape,
 >(
   data: Data<
     DataValidators,
     TargetingValidators,
     QueryValidators,
-    FallThroughTargetingValidators
+    FallThroughTargetingValidators,
+    StateValidators,
+    StateTargetingValidators
   >,
-  dir: string
+  dir: string,
 ) {
   for await (const contents of readFiles(dir, {
     encoding: 'utf8',
@@ -47,7 +51,7 @@ function parseFileContents({
   contents,
 }: WithFileNamesResult<string>) {
   return FileData.parse(
-    fileName.endsWith('.json') ? JSON.parse(contents) : YAML.parse(contents)
+    fileName.endsWith('.json') ? JSON.parse(contents) : YAML.parse(contents),
   )
 }
 
@@ -55,21 +59,25 @@ function addRules<
   DataValidators extends z.ZodRawShape,
   TargetingValidators extends z.ZodRawShape,
   QueryValidators extends z.ZodRawShape,
-  FallThroughTargetingValidators extends z.ZodRawShape
+  FallThroughTargetingValidators extends z.ZodRawShape,
+  StateValidators extends z.ZodRawShape,
+  StateTargetingValidators extends z.ZodRawShape,
 >(
   data: Data<
     DataValidators,
     TargetingValidators,
     QueryValidators,
-    FallThroughTargetingValidators
+    FallThroughTargetingValidators,
+    StateValidators,
+    StateTargetingValidators
   >,
-  fileData: FileData
+  fileData: FileData,
 ) {
   return Object.entries(fileData).reduce(
     (data, [name, value]) =>
       typeof value === 'object'
         ? data.addRules(name as Keys<DataValidators>, value.rules as any[])
         : data,
-    data
+    data,
   )
 }

@@ -9,28 +9,36 @@ export type OnLoad<
   DataValidators extends z.ZodRawShape,
   TargetingValidators extends z.ZodRawShape,
   QueryValidators extends z.ZodRawShape,
-  FallThroughTargetingValidators extends z.ZodRawShape
+  FallThroughTargetingValidators extends z.ZodRawShape,
+  StateValidators extends z.ZodRawShape,
+  StateTargetingValidators extends z.ZodRawShape,
 > = (
   error: Error | null,
   data: Data<
     DataValidators,
     TargetingValidators,
     QueryValidators,
-    FallThroughTargetingValidators
-  >
+    FallThroughTargetingValidators,
+    StateValidators,
+    StateTargetingValidators
+  >,
 ) => any
 
 export function watch<
   DataValidators extends z.ZodRawShape,
   TargetingValidators extends z.ZodRawShape,
   QueryValidators extends z.ZodRawShape,
-  FallThroughTargetingValidators extends z.ZodRawShape
+  FallThroughTargetingValidators extends z.ZodRawShape,
+  StateValidators extends z.ZodRawShape,
+  StateTargetingValidators extends z.ZodRawShape,
 >(
   data: Data<
     DataValidators,
     TargetingValidators,
     QueryValidators,
-    FallThroughTargetingValidators
+    FallThroughTargetingValidators,
+    StateValidators,
+    StateTargetingValidators
   >,
   dir: string,
   options: WatchTreeOptions,
@@ -38,42 +46,54 @@ export function watch<
     DataValidators,
     TargetingValidators,
     QueryValidators,
-    FallThroughTargetingValidators
-  >
+    FallThroughTargetingValidators,
+    StateValidators,
+    StateTargetingValidators
+  >,
 ): () => void
 
 export function watch<
   DataValidators extends z.ZodRawShape,
   TargetingValidators extends z.ZodRawShape,
   QueryValidators extends z.ZodRawShape,
-  FallThroughTargetingValidators extends z.ZodRawShape
+  FallThroughTargetingValidators extends z.ZodRawShape,
+  StateValidators extends z.ZodRawShape,
+  StateTargetingValidators extends z.ZodRawShape,
 >(
   data: Data<
     DataValidators,
     TargetingValidators,
     QueryValidators,
-    FallThroughTargetingValidators
+    FallThroughTargetingValidators,
+    StateValidators,
+    StateTargetingValidators
   >,
   dir: string,
   onLoad: OnLoad<
     DataValidators,
     TargetingValidators,
     QueryValidators,
-    FallThroughTargetingValidators
-  >
+    FallThroughTargetingValidators,
+    StateValidators,
+    StateTargetingValidators
+  >,
 ): () => void
 
 export function watch<
   DataValidators extends z.ZodRawShape,
   TargetingValidators extends z.ZodRawShape,
   QueryValidators extends z.ZodRawShape,
-  FallThroughTargetingValidators extends z.ZodRawShape
+  FallThroughTargetingValidators extends z.ZodRawShape,
+  StateValidators extends z.ZodRawShape,
+  StateTargetingValidators extends z.ZodRawShape,
 >(
   data: Data<
     DataValidators,
     TargetingValidators,
     QueryValidators,
-    FallThroughTargetingValidators
+    FallThroughTargetingValidators,
+    StateValidators,
+    StateTargetingValidators
   >,
   dir: string,
   optionsOrOnLoad:
@@ -82,21 +102,27 @@ export function watch<
         DataValidators,
         TargetingValidators,
         QueryValidators,
-        FallThroughTargetingValidators
+        FallThroughTargetingValidators,
+        StateValidators,
+        StateTargetingValidators
       >,
   onLoadParam?: OnLoad<
     DataValidators,
     TargetingValidators,
     QueryValidators,
-    FallThroughTargetingValidators
-  >
+    FallThroughTargetingValidators,
+    StateValidators,
+    StateTargetingValidators
+  >,
 ) {
   const options = onLoadParam ? optionsOrOnLoad : {}
   const onLoad = (onLoadParam || optionsOrOnLoad) as OnLoad<
     DataValidators,
     TargetingValidators,
     QueryValidators,
-    FallThroughTargetingValidators
+    FallThroughTargetingValidators,
+    StateValidators,
+    StateTargetingValidators
   >
 
   watchTree(
@@ -115,8 +141,8 @@ export function watch<
 
         onLoad(null, data)
       }),
-      300
-    )
+      300,
+    ),
   )
 
   return () => unwatchTree(dir)

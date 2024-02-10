@@ -56,10 +56,10 @@ test('getPayload', async () => {
   expect(await data.getPayload('foo', { weather: 'rainy' })).toBe('☂️')
   expect(await data.getPayload('foo', { highTide: true })).toBe('🌊')
   expect(
-    await data.getPayload('foo', { highTide: true, weather: 'sunny' })
+    await data.getPayload('foo', { highTide: true, weather: 'sunny' }),
   ).toBe('🏄‍♂️')
   expect(await data.getPayload('foo', { asyncThing: true })).toBe(
-    'Async payload'
+    'Async payload',
   )
 
   // @ts-expect-error
@@ -67,7 +67,7 @@ test('getPayload', async () => {
 
   expect(
     // @ts-expect-error
-    data.getPayload('foo', { nonExistantKey: 'some value' })
+    data.getPayload('foo', { nonExistantKey: 'some value' }),
   ).rejects.toThrow()
 
   expect(() =>
@@ -79,7 +79,7 @@ test('getPayload', async () => {
         },
         payload: 'error',
       },
-    ])
+    ]),
   ).toThrow()
 })
 
@@ -106,10 +106,10 @@ test('targeting with multiple conditions', async () => {
     ])
 
   expect(await data.getPayload('foo', { weather: 'sunny' })).toBe(
-    'The time is now'
+    'The time is now',
   )
   expect(await data.getPayload('foo', { highTide: true })).toBe(
-    'The time is now'
+    'The time is now',
   )
   expect(await data.getPayload('foo')).toBe('bar')
 })
@@ -184,7 +184,7 @@ test('payload runtype validation', () => {
     Data.create()
       .useDataValidator(
         'foo',
-        z.string().refine((x) => x === 'bar', 'Should be bar')
+        z.string().refine((x) => x === 'bar', 'Should be bar'),
       )
       .addRules('foo', [
         {
@@ -460,4 +460,41 @@ test('inserting data', async () => {
       "moo": "glue",
     }
   `)
+})
+
+test('using state to target rules', async () => {
+  const data = Data.create()
+    .useDataValidator('foo', z.string())
+    .useTargeting('weather', targetIncludes(z.string()))
+    .useTargeting('highTide', targetEquals(z.boolean()))
+    .useState('surf', {
+      validator: z.boolean(),
+      targetingValidator: z.boolean(),
+      targetingPredicate: (query) => (target) => query === target,
+    })
+    .addState('surf', [
+      {
+        targeting: {
+          highTide: true,
+          weather: ['sunny'],
+        },
+        payload: true,
+      },
+    ])
+    .addRules('foo', [
+      {
+        targeting: {
+          surf: true,
+        },
+        payload: '🏄‍♂️',
+      },
+      {
+        payload: 'bar',
+      },
+    ])
+
+  expect(
+    await data.getPayload('foo', { highTide: true, weather: 'sunny' }),
+  ).toBe('🏄‍♂️')
+  expect(await data.getPayload('foo')).toBe('bar')
 })

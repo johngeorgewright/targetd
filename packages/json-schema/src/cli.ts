@@ -36,13 +36,13 @@ registerTSNode()
   const data = input[dataExport]
   if (!isDataLike(data))
     throw new Error(
-      `Export "${dataExport}" from "${inputModule}" is not of a \`Data\` type.`
+      `Export "${dataExport}" from "${inputModule}" is not of a \`Data\` type.`,
     )
   const jsonSchema = JSON.stringify(dataJSONSchemas(data), null, 2)
   if (outputFile) await writeFile(outputFile, jsonSchema)
   else console.info(jsonSchema)
 
-  function isDataLike(x: any): x is Data<any, any, any, any> {
+  function isDataLike(x: any): x is Data<any, any, any, any, any, any> {
     return 'dataValidators' in x && 'targetingValidators' in x
   }
 })().catch(console.error)

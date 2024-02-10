@@ -5,7 +5,7 @@ import DataItem from './DataItem'
 function DataItems<
   D extends z.ZodRawShape,
   T extends z.ZodRawShape,
-  CT extends z.ZodRawShape
+  CT extends z.ZodRawShape,
 >(dataValidators: D, targeting: T, fallThroughTargeting: CT) {
   const dataItems: Record<string, any> = {}
   for (const [key, Payload] of Object.entries(dataValidators))
@@ -16,7 +16,7 @@ function DataItems<
 type DataItems<
   DataTypes extends z.ZodRawShape,
   Targeting extends z.ZodRawShape,
-  FallThroughTargeting extends z.ZodRawShape
+  FallThroughTargeting extends z.ZodRawShape,
 > = ZodPartialObject<
   {
     [Name in keyof DataTypes]: DataItem<

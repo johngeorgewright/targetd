@@ -10,21 +10,27 @@ export function createServer<
   DataValidators extends z.ZodRawShape,
   TargetingValidators extends z.ZodRawShape,
   QueryValidators extends z.ZodRawShape,
-  FallThroughTargetingValidators extends z.ZodRawShape
+  FallThroughTargetingValidators extends z.ZodRawShape,
+  StateValidators extends z.ZodRawShape,
+  StateTargetingValidators extends z.ZodRawShape,
 >(
   data:
     | Data<
         DataValidators,
         TargetingValidators,
         QueryValidators,
-        FallThroughTargetingValidators
+        FallThroughTargetingValidators,
+        StateValidators,
+        StateTargetingValidators
       >
     | (() => Data<
         DataValidators,
         TargetingValidators,
         QueryValidators,
-        FallThroughTargetingValidators
-      >)
+        FallThroughTargetingValidators,
+        StateValidators,
+        StateTargetingValidators
+      >),
 ) {
   const getData = typeof data === 'function' ? data : () => data
 
@@ -36,7 +42,7 @@ export function createServer<
 
       if (!(req.params.name in data.dataValidators)) {
         return next(
-          new StatusError(404, `Unknown data property ${req.params.name}`)
+          new StatusError(404, `Unknown data property ${req.params.name}`),
         )
       }
 

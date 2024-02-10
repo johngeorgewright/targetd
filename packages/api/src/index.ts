@@ -1,9 +1,11 @@
 export {
   default as Data,
+  Payload,
   DataValidators,
   TargetingValidators,
   QueryValidators,
   FallThroughData,
+  StateValidators,
   FallThroughTargetingValidators,
 } from './Data'
 export { default as DataItem } from './validators/DataItem'
@@ -18,3 +20,4 @@ export {
   targetIncludesPredicate,
   targetIncludes,
 } from './predicates/targetIncludes'
+export { StaticRecord } from './types'
