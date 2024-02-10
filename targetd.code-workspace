@@ -8,15 +8,15 @@
     { "name": "📦 @targetd/fs", "path": "packages/fs" },
     { "name": "📦 @targetd/json-schema", "path": "packages/json-schema" },
     { "name": "📦 @targetd/server", "path": "packages/server" },
-    { "name": "🤖 github", "path": ".github" }
+    { "name": "🤖 github", "path": ".github" },
   ],
   "settings": {
     "prettier.prettierPath": "../../.yarn/sdks/prettier/index.cjs",
     "search.exclude": { "**/dist": true, "**/.yarn": true, "**/.pnp.*": true },
     "typescript.tsdk": "✨ @targetd/mono-repo/.yarn/sdks/typescript/lib",
-    "typescript.enablePromptUseWorkspaceTsdk": true
+    "typescript.enablePromptUseWorkspaceTsdk": true,
   },
   "extensions": {
-    "recommendations": ["arcanis.vscode-zipfs", "esbenp.prettier-vscode"]
-  }
+    "recommendations": ["arcanis.vscode-zipfs", "esbenp.prettier-vscode"],
+  },
 }

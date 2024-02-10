@@ -25,7 +25,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Restore cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         id: cache
         with:
           path: |
@@ -44,7 +44,7 @@ jobs:
         run: yarn test
 
       - name: Upload dists
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: startsWith(matrix.node-version, steps.nvm.outputs.version)
         with:
           if-no-files-found: error
@@ -74,7 +74,7 @@ jobs:
           yarn config set --home npmPublishRegistry https://registry.npmjs.org
 
       - name: Restore cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         id: cache
         with:
           path: |
@@ -87,7 +87,7 @@ jobs:
         run: yarn install --immutable
 
       - name: Download dists
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: dists
           path: ~/dists
