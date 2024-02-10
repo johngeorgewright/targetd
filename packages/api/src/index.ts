@@ -5,6 +5,7 @@ export {
   TargetingValidators,
   QueryValidators,
   FallThroughData,
+  StateTargetingValidators,
   StateValidators,
   FallThroughTargetingValidators,
 } from './Data'
