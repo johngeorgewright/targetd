@@ -5,6 +5,13 @@ import { Options as WatchTreeOptions, unwatchTree, watchTree } from 'watch'
 import z from 'zod'
 import { load, pathIsLoadable } from './load'
 
+type Dirs =
+  | string
+  | {
+      dataDir: string
+      stateDir: string
+    }
+
 export type OnLoad<
   DataValidators extends z.ZodRawShape,
   TargetingValidators extends z.ZodRawShape,
@@ -40,7 +47,7 @@ export function watch<
     StateValidators,
     StateTargetingValidators
   >,
-  dir: string,
+  dirs: Dirs,
   options: WatchTreeOptions,
   onLoad: OnLoad<
     DataValidators,
@@ -68,7 +75,7 @@ export function watch<
     StateValidators,
     StateTargetingValidators
   >,
-  dir: string,
+  dirs: Dirs,
   onLoad: OnLoad<
     DataValidators,
     TargetingValidators,
@@ -95,7 +102,7 @@ export function watch<
     StateValidators,
     StateTargetingValidators
   >,
-  dir: string,
+  dirs: Dirs,
   optionsOrOnLoad:
     | WatchTreeOptions
     | OnLoad<
@@ -115,6 +122,8 @@ export function watch<
     StateTargetingValidators
   >,
 ) {
+  const dataDir = typeof dirs === 'string' ? dirs : dirs.dataDir
+  const stateDir = typeof dirs === 'object' ? dirs.stateDir : undefined
   const options = onLoadParam ? optionsOrOnLoad : {}
   const onLoad = (onLoadParam || optionsOrOnLoad) as OnLoad<
     DataValidators,
@@ -125,25 +134,30 @@ export function watch<
     StateTargetingValidators
   >
 
-  watchTree(
-    dir,
-    {
-      filter: pathIsLoadable,
-      ...options,
-    },
-    debounce(
-      throat(1, async () => {
-        try {
-          data = await load(data.removeAllRules(), dir)
-        } catch (error: any) {
-          return onLoad(error, data)
-        }
+  const handleChange = debounce(
+    throat(1, async () => {
+      try {
+        data = await load(data.removeAllRules(), dataDir)
+      } catch (error: any) {
+        return onLoad(error, data)
+      }
 
-        onLoad(null, data)
-      }),
-      300,
-    ),
+      onLoad(null, data)
+    }),
+    300,
   )
 
-  return () => unwatchTree(dir)
+  const watchOptions = {
+    filter: pathIsLoadable,
+    ...options,
+  }
+
+  if (stateDir) watchTree(stateDir, watchOptions, handleChange)
+
+  watchTree(dataDir, watchOptions, handleChange)
+
+  return () => {
+    if (stateDir) unwatchTree(stateDir)
+    unwatchTree(dataDir)
+  }
 }

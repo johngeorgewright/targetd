@@ -368,11 +368,7 @@ export default class Data<
 
   removeAllRules() {
     return new Data(
-      DataItems(
-        this.#dataValidators,
-        this.#targetingValidators,
-        this.#fallThroughTargetingValidators,
-      ).parse({}),
+      {} as any,
       this.#state,
       this.#dataValidators,
       this.#targetingPredicates,
@@ -567,6 +563,12 @@ export default class Data<
       ...objectMap(targeting, ({ targetingValidator }) => targetingValidator),
     } as NewFallThroughTargetingValidators
 
+    const data = DataItems(
+      this.#dataValidators,
+      this.#targetingValidators,
+      fallThroughTargetingValidators,
+    ).parse(this.#data)
+
     return new Data<
       DataValidators,
       TargetingValidators,
@@ -575,11 +577,7 @@ export default class Data<
       StateValidators,
       StateTargetingValidators
     >(
-      DataItems(
-        this.#dataValidators,
-        this.#targetingValidators,
-        fallThroughTargetingValidators,
-      ).parse(this.#data),
+      data,
       this.#state,
       this.#dataValidators,
       this.#targetingPredicates,
@@ -608,6 +606,12 @@ export default class Data<
         : targetingValidator,
     } as NewFallThroughTargeting
 
+    const data = DataItems(
+      this.#dataValidators,
+      this.#targetingValidators,
+      fallThroughTargetingValidators,
+    ).parse(this.#data)
+
     return new Data<
       DataValidators,
       TargetingValidators,
@@ -616,11 +620,7 @@ export default class Data<
       StateValidators,
       StateTargetingValidators
     >(
-      DataItems(
-        this.#dataValidators,
-        this.#targetingValidators,
-        fallThroughTargetingValidators,
-      ).parse(this.#data),
+      data,
       this.#state,
       this.#dataValidators,
       this.#targetingPredicates,

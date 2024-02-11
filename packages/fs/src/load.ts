@@ -28,7 +28,17 @@ export async function load<
     StateTargetingValidators
   >,
   dir: string,
+  stateDir?: string,
 ) {
+  if (stateDir)
+    for await (const contents of readFiles(stateDir, {
+      encoding: 'utf8',
+      filter: pathIsLoadable,
+      withFileNames: true,
+    })) {
+      data = addState(data, parseFileContents(contents))
+    }
+
   for await (const contents of readFiles(dir, {
     encoding: 'utf8',
     filter: pathIsLoadable,
@@ -77,6 +87,33 @@ function addRules<
     (data, [name, value]) =>
       typeof value === 'object'
         ? data.addRules(name as Keys<DataValidators>, value.rules as any[])
+        : data,
+    data,
+  )
+}
+
+function addState<
+  DataValidators extends z.ZodRawShape,
+  TargetingValidators extends z.ZodRawShape,
+  QueryValidators extends z.ZodRawShape,
+  FallThroughTargetingValidators extends z.ZodRawShape,
+  StateValidators extends z.ZodRawShape,
+  StateTargetingValidators extends z.ZodRawShape,
+>(
+  data: Data<
+    DataValidators,
+    TargetingValidators,
+    QueryValidators,
+    FallThroughTargetingValidators,
+    StateValidators,
+    StateTargetingValidators
+  >,
+  fileData: FileData,
+) {
+  return Object.entries(fileData).reduce(
+    (data, [name, value]) =>
+      typeof value === 'object'
+        ? data.addState(name as Keys<StateValidators>, value.rules as any[])
         : data,
     data,
   )
