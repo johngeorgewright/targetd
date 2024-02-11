@@ -17,7 +17,7 @@ export default class Data<
   DataValidators extends z.ZodRawShape,
   TargetingValidators extends z.ZodRawShape,
   QueryValidators extends z.ZodRawShape,
-  FallThroughTargetingValidators extends z.ZodRawShape
+  FallThroughTargetingValidators extends z.ZodRawShape,
 > {
   readonly #fallThroughTargetingValidators: FallThroughTargetingValidators
   readonly #data: z.infer<
@@ -55,10 +55,10 @@ export default class Data<
     >,
     targetingValidators: TargetingValidators,
     queryValidators: QueryValidators,
-    fallThroughTargetingValidators: FallThroughTargetingValidators
+    fallThroughTargetingValidators: FallThroughTargetingValidators,
   ) {
     this.#fallThroughTargetingValidators = Object.freeze(
-      fallThroughTargetingValidators
+      fallThroughTargetingValidators,
     )
     this.#data = Object.freeze(data)
     this.#dataValidators = Object.freeze(dataValidators)
@@ -104,37 +104,43 @@ export default class Data<
 
   useDataValidator<Name extends string, Validator extends z.ZodTypeAny>(
     name: Name,
-    validator: Validator
+    validator: Validator,
   ) {
-    const dataValidators = {
+    type NewDataValiators = DataValidators & Record<Name, Validator>
+
+    const dataValidators: NewDataValiators = {
       ...this.#dataValidators,
       [name]: validator,
     }
 
+    const data = (
+      name in this.#data
+        ? DataItems(
+            dataValidators,
+            this.#targetingValidators,
+            this.#fallThroughTargetingValidators,
+          ).parse(this.#data)
+        : this.#data
+    ) as z.infer<
+      DataItems<
+        NewDataValiators,
+        TargetingValidators,
+        FallThroughTargetingValidators
+      >
+    >
+
     return new Data<
-      DataValidators & Record<Name, Validator>,
+      NewDataValiators,
       TargetingValidators,
       QueryValidators,
       FallThroughTargetingValidators
     >(
-      (name in this.#data
-        ? DataItems(
-            dataValidators,
-            this.#targetingValidators,
-            this.#fallThroughTargetingValidators
-          ).parse(this.#data)
-        : this.#data) as z.infer<
-        DataItems<
-          DataValidators & Record<Name, Validator>,
-          TargetingValidators,
-          FallThroughTargetingValidators
-        >
-      >,
+      data,
       dataValidators,
       this.#targetingPredicates,
       this.#targetingValidators,
       this.#queryValidators,
-      this.#fallThroughTargetingValidators
+      this.#fallThroughTargetingValidators,
     )
   }
 
@@ -144,7 +150,7 @@ export default class Data<
         | z.infer<DataValidators[Name]>
         | FallThroughRules<DataValidators[Name], TargetingValidators>
         | FallThroughRules<DataValidators[Name], FallThroughTargetingValidators>
-    }>
+    }>,
   ) {
     return Object.entries(omit(data, ['$schema'])).reduce<
       Data<
@@ -159,14 +165,14 @@ export default class Data<
           key as Keys<DataValidators>,
           this.#isFallThroughRulesPayload(value)
             ? value.__rules__
-            : [{ payload: value } as any]
+            : [{ payload: value } as any],
         ),
-      this
+      this,
     )
   }
 
   #isFallThroughRulesPayload<Name extends keyof DataValidators>(
-    payload: Payload<z.infer<DataValidators[Name]>, TargetingValidators>
+    payload: Payload<z.infer<DataValidators[Name]>, TargetingValidators>,
   ): payload is FallThroughRules<
     z.infer<DataValidators[Name]>,
     TargetingValidators
@@ -184,48 +190,47 @@ export default class Data<
         TargetingValidators,
         FallThroughTargetingValidators
       >
-    >
+    >,
   ) {
     const dataItem = this.#data[name] || { rules: [] }
+
+    const data = {
+      ...this.#data,
+      ...DataItems(
+        this.#dataValidators,
+        this.#targetingValidators,
+        this.#fallThroughTargetingValidators,
+      ).parse({
+        [name]: {
+          ...dataItem,
+          rules: [...dataItem.rules, ...rules],
+        },
+      }),
+    }
+
     return new Data(
-      {
-        ...this.#data,
-        ...DataItems(
-          this.#dataValidators,
-          this.#targetingValidators,
-          this.#fallThroughTargetingValidators
-        ).parse({
-          [name]: {
-            ...dataItem,
-            rules: [...dataItem.rules, ...rules],
-          },
-        }),
-      },
+      data,
       this.#dataValidators,
       this.#targetingPredicates,
       this.#targetingValidators,
       this.#queryValidators,
-      this.#fallThroughTargetingValidators
+      this.#fallThroughTargetingValidators,
     )
   }
 
   removeAllRules() {
     return new Data(
-      DataItems(
-        this.#dataValidators,
-        this.#targetingValidators,
-        this.#fallThroughTargetingValidators
-      ).parse({}),
+      {} as any,
       this.#dataValidators,
       this.#targetingPredicates,
       this.#targetingValidators,
       this.#queryValidators,
-      this.#fallThroughTargetingValidators
+      this.#fallThroughTargetingValidators,
     )
   }
 
   useTargetingDescriptors<
-    TDs extends Record<string, TargetingDescriptor<any, any>>
+    TDs extends Record<string, TargetingDescriptor<any, any>>,
   >(targeting: TDs) {
     type NewTargetingValidators = TargetingValidators & {
       [K in keyof TDs]: TargetingDescriptorTargetingValidator<TDs[K]>
@@ -235,10 +240,38 @@ export default class Data<
       [K in keyof TDs]: TargetingDescriptorQueryValidator<TDs[K]>
     }
 
-    const targetingValidators = {
+    const targetingValidators: NewTargetingValidators = {
       ...this.targetingValidators,
       ...objectMap(targeting, ({ targetingValidator }) => targetingValidator),
-    } as NewTargetingValidators
+    }
+
+    const targetingPredicates = {
+      ...this.#targetingPredicates,
+      ...objectMap(targeting, (targetingDescriptor) => ({
+        predicate: targetingDescriptor.predicate,
+        requiresQuery:
+          'requiresQuery' in targetingDescriptor
+            ? targetingDescriptor.requiresQuery
+            : true,
+      })),
+    }
+
+    const queryValidators: NewQueryValidators = {
+      ...this.#queryValidators,
+      ...objectMap(targeting, ({ queryValidator }) => queryValidator),
+    }
+
+    const data: z.infer<
+      DataItems<
+        DataValidators,
+        NewTargetingValidators,
+        FallThroughTargetingValidators
+      >
+    > = DataItems(
+      this.#dataValidators,
+      targetingValidators,
+      this.#fallThroughTargetingValidators,
+    ).parse(this.#data)
 
     return new Data<
       DataValidators,
@@ -246,49 +279,51 @@ export default class Data<
       NewQueryValidators,
       FallThroughTargetingValidators
     >(
-      DataItems(
-        this.#dataValidators,
-        targetingValidators,
-        this.#fallThroughTargetingValidators
-      ).parse(this.#data) as z.infer<
-        DataItems<
-          DataValidators,
-          NewTargetingValidators,
-          FallThroughTargetingValidators
-        >
-      >,
+      data,
       this.#dataValidators,
-      {
-        ...this.#targetingPredicates,
-        ...objectMap(targeting, (targetingDescriptor) => ({
-          predicate: targetingDescriptor.predicate,
-          requiresQuery:
-            'requiresQuery' in targetingDescriptor
-              ? targetingDescriptor.requiresQuery
-              : true,
-        })),
-      },
+      targetingPredicates,
       targetingValidators,
-      {
-        ...this.#queryValidators,
-        ...objectMap(targeting, ({ queryValidator }) => queryValidator),
-      } as NewQueryValidators,
-      this.#fallThroughTargetingValidators
+      queryValidators,
+      this.#fallThroughTargetingValidators,
     )
   }
 
   useTargeting<
     Name extends string,
     TV extends z.ZodTypeAny,
-    QV extends z.ZodTypeAny
+    QV extends z.ZodTypeAny,
   >(name: Name, targetingDescriptor: TargetingDescriptor<TV, QV>) {
     type NewTargeting = TargetingValidators & { [K in Name]: TV }
     type NewQuery = QueryValidators & { [K in Name]: QV }
 
-    const targetingValidators = {
+    const targetingValidators: NewTargeting = {
       ...this.#targetingValidators,
       [name]: targetingDescriptor.targetingValidator,
     }
+
+    const targetingPredicates: any = {
+      ...this.#targetingPredicates,
+      [name]: {
+        predicate: targetingDescriptor.predicate,
+        requiresQuery:
+          'requiresQuery' in targetingDescriptor
+            ? targetingDescriptor.requiresQuery
+            : true,
+      },
+    }
+
+    const queryValidators: NewQuery = {
+      ...this.#queryValidators,
+      [name]: targetingDescriptor.queryValidator,
+    }
+
+    const data: z.infer<
+      DataItems<DataValidators, NewTargeting, FallThroughTargetingValidators>
+    > = DataItems(
+      this.#dataValidators,
+      targetingValidators,
+      this.#fallThroughTargetingValidators,
+    ).parse(this.#data)
 
     return new Data<
       DataValidators,
@@ -296,44 +331,38 @@ export default class Data<
       NewQuery,
       FallThroughTargetingValidators
     >(
-      DataItems(
-        this.#dataValidators,
-        targetingValidators,
-        this.#fallThroughTargetingValidators
-      ).parse(this.#data) as z.infer<
-        DataItems<DataValidators, NewTargeting, FallThroughTargetingValidators>
-      >,
+      data,
       this.#dataValidators,
-      {
-        ...this.#targetingPredicates,
-        [name]: {
-          predicate: targetingDescriptor.predicate,
-          requiresQuery:
-            'requiresQuery' in targetingDescriptor
-              ? targetingDescriptor.requiresQuery
-              : true,
-        },
-      } as any,
+      targetingPredicates,
       targetingValidators,
-      {
-        ...this.#queryValidators,
-        [name]: targetingDescriptor.queryValidator,
-      },
-      this.#fallThroughTargetingValidators
+      queryValidators,
+      this.#fallThroughTargetingValidators,
     )
   }
 
   useFallThroughTargetingDescriptors<
-    TDs extends Record<string, TargetingDescriptor<any, any>>
+    TDs extends Record<string, TargetingDescriptor<any, any>>,
   >(targeting: TDs) {
     type NewFallThroughTargetingValidators = FallThroughTargetingValidators & {
       [K in keyof TDs]: TargetingDescriptorTargetingValidator<TDs[K]>
     }
 
-    const fallThroughTargetingValidators = {
+    const fallThroughTargetingValidators: NewFallThroughTargetingValidators = {
       ...this.#fallThroughTargetingValidators,
       ...objectMap(targeting, ({ targetingValidator }) => targetingValidator),
-    } as NewFallThroughTargetingValidators
+    }
+
+    const data: z.infer<
+      DataItems<
+        DataValidators,
+        TargetingValidators,
+        NewFallThroughTargetingValidators
+      >
+    > = DataItems(
+      this.#dataValidators,
+      this.#targetingValidators,
+      fallThroughTargetingValidators,
+    ).parse(this.#data)
 
     return new Data<
       DataValidators,
@@ -341,29 +370,19 @@ export default class Data<
       QueryValidators,
       NewFallThroughTargetingValidators
     >(
-      DataItems(
-        this.#dataValidators,
-        this.#targetingValidators,
-        fallThroughTargetingValidators
-      ).parse(this.#data) as z.infer<
-        DataItems<
-          DataValidators,
-          TargetingValidators,
-          NewFallThroughTargetingValidators
-        >
-      >,
+      data,
       this.#dataValidators,
       this.#targetingPredicates,
       this.#targetingValidators,
       this.#queryValidators,
-      fallThroughTargetingValidators
+      fallThroughTargetingValidators,
     )
   }
 
   useFallThroughTargeting<
     Name extends string,
     TV extends z.ZodTypeAny,
-    QV extends z.ZodTypeAny
+    QV extends z.ZodTypeAny,
   >(name: Name, targetingValidator: TV | TargetingDescriptor<TV, QV>) {
     type NewFallThroughTargeting = FallThroughTargetingValidators & {
       [K in Name]: TV
@@ -376,29 +395,31 @@ export default class Data<
         : targetingValidator,
     } as NewFallThroughTargeting
 
+    const data: z.infer<
+      DataItems<DataValidators, TargetingValidators, NewFallThroughTargeting>
+    > = DataItems(
+      this.#dataValidators,
+      this.#targetingValidators,
+      fallThroughTargetingValidators,
+    ).parse(this.#data)
+
     return new Data<
       DataValidators,
       TargetingValidators,
       QueryValidators,
       NewFallThroughTargeting
     >(
-      DataItems(
-        this.#dataValidators,
-        this.#targetingValidators,
-        fallThroughTargetingValidators
-      ).parse(this.#data) as z.infer<
-        DataItems<DataValidators, TargetingValidators, NewFallThroughTargeting>
-      >,
+      data,
       this.#dataValidators,
       this.#targetingPredicates,
       this.#targetingValidators,
       this.#queryValidators,
-      fallThroughTargetingValidators
+      fallThroughTargetingValidators,
     )
   }
 
   async getPayloadForEachName(
-    rawQuery: Partial<StaticRecord<QueryValidators>> = {}
+    rawQuery: Partial<StaticRecord<QueryValidators>> = {},
   ) {
     const payloads = {} as Partial<{
       [Name in keyof DataValidators]:
@@ -409,7 +430,7 @@ export default class Data<
     await Promise.all(
       objectKeys(this.#data).map(async (name) => {
         payloads[name] = await this.getPayload(name, rawQuery)
-      })
+      }),
     )
 
     return payloads
@@ -417,7 +438,7 @@ export default class Data<
 
   async getPayload<Name extends keyof DataValidators>(
     name: Name,
-    rawQuery: Partial<StaticRecord<QueryValidators>> = {}
+    rawQuery: Partial<StaticRecord<QueryValidators>> = {},
   ): Promise<Payload<DataValidators[Name], TargetingValidators> | void> {
     const predicate = this.#createRulePredicate(rawQuery)
     for (const rule of this.#getTargetableRules(name))
@@ -426,7 +447,7 @@ export default class Data<
 
   async getPayloads<Name extends keyof DataValidators>(
     name: Name,
-    rawQuery: Partial<StaticRecord<QueryValidators>> = {}
+    rawQuery: Partial<StaticRecord<QueryValidators>> = {},
   ): Promise<Payload<DataValidators[Name], TargetingValidators>[]> {
     const payloads: Payload<DataValidators[Name], TargetingValidators>[] = []
     const predicate = this.#createRulePredicate(rawQuery)
@@ -442,17 +463,17 @@ export default class Data<
         TargetingValidators,
         FallThroughTargetingValidators
       >
-    >
+    >,
   ) {
     return hasPayload(rule)
       ? rule.payload
       : 'fallThrough' in rule
-      ? { __rules__: rule.fallThrough }
-      : undefined
+        ? { __rules__: rule.fallThrough }
+        : undefined
   }
 
   #createRulePredicate<Name extends keyof DataValidators>(
-    rawQuery: Partial<StaticRecord<QueryValidators>>
+    rawQuery: Partial<StaticRecord<QueryValidators>>,
   ) {
     const query = this.#QueryValidator.parse(rawQuery)
 
@@ -461,7 +482,7 @@ export default class Data<
       (target, targetingKey) => ({
         predicate: target.predicate(query[targetingKey]),
         requiresQuery: target.requiresQuery,
-      })
+      }),
     )
 
     return (
@@ -471,7 +492,7 @@ export default class Data<
           TargetingValidators,
           FallThroughTargetingValidators
         >
-      >
+      >,
     ) =>
       !('targeting' in rule) ||
       this.#targetingPredicate(query, rule.targeting!, targeting)
@@ -504,7 +525,7 @@ export default class Data<
         predicate: MaybePromise<(targeting: unknown) => MaybePromise<boolean>>
         requiresQuery: boolean
       }
-    >
+    >,
   ) {
     const targetings = Array.isArray(targeting) ? targeting : [targeting]
     for (const targeting of targetings)
@@ -524,7 +545,7 @@ export default class Data<
               console.warn(`Invalid targeting property ${String(targetingKey)}`)
 
             return false
-          }
+          },
         )
       )
         return true
@@ -538,7 +559,7 @@ function hasPayload<Payload>(x: any): x is { payload: Payload } {
 
 export type FallThroughRules<
   P extends z.ZodTypeAny,
-  T extends z.ZodRawShape
+  T extends z.ZodRawShape,
 > = {
   __rules__: z.infer<RuleWithPayload<P, T>>[]
 }
@@ -548,23 +569,23 @@ export type Payload<P extends z.ZodTypeAny, T extends z.ZodRawShape> =
   | FallThroughRules<P, T>
 
 export type DataValidators<
-  D extends Data<ZodRawShape, ZodRawShape, ZodRawShape, ZodRawShape>
+  D extends Data<ZodRawShape, ZodRawShape, ZodRawShape, ZodRawShape>,
 > = D extends Data<infer V, ZodRawShape, ZodRawShape, ZodRawShape> ? V : never
 
 export type TargetingValidators<
-  D extends Data<ZodRawShape, ZodRawShape, ZodRawShape, ZodRawShape>
+  D extends Data<ZodRawShape, ZodRawShape, ZodRawShape, ZodRawShape>,
 > = D extends Data<ZodRawShape, infer V, ZodRawShape, ZodRawShape> ? V : never
 
 export type QueryValidators<
-  D extends Data<ZodRawShape, ZodRawShape, ZodRawShape, ZodRawShape>
+  D extends Data<ZodRawShape, ZodRawShape, ZodRawShape, ZodRawShape>,
 > = D extends Data<ZodRawShape, ZodRawShape, infer V, ZodRawShape> ? V : never
 
 export type FallThroughTargetingValidators<
-  D extends Data<ZodRawShape, ZodRawShape, ZodRawShape, ZodRawShape>
+  D extends Data<ZodRawShape, ZodRawShape, ZodRawShape, ZodRawShape>,
 > = D extends Data<ZodRawShape, ZodRawShape, ZodRawShape, infer V> ? V : never
 
 export type FallThroughData<
-  D extends Data<ZodRawShape, ZodRawShape, ZodRawShape, ZodRawShape>
+  D extends Data<ZodRawShape, ZodRawShape, ZodRawShape, ZodRawShape>,
 > = Data<
   DataValidators<D>,
   { [K in keyof FallThroughTargetingValidators<D>]: z.ZodType },
