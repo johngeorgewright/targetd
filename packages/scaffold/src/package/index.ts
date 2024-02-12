@@ -25,9 +25,7 @@ export = class PackageGenerator extends Generator {
   async prompting() {
     this.#answers = await this.prompt([
       {
-        message: `What is the packages's name? (Minus the ${
-          this.#namespace
-        } namespace)`,
+        message: `What is the packages's name? (Minus the ${this.#namespace} namespace)`,
         name: 'name',
         type: 'input',
         validate: (x) => !!x || 'You must supply a name',
@@ -83,7 +81,7 @@ export = class PackageGenerator extends Generator {
 
     this.packageJson.set(
       'homepage',
-      'https://github.com/johngeorgewright/config#readme'
+      'https://github.com/johngeorgewright/config#readme',
     )
 
     const devDependencies = [
@@ -102,7 +100,12 @@ export = class PackageGenerator extends Generator {
         '@semantic-release/github',
         '@semantic-release/release-notes-generator',
         'semantic-release',
-        'semantic-release-monorepo'
+        'semantic-release-monorepo',
+      )
+
+      this.fs.copy(
+        this.templatePath('.releaserc.cjs'),
+        this.destinationPath('.releaserc.cjs'),
       )
     }
 
@@ -111,41 +114,41 @@ export = class PackageGenerator extends Generator {
 
     this.fs.copy(
       this.templatePath('tsconfig.json'),
-      this.destinationPath('tsconfig.json')
+      this.destinationPath('tsconfig.json'),
     )
 
     this.fs.copy(
       this.templatePath('tsconfig.test.json'),
-      this.destinationPath('tsconfig.test.json')
+      this.destinationPath('tsconfig.test.json'),
     )
 
     this.fs.copy(
       this.templatePath('jest.config.ts.template'),
-      this.destinationPath('jest.config.ts')
+      this.destinationPath('jest.config.ts'),
     )
 
     this.fs.copyTpl(
       this.templatePath('LICENSE'),
       this.destinationPath('LICENSE'),
-      context
+      context,
     )
 
     this.fs.copyTpl(
       this.templatePath('README.md'),
       this.destinationPath('README.md'),
-      context
+      context,
     )
 
     this.fs.copyTpl(
       this.templatePath('package-src/index.ts.template'),
       this.destinationPath('src/index.ts'),
-      context
+      context,
     )
 
     this.fs.copyTpl(
       this.templatePath('package-test/index.test.ts.template'),
       this.destinationPath('test/index.test.ts'),
-      context
+      context,
     )
 
     await this.#updateVSCodeWS(this.#vsCodeWS)
@@ -160,7 +163,7 @@ export = class PackageGenerator extends Generator {
     })
 
     vsCodeWS.folders.sort((a: any, b: any) =>
-      a.name === b.name ? 0 : a.name < b.name ? -1 : 0
+      a.name === b.name ? 0 : a.name < b.name ? -1 : 0,
     )
 
     const prettierOptions = (await prettier.resolveConfig(file)) || {}
