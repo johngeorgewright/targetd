@@ -307,20 +307,23 @@ export default class Data<
     >,
   ) {
     const dataItem = this.#data[name] || { rules: [] }
+
+    const data = {
+      ...this.#data,
+      ...DataItems(
+        this.#dataValidators,
+        this.#targetingValidators,
+        this.#fallThroughTargetingValidators,
+      ).parse({
+        [name]: {
+          ...dataItem,
+          rules: [...dataItem.rules, ...rules],
+        },
+      }),
+    }
+
     return new Data(
-      {
-        ...this.#data,
-        ...DataItems(
-          this.#dataValidators,
-          this.#targetingValidators,
-          this.#fallThroughTargetingValidators,
-        ).parse({
-          [name]: {
-            ...dataItem,
-            rules: [...dataItem.rules, ...rules],
-          },
-        }),
-      },
+      data,
       this.#state,
       this.#dataValidators,
       this.#targetingPredicates,
@@ -340,21 +343,26 @@ export default class Data<
     >,
   ) {
     const stateItem = this.#state[name] || { rules: [] }
+
+    const state: z.infer<
+      DataItems<StateValidators, StateTargetingValidators, {}>
+    > = {
+      ...this.#state,
+      ...DataItems(
+        this.#stateValidators,
+        this.#stateTargetingValidators,
+        {},
+      ).parse({
+        [name]: {
+          ...stateItem,
+          rules: [...stateItem.rules, ...rules],
+        },
+      }),
+    }
+
     return new Data(
       this.#data,
-      {
-        ...this.#state,
-        ...DataItems(
-          this.#stateValidators,
-          this.#targetingValidators,
-          {},
-        ).parse({
-          [name]: {
-            ...stateItem,
-            rules: [...stateItem.rules, ...rules],
-          },
-        }),
-      },
+      state,
       this.#dataValidators,
       this.#targetingPredicates,
       this.#targetingValidators,
@@ -486,15 +494,17 @@ export default class Data<
       [name]: targetingDescriptor.targetingValidator,
     }
 
+    const targetingPredicate = {
+      predicate: targetingDescriptor.predicate,
+      requiresQuery:
+        'requiresQuery' in targetingDescriptor
+          ? targetingDescriptor.requiresQuery
+          : true,
+    }
+
     const targetingPredicates: any = {
       ...this.#targetingPredicates,
-      [name]: {
-        predicate: targetingDescriptor.predicate,
-        requiresQuery:
-          'requiresQuery' in targetingDescriptor
-            ? targetingDescriptor.requiresQuery
-            : true,
-      },
+      [name]: targetingPredicate,
     }
 
     const queryValidators: NewQuery = {
@@ -509,13 +519,7 @@ export default class Data<
 
     const stateTargetingPredicates: any = {
       ...this.#stateTargetingPredicates,
-      [name]: {
-        predicate: targetingDescriptor.predicate,
-        requiresQuery:
-          'requiresQuery' in targetingDescriptor
-            ? targetingDescriptor.requiresQuery
-            : true,
-      },
+      [name]: targetingPredicate,
     }
 
     const data = DataItems(
