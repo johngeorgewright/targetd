@@ -230,7 +230,10 @@ export default class Data<
   }
 
   useTargetingDescriptors<
-    TDs extends Record<string, TargetingDescriptor<any, any>>,
+    TDs extends Record<
+      string,
+      TargetingDescriptor<any, any, Partial<StaticRecord<QueryValidators>>>
+    >,
   >(targeting: TDs) {
     type NewTargetingValidators = TargetingValidators & {
       [K in keyof TDs]: TargetingDescriptorTargetingValidator<TDs[K]>
@@ -292,7 +295,14 @@ export default class Data<
     Name extends string,
     TV extends z.ZodTypeAny,
     QV extends z.ZodTypeAny,
-  >(name: Name, targetingDescriptor: TargetingDescriptor<TV, QV>) {
+  >(
+    name: Name,
+    targetingDescriptor: TargetingDescriptor<
+      TV,
+      QV,
+      Partial<StaticRecord<QueryValidators>>
+    >,
+  ) {
     type NewTargeting = TargetingValidators & { [K in Name]: TV }
     type NewQuery = QueryValidators & { [K in Name]: QV }
 
@@ -341,7 +351,10 @@ export default class Data<
   }
 
   useFallThroughTargetingDescriptors<
-    TDs extends Record<string, TargetingDescriptor<any, any>>,
+    TDs extends Record<
+      string,
+      TargetingDescriptor<any, any, Partial<StaticRecord<QueryValidators>>>
+    >,
   >(targeting: TDs) {
     type NewFallThroughTargetingValidators = FallThroughTargetingValidators & {
       [K in keyof TDs]: TargetingDescriptorTargetingValidator<TDs[K]>
@@ -480,7 +493,7 @@ export default class Data<
     const targeting = objectMap(
       this.#targetingPredicates,
       (target, targetingKey) => ({
-        predicate: target.predicate(query[targetingKey]),
+        predicate: target.predicate(query[targetingKey], query as any),
         requiresQuery: target.requiresQuery,
       }),
     )

@@ -4,10 +4,14 @@ import TargetingPredicate from './TargetingPredicate'
 
 type TargetingPredicates<
   Targeting extends z.ZodRawShape,
-  Query extends Record<Keys<Targeting>, z.ZodTypeAny>
+  Query extends Record<Keys<Targeting>, z.ZodTypeAny>,
 > = {
   [Name in Keys<Targeting>]: {
-    predicate: TargetingPredicate<Query[Name], Targeting[Name]>
+    predicate: TargetingPredicate<
+      Query[Name],
+      Targeting[Name],
+      Partial<z.infer<z.ZodObject<Query, 'strict'>>>
+    >
     requiresQuery: boolean
   }
 }
