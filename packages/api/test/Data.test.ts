@@ -1,5 +1,10 @@
 import z from 'zod'
-import { Data, targetEquals, targetIncludes } from '../src'
+import {
+  Data,
+  createTargetingDescriptor,
+  targetEquals,
+  targetIncludes,
+} from '../src'
 
 const timeout = <T>(ms: number, returnValue: T) =>
   new Promise<T>((resolve) => setTimeout(() => resolve(returnValue), ms))
@@ -56,10 +61,10 @@ test('getPayload', async () => {
   expect(await data.getPayload('foo', { weather: 'rainy' })).toBe('☂️')
   expect(await data.getPayload('foo', { highTide: true })).toBe('🌊')
   expect(
-    await data.getPayload('foo', { highTide: true, weather: 'sunny' })
+    await data.getPayload('foo', { highTide: true, weather: 'sunny' }),
   ).toBe('🏄‍♂️')
   expect(await data.getPayload('foo', { asyncThing: true })).toBe(
-    'Async payload'
+    'Async payload',
   )
 
   // @ts-expect-error
@@ -67,7 +72,7 @@ test('getPayload', async () => {
 
   expect(
     // @ts-expect-error
-    data.getPayload('foo', { nonExistantKey: 'some value' })
+    data.getPayload('foo', { nonExistantKey: 'some value' }),
   ).rejects.toThrow()
 
   expect(() =>
@@ -79,7 +84,7 @@ test('getPayload', async () => {
         },
         payload: 'error',
       },
-    ])
+    ]),
   ).toThrow()
 })
 
@@ -106,10 +111,10 @@ test('targeting with multiple conditions', async () => {
     ])
 
   expect(await data.getPayload('foo', { weather: 'sunny' })).toBe(
-    'The time is now'
+    'The time is now',
   )
   expect(await data.getPayload('foo', { highTide: true })).toBe(
-    'The time is now'
+    'The time is now',
   )
   expect(await data.getPayload('foo')).toBe('bar')
 })
@@ -184,7 +189,7 @@ test('payload runtype validation', () => {
     Data.create()
       .useDataValidator(
         'foo',
-        z.string().refine((x) => x === 'bar', 'Should be bar')
+        z.string().refine((x) => x === 'bar', 'Should be bar'),
       )
       .addRules('foo', [
         {
@@ -460,4 +465,41 @@ test('inserting data', async () => {
       "moo": "glue",
     }
   `)
+})
+
+test('targeting predicate with full query object', async () => {
+  const mungTargeting = createTargetingDescriptor({
+    queryValidator: z.string(),
+    targetingValidator: z.string().array(),
+    predicate:
+      (queryValue, { bar }: { bar?: boolean }) =>
+      (targeting) =>
+        bar === true &&
+        queryValue !== undefined &&
+        targeting.includes(queryValue),
+  })
+
+  const data = Data.create()
+    .useDataValidator('foo', z.string())
+    .useTargeting('oof', {
+      queryValidator: z.string(),
+      targetingValidator: z.string(),
+      predicate: (q) => (t) => q === t,
+    })
+    .useTargeting('bar', {
+      queryValidator: z.boolean(),
+      targetingValidator: z.boolean(),
+      predicate: (q) => (t) => q === t,
+    })
+    .useTargeting('mung', mungTargeting)
+    .addRules('foo', [
+      {
+        targeting: { mung: ['mung'] },
+        payload: 'yay',
+      },
+    ])
+
+  expect(await data.getPayload('foo')).toBe(undefined)
+  expect(await data.getPayload('foo', { mung: 'mung' })).toBe(undefined)
+  expect(await data.getPayload('foo', { bar: true, mung: 'mung' })).toBe('yay')
 })
