@@ -102,6 +102,43 @@ export default class Data<
     return this.#fallThroughTargetingValidators
   }
 
+  useDataValidators<Validators extends Record<string, z.ZodTypeAny>>(
+    validators: Validators,
+  ) {
+    type NewDataValidators = DataValidators & Validators
+
+    const dataValidators = {
+      ...this.#dataValidators,
+      ...validators,
+    }
+
+    const data = DataItems(
+      dataValidators,
+      this.#targetingValidators,
+      this.#fallThroughTargetingValidators,
+    ).parse(this.#data) as z.infer<
+      DataItems<
+        NewDataValidators,
+        TargetingValidators,
+        FallThroughTargetingValidators
+      >
+    >
+
+    return new Data<
+      NewDataValidators,
+      TargetingValidators,
+      QueryValidators,
+      FallThroughTargetingValidators
+    >(
+      data,
+      dataValidators,
+      this.#targetingPredicates,
+      this.#targetingValidators,
+      this.#queryValidators,
+      this.#fallThroughTargetingValidators,
+    )
+  }
+
   useDataValidator<Name extends string, Validator extends z.ZodTypeAny>(
     name: Name,
     validator: Validator,

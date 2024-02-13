@@ -219,8 +219,10 @@ test('payload runtype validation', () => {
 
 test('getPayloadForEachName', async () => {
   const data = Data.create()
-    .useDataValidator('foo', z.string())
-    .useDataValidator('bar', z.string())
+    .useDataValidators({
+      foo: z.string(),
+      bar: z.string(),
+    })
     .useTargetingDescriptors({
       weather: targetIncludes(z.string()),
       highTide: targetIncludes(z.boolean()),
@@ -284,8 +286,10 @@ test('getPayloadForEachName', async () => {
 
 test('fallThrough targeting', async () => {
   const data = Data.create()
-    .useDataValidator('foo', z.string())
-    .useDataValidator('bar', z.string())
+    .useDataValidators({
+      foo: z.string(),
+      bar: z.string(),
+    })
     .useTargeting('surf', targetIncludes(z.string()))
     .useFallThroughTargeting('weather', z.array(z.string()))
     .addRules('foo', [
@@ -399,9 +403,11 @@ test('fallThrough targeting', async () => {
 
 test('inserting data', async () => {
   const data = Data.create()
-    .useDataValidator('moo', z.string())
-    .useDataValidator('foo', z.string())
-    .useDataValidator('bar', z.string())
+    .useDataValidators({
+      moo: z.string(),
+      foo: z.string(),
+      bar: z.string(),
+    })
     .useTargeting('weather', targetIncludes(z.string()))
     .useFallThroughTargetingDescriptors({
       highTide: targetEquals(z.boolean()),
