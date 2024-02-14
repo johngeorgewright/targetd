@@ -62,7 +62,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./",\
         "packageDependencies": [\
           ["@commitlint/cli", "npm:18.6.1"],\
-          ["@commitlint/config-conventional", "npm:18.6.1"],\
+          ["@commitlint/config-conventional", "npm:18.6.2"],\
           ["@semantic-release/commit-analyzer", "virtual:e417c507cfca2557298bab0952f8f7eb9c547ce5055352e6a5bd7f3b13da5e46240f19ee8d07b164e0ddcfb2d6e81c4db2f32a75a403a64d6af56c7a2bfb6add#npm:11.1.0"],\
           ["@semantic-release/exec", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:6.0.3"],\
           ["@semantic-release/git", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:10.0.1"],\
@@ -955,10 +955,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@commitlint/config-conventional", [\
-      ["npm:18.6.1", {\
-        "packageLocation": "./.yarn/cache/@commitlint-config-conventional-npm-18.6.1-1dec1a01a2-9c00b6a262.zip/node_modules/@commitlint/config-conventional/",\
+      ["npm:18.6.2", {\
+        "packageLocation": "./.yarn/cache/@commitlint-config-conventional-npm-18.6.2-d59698bbcc-4e7ba8c1e8.zip/node_modules/@commitlint/config-conventional/",\
         "packageDependencies": [\
-          ["@commitlint/config-conventional", "npm:18.6.1"],\
+          ["@commitlint/config-conventional", "npm:18.6.2"],\
           ["@commitlint/types", "npm:18.6.1"],\
           ["conventional-changelog-conventionalcommits", "npm:7.0.2"]\
         ],\
@@ -3087,7 +3087,7 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["@targetd/mono-repo", "workspace:."],\
           ["@commitlint/cli", "npm:18.6.1"],\
-          ["@commitlint/config-conventional", "npm:18.6.1"],\
+          ["@commitlint/config-conventional", "npm:18.6.2"],\
           ["@semantic-release/commit-analyzer", "virtual:e417c507cfca2557298bab0952f8f7eb9c547ce5055352e6a5bd7f3b13da5e46240f19ee8d07b164e0ddcfb2d6e81c4db2f32a75a403a64d6af56c7a2bfb6add#npm:11.1.0"],\
           ["@semantic-release/exec", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:6.0.3"],\
           ["@semantic-release/git", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:10.0.1"],\
