@@ -36,7 +36,7 @@
     "commitizen": "4.3.0",
     "cz-conventional-changelog": "3.3.0",
     "husky": "9.0.11",
-    "isbinaryfile": "5.0.0",
+    "isbinaryfile": "5.0.2",
     "jest-runner": "29.7.0",
     "lint-staged": "15.2.2",
     "mkdirp-infer-owner": "2.0.0",
