@@ -73,7 +73,7 @@ const RAW_RUNTIME_STATE =
           ["commitizen", "npm:4.3.0"],\
           ["cz-conventional-changelog", "npm:3.3.0"],\
           ["husky", "npm:9.0.11"],\
-          ["isbinaryfile", "npm:5.0.0"],\
+          ["isbinaryfile", "npm:5.0.2"],\
           ["jest-runner", "npm:29.7.0"],\
           ["lint-staged", "npm:15.2.2"],\
           ["mkdirp-infer-owner", "npm:2.0.0"],\
@@ -3098,7 +3098,7 @@ const RAW_RUNTIME_STATE =
           ["commitizen", "npm:4.3.0"],\
           ["cz-conventional-changelog", "npm:3.3.0"],\
           ["husky", "npm:9.0.11"],\
-          ["isbinaryfile", "npm:5.0.0"],\
+          ["isbinaryfile", "npm:5.0.2"],\
           ["jest-runner", "npm:29.7.0"],\
           ["lint-staged", "npm:15.2.2"],\
           ["mkdirp-infer-owner", "npm:2.0.0"],\
@@ -9196,6 +9196,13 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/isbinaryfile-npm-5.0.0-e98524e7a5-511bb5ce54.zip/node_modules/isbinaryfile/",\
         "packageDependencies": [\
           ["isbinaryfile", "npm:5.0.0"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:5.0.2", {\
+        "packageLocation": "./.yarn/cache/isbinaryfile-npm-5.0.2-3cb4869f50-515d7c963b.zip/node_modules/isbinaryfile/",\
+        "packageDependencies": [\
+          ["isbinaryfile", "npm:5.0.2"]\
         ],\
         "linkType": "HARD"\
       }]\
