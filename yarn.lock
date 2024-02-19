@@ -2216,6 +2216,37 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@targetd/explode@workspace:packages/explode":
+  version: 0.0.0-use.local
+  resolution: "@targetd/explode@workspace:packages/explode"
+  dependencies:
+    "@semantic-release/commit-analyzer": "npm:11.1.0"
+    "@semantic-release/exec": "npm:6.0.3"
+    "@semantic-release/git": "npm:10.0.1"
+    "@semantic-release/github": "npm:9.2.6"
+    "@semantic-release/release-notes-generator": "npm:12.1.0"
+    "@targetd/api": "workspace:*"
+    "@targetd/date-range": "workspace:*"
+    "@types/cors": "npm:2.8.17"
+    "@types/jest": "npm:29.5.12"
+    "@types/node": "npm:20.11.17"
+    "@types/supertest": "npm:6.0.2"
+    jest: "npm:29.7.0"
+    rimraf: "npm:5.0.5"
+    semantic-release: "npm:23.0.2"
+    semantic-release-monorepo: "npm:8.0.2"
+    supertest: "npm:6.3.4"
+    ts-jest: "npm:29.1.2"
+    ts-toolbelt: "npm:9.6.0"
+    tslib: "npm:2.6.2"
+    typescript: "npm:5.3.3"
+    zod: "npm:3.22.4"
+  peerDependencies:
+    "@targetd/api": ">=5.2.0"
+    zod: ^3.20.0
+  languageName: unknown
+  linkType: soft
+
 "@targetd/fs@workspace:packages/fs":
   version: 0.0.0-use.local
   resolution: "@targetd/fs@workspace:packages/fs"
@@ -2335,6 +2366,7 @@ __metadata:
     semantic-release: "npm:23.0.2"
     semantic-release-monorepo: "npm:8.0.2"
     ts-jest: "npm:29.1.2"
+    ts-node: "npm:10.9.2"
     tslib: "npm:2.6.2"
     typescript: "npm:5.3.3"
     yeoman-generator: "npm:6.0.1"
