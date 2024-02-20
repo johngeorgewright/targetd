@@ -1,6 +1,6 @@
 {
   "name": "@targetd/server",
-  "version": "4.1.0",
+  "version": "4.2.0",
   "description": "HTTP server for targetd data",
   "main": "dist/index.js",
   "sideEffects": false,
@@ -51,7 +51,7 @@
     "tslib": "2.6.2"
   },
   "peerDependencies": {
-    "@targetd/api": ">=5.2.0",
+    "@targetd/api": ">=5.4.1",
     "zod": "^3.20.0"
   }
 }
