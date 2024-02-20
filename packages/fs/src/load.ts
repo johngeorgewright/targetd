@@ -20,16 +20,16 @@ const FileData = object({ $schema: string().optional() }).catchall(
 type FileData = zInfer<typeof FileData>
 
 export async function load<
-  DataValidators extends ZodRawShape,
-  TargetingValidators extends ZodRawShape,
-  QueryValidators extends ZodRawShape,
-  FallThroughTargetingValidators extends ZodRawShape,
+  DataParsers extends ZodRawShape,
+  TargetingParsers extends ZodRawShape,
+  QueryParsers extends ZodRawShape,
+  FallThroughTargetingParsers extends ZodRawShape,
 >(
   data: Data<
-    DataValidators,
-    TargetingValidators,
-    QueryValidators,
-    FallThroughTargetingValidators
+    DataParsers,
+    TargetingParsers,
+    QueryParsers,
+    FallThroughTargetingParsers
   >,
   dir: string,
 ) {
@@ -60,23 +60,23 @@ function parseFileContents({
 }
 
 function addRules<
-  DataValidators extends ZodRawShape,
-  TargetingValidators extends ZodRawShape,
-  QueryValidators extends ZodRawShape,
-  FallThroughTargetingValidators extends ZodRawShape,
+  DataParsers extends ZodRawShape,
+  TargetingParsers extends ZodRawShape,
+  QueryParsers extends ZodRawShape,
+  FallThroughTargetingParsers extends ZodRawShape,
 >(
   data: Data<
-    DataValidators,
-    TargetingValidators,
-    QueryValidators,
-    FallThroughTargetingValidators
+    DataParsers,
+    TargetingParsers,
+    QueryParsers,
+    FallThroughTargetingParsers
   >,
   fileData: FileData,
 ) {
   return Object.entries(fileData).reduce(
     (data, [name, value]) =>
       typeof value === 'object'
-        ? data.addRules(name as Keys<DataValidators>, value.rules as any[])
+        ? data.addRules(name as Keys<DataParsers>, value.rules as any[])
         : data,
     data,
   )

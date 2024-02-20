@@ -11,7 +11,7 @@ import z from 'zod'
 
 const data = Data.create()
   .useTargeting('dateRange', dateRangeTargeting)
-  .useDataValidator('foo', z.string())
+  .useDataParser('foo', z.string())
   .addRules('foo', [
     {
       targeting: {
@@ -48,17 +48,17 @@ test('will use system time when no targeting is specified', async () => {
 
 test('filter by queries', async () => {
   expect(
-    await data.getPayload('foo', { dateRange: { start: '2020-01-01' } })
+    await data.getPayload('foo', { dateRange: { start: '2020-01-01' } }),
   ).toBe('😷')
 
   expect(
-    await data.getPayload('foo', { dateRange: { start: '2019-01-01' } })
+    await data.getPayload('foo', { dateRange: { start: '2019-01-01' } }),
   ).toBe('😷')
 
   expect(
     await data.getPayload('foo', {
       dateRange: { start: '2019-01-01', end: '2019-12-01' },
-    })
+    }),
   ).toBe('bar')
 })
 ```

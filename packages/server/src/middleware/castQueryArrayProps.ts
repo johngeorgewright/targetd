@@ -3,25 +3,25 @@ import { RequestHandler } from 'express'
 import { ZodFirstPartyTypeKind, ZodRawShape } from 'zod'
 
 export function castQueryArrayProps<
-  DataValidators extends ZodRawShape,
-  TargetingValidators extends ZodRawShape,
-  QueryValidators extends ZodRawShape,
-  FallThroughTargetingValidators extends ZodRawShape,
+  DataParsers extends ZodRawShape,
+  TargetingParsers extends ZodRawShape,
+  QueryParsers extends ZodRawShape,
+  FallThroughTargetingParsers extends ZodRawShape,
 >(
   getData: () => Data<
-    DataValidators,
-    TargetingValidators,
-    QueryValidators,
-    FallThroughTargetingValidators
+    DataParsers,
+    TargetingParsers,
+    QueryParsers,
+    FallThroughTargetingParsers
   >,
 ): RequestHandler {
   return (req, _res, next) => {
-    const { queryValidators } = getData()
+    const { queryParsers } = getData()
 
     for (const [key, value] of Object.entries(req.query))
       if (
-        key in queryValidators &&
-        queryValidators[key]._def.typeName === ZodFirstPartyTypeKind.ZodArray &&
+        key in queryParsers &&
+        queryParsers[key]._def.typeName === ZodFirstPartyTypeKind.ZodArray &&
         value !== undefined &&
         !Array.isArray(value)
       )

@@ -68,12 +68,12 @@ All typing and validation is done using the awesome [zod][] project and is expor
 import { Data } from '@targetd/api'
 import z from 'zod'
 
-let data = Data.create().useDataValidator(
+let data = Data.create().useDataParser(
   'blog',
   z.strictObject({
     title: z.string(),
     body: z.string(),
-  })
+  }),
 )
 ```
 
@@ -98,10 +98,10 @@ As mentioned above, all typing and validation is done using the [zod][] project.
 ```typescript
 data = data.useTargeting('category', {
   // Restrict queries to be string
-  queryValidator: z.string(),
+  queryParser: z.string(),
 
   // Restrict stored targeting values as an array of "news" or "weather"
-  targetingValidator: z.array(z.enum(['news', 'weather'])),
+  targetingParser: z.array(z.enum(['news', 'weather'])),
 
   // The targeting logic
   predicate: (query) => (targeting) => targeting.includes(query),
@@ -129,7 +129,7 @@ data = data.addRules([
 
 ```typescript
 console.info(
-  data.getPayload('blog', { category: 'news' })
+  data.getPayload('blog', { category: 'news' }),
   // This will find the **first** rule that matches the query
 )
 // { title: 'A new thing', body: "Here's the body" }
@@ -143,7 +143,7 @@ Sometimes you may not be able to successfully target certain payloads in one ser
 // data.ts
 import { Data } from '@targetd/api'
 
-export const data = Data.create().useDataValidator('foo', z.string())
+export const data = Data.create().useDataParser('foo', z.string())
 ```
 
 ```typescript

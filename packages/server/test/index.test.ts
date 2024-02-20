@@ -14,28 +14,28 @@ let app: express.Application
 beforeEach(() => {
   app = createServer(() =>
     Data.create()
-      .useDataValidator('foo', z.string())
-      .useDataValidator('bar', z.number())
-      .useDataValidator('timed', z.string())
+      .useDataParser('foo', z.string())
+      .useDataParser('bar', z.number())
+      .useDataParser('timed', z.string())
       .useTargeting('weather', {
         predicate: (q) => (t) => typeof q === 'string' && t.includes(q),
-        queryValidator: z.string(),
-        targetingValidator: z.array(z.string()),
+        queryParser: z.string(),
+        targetingParser: z.array(z.string()),
       })
       .useTargeting('highTide', {
         predicate: (q) => (t) => q === t,
-        queryValidator: z.boolean(),
-        targetingValidator: z.boolean(),
+        queryParser: z.boolean(),
+        targetingParser: z.boolean(),
       })
       .useTargeting('asyncThing', {
         predicate: (q) => timeout(10, (t) => q === t && timeout(10, true)),
-        queryValidator: z.boolean(),
-        targetingValidator: z.boolean(),
+        queryParser: z.boolean(),
+        targetingParser: z.boolean(),
       })
       .useTargeting('arrayThing', {
         predicate: (q) => (t) => difference(q, t).length === 0,
-        queryValidator: z.string().array(),
-        targetingValidator: z.string().array(),
+        queryParser: z.string().array(),
+        targetingParser: z.string().array(),
       })
       .useTargeting('date', dateRangeTargeting)
       .addRules('foo', [

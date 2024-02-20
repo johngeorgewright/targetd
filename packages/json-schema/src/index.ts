@@ -3,23 +3,23 @@ import { type ZodRawShape, string } from 'zod'
 import zodToJSONSchema from 'zod-to-json-schema'
 
 export function dataJSONSchemas<
-  DataValidators extends ZodRawShape,
-  TargetingValidators extends ZodRawShape,
-  QueryValidators extends ZodRawShape,
-  FallThroughTargetingValidators extends ZodRawShape,
+  DataParsers extends ZodRawShape,
+  TargetingParsers extends ZodRawShape,
+  QueryParsers extends ZodRawShape,
+  FallThroughTargetingParsers extends ZodRawShape,
 >(
   data: Data<
-    DataValidators,
-    TargetingValidators,
-    QueryValidators,
-    FallThroughTargetingValidators
+    DataParsers,
+    TargetingParsers,
+    QueryParsers,
+    FallThroughTargetingParsers
   >,
 ) {
   return zodToJSONSchema(
     DataItems(
-      data.dataValidators,
-      data.targetingValidators,
-      data.fallThroughTargetingValidators,
+      data.dataParsers,
+      data.targetingParsers,
+      data.fallThroughTargetingParsers,
     ).extend({ $schema: string().optional() }),
     {
       effectStrategy: 'input',
@@ -28,24 +28,24 @@ export function dataJSONSchemas<
 }
 
 export function dataJSONSchema<
-  DataValidators extends ZodRawShape,
-  TargetingValidators extends ZodRawShape,
-  QueryValidators extends ZodRawShape,
-  FallThroughTargetingValidators extends ZodRawShape,
+  DataParsers extends ZodRawShape,
+  TargetingParsers extends ZodRawShape,
+  QueryParsers extends ZodRawShape,
+  FallThroughTargetingParsers extends ZodRawShape,
 >(
   data: Data<
-    DataValidators,
-    TargetingValidators,
-    QueryValidators,
-    FallThroughTargetingValidators
+    DataParsers,
+    TargetingParsers,
+    QueryParsers,
+    FallThroughTargetingParsers
   >,
-  name: keyof DataValidators,
+  name: keyof DataParsers,
 ) {
   return zodToJSONSchema(
     DataItem(
-      data.dataValidators[name],
-      data.targetingValidators,
-      data.fallThroughTargetingValidators,
+      data.dataParsers[name],
+      data.targetingParsers,
+      data.fallThroughTargetingParsers,
     ).extend({ $schema: string().optional() }),
     {
       effectStrategy: 'input',

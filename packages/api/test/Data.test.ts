@@ -11,13 +11,13 @@ const timeout = <T>(ms: number, returnValue: T) =>
 
 test('getPayload', async () => {
   const data = Data.create()
-    .useDataValidator('foo', z.string())
+    .useDataParser('foo', z.string())
     .useTargeting('weather', targetIncludes(z.string()))
     .useTargeting('highTide', targetEquals(z.boolean()))
     .useTargeting('asyncThing', {
       predicate: (q) => timeout(10, (t) => q === t && timeout(10, true)),
-      queryValidator: z.boolean(),
-      targetingValidator: z.boolean(),
+      queryParser: z.boolean(),
+      targetingParser: z.boolean(),
     })
     .addRules('foo', [
       {
@@ -90,7 +90,7 @@ test('getPayload', async () => {
 
 test('targeting with multiple conditions', async () => {
   const data = Data.create()
-    .useDataValidator('foo', z.string())
+    .useDataParser('foo', z.string())
     .useTargeting('weather', targetIncludes(z.string()))
     .useTargeting('highTide', targetEquals(z.boolean()))
     .addRules('foo', [
@@ -121,12 +121,12 @@ test('targeting with multiple conditions', async () => {
 
 test('targeting without requiring a query', async () => {
   const data = Data.create()
-    .useDataValidator('foo', z.string())
+    .useDataParser('foo', z.string())
     .useTargeting('time', {
       predicate: () => (t) => t === 'now!',
-      queryValidator: z.undefined(),
+      queryParser: z.undefined(),
       requiresQuery: false,
-      targetingValidator: z.literal('now!'),
+      targetingParser: z.literal('now!'),
     })
     .addRules('foo', [
       {
@@ -145,7 +145,7 @@ test('targeting without requiring a query', async () => {
 
 test('getPayloads', async () => {
   const data = Data.create()
-    .useDataValidator('foo', z.string())
+    .useDataParser('foo', z.string())
     .useTargetingDescriptors({
       weather: targetIncludes(z.string()),
       highTide: targetEquals(z.boolean()),
@@ -187,7 +187,7 @@ test('getPayloads', async () => {
 test('payload runtype validation', () => {
   try {
     Data.create()
-      .useDataValidator(
+      .useDataParser(
         'foo',
         z.string().refine((x) => x === 'bar', 'Should be bar'),
       )
@@ -219,7 +219,7 @@ test('payload runtype validation', () => {
 
 test('getPayloadForEachName', async () => {
   const data = Data.create()
-    .useDataValidators({
+    .useDataParsers({
       foo: z.string(),
       bar: z.string(),
     })
@@ -228,8 +228,8 @@ test('getPayloadForEachName', async () => {
       highTide: targetIncludes(z.boolean()),
       asyncThing: {
         predicate: (q) => timeout(10, (t) => q === t && timeout(10, true)),
-        queryValidator: z.boolean(),
-        targetingValidator: z.boolean(),
+        queryParser: z.boolean(),
+        targetingParser: z.boolean(),
       },
     })
     .addRules('foo', [
@@ -286,7 +286,7 @@ test('getPayloadForEachName', async () => {
 
 test('fallThrough targeting', async () => {
   const data = Data.create()
-    .useDataValidators({
+    .useDataParsers({
       foo: z.string(),
       bar: z.string(),
     })
@@ -403,7 +403,7 @@ test('fallThrough targeting', async () => {
 
 test('inserting data', async () => {
   const data = Data.create()
-    .useDataValidators({
+    .useDataParsers({
       moo: z.string(),
       foo: z.string(),
       bar: z.string(),
@@ -475,8 +475,8 @@ test('inserting data', async () => {
 
 test('targeting predicate with full query object', async () => {
   const mungTargeting = createTargetingDescriptor({
-    queryValidator: z.string(),
-    targetingValidator: z.string().array(),
+    queryParser: z.string(),
+    targetingParser: z.string().array(),
     predicate:
       (queryValue, { bar }: { bar?: boolean }) =>
       (targeting) =>
@@ -486,15 +486,15 @@ test('targeting predicate with full query object', async () => {
   })
 
   const data = Data.create()
-    .useDataValidator('foo', z.string())
+    .useDataParser('foo', z.string())
     .useTargeting('oof', {
-      queryValidator: z.string(),
-      targetingValidator: z.string(),
+      queryParser: z.string(),
+      targetingParser: z.string(),
       predicate: (q) => (t) => q === t,
     })
     .useTargeting('bar', {
-      queryValidator: z.boolean(),
-      targetingValidator: z.boolean(),
+      queryParser: z.boolean(),
+      targetingParser: z.boolean(),
       predicate: (q) => (t) => q === t,
     })
     .useTargeting('mung', mungTargeting)

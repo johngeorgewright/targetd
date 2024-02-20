@@ -7,23 +7,23 @@ import { z } from 'zod'
 import { Client, ClientWithData } from '../src'
 
 const data = Data.create()
-  .useDataValidator('foo', z.string())
-  .useDataValidator('bar', z.number())
-  .useDataValidator('timed', z.string())
+  .useDataParser('foo', z.string())
+  .useDataParser('bar', z.number())
+  .useDataParser('timed', z.string())
   .useTargeting('weather', {
     predicate: (q) => (t) => typeof q === 'string' && t.includes(q),
-    queryValidator: z.string(),
-    targetingValidator: z.array(z.string()),
+    queryParser: z.string(),
+    targetingParser: z.array(z.string()),
   })
   .useTargeting('highTide', {
     predicate: (q) => (t) => q === t,
-    queryValidator: z.boolean(),
-    targetingValidator: z.boolean(),
+    queryParser: z.boolean(),
+    targetingParser: z.boolean(),
   })
   .useTargeting('asyncThing', {
     predicate: (q) => setTimeout(10, (t) => q === t && setTimeout(10, true)),
-    queryValidator: z.boolean(),
-    targetingValidator: z.boolean(),
+    queryParser: z.boolean(),
+    targetingParser: z.boolean(),
   })
   .useTargeting('date', dateRangeTargeting)
   .addRules('foo', [
@@ -94,16 +94,16 @@ test('get one data point', async () => {
   expect(await client.getPayload('foo', { weather: 'rainy' })).toBe('☂️')
   expect(await client.getPayload('foo', { highTide: true })).toBe('🌊')
   expect(
-    await client.getPayload('foo', { highTide: true, weather: 'sunny' })
+    await client.getPayload('foo', { highTide: true, weather: 'sunny' }),
   ).toBe('🏄‍♂️')
   expect(
-    await client.getPayload('foo', { asyncThing: true })
+    await client.getPayload('foo', { asyncThing: true }),
   ).toMatchInlineSnapshot(`"Async payload"`)
   expect(
-    await client.getPayload('timed', { date: { start: '2002-01-01' } })
+    await client.getPayload('timed', { date: { start: '2002-01-01' } }),
   ).toMatchInlineSnapshot(`"in time"`)
   expect(
-    await client.getPayload('timed', { date: { start: '2012-01-01' } })
+    await client.getPayload('timed', { date: { start: '2012-01-01' } }),
   ).toBe(undefined)
 })
 
@@ -140,7 +140,7 @@ test('get all', async () => {
   `)
 
   expect(
-    await client.getPayloadForEachName({ highTide: true, weather: 'sunny' })
+    await client.getPayloadForEachName({ highTide: true, weather: 'sunny' }),
   ).toMatchInlineSnapshot(`
     {
       "bar": 123,

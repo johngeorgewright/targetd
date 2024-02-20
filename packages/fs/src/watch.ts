@@ -6,97 +6,97 @@ import { load, pathIsLoadable } from './load'
 import { type ZodRawShape } from 'zod'
 
 export type OnLoad<
-  DataValidators extends ZodRawShape,
-  TargetingValidators extends ZodRawShape,
-  QueryValidators extends ZodRawShape,
-  FallThroughTargetingValidators extends ZodRawShape,
+  DataParsers extends ZodRawShape,
+  TargetingParsers extends ZodRawShape,
+  QueryParsers extends ZodRawShape,
+  FallThroughTargetingParsers extends ZodRawShape,
 > = (
   error: Error | null,
   data: Data<
-    DataValidators,
-    TargetingValidators,
-    QueryValidators,
-    FallThroughTargetingValidators
+    DataParsers,
+    TargetingParsers,
+    QueryParsers,
+    FallThroughTargetingParsers
   >,
 ) => any
 
 export function watch<
-  DataValidators extends ZodRawShape,
-  TargetingValidators extends ZodRawShape,
-  QueryValidators extends ZodRawShape,
-  FallThroughTargetingValidators extends ZodRawShape,
+  DataParsers extends ZodRawShape,
+  TargetingParsers extends ZodRawShape,
+  QueryParsers extends ZodRawShape,
+  FallThroughTargetingParsers extends ZodRawShape,
 >(
   data: Data<
-    DataValidators,
-    TargetingValidators,
-    QueryValidators,
-    FallThroughTargetingValidators
+    DataParsers,
+    TargetingParsers,
+    QueryParsers,
+    FallThroughTargetingParsers
   >,
   dir: string,
   options: WatchTreeOptions,
   onLoad: OnLoad<
-    DataValidators,
-    TargetingValidators,
-    QueryValidators,
-    FallThroughTargetingValidators
+    DataParsers,
+    TargetingParsers,
+    QueryParsers,
+    FallThroughTargetingParsers
   >,
 ): () => void
 
 export function watch<
-  DataValidators extends ZodRawShape,
-  TargetingValidators extends ZodRawShape,
-  QueryValidators extends ZodRawShape,
-  FallThroughTargetingValidators extends ZodRawShape,
+  DataParsers extends ZodRawShape,
+  TargetingParsers extends ZodRawShape,
+  QueryParsers extends ZodRawShape,
+  FallThroughTargetingParsers extends ZodRawShape,
 >(
   data: Data<
-    DataValidators,
-    TargetingValidators,
-    QueryValidators,
-    FallThroughTargetingValidators
+    DataParsers,
+    TargetingParsers,
+    QueryParsers,
+    FallThroughTargetingParsers
   >,
   dir: string,
   onLoad: OnLoad<
-    DataValidators,
-    TargetingValidators,
-    QueryValidators,
-    FallThroughTargetingValidators
+    DataParsers,
+    TargetingParsers,
+    QueryParsers,
+    FallThroughTargetingParsers
   >,
 ): () => void
 
 export function watch<
-  DataValidators extends ZodRawShape,
-  TargetingValidators extends ZodRawShape,
-  QueryValidators extends ZodRawShape,
-  FallThroughTargetingValidators extends ZodRawShape,
+  DataParsers extends ZodRawShape,
+  TargetingParsers extends ZodRawShape,
+  QueryParsers extends ZodRawShape,
+  FallThroughTargetingParsers extends ZodRawShape,
 >(
   data: Data<
-    DataValidators,
-    TargetingValidators,
-    QueryValidators,
-    FallThroughTargetingValidators
+    DataParsers,
+    TargetingParsers,
+    QueryParsers,
+    FallThroughTargetingParsers
   >,
   dir: string,
   optionsOrOnLoad:
     | WatchTreeOptions
     | OnLoad<
-        DataValidators,
-        TargetingValidators,
-        QueryValidators,
-        FallThroughTargetingValidators
+        DataParsers,
+        TargetingParsers,
+        QueryParsers,
+        FallThroughTargetingParsers
       >,
   onLoadParam?: OnLoad<
-    DataValidators,
-    TargetingValidators,
-    QueryValidators,
-    FallThroughTargetingValidators
+    DataParsers,
+    TargetingParsers,
+    QueryParsers,
+    FallThroughTargetingParsers
   >,
 ) {
   const options = onLoadParam ? optionsOrOnLoad : {}
   const onLoad = (onLoadParam || optionsOrOnLoad) as OnLoad<
-    DataValidators,
-    TargetingValidators,
-    QueryValidators,
-    FallThroughTargetingValidators
+    DataParsers,
+    TargetingParsers,
+    QueryParsers,
+    FallThroughTargetingParsers
   >
 
   watchTree(

@@ -7,9 +7,9 @@ export default interface TargetingDescriptor<
   Query extends Record<string, any> = {},
 > {
   predicate: TargetingPredicate<QV, TV, Query>
-  queryValidator: QV
+  queryParser: QV
   requiresQuery?: boolean
-  targetingValidator: TV
+  targetingParser: TV
 }
 
 export function isTargetingDescriptor<
@@ -20,15 +20,15 @@ export function isTargetingDescriptor<
     typeof x === 'object' &&
     x !== null &&
     'predicate' in x &&
-    'queryValidator' in x &&
-    'targetingValidator' in x
+    'queryParser' in x &&
+    'targetingParser' in x
   )
 }
 
-export type TargetingDescriptorTargetingValidator<
+export type TargetingDescriptorTargetingParser<
   TD extends TargetingDescriptor<any, any, any>,
 > = TD extends TargetingDescriptor<infer TV, any, any> ? TV : never
 
-export type TargetingDescriptorQueryValidator<
+export type TargetingDescriptorQueryParser<
   TD extends TargetingDescriptor<any, any, any>,
 > = TD extends TargetingDescriptor<any, infer QV, any> ? QV : never

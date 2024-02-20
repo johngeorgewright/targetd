@@ -28,15 +28,13 @@ import * as path from 'node:path'
 import z from 'zod'
 
 watch(
-  Data.create()
-    .useDataValidator('foo', z.string())
-    .useDataValidator('b', z.string()),
+  Data.create().useDataParser('foo', z.string()).useDataParser('b', z.string()),
 
   path.join(__dirname, 'rules'),
 
   async (data) => {
     expect(await data.getPayload('foo', {})).toBe('bar')
     expect(await data.getPayload('b', {})).toBe('b is a letter')
-  }
+  },
 )
 ```

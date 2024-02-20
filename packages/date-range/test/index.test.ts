@@ -6,7 +6,7 @@ import dateRangeTargeting from '../src'
 test('date range predicate', async () => {
   const data = Data.create()
     .useTargeting('dateRange', dateRangeTargeting)
-    .useDataValidator('foo', z.string())
+    .useDataParser('foo', z.string())
     .addRules('foo', [
       {
         targeting: {
@@ -40,16 +40,16 @@ test('date range predicate', async () => {
   expect(await data.getPayload('foo', {})).toBe('😷')
 
   expect(
-    await data.getPayload('foo', { dateRange: { start: '2020-01-01' } })
+    await data.getPayload('foo', { dateRange: { start: '2020-01-01' } }),
   ).toBe('😷')
 
   expect(
-    await data.getPayload('foo', { dateRange: { start: '2019-01-01' } })
+    await data.getPayload('foo', { dateRange: { start: '2019-01-01' } }),
   ).toBe('😷')
 
   expect(
     await data.getPayload('foo', {
       dateRange: { start: '2019-01-01', end: '2019-12-01' },
-    })
+    }),
   ).toBe('bar')
 })

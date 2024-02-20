@@ -18,9 +18,9 @@ type DateRange = zInfer<typeof DateRange>
 const dateRangeTargeting = createTargetingDescriptor({
   predicate: (q) => (t) =>
     Array.isArray(t) ? dateRangesPredicate(t, q) : dateRangePredicate(t, q),
-  queryValidator: DateRange,
+  queryParser: DateRange,
   requiresQuery: false,
-  targetingValidator: DateRange.or(array(DateRange)),
+  targetingParser: DateRange.or(array(DateRange)),
 })
 
 export default dateRangeTargeting

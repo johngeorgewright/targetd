@@ -6,15 +6,15 @@ test('json schema for simple data object', () => {
   expect(
     dataJSONSchemas(
       Data.create()
-        .useDataValidator('foo', z.string())
+        .useDataParser('foo', z.string())
         .useTargeting('weather', targetIncludes(z.string()))
         .useFallThroughTargeting('browser', targetIncludes(z.string()))
         .addRules('foo', [
           {
             payload: 'bar',
           },
-        ])
-    )
+        ]),
+    ),
   ).toMatchInlineSnapshot(`
     {
       "$schema": "http://json-schema.org/draft-07/schema#",

@@ -8,23 +8,23 @@ import { castQueryArrayProps } from './middleware/castQueryArrayProps'
 import { type ZodRawShape } from 'zod'
 
 export function createServer<
-  DataValidators extends ZodRawShape,
-  TargetingValidators extends ZodRawShape,
-  QueryValidators extends ZodRawShape,
-  FallThroughTargetingValidators extends ZodRawShape,
+  DataParsers extends ZodRawShape,
+  TargetingParsers extends ZodRawShape,
+  QueryParsers extends ZodRawShape,
+  FallThroughTargetingParsers extends ZodRawShape,
 >(
   data:
     | Data<
-        DataValidators,
-        TargetingValidators,
-        QueryValidators,
-        FallThroughTargetingValidators
+        DataParsers,
+        TargetingParsers,
+        QueryParsers,
+        FallThroughTargetingParsers
       >
     | (() => Data<
-        DataValidators,
-        TargetingValidators,
-        QueryValidators,
-        FallThroughTargetingValidators
+        DataParsers,
+        TargetingParsers,
+        QueryParsers,
+        FallThroughTargetingParsers
       >),
 ) {
   const getData = typeof data === 'function' ? data : () => data
@@ -39,7 +39,7 @@ export function createServer<
       async (req, res, next) => {
         const data = getData()
 
-        if (!(req.params.name in data.dataValidators)) {
+        if (!(req.params.name in data.dataParsers)) {
           return next(
             new StatusError(404, `Unknown data property ${req.params.name}`),
           )

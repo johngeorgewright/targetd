@@ -21,14 +21,10 @@ function DataItemRules<
   P extends ZodTypeAny,
   T extends ZodRawShape,
   FTT extends ZodRawShape,
->(
-  payloadValidator: P,
-  targetingValidators: T,
-  fallThroughTargetingValidators: FTT,
-) {
-  return RuleWithPayload<P, T & FTT>(payloadValidator, {
-    ...targetingValidators,
-    ...fallThroughTargetingValidators,
+>(payloadParser: P, targetingParsers: T, fallThroughTargetingParsers: FTT) {
+  return RuleWithPayload<P, T & FTT>(payloadParser, {
+    ...targetingParsers,
+    ...fallThroughTargetingParsers,
   })
     .array()
     .transform<zInfer<DataItemRule<P, T, FTT, false>>[]>((rules) => {
@@ -41,31 +37,27 @@ function DataItemRules<
 
         if (!prevRule) {
           $rules.push(
-            adaptRule(
-              targetingValidators,
-              fallThroughTargetingValidators,
-              rule,
-            ),
+            adaptRule(targetingParsers, fallThroughTargetingParsers, rule),
           )
           continue
         }
 
         const thisRuleAndPrevRuleCanCombine = canRulesCombine(
-          targetingValidators,
+          targetingParsers,
           prevRule,
           rule,
         )
 
         if (thisRuleAndPrevRuleCanCombine) {
           const adaptedPrevRule = adaptRuleIntoFallThroughRule(
-            targetingValidators,
-            fallThroughTargetingValidators,
+            targetingParsers,
+            fallThroughTargetingParsers,
             prevRule,
           )
 
           const adaptedRule = adaptRuleIntoFallThroughRule(
-            targetingValidators,
-            fallThroughTargetingValidators,
+            targetingParsers,
+            fallThroughTargetingParsers,
             rule as zInfer<DataItemRule<P, T, FTT, false>>,
           )
 
@@ -74,11 +66,7 @@ function DataItemRules<
           $rules = [...$rules.slice(0, -1), adaptedPrevRule]
         } else {
           $rules.push(
-            adaptRule(
-              targetingValidators,
-              fallThroughTargetingValidators,
-              rule,
-            ),
+            adaptRule(targetingParsers, fallThroughTargetingParsers, rule),
           )
         }
       }
@@ -123,16 +111,16 @@ function spreadMultiTargetsToSeparateRules<
 }
 
 function canRulesCombine(
-  targetingValidators: ZodRawShape,
+  targetingParsers: ZodRawShape,
   a: zInfer<RuleWithPayload<ZodTypeAny, ZodRawShape, false>>,
   b: zInfer<RuleWithPayload<ZodTypeAny, ZodRawShape, false>>,
 ) {
   const aTargetingKeys = a.targeting
-    ? intersectionKeys(a.targeting, targetingValidators)
+    ? intersectionKeys(a.targeting, targetingParsers)
     : []
 
   const bTargetingKeys = b.targeting
-    ? intersectionKeys(b.targeting, targetingValidators)
+    ? intersectionKeys(b.targeting, targetingParsers)
     : []
 
   return (
@@ -147,15 +135,15 @@ function adaptRule<
   T extends ZodRawShape,
   FTT extends ZodRawShape,
 >(
-  targetingValidators: T,
-  fallThroughTargetingValidators: FTT,
+  targetingParsers: T,
+  fallThroughTargetingParsers: FTT,
   rule: zInfer<RuleWithPayload<P, T & FTT, false>>,
 ) {
   return (
-    someKeysIntersect(fallThroughTargetingValidators, rule.targeting || {})
+    someKeysIntersect(fallThroughTargetingParsers, rule.targeting || {})
       ? adaptRuleIntoFallThroughRule(
-          targetingValidators,
-          fallThroughTargetingValidators,
+          targetingParsers,
+          fallThroughTargetingParsers,
           rule as zInfer<DataItemRule<P, T, FTT, false>>,
         )
       : rule
@@ -167,19 +155,19 @@ function adaptRuleIntoFallThroughRule<
   T extends ZodRawShape,
   FTT extends ZodRawShape,
 >(
-  targetingValidators: T,
-  fallThroughTargetingValidators: FTT,
+  targetingParsers: T,
+  fallThroughTargetingParsers: FTT,
   rule: zInfer<DataItemRule<P, T, FTT, false>>,
 ): zInfer<RuleWithFallThrough<P, T, FTT, false>> {
   if ('fallThrough' in rule) return rule
   return {
-    targeting: intersection(rule.targeting || {}, targetingValidators),
+    targeting: intersection(rule.targeting || {}, targetingParsers),
     fallThrough: [
       {
         payload: rule.payload,
         targeting: intersection(
           rule.targeting || {},
-          fallThroughTargetingValidators,
+          fallThroughTargetingParsers,
         ),
       },
     ],

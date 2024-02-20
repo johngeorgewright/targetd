@@ -6,9 +6,9 @@ function DataItems<
   D extends ZodRawShape,
   T extends ZodRawShape,
   CT extends ZodRawShape,
->(dataValidators: D, targeting: T, fallThroughTargeting: CT) {
+>(dataParsers: D, targeting: T, fallThroughTargeting: CT) {
   const dataItems: Record<string, any> = {}
-  for (const [key, Payload] of Object.entries(dataValidators))
+  for (const [key, Payload] of Object.entries(dataParsers))
     dataItems[key] = DataItem(Payload, targeting, fallThroughTargeting)
   return strictObject(dataItems).partial() as DataItems<D, T, CT>
 }

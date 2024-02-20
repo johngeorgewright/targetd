@@ -1,5 +1,5 @@
-import type TargetingPredicate from '../validators/TargetingPredicate'
-import type TargetingDescriptor from '../validators/TargetingDescriptor'
+import type TargetingPredicate from '../parsers/TargetingPredicate'
+import type TargetingDescriptor from '../parsers/TargetingDescriptor'
 import { type ZodArray, type ZodTypeAny } from 'zod'
 
 /**
@@ -17,7 +17,7 @@ export function targetIncludes<T extends ZodTypeAny>(
 ): TargetingDescriptor<ZodArray<T>, T> {
   return {
     predicate: targetIncludesPredicate(),
-    queryValidator: t,
-    targetingValidator: t.array(),
+    queryParser: t,
+    targetingParser: t.array(),
   }
 }
