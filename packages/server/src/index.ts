@@ -8,10 +8,10 @@ import { castQueryArrayProps } from './middleware/castQueryArrayProps'
 import { type ZodRawShape } from 'zod'
 
 export function createServer<
-  DataValidators extends z.ZodRawShape,
-  TargetingValidators extends z.ZodRawShape,
-  QueryValidators extends z.ZodRawShape,
-  FallThroughTargetingValidators extends z.ZodRawShape,
+  DataValidators extends ZodRawShape,
+  TargetingValidators extends ZodRawShape,
+  QueryValidators extends ZodRawShape,
+  FallThroughTargetingValidators extends ZodRawShape,
 >(
   data:
     | Data<
