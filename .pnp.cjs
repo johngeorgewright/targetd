@@ -3156,10 +3156,13 @@ const RAW_RUNTIME_STATE =
           ["@semantic-release/git", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:10.0.1"],\
           ["@semantic-release/github", "virtual:e417c507cfca2557298bab0952f8f7eb9c547ce5055352e6a5bd7f3b13da5e46240f19ee8d07b164e0ddcfb2d6e81c4db2f32a75a403a64d6af56c7a2bfb6add#npm:9.2.6"],\
           ["@semantic-release/release-notes-generator", "virtual:e417c507cfca2557298bab0952f8f7eb9c547ce5055352e6a5bd7f3b13da5e46240f19ee8d07b164e0ddcfb2d6e81c4db2f32a75a403a64d6af56c7a2bfb6add#npm:12.1.0"],\
+          ["@types/inquirer", "npm:9.0.7"],\
           ["@types/jest", "npm:29.5.12"],\
+          ["@types/node", "npm:20.11.19"],\
           ["@types/prettier", "npm:3.0.0"],\
           ["@types/rimraf", "npm:4.0.5"],\
           ["@types/yeoman-generator", "npm:5.2.14"],\
+          ["@yeoman/types", "virtual:e385a280e32090a8ccd033eaf2df754a98b1289240d91e1df3ed68695e8080f0aa0c5798abd32cce453f8be19101f4f5a3164b8b933d99a99201221d9bdb78dc#npm:1.1.2"],\
           ["change-case", "npm:5.4.2"],\
           ["jest", "virtual:78776105526f67704c5d821aa139591fbba11fdbd5f03f51d916c5f752b52ce5b35f9731aa4a7b9fc9fe491d6229cf4b9abfbb54db395f33bbe11c0e0b749fa6#npm:29.7.0"],\
           ["prettier", "npm:3.2.5"],\
@@ -3561,6 +3564,15 @@ const RAW_RUNTIME_STATE =
           ["rxjs", "npm:7.8.1"]\
         ],\
         "linkType": "HARD"\
+      }],\
+      ["npm:9.0.7", {\
+        "packageLocation": "./.yarn/cache/@types-inquirer-npm-9.0.7-49aba11c47-84cefdd10d.zip/node_modules/@types/inquirer/",\
+        "packageDependencies": [\
+          ["@types/inquirer", "npm:9.0.7"],\
+          ["@types/through", "npm:0.0.30"],\
+          ["rxjs", "npm:7.8.1"]\
+        ],\
+        "linkType": "HARD"\
       }]\
     ]],\
     ["@types/istanbul-lib-coverage", [\
@@ -3744,6 +3756,13 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "HARD"\
       }],\
+      ["npm:16.18.82", {\
+        "packageLocation": "./.yarn/cache/@types-node-npm-16.18.82-bed8d90c35-baf1f8bb6f.zip/node_modules/@types/node/",\
+        "packageDependencies": [\
+          ["@types/node", "npm:16.18.82"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
       ["npm:18.18.5", {\
         "packageLocation": "./.yarn/cache/@types-node-npm-18.18.5-40df2aaaa2-a7363aab9f.zip/node_modules/@types/node/",\
         "packageDependencies": [\
@@ -3755,6 +3774,14 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/@types-node-npm-20.11.17-5185bfb3de-3342df8725.zip/node_modules/@types/node/",\
         "packageDependencies": [\
           ["@types/node", "npm:20.11.17"],\
+          ["undici-types", "npm:5.26.5"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:20.11.19", {\
+        "packageLocation": "./.yarn/cache/@types-node-npm-20.11.19-5d4958999b-c7f4705d6c.zip/node_modules/@types/node/",\
+        "packageDependencies": [\
+          ["@types/node", "npm:20.11.19"],\
           ["undici-types", "npm:5.26.5"]\
         ],\
         "linkType": "HARD"\
@@ -4014,6 +4041,37 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/@yeoman-namespace-npm-1.0.0-3bd20e4c53-f694508113.zip/node_modules/@yeoman/namespace/",\
         "packageDependencies": [\
           ["@yeoman/namespace", "npm:1.0.0"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["@yeoman/types", [\
+      ["npm:1.1.2", {\
+        "packageLocation": "./.yarn/cache/@yeoman-types-npm-1.1.2-e9f8a2a91a-534d8ed3d5.zip/node_modules/@yeoman/types/",\
+        "packageDependencies": [\
+          ["@yeoman/types", "npm:1.1.2"]\
+        ],\
+        "linkType": "SOFT"\
+      }],\
+      ["virtual:e385a280e32090a8ccd033eaf2df754a98b1289240d91e1df3ed68695e8080f0aa0c5798abd32cce453f8be19101f4f5a3164b8b933d99a99201221d9bdb78dc#npm:1.1.2", {\
+        "packageLocation": "./.yarn/__virtual__/@yeoman-types-virtual-8b31b765a2/0/cache/@yeoman-types-npm-1.1.2-e9f8a2a91a-534d8ed3d5.zip/node_modules/@yeoman/types/",\
+        "packageDependencies": [\
+          ["@yeoman/types", "virtual:e385a280e32090a8ccd033eaf2df754a98b1289240d91e1df3ed68695e8080f0aa0c5798abd32cce453f8be19101f4f5a3164b8b933d99a99201221d9bdb78dc#npm:1.1.2"],\
+          ["@types/inquirer", "npm:9.0.7"],\
+          ["@types/mem-fs", null],\
+          ["@types/mem-fs-editor", null],\
+          ["@types/node", "npm:16.18.82"],\
+          ["inquirer", null],\
+          ["mem-fs", null],\
+          ["mem-fs-editor", null]\
+        ],\
+        "packagePeers": [\
+          "@types/inquirer",\
+          "@types/mem-fs-editor",\
+          "@types/mem-fs",\
+          "inquirer",\
+          "mem-fs-editor",\
+          "mem-fs"\
         ],\
         "linkType": "HARD"\
       }]\
@@ -15781,7 +15839,7 @@ const RAW_RUNTIME_STATE =
           ["@tsconfig/node12", "npm:1.0.11"],\
           ["@tsconfig/node14", "npm:1.0.3"],\
           ["@tsconfig/node16", "npm:1.0.4"],\
-          ["@types/node", null],\
+          ["@types/node", "npm:20.11.19"],\
           ["@types/swc__core", null],\
           ["@types/swc__wasm", null],\
           ["@types/typescript", null],\
@@ -16893,7 +16951,7 @@ const RAW_RUNTIME_STATE =
           ["@types/yeoman-environment", null],\
           ["@types/yeoman__types", null],\
           ["@yeoman/namespace", "npm:1.0.0"],\
-          ["@yeoman/types", null],\
+          ["@yeoman/types", "virtual:e385a280e32090a8ccd033eaf2df754a98b1289240d91e1df3ed68695e8080f0aa0c5798abd32cce453f8be19101f4f5a3164b8b933d99a99201221d9bdb78dc#npm:1.1.2"],\
           ["chalk", "npm:5.3.0"],\
           ["debug", "virtual:071d471ccd267160a6f0ec15e4cdc2874728a012db8f34521faf9e64a516aa918ee9ebab3c4c084d955ab74aaac5b8be9afb7a168813c9f210acdb7d88754ab9#npm:4.3.4"],\
           ["execa", "npm:8.0.1"],\

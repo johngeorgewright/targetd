@@ -2355,10 +2355,13 @@ __metadata:
     "@semantic-release/git": "npm:10.0.1"
     "@semantic-release/github": "npm:9.2.6"
     "@semantic-release/release-notes-generator": "npm:12.1.0"
+    "@types/inquirer": "npm:9.0.7"
     "@types/jest": "npm:29.5.12"
+    "@types/node": "npm:20.11.19"
     "@types/prettier": "npm:3.0.0"
     "@types/rimraf": "npm:4.0.5"
     "@types/yeoman-generator": "npm:5.2.14"
+    "@yeoman/types": "npm:1.1.2"
     change-case: "npm:5.4.2"
     jest: "npm:29.7.0"
     prettier: "npm:3.2.5"
@@ -2671,6 +2674,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/inquirer@npm:9.0.7":
+  version: 9.0.7
+  resolution: "@types/inquirer@npm:9.0.7"
+  dependencies:
+    "@types/through": "npm:*"
+    rxjs: "npm:^7.2.0"
+  checksum: 10/84cefdd10d7ca747ae2338ea35518020abbc28f7670ade446e367c4cd333153618b374d30830253f31a9567dd26e7f3093fb3cd20210af5ba27a1a91b89bb97e
+  languageName: node
+  linkType: hard
+
 "@types/inquirer@npm:^8":
   version: 8.2.6
   resolution: "@types/inquirer@npm:8.2.6"
@@ -2839,10 +2852,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/node@npm:20.11.19":
+  version: 20.11.19
+  resolution: "@types/node@npm:20.11.19"
+  dependencies:
+    undici-types: "npm:~5.26.4"
+  checksum: 10/c7f4705d6c84aa21679ad180c33c13ca9567f650e66e14bcee77c7c43d14619c7cd3b4d7b2458947143030b7b1930180efa6d12d999b45366abff9fed7a17472
+  languageName: node
+  linkType: hard
+
 "@types/node@npm:^15.6.2":
   version: 15.14.9
   resolution: "@types/node@npm:15.14.9"
   checksum: 10/5c9cc5346ca0c565e02f11ae605911aa0892134099a5c730f49b4662635e5fbbbbeb24b2b56752ee14f092d1ca90837a35de428b9e243d7ab63c5907bfb07d89
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^16.18.26":
+  version: 16.18.82
+  resolution: "@types/node@npm:16.18.82"
+  checksum: 10/baf1f8bb6f743c7d7bf3da24ccb9cd21676a74a7a03726344fd212db4cff376077cd31df8eeab3d4d4d741d2d3ee0bf2a8cb3f9cf89cca4e4b9e27e53ef1283e
   languageName: node
   linkType: hard
 
@@ -3083,6 +3112,26 @@ __metadata:
   version: 1.0.0
   resolution: "@yeoman/namespace@npm:1.0.0"
   checksum: 10/f6945081132e89b0d4b5993148138f9b400b7a9ea011485360aeaec1a078b5dcae78d90e17222dcad2439d1b1ecf885b4b1c8e9b0f9607437ec2ca48075961bb
+  languageName: node
+  linkType: hard
+
+"@yeoman/types@npm:1.1.2":
+  version: 1.1.2
+  resolution: "@yeoman/types@npm:1.1.2"
+  dependencies:
+    "@types/node": "npm:^16.18.26"
+  peerDependencies:
+    "@types/inquirer": ^9.0.3
+    mem-fs: ^3.0.0
+    mem-fs-editor: ^10.0.2
+  peerDependenciesMeta:
+    inquirer:
+      optional: true
+    mem-fs:
+      optional: true
+    mem-fs-editor:
+      optional: true
+  checksum: 10/534d8ed3d588659d0f62209f12e876f4ffd6f02fc901ab02649fb66a90bf2f77d62d620ec22cb7885839d481f006b431ee0fe4aa6bce928831ef1dbd958e9aec
   languageName: node
   linkType: hard
 
