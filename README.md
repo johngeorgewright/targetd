@@ -68,7 +68,7 @@ All typing and validation is done using the awesome [zod][] project and is expor
 import { Data } from '@targetd/api'
 import z from 'zod'
 
-let data = Data.create().useDataParser(
+let data = Data.create().useData(
   'blog',
   z.strictObject({
     title: z.string(),
@@ -143,7 +143,7 @@ Sometimes you may not be able to successfully target certain payloads in one ser
 // data.ts
 import { Data } from '@targetd/api'
 
-export const data = Data.create().useDataParser('foo', z.string())
+export const data = Data.create().useData('foo', z.string())
 ```
 
 ```typescript

@@ -25,8 +25,8 @@ import z from 'zod'
 import { deviceTargeting } from './device'
 
 export const data = Data.create()
-  .useDataParser('bar', z.number())
-  .useDataParser('foo', z.string())
+  .useData('bar', z.number())
+  .useData('foo', z.string())
   .useTargeting('device', deviceTargeting)
 ```
 

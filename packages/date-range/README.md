@@ -11,7 +11,7 @@ import z from 'zod'
 
 const data = Data.create()
   .useTargeting('dateRange', dateRangeTargeting)
-  .useDataParser('foo', z.string())
+  .useData('foo', z.string())
   .addRules('foo', [
     {
       targeting: {
