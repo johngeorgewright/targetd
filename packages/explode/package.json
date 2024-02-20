@@ -1,6 +1,6 @@
 {
   "name": "@targetd/explode",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Explode formatted names in to an object",
   "main": "dist/index.js",
   "scripts": {
@@ -41,7 +41,7 @@
     "tslib": "2.6.2"
   },
   "peerDependencies": {
-    "@targetd/api": ">=5.2.0",
+    "@targetd/api": ">=5.4.1",
     "zod": "^3.20.0"
   }
 }
