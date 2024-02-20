@@ -1,16 +1,16 @@
-import z from 'zod'
-import { Keys } from 'ts-toolbelt/out/Any/Keys'
-import TargetingPredicate from './TargetingPredicate'
+import type { Keys } from 'ts-toolbelt/out/Any/Keys'
+import type TargetingPredicate from './TargetingPredicate'
+import type { ZodObject, infer as zInfer, ZodRawShape, ZodTypeAny } from 'zod'
 
 type TargetingPredicates<
-  Targeting extends z.ZodRawShape,
-  Query extends Record<Keys<Targeting>, z.ZodTypeAny>,
+  Targeting extends ZodRawShape,
+  Query extends Record<Keys<Targeting>, ZodTypeAny>,
 > = {
   [Name in Keys<Targeting>]: {
     predicate: TargetingPredicate<
       Query[Name],
       Targeting[Name],
-      Partial<z.infer<z.ZodObject<Query, 'strict'>>>
+      Partial<zInfer<ZodObject<Query, 'strict'>>>
     >
     requiresQuery: boolean
   }

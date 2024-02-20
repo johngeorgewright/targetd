@@ -1,20 +1,20 @@
-import {
+import type {
   FallThroughTargetingValidators,
   Data,
   DataValidators,
+  Payload,
   QueryValidators,
+  StaticRecord,
   TargetingValidators,
 } from '@targetd/api'
-import { Payload } from '@targetd/api/dist/Data'
-import { StaticRecord } from '@targetd/api/dist/types'
 import fetch from 'cross-fetch'
-import { z } from 'zod'
+import type { ZodRawShape } from 'zod'
 
 export class Client<
-  DataValidators extends z.ZodRawShape,
-  TargetingValidators extends z.ZodRawShape,
-  QueryValidators extends z.ZodRawShape,
-  FallThroughTargetingValidators extends z.ZodRawShape
+  DataValidators extends ZodRawShape,
+  TargetingValidators extends ZodRawShape,
+  QueryValidators extends ZodRawShape,
+  FallThroughTargetingValidators extends ZodRawShape,
 > {
   #baseURL: string
 
@@ -35,7 +35,7 @@ export class Client<
       QueryValidators,
       FallThroughTargetingValidators
     >,
-    init?: RequestInit
+    init?: RequestInit,
   ) {
     this.#baseURL = baseURL
     this.#data = data.removeAllRules()
@@ -44,7 +44,7 @@ export class Client<
 
   async getPayload<Name extends keyof DataValidators>(
     name: Name,
-    rawQuery: Partial<StaticRecord<QueryValidators>> = {}
+    rawQuery: Partial<StaticRecord<QueryValidators>> = {},
   ): Promise<Payload<DataValidators[Name], TargetingValidators> | void> {
     const query = this.#data.QueryValidator.parse(rawQuery)
     const urlSearchParams = queryToURLSearchParams(query)
@@ -53,7 +53,7 @@ export class Client<
       {
         method: 'GET',
         ...this.#init,
-      }
+      },
     )
     return response.status === 204
       ? undefined
@@ -63,7 +63,7 @@ export class Client<
   }
 
   async getPayloadForEachName(
-    rawQuery: Partial<StaticRecord<QueryValidators>> = {}
+    rawQuery: Partial<StaticRecord<QueryValidators>> = {},
   ): Promise<
     Partial<{
       [Name in keyof DataValidators]:
@@ -82,7 +82,7 @@ export class Client<
 }
 
 export type ClientWithData<
-  D extends Data<z.ZodRawShape, z.ZodRawShape, z.ZodRawShape, z.ZodRawShape>
+  D extends Data<ZodRawShape, ZodRawShape, ZodRawShape, ZodRawShape>,
 > = Client<
   DataValidators<D>,
   TargetingValidators<D>,
@@ -100,7 +100,7 @@ function queryToURLSearchParams(query: Record<string, unknown>) {
 
 function* queryValueToParams(
   key: string,
-  value: unknown
+  value: unknown,
 ): Generator<[string, string]> {
   if (Array.isArray(value))
     for (const item of value) yield* queryValueToParams(key, item)

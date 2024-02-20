@@ -1,21 +1,29 @@
 import { readFiles } from '@johngw/fs'
-import { WithFileNamesResult } from '@johngw/fs/dist/readFiles'
-import { Data } from '@targetd/api'
+import type { WithFileNamesResult } from '@johngw/fs/dist/readFiles'
+import type { Data } from '@targetd/api'
 import YAML from 'yaml'
-import { z } from 'zod'
-import { Keys } from 'ts-toolbelt/out/Any/Keys'
+import type { Keys } from 'ts-toolbelt/out/Any/Keys'
+import {
+  type infer as zInfer,
+  array,
+  object,
+  strictObject,
+  string,
+  unknown,
+  type ZodRawShape,
+} from 'zod'
 
-const FileData = z
-  .object({ $schema: z.string().optional() })
-  .catchall(z.strictObject({ rules: z.array(z.unknown()) }))
+const FileData = object({ $schema: string().optional() }).catchall(
+  strictObject({ rules: array(unknown()) }),
+)
 
-type FileData = z.infer<typeof FileData>
+type FileData = zInfer<typeof FileData>
 
 export async function load<
-  DataValidators extends z.ZodRawShape,
-  TargetingValidators extends z.ZodRawShape,
-  QueryValidators extends z.ZodRawShape,
-  FallThroughTargetingValidators extends z.ZodRawShape
+  DataValidators extends ZodRawShape,
+  TargetingValidators extends ZodRawShape,
+  QueryValidators extends ZodRawShape,
+  FallThroughTargetingValidators extends ZodRawShape,
 >(
   data: Data<
     DataValidators,
@@ -23,7 +31,7 @@ export async function load<
     QueryValidators,
     FallThroughTargetingValidators
   >,
-  dir: string
+  dir: string,
 ) {
   for await (const contents of readFiles(dir, {
     encoding: 'utf8',
@@ -47,15 +55,15 @@ function parseFileContents({
   contents,
 }: WithFileNamesResult<string>) {
   return FileData.parse(
-    fileName.endsWith('.json') ? JSON.parse(contents) : YAML.parse(contents)
+    fileName.endsWith('.json') ? JSON.parse(contents) : YAML.parse(contents),
   )
 }
 
 function addRules<
-  DataValidators extends z.ZodRawShape,
-  TargetingValidators extends z.ZodRawShape,
-  QueryValidators extends z.ZodRawShape,
-  FallThroughTargetingValidators extends z.ZodRawShape
+  DataValidators extends ZodRawShape,
+  TargetingValidators extends ZodRawShape,
+  QueryValidators extends ZodRawShape,
+  FallThroughTargetingValidators extends ZodRawShape,
 >(
   data: Data<
     DataValidators,
@@ -63,13 +71,13 @@ function addRules<
     QueryValidators,
     FallThroughTargetingValidators
   >,
-  fileData: FileData
+  fileData: FileData,
 ) {
   return Object.entries(fileData).reduce(
     (data, [name, value]) =>
       typeof value === 'object'
         ? data.addRules(name as Keys<DataValidators>, value.rules as any[])
         : data,
-    data
+    data,
   )
 }

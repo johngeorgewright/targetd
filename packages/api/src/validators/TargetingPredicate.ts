@@ -1,13 +1,13 @@
-import z from 'zod'
-import { MaybePromise } from '../types'
+import { type infer as zInfer, type ZodTypeAny } from 'zod'
+import { type MaybePromise } from '../types'
 
 type TargetingPredicate<
-  QV extends z.ZodTypeAny,
-  TV extends z.ZodTypeAny,
+  QV extends ZodTypeAny,
+  TV extends ZodTypeAny,
   Query extends Record<string, unknown> = {},
 > = (
-  queryValue: z.infer<QV> | undefined,
+  queryValue: zInfer<QV> | undefined,
   query: Query,
-) => MaybePromise<(targeting: z.infer<TV>) => MaybePromise<boolean>>
+) => MaybePromise<(targeting: zInfer<TV>) => MaybePromise<boolean>>
 
 export default TargetingPredicate

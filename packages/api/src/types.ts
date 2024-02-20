@@ -1,17 +1,23 @@
-import z from 'zod'
+import type {
+  infer as zInfer,
+  UnknownKeysParam,
+  ZodObject,
+  ZodOptional,
+  ZodRawShape,
+} from 'zod'
 
-export type StaticRecord<R extends z.ZodRawShape> = {
-  [K in keyof R]: z.infer<R[K]>
+export type StaticRecord<R extends ZodRawShape> = {
+  [K in keyof R]: zInfer<R[K]>
 }
 
 export type MaybePromise<T> = T | Promise<T>
 
 export type ZodPartialObject<
-  T extends z.ZodRawShape,
-  UnknownKeys extends z.UnknownKeysParam = 'strip'
-> = z.ZodObject<
+  T extends ZodRawShape,
+  UnknownKeys extends UnknownKeysParam = 'strip',
+> = ZodObject<
   {
-    [K in keyof T]: z.ZodOptional<T[K]>
+    [K in keyof T]: ZodOptional<T[K]>
   },
   UnknownKeys
 >
