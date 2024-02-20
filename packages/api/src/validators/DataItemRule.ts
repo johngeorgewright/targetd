@@ -1,16 +1,24 @@
-import z from 'zod'
-import { ZodPartialObject } from '../types'
+import {
+  type ZodUnion,
+  type ZodRawShape,
+  type ZodTypeAny,
+  strictObject,
+  type ZodArray,
+  type ZodObject,
+  type ZodOptional,
+} from 'zod'
+import { type ZodPartialObject } from '../types'
 
 function DataItemRule<
-  P extends z.ZodTypeAny,
-  T extends z.ZodRawShape,
-  CT extends z.ZodRawShape,
-  AllowMultipleTargeting extends boolean = true
+  P extends ZodTypeAny,
+  T extends ZodRawShape,
+  CT extends ZodRawShape,
+  AllowMultipleTargeting extends boolean = true,
 >(
   Payload: P,
   targeting: T,
   fallThroughTargeting: CT,
-  allowMultipleTargeting = true
+  allowMultipleTargeting = true,
 ) {
   const Rule = RuleWithPayload(Payload, targeting, allowMultipleTargeting)
 
@@ -18,7 +26,7 @@ function DataItemRule<
     Payload,
     targeting,
     fallThroughTargeting,
-    allowMultipleTargeting
+    allowMultipleTargeting,
   )
 
   return Rule.or(FallThroughRule) as DataItemRule<
@@ -30,11 +38,11 @@ function DataItemRule<
 }
 
 type DataItemRule<
-  Payload extends z.ZodTypeAny,
-  Targeting extends z.ZodRawShape,
-  FallThroughTargeting extends z.ZodRawShape,
-  AllowMultipleTargeting extends boolean = true
-> = z.ZodUnion<
+  Payload extends ZodTypeAny,
+  Targeting extends ZodRawShape,
+  FallThroughTargeting extends ZodRawShape,
+  AllowMultipleTargeting extends boolean = true,
+> = ZodUnion<
   [
     RuleWithPayload<Payload, Targeting, AllowMultipleTargeting>,
     RuleWithFallThrough<
@@ -42,44 +50,44 @@ type DataItemRule<
       Targeting,
       FallThroughTargeting,
       AllowMultipleTargeting
-    >
+    >,
   ]
 >
 
 export default DataItemRule
 
-type SingularRuleTargeting<Targeting extends z.ZodRawShape> = ZodPartialObject<
+type SingularRuleTargeting<Targeting extends ZodRawShape> = ZodPartialObject<
   Targeting,
   'strict'
 >
 
-function SingularRuleTargeting<Targeting extends z.ZodRawShape>(
-  targeting: Targeting
+function SingularRuleTargeting<Targeting extends ZodRawShape>(
+  targeting: Targeting,
 ): SingularRuleTargeting<Targeting> {
-  return z.strictObject(targeting).partial()
+  return strictObject(targeting).partial()
 }
 
-type MultipleRuleTargeting<Targeting extends z.ZodRawShape> = z.ZodUnion<
+type MultipleRuleTargeting<Targeting extends ZodRawShape> = ZodUnion<
   [
     ZodPartialObject<Targeting, 'strict'>,
-    z.ZodArray<ZodPartialObject<Targeting, 'strict'>>
+    ZodArray<ZodPartialObject<Targeting, 'strict'>>,
   ]
 >
 
-function MultipleRuleTargeting<Targeting extends z.ZodRawShape>(
-  targeting: Targeting
+function MultipleRuleTargeting<Targeting extends ZodRawShape>(
+  targeting: Targeting,
 ): MultipleRuleTargeting<Targeting> {
-  const t = z.strictObject(targeting).partial()
+  const t = strictObject(targeting).partial()
   return t.or(t.array())
 }
 
 export type RuleWithPayload<
-  Payload extends z.ZodTypeAny,
-  Targeting extends z.ZodRawShape,
-  AllowMultipleTargeting extends boolean = true
-> = z.ZodObject<
+  Payload extends ZodTypeAny,
+  Targeting extends ZodRawShape,
+  AllowMultipleTargeting extends boolean = true,
+> = ZodObject<
   {
-    targeting: z.ZodOptional<
+    targeting: ZodOptional<
       AllowMultipleTargeting extends true
         ? MultipleRuleTargeting<Targeting>
         : SingularRuleTargeting<Targeting>
@@ -90,11 +98,11 @@ export type RuleWithPayload<
 >
 
 export function RuleWithPayload<
-  P extends z.ZodTypeAny,
-  T extends z.ZodRawShape,
-  AllowMultipleTargeting extends boolean = true
+  P extends ZodTypeAny,
+  T extends ZodRawShape,
+  AllowMultipleTargeting extends boolean = true,
 >(Payload: P, targeting: T, allowMultipleTargeting = true) {
-  return z.strictObject({
+  return strictObject({
     targeting: (allowMultipleTargeting
       ? MultipleRuleTargeting(targeting)
       : SingularRuleTargeting(targeting)
@@ -104,16 +112,16 @@ export function RuleWithPayload<
 }
 
 export type RuleWithFallThrough<
-  Payload extends z.ZodTypeAny,
-  Targeting extends z.ZodRawShape,
-  FallThroughTargeting extends z.ZodRawShape,
-  AllowMultipleTargeting extends boolean = true
-> = z.ZodObject<
+  Payload extends ZodTypeAny,
+  Targeting extends ZodRawShape,
+  FallThroughTargeting extends ZodRawShape,
+  AllowMultipleTargeting extends boolean = true,
+> = ZodObject<
   {
     targeting: AllowMultipleTargeting extends true
       ? MultipleRuleTargeting<Targeting>
       : SingularRuleTargeting<Targeting>
-    fallThrough: z.ZodArray<
+    fallThrough: ZodArray<
       RuleWithPayload<Payload, FallThroughTargeting, AllowMultipleTargeting>
     >
   },
@@ -121,17 +129,17 @@ export type RuleWithFallThrough<
 >
 
 export function RuleWithFallThrough<
-  Payload extends z.ZodTypeAny,
-  Targeting extends z.ZodRawShape,
-  FallThroughTargeting extends z.ZodRawShape,
-  AllowMultipleTargeting extends boolean = true
+  Payload extends ZodTypeAny,
+  Targeting extends ZodRawShape,
+  FallThroughTargeting extends ZodRawShape,
+  AllowMultipleTargeting extends boolean = true,
 >(
   payload: Payload,
   targeting: Targeting,
   fallThroughTargeting: FallThroughTargeting,
-  allowMultipleTargeting = true
+  allowMultipleTargeting = true,
 ) {
-  return z.strictObject({
+  return strictObject({
     targeting: allowMultipleTargeting
       ? MultipleRuleTargeting(targeting)
       : SingularRuleTargeting(targeting),

@@ -1,5 +1,5 @@
 import Generator from 'yeoman-generator'
-import { paramCase } from 'change-case'
+import { kebabCase } from 'change-case'
 import { validateGenerationFromRoot } from '../validation'
 import * as path from 'path'
 import prettier from 'prettier'
@@ -19,7 +19,7 @@ export = class PackageGenerator extends Generator {
   }
 
   get #relativeDestinationRoot() {
-    return `packages/${paramCase(this.#answers.name!)}`
+    return `packages/${kebabCase(this.#answers.name!)}`
   }
 
   async prompting() {
@@ -28,7 +28,7 @@ export = class PackageGenerator extends Generator {
         message: `What is the packages's name? (Minus the ${this.#namespace} namespace)`,
         name: 'name',
         type: 'input',
-        validate: (x) => !!x || 'You must supply a name',
+        validate: (x: string) => !!x || 'You must supply a name',
       },
       {
         message: "What's this package about?",
@@ -51,7 +51,7 @@ export = class PackageGenerator extends Generator {
   async writing() {
     const context = {
       description: this.#answers.description || '',
-      name: paramCase(this.#answers.name!),
+      name: kebabCase(this.#answers.name!),
       public: this.#answers.public,
       year: new Date().getFullYear(),
     }
@@ -155,7 +155,10 @@ export = class PackageGenerator extends Generator {
   }
 
   async #updateVSCodeWS(file: string) {
-    const vsCodeWS = JSON.parse(this.fs.read(file))
+    const contents = this.fs.read(file)
+    if (!contents) throw new Error(`Cannot file "${file}"`)
+
+    const vsCodeWS = JSON.parse(contents)
 
     vsCodeWS.folders.push({
       name: `📦 ${this.#namespace}/${this.#answers.name}`,
@@ -169,6 +172,9 @@ export = class PackageGenerator extends Generator {
     const prettierOptions = (await prettier.resolveConfig(file)) || {}
     prettierOptions.parser = 'json'
 
-    writeFile(file, prettier.format(JSON.stringify(vsCodeWS), prettierOptions))
+    writeFile(
+      file,
+      await prettier.format(JSON.stringify(vsCodeWS), prettierOptions),
+    )
   }
 }

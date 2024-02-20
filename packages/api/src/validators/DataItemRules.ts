@@ -1,4 +1,3 @@
-import z from 'zod'
 import DataItemRule, {
   RuleWithFallThrough,
   RuleWithPayload,
@@ -10,32 +9,43 @@ import {
   objectSize,
   someKeysIntersect,
 } from '../util'
+import {
+  type ZodTransformer,
+  type infer as zInfer,
+  type ZodRawShape,
+  type ZodTypeAny,
+  type ZodArray,
+} from 'zod'
 
 function DataItemRules<
-  P extends z.ZodTypeAny,
-  T extends z.ZodRawShape,
-  FTT extends z.ZodRawShape
+  P extends ZodTypeAny,
+  T extends ZodRawShape,
+  FTT extends ZodRawShape,
 >(
   payloadValidator: P,
   targetingValidators: T,
-  fallThroughTargetingValidators: FTT
+  fallThroughTargetingValidators: FTT,
 ) {
   return RuleWithPayload<P, T & FTT>(payloadValidator, {
     ...targetingValidators,
     ...fallThroughTargetingValidators,
   })
     .array()
-    .transform<z.infer<DataItemRule<P, T, FTT, false>>[]>((rules) => {
+    .transform<zInfer<DataItemRule<P, T, FTT, false>>[]>((rules) => {
       const singularTargetedRules = spreadMultiTargetsToSeparateRules(rules)
 
-      let $rules: z.infer<DataItemRule<P, T, FTT, false>>[] = []
+      let $rules: zInfer<DataItemRule<P, T, FTT, false>>[] = []
 
       for (const rule of singularTargetedRules) {
         const prevRule = arrayLast($rules)
 
         if (!prevRule) {
           $rules.push(
-            adaptRule(targetingValidators, fallThroughTargetingValidators, rule)
+            adaptRule(
+              targetingValidators,
+              fallThroughTargetingValidators,
+              rule,
+            ),
           )
           continue
         }
@@ -43,20 +53,20 @@ function DataItemRules<
         const thisRuleAndPrevRuleCanCombine = canRulesCombine(
           targetingValidators,
           prevRule,
-          rule
+          rule,
         )
 
         if (thisRuleAndPrevRuleCanCombine) {
           const adaptedPrevRule = adaptRuleIntoFallThroughRule(
             targetingValidators,
             fallThroughTargetingValidators,
-            prevRule
+            prevRule,
           )
 
           const adaptedRule = adaptRuleIntoFallThroughRule(
             targetingValidators,
             fallThroughTargetingValidators,
-            rule as z.infer<DataItemRule<P, T, FTT, false>>
+            rule as zInfer<DataItemRule<P, T, FTT, false>>,
           )
 
           adaptedPrevRule.fallThrough.push(...adaptedRule.fallThrough)
@@ -64,7 +74,11 @@ function DataItemRules<
           $rules = [...$rules.slice(0, -1), adaptedPrevRule]
         } else {
           $rules.push(
-            adaptRule(targetingValidators, fallThroughTargetingValidators, rule)
+            adaptRule(
+              targetingValidators,
+              fallThroughTargetingValidators,
+              rule,
+            ),
           )
         }
       }
@@ -74,25 +88,23 @@ function DataItemRules<
 }
 
 type DataItemRules<
-  Payload extends z.ZodTypeAny,
-  Targeting extends z.ZodRawShape,
-  FallThroughTargeting extends z.ZodRawShape
-> = z.ZodTransformer<
-  z.ZodArray<RuleWithPayload<Payload, Targeting & FallThroughTargeting>>,
-  z.infer<z.ZodArray<DataItemRule<Payload, Targeting, FallThroughTargeting>>>,
-  z.infer<
-    z.ZodArray<RuleWithPayload<Payload, Targeting & FallThroughTargeting>>
-  >
+  Payload extends ZodTypeAny,
+  Targeting extends ZodRawShape,
+  FallThroughTargeting extends ZodRawShape,
+> = ZodTransformer<
+  ZodArray<RuleWithPayload<Payload, Targeting & FallThroughTargeting>>,
+  zInfer<ZodArray<DataItemRule<Payload, Targeting, FallThroughTargeting>>>,
+  zInfer<ZodArray<RuleWithPayload<Payload, Targeting & FallThroughTargeting>>>
 >
 
 export default DataItemRules
 
 function spreadMultiTargetsToSeparateRules<
-  P extends z.ZodTypeAny,
-  T extends z.ZodRawShape,
-  FTT extends z.ZodRawShape
->(rules: z.infer<RuleWithPayload<P, T & FTT>>[]) {
-  return rules.reduce<z.infer<RuleWithPayload<P, T & FTT, false>>[]>(
+  P extends ZodTypeAny,
+  T extends ZodRawShape,
+  FTT extends ZodRawShape,
+>(rules: zInfer<RuleWithPayload<P, T & FTT>>[]) {
+  return rules.reduce<zInfer<RuleWithPayload<P, T & FTT, false>>[]>(
     (rules, rule) => {
       if (Array.isArray(rule.targeting)) {
         for (const targeting of rule.targeting) {
@@ -103,17 +115,17 @@ function spreadMultiTargetsToSeparateRules<
         }
         return rules
       } else {
-        return [...rules, rule as z.infer<RuleWithPayload<P, T & FTT, false>>]
+        return [...rules, rule as zInfer<RuleWithPayload<P, T & FTT, false>>]
       }
     },
-    []
+    [],
   )
 }
 
 function canRulesCombine(
-  targetingValidators: z.ZodRawShape,
-  a: z.infer<RuleWithPayload<z.ZodTypeAny, z.ZodRawShape, false>>,
-  b: z.infer<RuleWithPayload<z.ZodTypeAny, z.ZodRawShape, false>>
+  targetingValidators: ZodRawShape,
+  a: zInfer<RuleWithPayload<ZodTypeAny, ZodRawShape, false>>,
+  b: zInfer<RuleWithPayload<ZodTypeAny, ZodRawShape, false>>,
 ) {
   const aTargetingKeys = a.targeting
     ? intersectionKeys(a.targeting, targetingValidators)
@@ -131,34 +143,34 @@ function canRulesCombine(
 }
 
 function adaptRule<
-  P extends z.ZodTypeAny,
-  T extends z.ZodRawShape,
-  FTT extends z.ZodRawShape
+  P extends ZodTypeAny,
+  T extends ZodRawShape,
+  FTT extends ZodRawShape,
 >(
   targetingValidators: T,
   fallThroughTargetingValidators: FTT,
-  rule: z.infer<RuleWithPayload<P, T & FTT, false>>
+  rule: zInfer<RuleWithPayload<P, T & FTT, false>>,
 ) {
   return (
     someKeysIntersect(fallThroughTargetingValidators, rule.targeting || {})
       ? adaptRuleIntoFallThroughRule(
           targetingValidators,
           fallThroughTargetingValidators,
-          rule as z.infer<DataItemRule<P, T, FTT, false>>
+          rule as zInfer<DataItemRule<P, T, FTT, false>>,
         )
       : rule
-  ) as z.infer<DataItemRule<P, T, FTT, false>>
+  ) as zInfer<DataItemRule<P, T, FTT, false>>
 }
 
 function adaptRuleIntoFallThroughRule<
-  P extends z.ZodTypeAny,
-  T extends z.ZodRawShape,
-  FTT extends z.ZodRawShape
+  P extends ZodTypeAny,
+  T extends ZodRawShape,
+  FTT extends ZodRawShape,
 >(
   targetingValidators: T,
   fallThroughTargetingValidators: FTT,
-  rule: z.infer<DataItemRule<P, T, FTT, false>>
-): z.infer<RuleWithFallThrough<P, T, FTT, false>> {
+  rule: zInfer<DataItemRule<P, T, FTT, false>>,
+): zInfer<RuleWithFallThrough<P, T, FTT, false>> {
   if ('fallThrough' in rule) return rule
   return {
     targeting: intersection(rule.targeting || {}, targetingValidators),
@@ -167,9 +179,9 @@ function adaptRuleIntoFallThroughRule<
         payload: rule.payload,
         targeting: intersection(
           rule.targeting || {},
-          fallThroughTargetingValidators
+          fallThroughTargetingValidators,
         ),
       },
     ],
-  } as z.infer<RuleWithFallThrough<P, T, FTT, false>>
+  } as zInfer<RuleWithFallThrough<P, T, FTT, false>>
 }

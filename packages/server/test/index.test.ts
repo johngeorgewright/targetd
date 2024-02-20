@@ -1,5 +1,6 @@
 import { Data } from '@targetd/api'
 import dateRangeTargeting from '@targetd/date-range'
+import { difference } from 'lodash'
 import express from 'express'
 import { promisify } from 'node:util'
 import { setTimeout } from 'node:timers'
@@ -30,6 +31,11 @@ beforeEach(() => {
         predicate: (q) => timeout(10, (t) => q === t && timeout(10, true)),
         queryValidator: z.boolean(),
         targetingValidator: z.boolean(),
+      })
+      .useTargeting('arrayThing', {
+        predicate: (q) => (t) => difference(q, t).length === 0,
+        queryValidator: z.string().array(),
+        targetingValidator: z.string().array(),
       })
       .useTargeting('date', dateRangeTargeting)
       .addRules('foo', [
@@ -65,6 +71,18 @@ beforeEach(() => {
           payload: 'Async payload',
         },
         {
+          targeting: {
+            arrayThing: ['a'],
+          },
+          payload: "a t'ing",
+        },
+        {
+          targeting: {
+            arrayThing: ['a', 'b'],
+          },
+          payload: "b t'ing",
+        },
+        {
           payload: 'bar',
         },
       ])
@@ -83,7 +101,7 @@ beforeEach(() => {
         {
           payload: 'out of time',
         },
-      ])
+      ]),
   )
 })
 
@@ -135,6 +153,18 @@ test('get one data point', async () => {
     .expect('Content-Type', /json/)
     .expect(200)
   expect(response.body).toBe('out of time')
+
+  response = await request(app)
+    .get('/foo?arrayThing=a')
+    .expect('Content-Type', /json/)
+    .expect(200)
+  expect(response.body).toBe("a t'ing")
+
+  response = await request(app)
+    .get('/foo?arrayThing=a&arrayThing=b')
+    .expect('Content-Type', /json/)
+    .expect(200)
+  expect(response.body).toBe("b t'ing")
 })
 
 test('get all', async () => {

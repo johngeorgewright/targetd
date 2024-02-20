@@ -5,6 +5,7 @@
     { "name": "📦 @targetd/api", "path": "packages/api" },
     { "name": "📦 @targetd/client", "path": "packages/client" },
     { "name": "📦 @targetd/date-range", "path": "packages/date-range" },
+    { "name": "📦 @targetd/explode", "path": "packages/explode" },
     { "name": "📦 @targetd/fs", "path": "packages/fs" },
     { "name": "📦 @targetd/json-schema", "path": "packages/json-schema" },
     { "name": "📦 @targetd/server", "path": "packages/server" },

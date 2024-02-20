@@ -1,15 +1,15 @@
-import { Data } from '@targetd/api'
+import { type Data } from '@targetd/api'
 import { debounce } from 'lodash'
 import throat from 'throat'
-import { Options as WatchTreeOptions, unwatchTree, watchTree } from 'watch'
-import z from 'zod'
+import { type Options as WatchTreeOptions, unwatchTree, watchTree } from 'watch'
 import { load, pathIsLoadable } from './load'
+import { type ZodRawShape } from 'zod'
 
 export type OnLoad<
-  DataValidators extends z.ZodRawShape,
-  TargetingValidators extends z.ZodRawShape,
-  QueryValidators extends z.ZodRawShape,
-  FallThroughTargetingValidators extends z.ZodRawShape
+  DataValidators extends ZodRawShape,
+  TargetingValidators extends ZodRawShape,
+  QueryValidators extends ZodRawShape,
+  FallThroughTargetingValidators extends ZodRawShape,
 > = (
   error: Error | null,
   data: Data<
@@ -17,14 +17,14 @@ export type OnLoad<
     TargetingValidators,
     QueryValidators,
     FallThroughTargetingValidators
-  >
+  >,
 ) => any
 
 export function watch<
-  DataValidators extends z.ZodRawShape,
-  TargetingValidators extends z.ZodRawShape,
-  QueryValidators extends z.ZodRawShape,
-  FallThroughTargetingValidators extends z.ZodRawShape
+  DataValidators extends ZodRawShape,
+  TargetingValidators extends ZodRawShape,
+  QueryValidators extends ZodRawShape,
+  FallThroughTargetingValidators extends ZodRawShape,
 >(
   data: Data<
     DataValidators,
@@ -39,14 +39,14 @@ export function watch<
     TargetingValidators,
     QueryValidators,
     FallThroughTargetingValidators
-  >
+  >,
 ): () => void
 
 export function watch<
-  DataValidators extends z.ZodRawShape,
-  TargetingValidators extends z.ZodRawShape,
-  QueryValidators extends z.ZodRawShape,
-  FallThroughTargetingValidators extends z.ZodRawShape
+  DataValidators extends ZodRawShape,
+  TargetingValidators extends ZodRawShape,
+  QueryValidators extends ZodRawShape,
+  FallThroughTargetingValidators extends ZodRawShape,
 >(
   data: Data<
     DataValidators,
@@ -60,14 +60,14 @@ export function watch<
     TargetingValidators,
     QueryValidators,
     FallThroughTargetingValidators
-  >
+  >,
 ): () => void
 
 export function watch<
-  DataValidators extends z.ZodRawShape,
-  TargetingValidators extends z.ZodRawShape,
-  QueryValidators extends z.ZodRawShape,
-  FallThroughTargetingValidators extends z.ZodRawShape
+  DataValidators extends ZodRawShape,
+  TargetingValidators extends ZodRawShape,
+  QueryValidators extends ZodRawShape,
+  FallThroughTargetingValidators extends ZodRawShape,
 >(
   data: Data<
     DataValidators,
@@ -89,7 +89,7 @@ export function watch<
     TargetingValidators,
     QueryValidators,
     FallThroughTargetingValidators
-  >
+  >,
 ) {
   const options = onLoadParam ? optionsOrOnLoad : {}
   const onLoad = (onLoadParam || optionsOrOnLoad) as OnLoad<
@@ -115,8 +115,8 @@ export function watch<
 
         onLoad(null, data)
       }),
-      300
-    )
+      300,
+    ),
   )
 
   return () => unwatchTree(dir)

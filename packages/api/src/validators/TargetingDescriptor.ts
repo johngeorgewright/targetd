@@ -1,9 +1,9 @@
-import z from 'zod'
-import TargetingPredicate from './TargetingPredicate'
+import { type ZodTypeAny } from 'zod'
+import type TargetingPredicate from './TargetingPredicate'
 
 export default interface TargetingDescriptor<
-  TV extends z.ZodTypeAny,
-  QV extends z.ZodTypeAny,
+  TV extends ZodTypeAny,
+  QV extends ZodTypeAny,
   Query extends Record<string, any> = {},
 > {
   predicate: TargetingPredicate<QV, TV, Query>
@@ -13,8 +13,8 @@ export default interface TargetingDescriptor<
 }
 
 export function isTargetingDescriptor<
-  TV extends z.ZodTypeAny,
-  QV extends z.ZodTypeAny,
+  TV extends ZodTypeAny,
+  QV extends ZodTypeAny,
 >(x: unknown): x is TargetingDescriptor<TV, QV, any> {
   return (
     typeof x === 'object' &&

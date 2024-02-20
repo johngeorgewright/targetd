@@ -1,6 +1,7 @@
 export {
   default as Data,
   DataValidators,
+  Payload,
   TargetingValidators,
   QueryValidators,
   FallThroughData,
@@ -18,3 +19,4 @@ export {
   targetIncludesPredicate,
   targetIncludes,
 } from './predicates/targetIncludes'
+export { StaticRecord } from './types'
