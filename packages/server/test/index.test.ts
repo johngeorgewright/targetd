@@ -14,30 +14,34 @@ let app: express.Application
 beforeEach(() => {
   app = createServer(() =>
     Data.create()
-      .useDataParser('foo', z.string())
-      .useDataParser('bar', z.number())
-      .useDataParser('timed', z.string())
-      .useTargeting('weather', {
-        predicate: (q) => (t) => typeof q === 'string' && t.includes(q),
-        queryParser: z.string(),
-        targetingParser: z.array(z.string()),
+      .useData({
+        foo: z.string(),
+        bar: z.number(),
+        timed: z.string(),
       })
-      .useTargeting('highTide', {
-        predicate: (q) => (t) => q === t,
-        queryParser: z.boolean(),
-        targetingParser: z.boolean(),
+      .useTargeting({
+        weather: {
+          predicate: (q) => (t) => typeof q === 'string' && t.includes(q),
+          queryParser: z.string(),
+          targetingParser: z.array(z.string()),
+        },
+        highTide: {
+          predicate: (q) => (t) => q === t,
+          queryParser: z.boolean(),
+          targetingParser: z.boolean(),
+        },
+        asyncThing: {
+          predicate: (q) => timeout(10, (t) => q === t && timeout(10, true)),
+          queryParser: z.boolean(),
+          targetingParser: z.boolean(),
+        },
+        arrayThing: {
+          predicate: (q) => (t) => difference(q, t).length === 0,
+          queryParser: z.string().array(),
+          targetingParser: z.string().array(),
+        },
+        date: dateRangeTargeting,
       })
-      .useTargeting('asyncThing', {
-        predicate: (q) => timeout(10, (t) => q === t && timeout(10, true)),
-        queryParser: z.boolean(),
-        targetingParser: z.boolean(),
-      })
-      .useTargeting('arrayThing', {
-        predicate: (q) => (t) => difference(q, t).length === 0,
-        queryParser: z.string().array(),
-        targetingParser: z.string().array(),
-      })
-      .useTargeting('date', dateRangeTargeting)
       .addRules('foo', [
         {
           targeting: {

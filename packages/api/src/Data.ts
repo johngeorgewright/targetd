@@ -94,7 +94,34 @@ export default class Data<
     return this.#fallThroughTargetingParsers
   }
 
-  useDataParsers<Parsers extends Record<string, ZodTypeAny>>(parsers: Parsers) {
+  useData<Name extends string, Parser extends ZodTypeAny>(
+    name: Name,
+    parser: Parser,
+  ): Data<
+    DataParsers & Record<Name, Parser>,
+    TargetingParsers,
+    QueryParsers,
+    FallThroughTargetingParsers
+  >
+
+  useData<Parsers extends Record<string, ZodTypeAny>>(
+    parsers: Parsers,
+  ): Data<
+    DataParsers & Parsers,
+    TargetingParsers,
+    QueryParsers,
+    FallThroughTargetingParsers
+  >
+
+  useData(nameOrParsers: any, parser?: any): any {
+    return typeof nameOrParsers === 'string'
+      ? this.#useDataParser(nameOrParsers, parser)
+      : this.#useDataParsers(nameOrParsers)
+  }
+
+  #useDataParsers<Parsers extends Record<string, ZodTypeAny>>(
+    parsers: Parsers,
+  ) {
     type NewDataParsers = DataParsers & Parsers
 
     const dataParsers = {
@@ -125,7 +152,7 @@ export default class Data<
     )
   }
 
-  useDataParser<Name extends string, Parser extends ZodTypeAny>(
+  #useDataParser<Name extends string, Parser extends ZodTypeAny>(
     name: Name,
     parser: Parser,
   ) {
@@ -245,7 +272,49 @@ export default class Data<
     )
   }
 
-  useTargetingDescriptors<
+  useTargeting<
+    Name extends string,
+    TV extends ZodTypeAny,
+    QV extends ZodTypeAny,
+  >(
+    name: Name,
+    targetingDescriptor: TargetingDescriptor<
+      TV,
+      QV,
+      Partial<StaticRecord<QueryParsers>>
+    >,
+  ): Data<
+    DataParsers,
+    TargetingParsers & { [K in Name]: TV },
+    QueryParsers & { [K in Name]: QV },
+    FallThroughTargetingParsers
+  >
+
+  useTargeting<
+    TDs extends Record<
+      string,
+      TargetingDescriptor<any, any, Partial<StaticRecord<QueryParsers>>>
+    >,
+  >(
+    targeting: TDs,
+  ): Data<
+    DataParsers,
+    TargetingParsers & {
+      [K in keyof TDs]: TargetingDescriptorTargetingParser<TDs[K]>
+    },
+    QueryParsers & {
+      [K in keyof TDs]: TargetingDescriptorQueryParser<TDs[K]>
+    },
+    FallThroughTargetingParsers
+  >
+
+  useTargeting(nameOrTargetings: any, targetingDescriptor?: any): any {
+    return typeof nameOrTargetings === 'string'
+      ? this.#useTargetingDescriptor(nameOrTargetings, targetingDescriptor)
+      : this.#useTargetingDescriptors(nameOrTargetings)
+  }
+
+  #useTargetingDescriptors<
     TDs extends Record<
       string,
       TargetingDescriptor<any, any, Partial<StaticRecord<QueryParsers>>>
@@ -303,7 +372,7 @@ export default class Data<
     )
   }
 
-  useTargeting<
+  #useTargetingDescriptor<
     Name extends string,
     TV extends ZodTypeAny,
     QV extends ZodTypeAny,
@@ -362,7 +431,45 @@ export default class Data<
     )
   }
 
-  useFallThroughTargetingDescriptors<
+  useFallThroughTargeting<
+    Name extends string,
+    TV extends ZodTypeAny,
+    QV extends ZodTypeAny,
+  >(
+    name: Name,
+    targetingParser: TV | TargetingDescriptor<TV, QV>,
+  ): Data<
+    DataParsers,
+    TargetingParsers,
+    QueryParsers,
+    FallThroughTargetingParsers & {
+      [K in Name]: TV
+    }
+  >
+
+  useFallThroughTargeting<
+    TDs extends Record<
+      string,
+      TargetingDescriptor<any, any, Partial<StaticRecord<QueryParsers>>>
+    >,
+  >(
+    targeting: TDs,
+  ): Data<
+    DataParsers,
+    TargetingParsers,
+    QueryParsers,
+    FallThroughTargetingParsers & {
+      [K in keyof TDs]: TargetingDescriptorTargetingParser<TDs[K]>
+    }
+  >
+
+  useFallThroughTargeting(nameOrTargetings: any, targeting?: any): any {
+    return typeof nameOrTargetings === 'string'
+      ? this.#useFallThroughTargetingDescriptor(nameOrTargetings, targeting)
+      : this.#useFallThroughTargetingDescriptors(nameOrTargetings)
+  }
+
+  #useFallThroughTargetingDescriptors<
     TDs extends Record<
       string,
       TargetingDescriptor<any, any, Partial<StaticRecord<QueryParsers>>>
@@ -400,7 +507,7 @@ export default class Data<
     )
   }
 
-  useFallThroughTargeting<
+  #useFallThroughTargetingDescriptor<
     Name extends string,
     TV extends ZodTypeAny,
     QV extends ZodTypeAny,

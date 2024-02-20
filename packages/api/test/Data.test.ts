@@ -11,7 +11,7 @@ const timeout = <T>(ms: number, returnValue: T) =>
 
 test('getPayload', async () => {
   const data = Data.create()
-    .useDataParser('foo', z.string())
+    .useData('foo', z.string())
     .useTargeting('weather', targetIncludes(z.string()))
     .useTargeting('highTide', targetEquals(z.boolean()))
     .useTargeting('asyncThing', {
@@ -90,7 +90,7 @@ test('getPayload', async () => {
 
 test('targeting with multiple conditions', async () => {
   const data = Data.create()
-    .useDataParser('foo', z.string())
+    .useData('foo', z.string())
     .useTargeting('weather', targetIncludes(z.string()))
     .useTargeting('highTide', targetEquals(z.boolean()))
     .addRules('foo', [
@@ -121,7 +121,7 @@ test('targeting with multiple conditions', async () => {
 
 test('targeting without requiring a query', async () => {
   const data = Data.create()
-    .useDataParser('foo', z.string())
+    .useData('foo', z.string())
     .useTargeting('time', {
       predicate: () => (t) => t === 'now!',
       queryParser: z.undefined(),
@@ -145,8 +145,8 @@ test('targeting without requiring a query', async () => {
 
 test('getPayloads', async () => {
   const data = Data.create()
-    .useDataParser('foo', z.string())
-    .useTargetingDescriptors({
+    .useData('foo', z.string())
+    .useTargeting({
       weather: targetIncludes(z.string()),
       highTide: targetEquals(z.boolean()),
     })
@@ -187,7 +187,7 @@ test('getPayloads', async () => {
 test('payload runtype validation', () => {
   try {
     Data.create()
-      .useDataParser(
+      .useData(
         'foo',
         z.string().refine((x) => x === 'bar', 'Should be bar'),
       )
@@ -219,11 +219,11 @@ test('payload runtype validation', () => {
 
 test('getPayloadForEachName', async () => {
   const data = Data.create()
-    .useDataParsers({
+    .useData({
       foo: z.string(),
       bar: z.string(),
     })
-    .useTargetingDescriptors({
+    .useTargeting({
       weather: targetIncludes(z.string()),
       highTide: targetIncludes(z.boolean()),
       asyncThing: {
@@ -286,7 +286,7 @@ test('getPayloadForEachName', async () => {
 
 test('fallThrough targeting', async () => {
   const data = Data.create()
-    .useDataParsers({
+    .useData({
       foo: z.string(),
       bar: z.string(),
     })
@@ -403,13 +403,13 @@ test('fallThrough targeting', async () => {
 
 test('inserting data', async () => {
   const data = Data.create()
-    .useDataParsers({
+    .useData({
       moo: z.string(),
       foo: z.string(),
       bar: z.string(),
     })
     .useTargeting('weather', targetIncludes(z.string()))
-    .useFallThroughTargetingDescriptors({
+    .useFallThroughTargeting({
       highTide: targetEquals(z.boolean()),
     })
     .insert({
@@ -486,7 +486,7 @@ test('targeting predicate with full query object', async () => {
   })
 
   const data = Data.create()
-    .useDataParser('foo', z.string())
+    .useData('foo', z.string())
     .useTargeting('oof', {
       queryParser: z.string(),
       targetingParser: z.string(),

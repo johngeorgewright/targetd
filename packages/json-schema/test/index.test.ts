@@ -6,7 +6,7 @@ test('json schema for simple data object', () => {
   expect(
     dataJSONSchemas(
       Data.create()
-        .useDataParser('foo', z.string())
+        .useData('foo', z.string())
         .useTargeting('weather', targetIncludes(z.string()))
         .useFallThroughTargeting('browser', targetIncludes(z.string()))
         .addRules('foo', [

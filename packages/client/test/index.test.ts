@@ -7,25 +7,29 @@ import { z } from 'zod'
 import { Client, ClientWithData } from '../src'
 
 const data = Data.create()
-  .useDataParser('foo', z.string())
-  .useDataParser('bar', z.number())
-  .useDataParser('timed', z.string())
-  .useTargeting('weather', {
-    predicate: (q) => (t) => typeof q === 'string' && t.includes(q),
-    queryParser: z.string(),
-    targetingParser: z.array(z.string()),
+  .useData({
+    foo: z.string(),
+    bar: z.number(),
+    timed: z.string(),
   })
-  .useTargeting('highTide', {
-    predicate: (q) => (t) => q === t,
-    queryParser: z.boolean(),
-    targetingParser: z.boolean(),
+  .useTargeting({
+    weather: {
+      predicate: (q) => (t) => typeof q === 'string' && t.includes(q),
+      queryParser: z.string(),
+      targetingParser: z.array(z.string()),
+    },
+    highTide: {
+      predicate: (q) => (t) => q === t,
+      queryParser: z.boolean(),
+      targetingParser: z.boolean(),
+    },
+    asyncThing: {
+      predicate: (q) => setTimeout(10, (t) => q === t && setTimeout(10, true)),
+      queryParser: z.boolean(),
+      targetingParser: z.boolean(),
+    },
+    date: dateRangeTargeting,
   })
-  .useTargeting('asyncThing', {
-    predicate: (q) => setTimeout(10, (t) => q === t && setTimeout(10, true)),
-    queryParser: z.boolean(),
-    targetingParser: z.boolean(),
-  })
-  .useTargeting('date', dateRangeTargeting)
   .addRules('foo', [
     {
       targeting: {
