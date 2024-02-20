@@ -3,6 +3,7 @@
   "version": "2.0.2",
   "description": "Creates JSON schema from targetd data objects",
   "main": "dist/index.js",
+  "sideEffects": false,
   "bin": {
     "targetd-json-schema": "./dist/cli.js"
   },

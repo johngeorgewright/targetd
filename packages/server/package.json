@@ -3,6 +3,7 @@
   "version": "4.1.0",
   "description": "HTTP server for targetd data",
   "main": "dist/index.js",
+  "sideEffects": false,
   "scripts": {
     "build": "yarn clean && yarn tsc",
     "clean": "yarn rimraf dist",
