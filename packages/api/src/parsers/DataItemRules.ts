@@ -1,6 +1,7 @@
-import DataItemRule, {
-  RuleWithFallThrough,
-  RuleWithPayload,
+import {
+  DataItemRuleParser,
+  RuleWithFallThroughParser,
+  RuleWithPayloadParser,
 } from './DataItemRule'
 import {
   arrayLast,
@@ -17,20 +18,20 @@ import {
   type ZodArray,
 } from 'zod'
 
-function DataItemRules<
+export function DataItemRulesParser<
   P extends ZodTypeAny,
   T extends ZodRawShape,
   FTT extends ZodRawShape,
 >(payloadParser: P, targetingParsers: T, fallThroughTargetingParsers: FTT) {
-  return RuleWithPayload<P, T & FTT>(payloadParser, {
+  return RuleWithPayloadParser<P, T & FTT>(payloadParser, {
     ...targetingParsers,
     ...fallThroughTargetingParsers,
   })
     .array()
-    .transform<zInfer<DataItemRule<P, T, FTT, false>>[]>((rules) => {
+    .transform<zInfer<DataItemRuleParser<P, T, FTT, false>>[]>((rules) => {
       const singularTargetedRules = spreadMultiTargetsToSeparateRules(rules)
 
-      let $rules: zInfer<DataItemRule<P, T, FTT, false>>[] = []
+      let $rules: zInfer<DataItemRuleParser<P, T, FTT, false>>[] = []
 
       for (const rule of singularTargetedRules) {
         const prevRule = arrayLast($rules)
@@ -58,7 +59,7 @@ function DataItemRules<
           const adaptedRule = adaptRuleIntoFallThroughRule(
             targetingParsers,
             fallThroughTargetingParsers,
-            rule as zInfer<DataItemRule<P, T, FTT, false>>,
+            rule as zInfer<DataItemRuleParser<P, T, FTT, false>>,
           )
 
           adaptedPrevRule.fallThrough.push(...adaptedRule.fallThrough)
@@ -72,27 +73,29 @@ function DataItemRules<
       }
 
       return $rules
-    }) as DataItemRules<P, T, FTT>
+    }) as DataItemRulesParser<P, T, FTT>
 }
 
-type DataItemRules<
+export type DataItemRulesParser<
   Payload extends ZodTypeAny,
   Targeting extends ZodRawShape,
   FallThroughTargeting extends ZodRawShape,
 > = ZodTransformer<
-  ZodArray<RuleWithPayload<Payload, Targeting & FallThroughTargeting>>,
-  zInfer<ZodArray<DataItemRule<Payload, Targeting, FallThroughTargeting>>>,
-  zInfer<ZodArray<RuleWithPayload<Payload, Targeting & FallThroughTargeting>>>
+  ZodArray<RuleWithPayloadParser<Payload, Targeting & FallThroughTargeting>>,
+  zInfer<
+    ZodArray<DataItemRuleParser<Payload, Targeting, FallThroughTargeting>>
+  >,
+  zInfer<
+    ZodArray<RuleWithPayloadParser<Payload, Targeting & FallThroughTargeting>>
+  >
 >
-
-export default DataItemRules
 
 function spreadMultiTargetsToSeparateRules<
   P extends ZodTypeAny,
   T extends ZodRawShape,
   FTT extends ZodRawShape,
->(rules: zInfer<RuleWithPayload<P, T & FTT>>[]) {
-  return rules.reduce<zInfer<RuleWithPayload<P, T & FTT, false>>[]>(
+>(rules: zInfer<RuleWithPayloadParser<P, T & FTT>>[]) {
+  return rules.reduce<zInfer<RuleWithPayloadParser<P, T & FTT, false>>[]>(
     (rules, rule) => {
       if (Array.isArray(rule.targeting)) {
         for (const targeting of rule.targeting) {
@@ -103,7 +106,10 @@ function spreadMultiTargetsToSeparateRules<
         }
         return rules
       } else {
-        return [...rules, rule as zInfer<RuleWithPayload<P, T & FTT, false>>]
+        return [
+          ...rules,
+          rule as zInfer<RuleWithPayloadParser<P, T & FTT, false>>,
+        ]
       }
     },
     [],
@@ -112,8 +118,8 @@ function spreadMultiTargetsToSeparateRules<
 
 function canRulesCombine(
   targetingParsers: ZodRawShape,
-  a: zInfer<RuleWithPayload<ZodTypeAny, ZodRawShape, false>>,
-  b: zInfer<RuleWithPayload<ZodTypeAny, ZodRawShape, false>>,
+  a: zInfer<RuleWithPayloadParser<ZodTypeAny, ZodRawShape, false>>,
+  b: zInfer<RuleWithPayloadParser<ZodTypeAny, ZodRawShape, false>>,
 ) {
   const aTargetingKeys = a.targeting
     ? intersectionKeys(a.targeting, targetingParsers)
@@ -137,17 +143,17 @@ function adaptRule<
 >(
   targetingParsers: T,
   fallThroughTargetingParsers: FTT,
-  rule: zInfer<RuleWithPayload<P, T & FTT, false>>,
+  rule: zInfer<RuleWithPayloadParser<P, T & FTT, false>>,
 ) {
   return (
     someKeysIntersect(fallThroughTargetingParsers, rule.targeting || {})
       ? adaptRuleIntoFallThroughRule(
           targetingParsers,
           fallThroughTargetingParsers,
-          rule as zInfer<DataItemRule<P, T, FTT, false>>,
+          rule as zInfer<DataItemRuleParser<P, T, FTT, false>>,
         )
       : rule
-  ) as zInfer<DataItemRule<P, T, FTT, false>>
+  ) as zInfer<DataItemRuleParser<P, T, FTT, false>>
 }
 
 function adaptRuleIntoFallThroughRule<
@@ -157,8 +163,8 @@ function adaptRuleIntoFallThroughRule<
 >(
   targetingParsers: T,
   fallThroughTargetingParsers: FTT,
-  rule: zInfer<DataItemRule<P, T, FTT, false>>,
-): zInfer<RuleWithFallThrough<P, T, FTT, false>> {
+  rule: zInfer<DataItemRuleParser<P, T, FTT, false>>,
+): zInfer<RuleWithFallThroughParser<P, T, FTT, false>> {
   if ('fallThrough' in rule) return rule
   return {
     targeting: intersection(rule.targeting || {}, targetingParsers),
@@ -171,5 +177,5 @@ function adaptRuleIntoFallThroughRule<
         ),
       },
     ],
-  } as zInfer<RuleWithFallThrough<P, T, FTT, false>>
+  } as zInfer<RuleWithFallThroughParser<P, T, FTT, false>>
 }

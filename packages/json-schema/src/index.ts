@@ -1,4 +1,4 @@
-import { type Data, DataItem, DataItems } from '@targetd/api'
+import { type Data, DataItemParser, DataItemsParser } from '@targetd/api'
 import { type ZodRawShape, string } from 'zod'
 import zodToJSONSchema from 'zod-to-json-schema'
 
@@ -16,7 +16,7 @@ export function dataJSONSchemas<
   >,
 ) {
   return zodToJSONSchema(
-    DataItems(
+    DataItemsParser(
       data.dataParsers,
       data.targetingParsers,
       data.fallThroughTargetingParsers,
@@ -42,7 +42,7 @@ export function dataJSONSchema<
   name: keyof DataParsers,
 ) {
   return zodToJSONSchema(
-    DataItem(
+    DataItemParser(
       data.dataParsers[name],
       data.targetingParsers,
       data.fallThroughTargetingParsers,

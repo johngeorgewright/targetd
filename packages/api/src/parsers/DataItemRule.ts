@@ -9,7 +9,7 @@ import {
 } from 'zod'
 import { type ZodPartialObject } from '../types'
 
-function DataItemRule<
+export function DataItemRuleParser<
   P extends ZodTypeAny,
   T extends ZodRawShape,
   CT extends ZodRawShape,
@@ -20,16 +20,16 @@ function DataItemRule<
   fallThroughTargeting: CT,
   allowMultipleTargeting = true,
 ) {
-  const Rule = RuleWithPayload(Payload, targeting, allowMultipleTargeting)
+  const Rule = RuleWithPayloadParser(Payload, targeting, allowMultipleTargeting)
 
-  const FallThroughRule = RuleWithFallThrough(
+  const FallThroughRule = RuleWithFallThroughParser(
     Payload,
     targeting,
     fallThroughTargeting,
     allowMultipleTargeting,
   )
 
-  return Rule.or(FallThroughRule) as DataItemRule<
+  return Rule.or(FallThroughRule) as DataItemRuleParser<
     P,
     T,
     CT,
@@ -37,15 +37,15 @@ function DataItemRule<
   >
 }
 
-type DataItemRule<
+export type DataItemRuleParser<
   Payload extends ZodTypeAny,
   Targeting extends ZodRawShape,
   FallThroughTargeting extends ZodRawShape,
   AllowMultipleTargeting extends boolean = true,
 > = ZodUnion<
   [
-    RuleWithPayload<Payload, Targeting, AllowMultipleTargeting>,
-    RuleWithFallThrough<
+    RuleWithPayloadParser<Payload, Targeting, AllowMultipleTargeting>,
+    RuleWithFallThroughParser<
       Payload,
       Targeting,
       FallThroughTargeting,
@@ -53,8 +53,6 @@ type DataItemRule<
     >,
   ]
 >
-
-export default DataItemRule
 
 type SingularRuleTargeting<Targeting extends ZodRawShape> = ZodPartialObject<
   Targeting,
@@ -81,7 +79,7 @@ function MultipleRuleTargeting<Targeting extends ZodRawShape>(
   return t.or(t.array())
 }
 
-export type RuleWithPayload<
+export type RuleWithPayloadParser<
   Payload extends ZodTypeAny,
   Targeting extends ZodRawShape,
   AllowMultipleTargeting extends boolean = true,
@@ -97,7 +95,7 @@ export type RuleWithPayload<
   'strict'
 >
 
-export function RuleWithPayload<
+export function RuleWithPayloadParser<
   P extends ZodTypeAny,
   T extends ZodRawShape,
   AllowMultipleTargeting extends boolean = true,
@@ -108,10 +106,10 @@ export function RuleWithPayload<
       : SingularRuleTargeting(targeting)
     ).optional(),
     payload: Payload,
-  }) as RuleWithPayload<P, T, AllowMultipleTargeting>
+  }) as RuleWithPayloadParser<P, T, AllowMultipleTargeting>
 }
 
-export type RuleWithFallThrough<
+export type RuleWithFallThroughParser<
   Payload extends ZodTypeAny,
   Targeting extends ZodRawShape,
   FallThroughTargeting extends ZodRawShape,
@@ -122,13 +120,17 @@ export type RuleWithFallThrough<
       ? MultipleRuleTargeting<Targeting>
       : SingularRuleTargeting<Targeting>
     fallThrough: ZodArray<
-      RuleWithPayload<Payload, FallThroughTargeting, AllowMultipleTargeting>
+      RuleWithPayloadParser<
+        Payload,
+        FallThroughTargeting,
+        AllowMultipleTargeting
+      >
     >
   },
   'strict'
 >
 
-export function RuleWithFallThrough<
+export function RuleWithFallThroughParser<
   Payload extends ZodTypeAny,
   Targeting extends ZodRawShape,
   FallThroughTargeting extends ZodRawShape,
@@ -143,8 +145,8 @@ export function RuleWithFallThrough<
     targeting: allowMultipleTargeting
       ? MultipleRuleTargeting(targeting)
       : SingularRuleTargeting(targeting),
-    fallThrough: RuleWithPayload(payload, fallThroughTargeting).array(),
-  }) as RuleWithFallThrough<
+    fallThrough: RuleWithPayloadParser(payload, fallThroughTargeting).array(),
+  }) as RuleWithFallThroughParser<
     Payload,
     Targeting,
     FallThroughTargeting,

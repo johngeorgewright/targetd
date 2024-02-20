@@ -7,9 +7,9 @@ export {
   FallThroughData,
   FallThroughTargetingParsers,
 } from './Data'
-export { default as DataItem } from './parsers/DataItem'
-export { default as DataItemRule } from './parsers/DataItemRule'
-export { default as DataItems } from './parsers/DataItems'
+export { DataItemParser } from './parsers/DataItem'
+export { DataItemRuleParser } from './parsers/DataItemRule'
+export { DataItemsParser } from './parsers/DataItems'
 export { default as createTargetingDescriptor } from './createTargetingDescriptor'
 export { default as TargetingDescriptor } from './parsers/TargetingDescriptor'
 export { default as TargetingPredicate } from './parsers/TargetingPredicate'

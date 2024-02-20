@@ -4,27 +4,29 @@ import {
   type ZodTypeAny,
   strictObject,
 } from 'zod'
-import DataItemRules from './DataItemRules'
+import { DataItemRulesParser } from './DataItemRules'
 
-function DataItem<
+export function DataItemParser<
   P extends ZodTypeAny,
   T extends ZodRawShape,
   FTT extends ZodRawShape,
->(Payload: P, targeting: T, fallThroughTargeting: FTT): DataItem<P, T, FTT> {
+>(
+  Payload: P,
+  targeting: T,
+  fallThroughTargeting: FTT,
+): DataItemParser<P, T, FTT> {
   return strictObject({
-    rules: DataItemRules(Payload, targeting, fallThroughTargeting),
+    rules: DataItemRulesParser(Payload, targeting, fallThroughTargeting),
   })
 }
 
-type DataItem<
+export type DataItemParser<
   Payload extends ZodTypeAny,
   Targeting extends ZodRawShape,
   FallThroughTargeting extends ZodRawShape,
 > = ZodObject<
   {
-    rules: DataItemRules<Payload, Targeting, FallThroughTargeting>
+    rules: DataItemRulesParser<Payload, Targeting, FallThroughTargeting>
   },
   'strict'
 >
-
-export default DataItem

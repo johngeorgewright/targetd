@@ -11,14 +11,17 @@ import TargetingDescriptor, {
   TargetingDescriptorTargetingParser,
   isTargetingDescriptor,
 } from './parsers/TargetingDescriptor'
-import TargetingPredicates from './parsers/TargetingPredicates'
+import type TargetingPredicates from './parsers/TargetingPredicates'
 import { objectEveryAsync, objectKeys, objectMap, omit } from './util'
-import DataItems from './parsers/DataItems'
-import DataItem from './parsers/DataItem'
-import DataItemRule, { RuleWithPayload } from './parsers/DataItemRule'
+import { DataItemsParser } from './parsers/DataItems'
+import { type DataItemParser } from './parsers/DataItem'
+import type {
+  DataItemRuleParser,
+  RuleWithPayloadParser,
+} from './parsers/DataItemRule'
 import { Keys } from 'ts-toolbelt/out/Any/Keys'
 import { MaybePromise, StaticRecord, ZodPartialObject } from './types'
-import DataItemRules from './parsers/DataItemRules'
+import { DataItemRulesParser } from './parsers/DataItemRules'
 
 export default class Data<
   DataParsers extends ZodRawShape,
@@ -28,7 +31,7 @@ export default class Data<
 > {
   readonly #fallThroughTargetingParsers: FallThroughTargetingParsers
   readonly #data: zInfer<
-    DataItems<DataParsers, TargetingParsers, FallThroughTargetingParsers>
+    DataItemsParser<DataParsers, TargetingParsers, FallThroughTargetingParsers>
   >
   readonly #dataParsers: DataParsers
   readonly #targetingPredicates: TargetingPredicates<
@@ -45,7 +48,11 @@ export default class Data<
 
   private constructor(
     data: zInfer<
-      DataItems<DataParsers, TargetingParsers, FallThroughTargetingParsers>
+      DataItemsParser<
+        DataParsers,
+        TargetingParsers,
+        FallThroughTargetingParsers
+      >
     >,
     dataParsers: DataParsers,
     targetingPredicates: TargetingPredicates<TargetingParsers, QueryParsers>,
@@ -65,7 +72,7 @@ export default class Data<
   }
 
   get data(): zInfer<
-    DataItems<DataParsers, TargetingParsers, FallThroughTargetingParsers>
+    DataItemsParser<DataParsers, TargetingParsers, FallThroughTargetingParsers>
   > {
     return this.#data
   }
@@ -129,12 +136,16 @@ export default class Data<
       ...parsers,
     }
 
-    const data = DataItems(
+    const data = DataItemsParser(
       dataParsers,
       this.#targetingParsers,
       this.#fallThroughTargetingParsers,
     ).parse(this.#data) as zInfer<
-      DataItems<NewDataParsers, TargetingParsers, FallThroughTargetingParsers>
+      DataItemsParser<
+        NewDataParsers,
+        TargetingParsers,
+        FallThroughTargetingParsers
+      >
     >
 
     return new Data<
@@ -165,14 +176,18 @@ export default class Data<
 
     const data = (
       name in this.#data
-        ? DataItems(
+        ? DataItemsParser(
             dataParsers,
             this.#targetingParsers,
             this.#fallThroughTargetingParsers,
           ).parse(this.#data)
         : this.#data
     ) as zInfer<
-      DataItems<NewDataValiators, TargetingParsers, FallThroughTargetingParsers>
+      DataItemsParser<
+        NewDataValiators,
+        TargetingParsers,
+        FallThroughTargetingParsers
+      >
     >
 
     return new Data<
@@ -228,7 +243,7 @@ export default class Data<
   addRules<Name extends Keys<DataParsers>>(
     name: Name,
     rules: input<
-      DataItemRules<
+      DataItemRulesParser<
         DataParsers[Name],
         TargetingParsers,
         FallThroughTargetingParsers
@@ -239,7 +254,7 @@ export default class Data<
 
     const data = {
       ...this.#data,
-      ...DataItems(
+      ...DataItemsParser(
         this.#dataParsers,
         this.#targetingParsers,
         this.#fallThroughTargetingParsers,
@@ -350,8 +365,12 @@ export default class Data<
     }
 
     const data: zInfer<
-      DataItems<DataParsers, NewTargetingParsers, FallThroughTargetingParsers>
-    > = DataItems(
+      DataItemsParser<
+        DataParsers,
+        NewTargetingParsers,
+        FallThroughTargetingParsers
+      >
+    > = DataItemsParser(
       this.#dataParsers,
       targetingParsers,
       this.#fallThroughTargetingParsers,
@@ -409,8 +428,8 @@ export default class Data<
     }
 
     const data: zInfer<
-      DataItems<DataParsers, NewTargeting, FallThroughTargetingParsers>
-    > = DataItems(
+      DataItemsParser<DataParsers, NewTargeting, FallThroughTargetingParsers>
+    > = DataItemsParser(
       this.#dataParsers,
       targetingParsers,
       this.#fallThroughTargetingParsers,
@@ -485,8 +504,12 @@ export default class Data<
     }
 
     const data: zInfer<
-      DataItems<DataParsers, TargetingParsers, NewFallThroughTargetingParsers>
-    > = DataItems(
+      DataItemsParser<
+        DataParsers,
+        TargetingParsers,
+        NewFallThroughTargetingParsers
+      >
+    > = DataItemsParser(
       this.#dataParsers,
       this.#targetingParsers,
       fallThroughTargetingParsers,
@@ -524,8 +547,8 @@ export default class Data<
     } as NewFallThroughTargeting
 
     const data: zInfer<
-      DataItems<DataParsers, TargetingParsers, NewFallThroughTargeting>
-    > = DataItems(
+      DataItemsParser<DataParsers, TargetingParsers, NewFallThroughTargeting>
+    > = DataItemsParser(
       this.#dataParsers,
       this.#targetingParsers,
       fallThroughTargetingParsers,
@@ -586,7 +609,7 @@ export default class Data<
 
   #mapRule<Name extends keyof DataParsers>(
     rule: zInfer<
-      DataItemRule<
+      DataItemRuleParser<
         DataParsers[Name],
         TargetingParsers,
         FallThroughTargetingParsers
@@ -615,7 +638,7 @@ export default class Data<
 
     return (
       rule: zInfer<
-        DataItemRule<
+        DataItemRuleParser<
           DataParsers[Name],
           TargetingParsers,
           FallThroughTargetingParsers
@@ -631,7 +654,7 @@ export default class Data<
       (
         this.#data as unknown as {
           [Name in keyof DataParsers]: zInfer<
-            DataItem<
+            DataItemParser<
               DataParsers[Name],
               TargetingParsers,
               FallThroughTargetingParsers
@@ -686,7 +709,7 @@ function hasPayload<Payload>(x: any): x is { payload: Payload } {
 }
 
 export type FallThroughRules<P extends ZodTypeAny, T extends ZodRawShape> = {
-  __rules__: zInfer<RuleWithPayload<P, T>>[]
+  __rules__: zInfer<RuleWithPayloadParser<P, T>>[]
 }
 
 export type Payload<P extends ZodTypeAny, T extends ZodRawShape> =
