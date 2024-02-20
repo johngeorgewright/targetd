@@ -1,11 +1,11 @@
-import { Data } from '@targetd/api'
+import { type Data } from '@targetd/api'
 import cors from 'cors'
 import express from 'express'
 import queryTypes from 'query-types'
-import { z } from 'zod'
 import { errorHandler } from './middleware/error'
 import { StatusError } from './StatusError'
 import { castQueryArrayProps } from './middleware/castQueryArrayProps'
+import { type ZodRawShape } from 'zod'
 
 export function createServer<
   DataValidators extends z.ZodRawShape,
