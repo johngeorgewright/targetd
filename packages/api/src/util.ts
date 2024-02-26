@@ -3,16 +3,16 @@ import { MaybePromise } from './types'
 
 export function objectMap<O extends Record<string, unknown>, R>(
   obj: O,
-  fn: <K extends keyof O>(v: O[K], k: K) => R
+  fn: <K extends keyof O>(v: O[K], k: K) => R,
 ): Record<keyof O, R> {
   return objectEntries(obj).reduce(
     (result, [key, value]) => ({ ...result, [key]: fn(value, key) }),
-    {} as Record<keyof O, R>
+    {} as Record<keyof O, R>,
   )
 }
 
 export function objectKeys<O extends Record<string, unknown>>(
-  obj: O
+  obj: O,
 ): (keyof O)[] {
   return Object.keys(obj)
 }
@@ -27,19 +27,19 @@ export function objectEntries<T extends Record<string, unknown>>(obj: T) {
 
 export function omit<T extends Record<string, unknown>, K extends keyof T>(
   obj: T,
-  keys: K[]
+  keys: K[],
 ): Omit<T, K> {
   return keys.reduce(
     (obj, key) => {
       delete obj[key]
       return obj
     },
-    { ...obj }
+    { ...obj },
   )
 }
 
 export function* objectIterator<T extends Record<string, unknown>>(
-  obj: T
+  obj: T,
 ): Generator<Entries<T>> {
   for (const key in obj)
     if (Object.prototype.hasOwnProperty.call(obj, key)) yield [key, obj[key]]
@@ -47,7 +47,7 @@ export function* objectIterator<T extends Record<string, unknown>>(
 
 export function objectFitler<T extends Record<string, unknown>>(
   obj: T,
-  predicate: <K extends keyof T>(value: T[K], key: K) => boolean
+  predicate: <K extends keyof T>(value: T[K], key: K) => boolean,
 ): Partial<T> {
   const result: Partial<T> = {}
 
@@ -59,7 +59,7 @@ export function objectFitler<T extends Record<string, unknown>>(
 
 export function objectSome<T extends Record<string, unknown>>(
   obj: T,
-  predicate: <K extends keyof T>(value: T[K], key: K) => boolean
+  predicate: <K extends keyof T>(value: T[K], key: K) => boolean,
 ): boolean {
   for (const [key, value] of objectIterator(obj))
     if (predicate(value, key)) return true
@@ -69,21 +69,21 @@ export function objectSome<T extends Record<string, unknown>>(
 
 export function someKeysIntersect(
   aObj: Record<string, unknown>,
-  bObj: Record<string, unknown>
+  bObj: Record<string, unknown>,
 ) {
   return objectSome(aObj, (_, key) => key in bObj)
 }
 
 export function intersection<T extends Record<string, unknown>>(
   aObj: T,
-  bObj: Record<string, unknown>
+  bObj: Record<string, unknown>,
 ) {
   return objectFitler(aObj, (_, key) => key in bObj)
 }
 
 export function intersectionKeys<T extends Record<string, unknown>>(
   aObj: T,
-  bObj: Record<string, unknown>
+  bObj: Record<string, unknown>,
 ): (keyof Partial<T>)[] {
   const keys: (keyof Partial<T>)[] = []
   for (const [key] of objectIterator(aObj)) if (key in bObj) keys.push(key)
@@ -103,13 +103,13 @@ class EveryAsyncFail extends Error {}
  */
 export async function objectEveryAsync<T extends Record<string, unknown>>(
   obj: T,
-  fn: <K extends keyof T>(value: T[K], key: K) => MaybePromise<boolean>
+  fn: <K extends keyof T>(value: T[K], key: K) => MaybePromise<boolean>,
 ) {
   try {
     await Promise.all(
       objectEntries(obj).map(async ([key, value]) => {
         if (!(await Promise.resolve(fn(value, key)))) throw new EveryAsyncFail()
-      })
+      }),
     )
   } catch (error) {
     if (error instanceof EveryAsyncFail) return false
