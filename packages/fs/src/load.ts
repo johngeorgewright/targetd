@@ -37,9 +37,8 @@ export async function load<
     encoding: 'utf8',
     filter: pathIsLoadable,
     withFileNames: true,
-  })) {
-    data = addRules(data, parseFileContents(contents))
-  }
+  }))
+    data = await addRules(data, parseFileContents(contents))
 
   return data
 }
@@ -59,7 +58,7 @@ function parseFileContents({
   )
 }
 
-function addRules<
+async function addRules<
   DataParsers extends ZodRawShape,
   TargetingParsers extends ZodRawShape,
   QueryParsers extends ZodRawShape,
@@ -73,11 +72,25 @@ function addRules<
   >,
   fileData: FileData,
 ) {
-  return Object.entries(fileData).reduce(
-    (data, [name, value]) =>
-      typeof value === 'object'
-        ? data.addRules(name as Keys<DataParsers>, value.rules as any[])
-        : data,
-    data,
-  )
+  let result = data
+
+  for (const [key, value] of objectIterator(fileData))
+    if (typeof value === 'object')
+      result = await result.addRules(
+        key as Keys<DataParsers>,
+        value.rules as any[],
+      )
+
+  return result
 }
+
+export function* objectIterator<T extends Record<string, unknown>>(
+  obj: T,
+): Generator<Entries<T>> {
+  for (const key in obj)
+    if (Object.prototype.hasOwnProperty.call(obj, key)) yield [key, obj[key]]
+}
+
+type Entries<T extends Record<string | symbol, unknown>> = {
+  [K in keyof T]: [K, T[K]]
+}[keyof T]
