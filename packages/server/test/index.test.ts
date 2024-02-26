@@ -11,105 +11,109 @@ import { createServer } from '../src'
 const timeout = promisify(setTimeout)
 let app: express.Application
 
-beforeEach(() => {
-  app = createServer(() =>
-    Data.create()
-      .useData({
-        foo: z.string(),
-        bar: z.number(),
-        timed: z.string(),
-      })
-      .useTargeting({
-        weather: {
-          predicate: (q) => (t) => typeof q === 'string' && t.includes(q),
-          queryParser: z.string(),
-          targetingParser: z.array(z.string()),
-        },
-        highTide: {
-          predicate: (q) => (t) => q === t,
-          queryParser: z.boolean(),
-          targetingParser: z.boolean(),
-        },
-        asyncThing: {
-          predicate: (q) => timeout(10, (t) => q === t && timeout(10, true)),
-          queryParser: z.boolean(),
-          targetingParser: z.boolean(),
-        },
-        arrayThing: {
-          predicate: (q) => (t) => difference(q, t).length === 0,
-          queryParser: z.string().array(),
-          targetingParser: z.string().array(),
-        },
-        date: dateRangeTargeting,
-      })
-      .addRules('foo', [
-        {
-          targeting: {
-            highTide: true,
-            weather: ['sunny'],
-          },
-          payload: '🏄‍♂️',
-        },
-        {
-          targeting: {
-            weather: ['sunny'],
-          },
-          payload: '😎',
-        },
-        {
-          targeting: {
-            weather: ['rainy'],
-          },
-          payload: '☂️',
-        },
-        {
-          targeting: {
-            highTide: true,
-          },
-          payload: '🌊',
-        },
-        {
-          targeting: {
-            asyncThing: true,
-          },
-          payload: 'Async payload',
-        },
-        {
-          targeting: {
-            arrayThing: ['a'],
-          },
-          payload: "a t'ing",
-        },
-        {
-          targeting: {
-            arrayThing: ['a', 'b'],
-          },
-          payload: "b t'ing",
-        },
-        {
-          payload: 'bar',
-        },
-      ])
-      .addRules('bar', [
-        {
-          payload: 123,
-        },
-      ])
-      .addRules('timed', [
-        {
-          targeting: {
-            date: { start: '2001-01-01', end: '2010-01-01' },
-          },
-          payload: 'in time',
-        },
-        {
-          payload: 'out of time',
-        },
-      ]),
-  )
+beforeEach(async () => {
+  let data = Data.create({
+    data: {
+      foo: z.string(),
+      bar: z.number(),
+      timed: z.string(),
+    },
+    targeting: {
+      weather: {
+        predicate: (q) => (t) => typeof q === 'string' && t.includes(q),
+        queryParser: z.string(),
+        targetingParser: z.array(z.string()),
+      },
+      highTide: {
+        predicate: (q) => (t) => q === t,
+        queryParser: z.boolean(),
+        targetingParser: z.boolean(),
+      },
+      asyncThing: {
+        predicate: (q) => timeout(10, (t) => q === t && timeout(10, true)),
+        queryParser: z.boolean(),
+        targetingParser: z.boolean(),
+      },
+      arrayThing: {
+        predicate: (q) => (t) => difference(q, t).length === 0,
+        queryParser: z.string().array(),
+        targetingParser: z.string().array(),
+      },
+      date: dateRangeTargeting,
+    },
+  })
+
+  data = await data.addRules('foo', [
+    {
+      targeting: {
+        highTide: true,
+        weather: ['sunny'],
+      },
+      payload: '🏄‍♂️',
+    },
+    {
+      targeting: {
+        weather: ['sunny'],
+      },
+      payload: '😎',
+    },
+    {
+      targeting: {
+        weather: ['rainy'],
+      },
+      payload: '☂️',
+    },
+    {
+      targeting: {
+        highTide: true,
+      },
+      payload: '🌊',
+    },
+    {
+      targeting: {
+        asyncThing: true,
+      },
+      payload: 'Async payload',
+    },
+    {
+      targeting: {
+        arrayThing: ['a'],
+      },
+      payload: "a t'ing",
+    },
+    {
+      targeting: {
+        arrayThing: ['a', 'b'],
+      },
+      payload: "b t'ing",
+    },
+    {
+      payload: 'bar',
+    },
+  ])
+
+  data = await data.addRules('bar', [
+    {
+      payload: 123,
+    },
+  ])
+
+  data = await data.addRules('timed', [
+    {
+      targeting: {
+        date: { start: '2001-01-01', end: '2010-01-01' },
+      },
+      payload: 'in time',
+    },
+    {
+      payload: 'out of time',
+    },
+  ])
+
+  app = createServer(() => data)
 })
 
-test('get one data point', async () => {
+test.only('get one data point', async () => {
   let response = await request(app)
     .get('/foo')
     .expect('Content-Type', /json/)

@@ -2,18 +2,24 @@ import { Data, targetIncludes } from '@targetd/api'
 import { z } from 'zod'
 import { dataJSONSchemas } from '../src'
 
-test('json schema for simple data object', () => {
+test('json schema for simple data object', async () => {
   expect(
     dataJSONSchemas(
-      Data.create()
-        .useData('foo', z.string())
-        .useTargeting('weather', targetIncludes(z.string()))
-        .useFallThroughTargeting('browser', targetIncludes(z.string()))
-        .addRules('foo', [
-          {
-            payload: 'bar',
-          },
-        ]),
+      await Data.create({
+        data: {
+          foo: z.string(),
+        },
+        targeting: {
+          weather: targetIncludes(z.string()),
+        },
+        fallThroughTargeting: {
+          browser: targetIncludes(z.string()),
+        },
+      }).addRules('foo', [
+        {
+          payload: 'bar',
+        },
+      ]),
     ),
   ).toMatchInlineSnapshot(`
     {
