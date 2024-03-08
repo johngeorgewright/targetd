@@ -6,13 +6,13 @@ import { setTimeout } from 'node:timers/promises'
 import { z } from 'zod'
 import { Client, ClientWithData } from '../src'
 
-const data = Data.create()
-  .useData({
+const schema = Data.create({
+  data: {
     foo: z.string(),
     bar: z.number(),
     timed: z.string(),
-  })
-  .useTargeting({
+  },
+  targeting: {
     weather: {
       predicate: (q) => (t) => typeof q === 'string' && t.includes(q),
       queryParser: z.string(),
@@ -29,7 +29,10 @@ const data = Data.create()
       targetingParser: z.boolean(),
     },
     date: dateRangeTargeting,
-  })
+  },
+})
+
+const data = schema
   .addRules('foo', [
     {
       targeting: {
@@ -66,29 +69,34 @@ const data = Data.create()
       payload: 'bar',
     },
   ])
-  .addRules('bar', [
-    {
-      payload: 123,
-    },
-  ])
-  .addRules('timed', [
-    {
-      targeting: {
-        date: { start: '2001-01-01', end: '2010-01-01' },
+  .then((data) =>
+    data.addRules('bar', [
+      {
+        payload: 123,
       },
-      payload: 'in time',
-    },
-  ])
+    ]),
+  )
+  .then((data) =>
+    data.addRules('timed', [
+      {
+        targeting: {
+          date: { start: '2001-01-01', end: '2010-01-01' },
+        },
+        payload: 'in time',
+      },
+    ]),
+  )
 
-let client: ClientWithData<typeof data>
+let client: ClientWithData<Awaited<typeof schema>>
 let server: Server
 
-beforeEach(() => {
-  server = createServer(() => data).listen(3_000)
-  client = new Client(`http://localhost:3000`, data)
+beforeAll(async () => {
+  const d = await data
+  server = createServer(() => d).listen(3_000)
+  client = new Client(`http://localhost:3000`, schema)
 })
 
-afterEach(() => {
+afterAll(() => {
   server.close()
 })
 

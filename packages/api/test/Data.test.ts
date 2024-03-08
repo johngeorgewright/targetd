@@ -10,7 +10,7 @@ const timeout = <T>(ms: number, returnValue: T) =>
   new Promise<T>((resolve) => setTimeout(() => resolve(returnValue), ms))
 
 test('getPayload', async () => {
-  const data = await Data.create({
+  let data = Data.create({
     data: {
       foo: z.string(),
     },
@@ -23,7 +23,9 @@ test('getPayload', async () => {
         targetingParser: z.boolean(),
       },
     },
-  }).addRules('foo', [
+  })
+
+  data = await data.addRules('foo', [
     {
       targeting: {
         highTide: true,
@@ -93,7 +95,7 @@ test('getPayload', async () => {
 })
 
 test('targeting with multiple conditions', async () => {
-  const data = await Data.create({
+  let data = Data.create({
     data: {
       foo: z.string(),
     },
@@ -101,7 +103,9 @@ test('targeting with multiple conditions', async () => {
       weather: targetIncludes(z.string()),
       highTide: targetEquals(z.boolean()),
     },
-  }).addRules('foo', [
+  })
+
+  data = await data.addRules('foo', [
     {
       targeting: [
         {
@@ -128,7 +132,7 @@ test('targeting with multiple conditions', async () => {
 })
 
 test('targeting without requiring a query', async () => {
-  const data = await Data.create({
+  let data = Data.create({
     data: {
       foo: z.string(),
     },
@@ -140,7 +144,9 @@ test('targeting without requiring a query', async () => {
         targetingParser: z.literal('now!'),
       },
     },
-  }).addRules('foo', [
+  })
+
+  data = await data.addRules('foo', [
     {
       targeting: {
         time: 'now!',
@@ -156,7 +162,7 @@ test('targeting without requiring a query', async () => {
 })
 
 test('getPayloads', async () => {
-  const data = await Data.create({
+  let data = Data.create({
     data: {
       foo: z.string(),
     },
@@ -164,7 +170,9 @@ test('getPayloads', async () => {
       weather: targetIncludes(z.string()),
       highTide: targetEquals(z.boolean()),
     },
-  }).addRules('foo', [
+  })
+
+  data = await data.addRules('foo', [
     {
       targeting: {
         weather: ['sunny'],
@@ -200,11 +208,13 @@ test('getPayloads', async () => {
 
 test('payload runtype validation', async () => {
   try {
-    await Data.create({
+    let data = Data.create({
       data: {
         foo: z.string().refine((x) => x === 'bar', 'Should be bar'),
       },
-    }).addRules('foo', [
+    })
+
+    data = await data.addRules('foo', [
       {
         payload: 'rab',
       },
@@ -301,14 +311,16 @@ test('getPayloadForEachName', async () => {
 })
 
 test('fallThrough targeting', async () => {
-  let data = await Data.create({
+  let data = Data.create({
     data: {
       foo: z.string(),
       bar: z.string(),
     },
     targeting: { surf: targetIncludes(z.string()) },
     fallThroughTargeting: { weather: z.array(z.string()) },
-  }).addRules('foo', [
+  })
+
+  data = await data.addRules('foo', [
     {
       targeting: {
         surf: ['strong'],
@@ -418,7 +430,7 @@ test('fallThrough targeting', async () => {
 })
 
 test('inserting data', async () => {
-  const data = await Data.create({
+  let data = Data.create({
     data: {
       moo: z.string(),
       foo: z.string(),
@@ -430,7 +442,9 @@ test('inserting data', async () => {
     fallThroughTargeting: {
       highTide: targetEquals(z.boolean()),
     },
-  }).insert({
+  })
+
+  data = await data.insert({
     bar: {
       __rules__: [
         {
@@ -503,7 +517,7 @@ test('targeting predicate with full query object', async () => {
         targeting.includes(queryValue),
   })
 
-  const data = await Data.create({
+  let data = Data.create({
     data: {
       foo: z.string(),
     },
@@ -520,7 +534,9 @@ test('targeting predicate with full query object', async () => {
       },
       mung: mungTargeting,
     },
-  }).addRules('foo', [
+  })
+
+  data = await data.addRules('foo', [
     {
       targeting: { mung: ['mung'] },
       payload: 'yay',

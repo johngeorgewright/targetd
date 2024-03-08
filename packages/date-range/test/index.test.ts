@@ -4,31 +4,35 @@ import z from 'zod'
 import dateRangeTargeting from '../src'
 
 test('date range predicate', async () => {
-  const data = Data.create()
-    .useTargeting('dateRange', dateRangeTargeting)
-    .useData('foo', z.string())
-    .addRules('foo', [
-      {
-        targeting: {
-          dateRange: {
-            start: '1939-09-01',
-            end: '1945-09-02',
-          },
+  const data = await Data.create({
+    targeting: {
+      dateRange: dateRangeTargeting,
+    },
+    data: {
+      foo: z.string(),
+    },
+  }).addRules('foo', [
+    {
+      targeting: {
+        dateRange: {
+          start: '1939-09-01',
+          end: '1945-09-02',
         },
-        payload: 'WWII',
       },
-      {
-        targeting: {
-          dateRange: {
-            start: '2020-01-01T00:00:00',
-          },
+      payload: 'WWII',
+    },
+    {
+      targeting: {
+        dateRange: {
+          start: '2020-01-01T00:00:00',
         },
-        payload: '😷',
       },
-      {
-        payload: 'bar',
-      },
-    ])
+      payload: '😷',
+    },
+    {
+      payload: 'bar',
+    },
+  ])
 
   jestDate.advanceTo(new Date('1930-01-01'))
   expect(await data.getPayload('foo', {})).toBe('bar')

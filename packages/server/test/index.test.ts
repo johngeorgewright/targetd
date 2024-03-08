@@ -11,39 +11,41 @@ import { createServer } from '../src'
 const timeout = promisify(setTimeout)
 let app: express.Application
 
-beforeEach(async () => {
-  let data = Data.create({
-    data: {
-      foo: z.string(),
-      bar: z.number(),
-      timed: z.string(),
+const schema = Data.create({
+  data: {
+    foo: z.string(),
+    bar: z.number(),
+    timed: z.string(),
+  },
+  targeting: {
+    weather: {
+      predicate: (q) => (t) => typeof q === 'string' && t.includes(q),
+      queryParser: z.string(),
+      targetingParser: z.array(z.string()),
     },
-    targeting: {
-      weather: {
-        predicate: (q) => (t) => typeof q === 'string' && t.includes(q),
-        queryParser: z.string(),
-        targetingParser: z.array(z.string()),
-      },
-      highTide: {
-        predicate: (q) => (t) => q === t,
-        queryParser: z.boolean(),
-        targetingParser: z.boolean(),
-      },
-      asyncThing: {
-        predicate: (q) => timeout(10, (t) => q === t && timeout(10, true)),
-        queryParser: z.boolean(),
-        targetingParser: z.boolean(),
-      },
-      arrayThing: {
-        predicate: (q) => (t) => difference(q, t).length === 0,
-        queryParser: z.string().array(),
-        targetingParser: z.string().array(),
-      },
-      date: dateRangeTargeting,
+    highTide: {
+      predicate: (q) => (t) => q === t,
+      queryParser: z.boolean(),
+      targetingParser: z.boolean(),
     },
-  })
+    asyncThing: {
+      predicate: (q) => timeout(10, (t) => q === t && timeout(10, true)),
+      queryParser: z.boolean(),
+      targetingParser: z.boolean(),
+    },
+    arrayThing: {
+      predicate: (q) => (t) => difference(q, t).length === 0,
+      queryParser: z.string().array(),
+      targetingParser: z.string().array(),
+    },
+    date: dateRangeTargeting,
+  },
+})
 
-  data = await data.addRules('foo', [
+let data: typeof schema
+
+beforeEach(async () => {
+  data = await schema.addRules('foo', [
     {
       targeting: {
         highTide: true,
