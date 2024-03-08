@@ -5,7 +5,7 @@ import zodToJSONSchema from 'zod-to-json-schema'
 export function dataJSONSchemas<D extends DT.Any>(data: D) {
   return zodToJSONSchema(
     DataItemsParser(
-      data.dataParsers,
+      data.payloadParsers,
       data.targetingParsers,
       data.fallThroughTargetingParsers,
     ).extend({ $schema: string().optional() }),
@@ -17,11 +17,11 @@ export function dataJSONSchemas<D extends DT.Any>(data: D) {
 
 export function dataJSONSchema<D extends DT.Any>(
   data: D,
-  name: keyof DT.DataParsers<D>,
+  name: keyof DT.PayloadParsers<D>,
 ) {
   return zodToJSONSchema(
     DataItemParser(
-      data.dataParsers[name],
+      data.payloadParsers[name],
       data.targetingParsers,
       data.fallThroughTargetingParsers,
     ).extend({ $schema: string().optional() }),

@@ -46,7 +46,7 @@ export function createServer<D extends DT.Any>(
       async (req, res, next) => {
         const data = getData()
 
-        if (!(req.params.name in data.dataParsers)) {
+        if (!(req.params.name in data.payloadParsers)) {
           return next(
             new StatusError(404, `Unknown data property ${req.params.name}`),
           )

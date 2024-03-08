@@ -6,8 +6,8 @@ export type ExplodedPayloads<
   PathSeparator extends string,
 > = Explode<
   Partial<{
-    [Name in keyof DT.DataParsers<D>]:
-      | PT.Payload<DT.DataParsers<D>[Name], DT.TargetingParsers<D>>
+    [Name in keyof DT.PayloadParsers<D>]:
+      | PT.Payload<DT.PayloadParsers<D>[Name], DT.TargetingParsers<D>>
       | undefined
   }>,
   PathSeparator

@@ -6,9 +6,9 @@ export function DataItemsParser<
   D extends ZodRawShape,
   T extends ZodRawShape,
   CT extends ZodRawShape,
->(dataParsers: D, targeting: T, fallThroughTargeting: CT) {
+>(payloadParsers: D, targeting: T, fallThroughTargeting: CT) {
   const dataItems: Record<string, any> = {}
-  for (const [key, Payload] of Object.entries(dataParsers))
+  for (const [key, Payload] of Object.entries(payloadParsers))
     dataItems[key] = DataItemParser(Payload, targeting, fallThroughTargeting)
   return strictObject(dataItems).partial() as DataItemsParser<D, T, CT>
 }

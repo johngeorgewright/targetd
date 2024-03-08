@@ -3,13 +3,13 @@ import { RequestHandler } from 'express'
 import { ZodFirstPartyTypeKind, ZodRawShape } from 'zod'
 
 export function castQueryArrayProps<
-  DataParsers extends ZodRawShape,
+  PayloadParsers extends ZodRawShape,
   TargetingParsers extends ZodRawShape,
   QueryParsers extends ZodRawShape,
   FallThroughTargetingParsers extends ZodRawShape,
 >(
   getData: () => Data<
-    DataParsers,
+    PayloadParsers,
     TargetingParsers,
     QueryParsers,
     FallThroughTargetingParsers

@@ -115,7 +115,7 @@ beforeEach(async () => {
   app = createServer(() => data)
 })
 
-test.only('get one data point', async () => {
+test('get one data point', async () => {
   let response = await request(app)
     .get('/foo')
     .expect('Content-Type', /json/)

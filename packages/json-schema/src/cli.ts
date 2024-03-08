@@ -43,6 +43,6 @@ registerTSNode()
   else console.info(jsonSchema)
 
   function isDataLike(x: any): x is DT.Any {
-    return 'dataParsers' in x && 'targetingParsers' in x
+    return 'payloadParsers' in x && 'targetingParsers' in x
   }
 })().catch(console.error)

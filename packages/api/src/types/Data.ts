@@ -15,9 +15,9 @@ export namespace DT {
   export type Any = Data<any, any, any, any>
 
   /**
-   * Get the DataParsers from a Data type
+   * Get the PayloadParsers from a Data type
    */
-  export type DataParsers<D extends Any> =
+  export type PayloadParsers<D extends Any> =
     D extends Data<infer V, any, any, any> ? V : never
 
   /**
@@ -42,18 +42,18 @@ export namespace DT {
    * Create the fall through Data type from a Data type
    */
   export type FallThrough<D extends Any> = Data<
-    DataParsers<D>,
+    PayloadParsers<D>,
     { [K in keyof FallThroughTargetingParsers<D>]: ZodTypeAny },
     Omit<QueryParsers<D>, keyof TargetingParsers<D>>,
     {}
   >
 
   /**
-   * A union of possible payloads for a Data's DataParser
+   * A union of possible payloads for a Data's PayloadParser
    */
-  export type Payload<D extends Any, Name extends keyof DataParsers<D>> =
-    | zInfer<DataParsers<D>[Name]>
-    | FTTT.Rules<DataParsers<D>[Name], TargetingParsers<D>>
+  export type Payload<D extends Any, Name extends keyof PayloadParsers<D>> =
+    | zInfer<PayloadParsers<D>[Name]>
+    | FTTT.Rules<PayloadParsers<D>[Name], TargetingParsers<D>>
 
   /**
    * The options for Data.create

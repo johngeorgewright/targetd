@@ -2,7 +2,7 @@ import type { Data, DT, PT, StaticRecord } from '@targetd/api'
 import type { ZodRawShape } from 'zod'
 
 export class Client<
-  DataParsers extends ZodRawShape,
+  PayloadParsers extends ZodRawShape,
   TargetingParsers extends ZodRawShape,
   QueryParsers extends ZodRawShape,
   FallThroughTargetingParsers extends ZodRawShape,
@@ -10,7 +10,7 @@ export class Client<
   #baseURL: string
 
   #data: Data<
-    DataParsers,
+    PayloadParsers,
     TargetingParsers,
     QueryParsers,
     FallThroughTargetingParsers
@@ -21,7 +21,7 @@ export class Client<
   constructor(
     baseURL: string,
     data: Data<
-      DataParsers,
+      PayloadParsers,
       TargetingParsers,
       QueryParsers,
       FallThroughTargetingParsers
@@ -33,10 +33,10 @@ export class Client<
     this.#init = init
   }
 
-  async getPayload<Name extends keyof DataParsers>(
+  async getPayload<Name extends keyof PayloadParsers>(
     name: Name,
     rawQuery: Partial<StaticRecord<QueryParsers>> = {},
-  ): Promise<PT.Payload<DataParsers[Name], TargetingParsers> | void> {
+  ): Promise<PT.Payload<PayloadParsers[Name], TargetingParsers> | void> {
     const query = this.#data.QueryParser.parse(rawQuery)
     const urlSearchParams = queryToURLSearchParams(query)
     const response = await fetch(
@@ -59,8 +59,8 @@ export class Client<
     rawQuery: Partial<StaticRecord<QueryParsers>> = {},
   ): Promise<
     Partial<{
-      [Name in keyof DataParsers]:
-        | PT.Payload<DataParsers[Name], TargetingParsers>
+      [Name in keyof PayloadParsers]:
+        | PT.Payload<PayloadParsers[Name], TargetingParsers>
         | undefined
     }>
   > {
@@ -78,7 +78,7 @@ export class Client<
 export type ClientWithData<
   D extends Data<ZodRawShape, ZodRawShape, ZodRawShape, ZodRawShape>,
 > = Client<
-  DT.DataParsers<D>,
+  DT.PayloadParsers<D>,
   DT.TargetingParsers<D>,
   DT.QueryParsers<D>,
   DT.FallThroughTargetingParsers<D>
