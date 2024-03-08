@@ -288,7 +288,9 @@ export default class Data<
     const targetingParsers: NewTargetingParsers =
       this.#mergeTargetingParsers(targeting)
 
-    const targetingPredicates = this.#mergeTargetingPredicates(targeting)
+    const targetingPredicates = this.#mergeTargetingPredicates(
+      targeting,
+    ) as TargetingPredicates<NewTargetingParsers, NewQueryParsers>
 
     const queryParsers: NewQueryParsers = this.#mergeQueryPredicates(targeting)
 
@@ -328,7 +330,7 @@ export default class Data<
     }
   }
 
-  #mergeTargetingPredicates<TDs extends TT.DescriptorRecord>(targeting: TDs) {
+  #mergeTargetingPredicates(targeting: TT.DescriptorRecord) {
     return {
       ...this.#targetingPredicates,
       ...objectMap(targeting, (targetingDescriptor) => ({
