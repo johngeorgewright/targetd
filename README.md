@@ -50,14 +50,9 @@ data.useTargeting(...)
 data.addRules(...)
 
 // ✅ This is better.
-const data = Data.create()
-  .useTargeting(...)
-  .addRules(...)
-
-// ... or you can do this
-let data = Data.create()
-data = data.useTargeting(...)
-data = data.addRules(...)
+let data = Data.create({ ...initialOptions })
+data = await data.useTargeting(...)
+data = await data.addRules(...)
 ```
 
 ### Typing Data (payloads)
@@ -68,7 +63,7 @@ All typing and validation is done using the awesome [zod][] project and is expor
 import { Data } from '@targetd/api'
 import z from 'zod'
 
-let data = Data.create().useData(
+let data = await Data.create().useData(
   'blog',
   z.strictObject({
     title: z.string(),
@@ -80,7 +75,7 @@ let data = Data.create().useData(
 Now I can safely add some rules. Without the above, however, you'll receive an error that you cannot add to the 'blog' data type.
 
 ```typescript
-data = data.addRules([
+data = await data.addRules([
   {
     name: 'blog',
     payload: {
@@ -96,7 +91,7 @@ data = data.addRules([
 As mentioned above, all typing and validation is done using the [zod][] project.
 
 ```typescript
-data = data.useTargeting('category', {
+data = await data.useTargeting('category', {
   // Restrict queries to be string
   queryParser: z.string(),
 
@@ -111,7 +106,7 @@ data = data.useTargeting('category', {
 Now one can safely target by `category` without receiving an error.
 
 ```typescript
-data = data.addRules([
+data = await data.addRules([
   {
     name: 'blog',
     payload: {
@@ -129,7 +124,7 @@ data = data.addRules([
 
 ```typescript
 console.info(
-  data.getPayload('blog', { category: 'news' }),
+  await data.getPayload('blog', { category: 'news' }),
   // This will find the **first** rule that matches the query
 )
 // { title: 'A new thing', body: "Here's the body" }
@@ -143,7 +138,7 @@ Sometimes you may not be able to successfully target certain payloads in one ser
 // data.ts
 import { Data } from '@targetd/api'
 
-export const data = Data.create().useData('foo', z.string())
+export const data = await Data.create().useData('foo', z.string())
 ```
 
 ```typescript
@@ -152,20 +147,27 @@ import { targetIncludes } from '@targeted/api'
 import { z } from 'zod'
 import { data } from './data'
 
-export const service1Data = data
-  .useTargeting('weather', targetIncludes(z.string()))
-  .useFallthroughTargeting('browser', targetIncludes(z.string()))
-  .addRules('foo', [
-    {
-      targeting: {
-        // Targeting "browser" cannot be targeted by this server
-        // and therefore will be passed to service-2
-        browser: ['chrome'],
-        weather: ['sunny'],
-      },
-      payload: 'Chrome and sunny',
+let _service1Data = await data.useTargeting(
+  'weather',
+  targetIncludes(z.string()),
+)
+_service1Data = await _service1Data.useFallthroughTargeting(
+  'browser',
+  targetIncludes(z.string()),
+)
+_service1Data = await _service1Data.addRules('foo', [
+  {
+    targeting: {
+      // Targeting "browser" cannot be targeted by this server
+      // and therefore will be passed to service-2
+      browser: ['chrome'],
+      weather: ['sunny'],
     },
-  ])
+    payload: 'Chrome and sunny',
+  },
+])
+
+export const service1Data = _service1Data
 ```
 
 ```typescript
@@ -174,7 +176,13 @@ import { targetIncludes } from '@targeted/api'
 import { z } from 'zod'
 import { data } from './data'
 
-export const service2Data = data
-  .useTargeting('browser', targetIncludes(z.string()))
-  .insert(data.getPayloadForEachName({ weather: 'sunny' }))
+let service2Data = await data.useTargeting(
+  'browser',
+  targetIncludes(z.string()),
+)
+service2Data = await service2Data.insert(
+  data.getPayloadForEachName({ weather: 'sunny' }),
+)
+
+// ...
 ```

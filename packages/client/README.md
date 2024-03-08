@@ -24,10 +24,15 @@ import { Data } from '@targetd/api'
 import z from 'zod'
 import { deviceTargeting } from './device'
 
-export const data = Data.create()
-  .useData('bar', z.number())
-  .useData('foo', z.string())
-  .useTargeting('device', deviceTargeting)
+export const data = Data.create({
+  data: {
+    bar: z.number(),
+    foo: z.string(),
+  },
+  targeting: {
+    device: deviceTargeting,
+  },
+})
 ```
 
 ```typescript

@@ -28,7 +28,12 @@ import * as path from 'node:path'
 import z from 'zod'
 
 watch(
-  Data.create().useData('foo', z.string()).useData('b', z.string()),
+  Data.create({
+    data: {
+      foo: z.string(),
+      b: z.string(),
+    },
+  }),
 
   path.join(__dirname, 'rules'),
 
