@@ -1,4 +1,17 @@
-import { O, S, U } from 'ts-toolbelt'
+import type { DT, PT } from '@targetd/api'
+import type { O, S, U } from 'ts-toolbelt'
+
+export type ExplodedPayloads<
+  D extends DT.Any,
+  PathSeparator extends string,
+> = Explode<
+  Partial<{
+    [Name in keyof DT.DataParsers<D>]:
+      | PT.Payload<DT.DataParsers<D>[Name], DT.TargetingParsers<D>>
+      | undefined
+  }>,
+  PathSeparator
+>
 
 export type Explode<Rec, Sep extends string> =
   Rec extends Record<string, unknown> ? $Explode<Rec, Sep> : Rec
