@@ -1,13 +1,4 @@
-import type {
-  FallThroughTargetingParsers,
-  Data,
-  DataParsers,
-  Payload,
-  QueryParsers,
-  StaticRecord,
-  TargetingParsers,
-} from '@targetd/api'
-import fetch from 'cross-fetch'
+import type { Data, DT, PT, StaticRecord } from '@targetd/api'
 import type { ZodRawShape } from 'zod'
 
 export class Client<
@@ -45,7 +36,7 @@ export class Client<
   async getPayload<Name extends keyof DataParsers>(
     name: Name,
     rawQuery: Partial<StaticRecord<QueryParsers>> = {},
-  ): Promise<Payload<DataParsers[Name], TargetingParsers> | void> {
+  ): Promise<PT.Payload<DataParsers[Name], TargetingParsers> | void> {
     const query = this.#data.QueryParser.parse(rawQuery)
     const urlSearchParams = queryToURLSearchParams(query)
     const response = await fetch(
@@ -55,11 +46,13 @@ export class Client<
         ...this.#init,
       },
     )
-    return response.status === 204
-      ? undefined
-      : this.#data
-          .insert({ [name]: await response.json() } as any)
-          .getPayload(name)
+    if (response.status === 204) return undefined
+    else {
+      const data = await this.#data.insert({
+        [name]: await response.json(),
+      } as any)
+      return data.getPayload(name)
+    }
   }
 
   async getPayloadForEachName(
@@ -67,7 +60,7 @@ export class Client<
   ): Promise<
     Partial<{
       [Name in keyof DataParsers]:
-        | Payload<DataParsers[Name], TargetingParsers>
+        | PT.Payload<DataParsers[Name], TargetingParsers>
         | undefined
     }>
   > {
@@ -77,17 +70,18 @@ export class Client<
       method: 'GET',
       ...this.#init,
     })
-    return this.#data.insert(await response.json()).getPayloadForEachName()
+    const data = await this.#data.insert((await response.json()) as any)
+    return data.getPayloadForEachName()
   }
 }
 
 export type ClientWithData<
   D extends Data<ZodRawShape, ZodRawShape, ZodRawShape, ZodRawShape>,
 > = Client<
-  DataParsers<D>,
-  TargetingParsers<D>,
-  QueryParsers<D>,
-  FallThroughTargetingParsers<D>
+  DT.DataParsers<D>,
+  DT.TargetingParsers<D>,
+  DT.QueryParsers<D>,
+  DT.FallThroughTargetingParsers<D>
 >
 
 function queryToURLSearchParams(query: Record<string, unknown>) {

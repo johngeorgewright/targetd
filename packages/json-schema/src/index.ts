@@ -1,20 +1,8 @@
-import { type Data, DataItemParser, DataItemsParser } from '@targetd/api'
-import { type ZodRawShape, string } from 'zod'
+import { DataItemParser, DataItemsParser, type DT } from '@targetd/api'
+import { string } from 'zod'
 import zodToJSONSchema from 'zod-to-json-schema'
 
-export function dataJSONSchemas<
-  DataParsers extends ZodRawShape,
-  TargetingParsers extends ZodRawShape,
-  QueryParsers extends ZodRawShape,
-  FallThroughTargetingParsers extends ZodRawShape,
->(
-  data: Data<
-    DataParsers,
-    TargetingParsers,
-    QueryParsers,
-    FallThroughTargetingParsers
-  >,
-) {
+export function dataJSONSchemas<D extends DT.Any>(data: D) {
   return zodToJSONSchema(
     DataItemsParser(
       data.dataParsers,
@@ -27,19 +15,9 @@ export function dataJSONSchemas<
   )
 }
 
-export function dataJSONSchema<
-  DataParsers extends ZodRawShape,
-  TargetingParsers extends ZodRawShape,
-  QueryParsers extends ZodRawShape,
-  FallThroughTargetingParsers extends ZodRawShape,
->(
-  data: Data<
-    DataParsers,
-    TargetingParsers,
-    QueryParsers,
-    FallThroughTargetingParsers
-  >,
-  name: keyof DataParsers,
+export function dataJSONSchema<D extends DT.Any>(
+  data: D,
+  name: keyof DT.DataParsers<D>,
 ) {
   return zodToJSONSchema(
     DataItemParser(

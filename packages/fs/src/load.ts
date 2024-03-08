@@ -1,8 +1,7 @@
 import { readFiles } from '@johngw/fs'
 import type { WithFileNamesResult } from '@johngw/fs/dist/readFiles'
-import type { Data } from '@targetd/api'
+import type { DT } from '@targetd/api'
 import YAML from 'yaml'
-import type { Keys } from 'ts-toolbelt/out/Any/Keys'
 import {
   type infer as zInfer,
   array,
@@ -10,7 +9,6 @@ import {
   strictObject,
   string,
   unknown,
-  type ZodRawShape,
 } from 'zod'
 
 const FileData = object({ $schema: string().optional() }).catchall(
@@ -19,20 +17,7 @@ const FileData = object({ $schema: string().optional() }).catchall(
 
 type FileData = zInfer<typeof FileData>
 
-export async function load<
-  DataParsers extends ZodRawShape,
-  TargetingParsers extends ZodRawShape,
-  QueryParsers extends ZodRawShape,
-  FallThroughTargetingParsers extends ZodRawShape,
->(
-  data: Data<
-    DataParsers,
-    TargetingParsers,
-    QueryParsers,
-    FallThroughTargetingParsers
-  >,
-  dir: string,
-) {
+export async function load<D extends DT.Any>(data: D, dir: string): Promise<D> {
   for await (const contents of readFiles(dir, {
     encoding: 'utf8',
     filter: pathIsLoadable,
@@ -58,39 +43,26 @@ function parseFileContents({
   )
 }
 
-async function addRules<
-  DataParsers extends ZodRawShape,
-  TargetingParsers extends ZodRawShape,
-  QueryParsers extends ZodRawShape,
-  FallThroughTargetingParsers extends ZodRawShape,
->(
-  data: Data<
-    DataParsers,
-    TargetingParsers,
-    QueryParsers,
-    FallThroughTargetingParsers
-  >,
+async function addRules<D extends DT.Any>(
+  data: D,
   fileData: FileData,
-) {
+): Promise<D> {
   let result = data
 
   for (const [key, value] of objectIterator(fileData))
     if (typeof value === 'object')
-      result = await result.addRules(
-        key as Keys<DataParsers>,
-        value.rules as any[],
-      )
+      result = (await result.addRules(key, value.rules as any[])) as D
 
   return result
 }
 
 export function* objectIterator<T extends Record<string, unknown>>(
   obj: T,
-): Generator<Entries<T>> {
+): Generator<Entry<T>> {
   for (const key in obj)
     if (Object.prototype.hasOwnProperty.call(obj, key)) yield [key, obj[key]]
 }
 
-type Entries<T extends Record<string | symbol, unknown>> = {
+type Entry<T extends Record<string | symbol, unknown>> = {
   [K in keyof T]: [K, T[K]]
 }[keyof T]

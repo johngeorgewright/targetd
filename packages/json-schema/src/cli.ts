@@ -1,4 +1,4 @@
-import { Data } from '@targetd/api'
+import type { DT } from '@targetd/api'
 import yargs from 'yargs'
 import * as path from 'node:path'
 import { writeFile } from 'node:fs/promises'
@@ -42,7 +42,7 @@ registerTSNode()
   if (outputFile) await writeFile(outputFile, jsonSchema)
   else console.info(jsonSchema)
 
-  function isDataLike(x: any): x is Data<any, any, any, any> {
+  function isDataLike(x: any): x is DT.Any {
     return 'dataParsers' in x && 'targetingParsers' in x
   }
 })().catch(console.error)
