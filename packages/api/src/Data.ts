@@ -1,66 +1,23 @@
 import {
   strictObject,
-  type ZodTypeAny,
   type infer as zInfer,
   type ZodRawShape,
   type input,
   ZodType,
 } from 'zod'
-import TargetingDescriptor, {
-  TargetingDescriptorQueryParser,
-  TargetingDescriptorTargetingParser,
-} from './parsers/TargetingDescriptor'
 import type TargetingPredicates from './parsers/TargetingPredicates'
 import { objectEveryAsync, objectIterator, objectKeys, objectMap } from './util'
 import { DataItemsParser } from './parsers/DataItems'
-import { type DataItemParser } from './parsers/DataItem'
-import type {
-  DataItemRuleParser,
-  RuleWithPayloadParser,
-} from './parsers/DataItemRule'
-import { Keys } from 'ts-toolbelt/out/Any/Keys'
-import { MaybePromise, StaticRecord, ZodPartialObject } from './types'
+import type { DataItemParser } from './parsers/DataItem'
+import type { DataItemRuleParser } from './parsers/DataItemRule'
+import type { Keys } from 'ts-toolbelt/out/Any/Keys'
+import type { MaybePromise, StaticRecord, ZodPartialObject } from './types'
 import { DataItemRulesParser } from './parsers/DataItemRules'
-
-interface CreateOptions {
-  data?: ZodRawShape
-  targeting?: Record<string, TargetingDescriptor<any, any, any>>
-  fallThroughTargeting?: Record<
-    string,
-    ZodTypeAny | TargetingDescriptor<any, any, any>
-  >
-}
-
-type DataFromCreateOptions<
-  T extends CreateOptions,
-  R extends Required<CreateOptions> = Required<{
-    [K in keyof T]: Exclude<T[K], undefined>
-  }>,
-> = Data<
-  R['data'],
-  {
-    [K in keyof R['targeting']]: TargetingDescriptorTargetingParser<
-      R['targeting'][K]
-    >
-  },
-  {
-    [K in keyof R['targeting']]: TargetingDescriptorQueryParser<
-      R['targeting'][K]
-    >
-  },
-  {
-    [K in keyof R['fallThroughTargeting']]: FallThroughTargetingParser<
-      R['fallThroughTargeting'][K]
-    >
-  }
->
-
-type FallThroughTargetingParser<
-  T extends ZodTypeAny | TargetingDescriptor<any, any, any>,
-> =
-  T extends TargetingDescriptor<any, any, any>
-    ? TargetingDescriptorTargetingParser<T>
-    : T
+import type { DT } from './types/Data'
+import type { TT } from './types/Targeting'
+import type { FTTT } from './types/FallThroughTargeting'
+import type { PT } from './types/Payload'
+import type { QT } from './types/Query'
 
 export default class Data<
   DataParsers extends ZodRawShape,
@@ -89,37 +46,34 @@ export default class Data<
 
   static create(): Data<{}, {}, {}, {}>
 
-  static create<Options extends CreateOptions>(
+  static create<Options extends DT.CreateOptions>(
     options: Options,
-  ): DataFromCreateOptions<Options>
+  ): DT.FromCreateOptions<Options>
 
-  static create(options: CreateOptions = {}) {
+  static create(options: DT.CreateOptions = {}) {
+    const data = new Data({}, {}, {}, {}, {}, {})
+    const dataParsers = options.data
+      ? data.#mergeDataParsers(options.data)
+      : data.#dataParsers
+    const targetingPredicates = options.targeting
+      ? data.#mergeTargetingPredicates(options.targeting)
+      : data.#targetingPredicates
+    const targetingParsers = options.targeting
+      ? data.#mergeTargetingParsers(options.targeting)
+      : data.#targetingParsers
+    const queryParsers = options.targeting
+      ? data.#mergeQueryPredicates(options.targeting)
+      : data.#queryParsers
+    const fallThroughTargeting = options.fallThroughTargeting
+      ? data.#mergeFallThroughTargeting(options.fallThroughTargeting)
+      : data.#fallThroughTargetingParsers
     return new Data(
-      {},
-      options.data || {},
-      (options.targeting
-        ? objectMap(options.targeting, (descriptor) => ({
-            predicate: descriptor.predicate,
-            requiresQuery:
-              descriptor.requiresQuery === undefined
-                ? true
-                : descriptor.requiresQuery,
-          }))
-        : {}) as TargetingPredicates<any, any>,
-      options.targeting
-        ? objectMap(
-            options.targeting,
-            (descriptor) => descriptor.targetingParser,
-          )
-        : {},
-      options.targeting
-        ? objectMap(options.targeting, (descriptor) => descriptor.queryParser)
-        : {},
-      options.fallThroughTargeting
-        ? objectMap(options.fallThroughTargeting, (x) =>
-            x instanceof ZodType ? x : x.targetingParser,
-          )
-        : {},
+      data.#data,
+      dataParsers,
+      targetingPredicates,
+      targetingParsers,
+      queryParsers,
+      fallThroughTargeting,
     )
   }
 
@@ -198,10 +152,7 @@ export default class Data<
   > {
     type NewDataParsers = DataParsers & Parsers
 
-    const dataParsers = {
-      ...this.#dataParsers,
-      ...parsers,
-    }
+    const dataParsers = this.#mergeDataParsers(parsers)
 
     const data = (await DataItemsParser(
       dataParsers,
@@ -230,13 +181,21 @@ export default class Data<
     )
   }
 
+  #mergeDataParsers<Parsers extends ZodRawShape>(
+    parsers: Parsers,
+  ): DataParsers & Parsers {
+    return {
+      ...this.#dataParsers,
+      ...parsers,
+    }
+  }
+
   async insert(
-    data: Partial<{
-      [Name in keyof DataParsers]:
-        | zInfer<DataParsers[Name]>
-        | FallThroughRules<DataParsers[Name], TargetingParsers>
-        | FallThroughRules<DataParsers[Name], FallThroughTargetingParsers>
-    }>,
+    data: DT.InsertableData<
+      DataParsers,
+      TargetingParsers,
+      FallThroughTargetingParsers
+    >,
   ) {
     let result: Data<
       DataParsers,
@@ -258,8 +217,8 @@ export default class Data<
   }
 
   #isFallThroughRulesPayload<Name extends keyof DataParsers>(
-    payload: Payload<zInfer<DataParsers[Name]>, TargetingParsers>,
-  ): payload is FallThroughRules<zInfer<DataParsers[Name]>, TargetingParsers> {
+    payload: PT.Payload<zInfer<DataParsers[Name]>, TargetingParsers>,
+  ): payload is FTTT.Rules<zInfer<DataParsers[Name]>, TargetingParsers> {
     return (
       typeof payload === 'object' && payload !== null && '__rules__' in payload
     )
@@ -312,50 +271,26 @@ export default class Data<
     )
   }
 
-  async useTargeting<
-    TDs extends Record<string, TargetingDescriptor<any, any, any>>,
-  >(
+  async useTargeting<TDs extends TT.DescriptorRecord>(
     targeting: TDs,
   ): Promise<
     Data<
       DataParsers,
-      TargetingParsers & {
-        [K in keyof TDs]: TargetingDescriptorTargetingParser<TDs[K]>
-      },
-      QueryParsers & {
-        [K in keyof TDs]: TargetingDescriptorQueryParser<TDs[K]>
-      },
+      TargetingParsers & TT.ParserRecord<TDs>,
+      QueryParsers & QT.ParserRecord<TDs>,
       FallThroughTargetingParsers
     >
   > {
-    type NewTargetingParsers = TargetingParsers & {
-      [K in keyof TDs]: TargetingDescriptorTargetingParser<TDs[K]>
-    }
+    type NewTargetingParsers = TargetingParsers & TT.ParserRecord<TDs>
 
-    type NewQueryParsers = QueryParsers & {
-      [K in keyof TDs]: TargetingDescriptorQueryParser<TDs[K]>
-    }
+    type NewQueryParsers = QueryParsers & QT.ParserRecord<TDs>
 
-    const targetingParsers: NewTargetingParsers = {
-      ...this.targetingParsers,
-      ...objectMap(targeting, ({ targetingParser }) => targetingParser),
-    }
+    const targetingParsers: NewTargetingParsers =
+      this.#mergeTargetingParsers(targeting)
 
-    const targetingPredicates = {
-      ...this.#targetingPredicates,
-      ...objectMap(targeting, (targetingDescriptor) => ({
-        predicate: targetingDescriptor.predicate,
-        requiresQuery:
-          'requiresQuery' in targetingDescriptor
-            ? targetingDescriptor.requiresQuery
-            : true,
-      })),
-    }
+    const targetingPredicates = this.#mergeTargetingPredicates(targeting)
 
-    const queryParsers: NewQueryParsers = {
-      ...this.#queryParsers,
-      ...objectMap(targeting, ({ queryParser }) => queryParser),
-    }
+    const queryParsers: NewQueryParsers = this.#mergeQueryPredicates(targeting)
 
     const data: zInfer<
       DataItemsParser<
@@ -384,43 +319,64 @@ export default class Data<
     )
   }
 
-  async useFallThroughTargeting<
-    TDs extends Record<
-      string,
-      TargetingDescriptor<any, any, Partial<StaticRecord<QueryParsers>>>
-    >,
-  >(
+  #mergeTargetingParsers<TDs extends TT.DescriptorRecord>(
+    targeting: TDs,
+  ): TargetingParsers & TT.ParserRecord<TDs> {
+    return {
+      ...this.targetingParsers,
+      ...objectMap(targeting, ({ targetingParser }) => targetingParser),
+    }
+  }
+
+  #mergeTargetingPredicates<TDs extends TT.DescriptorRecord>(targeting: TDs) {
+    return {
+      ...this.#targetingPredicates,
+      ...objectMap(targeting, (targetingDescriptor) => ({
+        predicate: targetingDescriptor.predicate,
+        requiresQuery:
+          'requiresQuery' in targetingDescriptor
+            ? targetingDescriptor.requiresQuery
+            : true,
+      })),
+    }
+  }
+
+  #mergeQueryPredicates<TDs extends TT.DescriptorRecord>(
+    targeting: TDs,
+  ): QueryParsers & QT.ParserRecord<TDs> {
+    return {
+      ...this.#queryParsers,
+      ...objectMap(targeting, ({ queryParser }) => queryParser),
+    }
+  }
+
+  async useFallThroughTargeting<TDs extends FTTT.DescriptorRecord>(
     targeting: TDs,
   ): Promise<
     Data<
       DataParsers,
       TargetingParsers,
       QueryParsers,
-      FallThroughTargetingParsers & {
-        [K in keyof TDs]: TargetingDescriptorTargetingParser<TDs[K]>
-      }
+      FallThroughTargetingParsers & FTTT.ParsersRecord<TDs>
     >
   > {
-    type NewFallThroughTargetingParsers = FallThroughTargetingParsers & {
-      [K in keyof TDs]: TargetingDescriptorTargetingParser<TDs[K]>
-    }
+    type NewFallThroughTargetingParsers = FallThroughTargetingParsers &
+      FTTT.ParsersRecord<TDs>
 
-    const fallThroughTargetingParsers: NewFallThroughTargetingParsers = {
-      ...this.#fallThroughTargetingParsers,
-      ...objectMap(targeting, ({ targetingParser }) => targetingParser),
-    }
+    const fallThroughTargetingParsers =
+      this.#mergeFallThroughTargeting(targeting)
 
-    const data: zInfer<
+    const data = (await DataItemsParser(
+      this.#dataParsers,
+      this.#targetingParsers,
+      fallThroughTargetingParsers,
+    ).parseAsync(this.#data)) as zInfer<
       DataItemsParser<
         DataParsers,
         TargetingParsers,
         NewFallThroughTargetingParsers
       >
-    > = await DataItemsParser(
-      this.#dataParsers,
-      this.#targetingParsers,
-      fallThroughTargetingParsers,
-    ).parseAsync(this.#data)
+    >
 
     return new Data<
       DataParsers,
@@ -437,12 +393,23 @@ export default class Data<
     )
   }
 
-  async getPayloadForEachName(
-    rawQuery: Partial<StaticRecord<QueryParsers>> = {},
-  ) {
+  #mergeFallThroughTargeting<TDs extends FTTT.DescriptorRecord>(
+    targeting: TDs,
+  ): FallThroughTargetingParsers & FTTT.ParsersRecord<TDs> {
+    return {
+      ...this.#fallThroughTargetingParsers,
+      ...objectMap(targeting, (descriptorOrParser) =>
+        descriptorOrParser instanceof ZodType
+          ? descriptorOrParser
+          : descriptorOrParser.targetingParser,
+      ),
+    }
+  }
+
+  async getPayloadForEachName(rawQuery: QT.Raw<QueryParsers> = {}) {
     const payloads = {} as Partial<{
       [Name in keyof DataParsers]:
-        | Payload<DataParsers[Name], TargetingParsers>
+        | PT.Payload<DataParsers[Name], TargetingParsers>
         | undefined
     }>
 
@@ -457,8 +424,8 @@ export default class Data<
 
   async getPayload<Name extends keyof DataParsers>(
     name: Name,
-    rawQuery: Partial<StaticRecord<QueryParsers>> = {},
-  ): Promise<Payload<DataParsers[Name], TargetingParsers> | void> {
+    rawQuery: QT.Raw<QueryParsers> = {},
+  ): Promise<PT.Payload<DataParsers[Name], TargetingParsers> | void> {
     const predicate = await this.#createRulePredicate(rawQuery)
     for (const rule of this.#getTargetableRules(name))
       if (await predicate(rule as any)) return this.#mapRule(rule)
@@ -466,9 +433,9 @@ export default class Data<
 
   async getPayloads<Name extends keyof DataParsers>(
     name: Name,
-    rawQuery: Partial<StaticRecord<QueryParsers>> = {},
-  ): Promise<Payload<DataParsers[Name], TargetingParsers>[]> {
-    const payloads: Payload<DataParsers[Name], TargetingParsers>[] = []
+    rawQuery: QT.Raw<QueryParsers> = {},
+  ): Promise<PT.Payload<DataParsers[Name], TargetingParsers>[]> {
+    const payloads: PT.Payload<DataParsers[Name], TargetingParsers>[] = []
     const predicate = await this.#createRulePredicate(rawQuery)
     for (const rule of this.#getTargetableRules(name))
       if (await predicate(rule as any)) payloads.push(this.#mapRule(rule))
@@ -492,7 +459,7 @@ export default class Data<
   }
 
   async #createRulePredicate<Name extends keyof DataParsers>(
-    rawQuery: Partial<StaticRecord<QueryParsers>>,
+    rawQuery: QT.Raw<QueryParsers>,
   ) {
     const query = await this.#QueryParser.parseAsync(rawQuery)
 
@@ -534,7 +501,7 @@ export default class Data<
   }
 
   async #targetingPredicate(
-    query: Partial<StaticRecord<QueryParsers>>,
+    query: QT.Raw<QueryParsers>,
     targeting:
       | Partial<StaticRecord<TargetingParsers>>
       | Partial<StaticRecord<TargetingParsers>>[],
@@ -575,36 +542,3 @@ export default class Data<
 function hasPayload<Payload>(x: any): x is { payload: Payload } {
   return 'payload' in x
 }
-
-export type FallThroughRules<P extends ZodTypeAny, T extends ZodRawShape> = {
-  __rules__: zInfer<RuleWithPayloadParser<P, T>>[]
-}
-
-export type Payload<P extends ZodTypeAny, T extends ZodRawShape> =
-  | zInfer<P>
-  | FallThroughRules<P, T>
-
-export type DataParsers<
-  D extends Data<ZodRawShape, ZodRawShape, ZodRawShape, ZodRawShape>,
-> = D extends Data<infer V, ZodRawShape, ZodRawShape, ZodRawShape> ? V : never
-
-export type TargetingParsers<
-  D extends Data<ZodRawShape, ZodRawShape, ZodRawShape, ZodRawShape>,
-> = D extends Data<ZodRawShape, infer V, ZodRawShape, ZodRawShape> ? V : never
-
-export type QueryParsers<
-  D extends Data<ZodRawShape, ZodRawShape, ZodRawShape, ZodRawShape>,
-> = D extends Data<ZodRawShape, ZodRawShape, infer V, ZodRawShape> ? V : never
-
-export type FallThroughTargetingParsers<
-  D extends Data<ZodRawShape, ZodRawShape, ZodRawShape, ZodRawShape>,
-> = D extends Data<ZodRawShape, ZodRawShape, ZodRawShape, infer V> ? V : never
-
-export type FallThroughData<
-  D extends Data<ZodRawShape, ZodRawShape, ZodRawShape, ZodRawShape>,
-> = Data<
-  DataParsers<D>,
-  { [K in keyof FallThroughTargetingParsers<D>]: ZodType },
-  Omit<QueryParsers<D>, keyof TargetingParsers<D>>,
-  {}
->

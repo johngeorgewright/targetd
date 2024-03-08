@@ -24,11 +24,3 @@ export function isTargetingDescriptor<
     'targetingParser' in x
   )
 }
-
-export type TargetingDescriptorTargetingParser<
-  TD extends TargetingDescriptor<any, any, any>,
-> = TD extends TargetingDescriptor<infer TV, any, any> ? TV : never
-
-export type TargetingDescriptorQueryParser<
-  TD extends TargetingDescriptor<any, any, any>,
-> = TD extends TargetingDescriptor<any, infer QV, any> ? QV : never

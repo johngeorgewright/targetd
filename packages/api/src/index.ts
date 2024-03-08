@@ -1,12 +1,4 @@
-export {
-  default as Data,
-  DataParsers,
-  Payload,
-  TargetingParsers,
-  QueryParsers,
-  FallThroughData,
-  FallThroughTargetingParsers,
-} from './Data'
+export { default as Data } from './Data'
 export { DataItemParser } from './parsers/DataItem'
 export { DataItemRuleParser } from './parsers/DataItemRule'
 export { DataItemsParser } from './parsers/DataItems'
@@ -19,4 +11,9 @@ export {
   targetIncludesPredicate,
   targetIncludes,
 } from './predicates/targetIncludes'
-export { StaticRecord } from './types'
+export type { StaticRecord } from './types'
+export type { DT } from './types/Data'
+export type { FTTT } from './types/FallThroughTargeting'
+export type { PT } from './types/Payload'
+export type { QT } from './types/Query'
+export type { TT } from './types/Targeting'
