@@ -1,6 +1,6 @@
 {
   "name": "@targetd/json-schema",
-  "version": "2.0.3",
+  "version": "3.0.0",
   "description": "Creates JSON schema from targetd data objects",
   "main": "dist/index.js",
   "sideEffects": false,
@@ -44,7 +44,7 @@
     "zod-to-json-schema": "3.22.4"
   },
   "peerDependencies": {
-    "@targetd/api": ">=5.4.1",
+    "@targetd/api": ">=6.0.0",
     "ts-node": "^10.9.2",
     "zod": "^3.20.0"
   }
