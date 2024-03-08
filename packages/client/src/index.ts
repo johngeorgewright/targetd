@@ -1,28 +1,19 @@
-import type {
-  FallThroughTargetingValidators,
-  Data,
-  DataValidators,
-  Payload,
-  QueryValidators,
-  StaticRecord,
-  TargetingValidators,
-} from '@targetd/api'
-import fetch from 'cross-fetch'
+import type { Data, DT, PT, StaticRecord } from '@targetd/api'
 import type { ZodRawShape } from 'zod'
 
 export class Client<
-  DataValidators extends ZodRawShape,
-  TargetingValidators extends ZodRawShape,
-  QueryValidators extends ZodRawShape,
-  FallThroughTargetingValidators extends ZodRawShape,
+  PayloadParsers extends ZodRawShape,
+  TargetingParsers extends ZodRawShape,
+  QueryParsers extends ZodRawShape,
+  FallThroughTargetingParsers extends ZodRawShape,
 > {
   #baseURL: string
 
   #data: Data<
-    DataValidators,
-    TargetingValidators,
-    QueryValidators,
-    FallThroughTargetingValidators
+    PayloadParsers,
+    TargetingParsers,
+    QueryParsers,
+    FallThroughTargetingParsers
   >
 
   #init?: RequestInit
@@ -30,10 +21,10 @@ export class Client<
   constructor(
     baseURL: string,
     data: Data<
-      DataValidators,
-      TargetingValidators,
-      QueryValidators,
-      FallThroughTargetingValidators
+      PayloadParsers,
+      TargetingParsers,
+      QueryParsers,
+      FallThroughTargetingParsers
     >,
     init?: RequestInit,
   ) {
@@ -42,11 +33,11 @@ export class Client<
     this.#init = init
   }
 
-  async getPayload<Name extends keyof DataValidators>(
+  async getPayload<Name extends keyof PayloadParsers>(
     name: Name,
-    rawQuery: Partial<StaticRecord<QueryValidators>> = {},
-  ): Promise<Payload<DataValidators[Name], TargetingValidators> | void> {
-    const query = this.#data.QueryValidator.parse(rawQuery)
+    rawQuery: Partial<StaticRecord<QueryParsers>> = {},
+  ): Promise<PT.Payload<PayloadParsers[Name], TargetingParsers> | void> {
+    const query = this.#data.QueryParser.parse(rawQuery)
     const urlSearchParams = queryToURLSearchParams(query)
     const response = await fetch(
       `${this.#baseURL}/${String(name)}?${urlSearchParams}`,
@@ -55,39 +46,42 @@ export class Client<
         ...this.#init,
       },
     )
-    return response.status === 204
-      ? undefined
-      : this.#data
-          .insert({ [name]: await response.json() } as any)
-          .getPayload(name)
+    if (response.status === 204) return undefined
+    else {
+      const data = await this.#data.insert({
+        [name]: await response.json(),
+      } as any)
+      return data.getPayload(name)
+    }
   }
 
   async getPayloadForEachName(
-    rawQuery: Partial<StaticRecord<QueryValidators>> = {},
+    rawQuery: Partial<StaticRecord<QueryParsers>> = {},
   ): Promise<
     Partial<{
-      [Name in keyof DataValidators]:
-        | Payload<DataValidators[Name], TargetingValidators>
+      [Name in keyof PayloadParsers]:
+        | PT.Payload<PayloadParsers[Name], TargetingParsers>
         | undefined
     }>
   > {
-    const query = this.#data.QueryValidator.parse(rawQuery)
+    const query = this.#data.QueryParser.parse(rawQuery)
     const urlSearchParams = queryToURLSearchParams(query)
     const response = await fetch(`${this.#baseURL}?${urlSearchParams}`, {
       method: 'GET',
       ...this.#init,
     })
-    return this.#data.insert(await response.json()).getPayloadForEachName()
+    const data = await this.#data.insert((await response.json()) as any)
+    return data.getPayloadForEachName()
   }
 }
 
 export type ClientWithData<
   D extends Data<ZodRawShape, ZodRawShape, ZodRawShape, ZodRawShape>,
 > = Client<
-  DataValidators<D>,
-  TargetingValidators<D>,
-  QueryValidators<D>,
-  FallThroughTargetingValidators<D>
+  DT.PayloadParsers<D>,
+  DT.TargetingParsers<D>,
+  DT.QueryParsers<D>,
+  DT.FallThroughTargetingParsers<D>
 >
 
 function queryToURLSearchParams(query: Record<string, unknown>) {

@@ -13,8 +13,8 @@ export const Device = z.literal('desktop').or(z.literal('mobile'))
 
 export const deviceTargeting = createTargetingDescriptor({
   predicate: (q) => (t) => typeof q === 'string' && t.includes(q),
-  queryValidator: Device,
-  targetingValidator: z.array(Device),
+  queryParser: Device,
+  targetingParser: z.array(Device),
 })
 ```
 
@@ -24,10 +24,15 @@ import { Data } from '@targetd/api'
 import z from 'zod'
 import { deviceTargeting } from './device'
 
-export const data = Data.create()
-  .useDataValidator('bar', z.number())
-  .useDataValidator('foo', z.string())
-  .useTargeting('device', deviceTargeting)
+export const data = Data.create({
+  data: {
+    bar: z.number(),
+    foo: z.string(),
+  },
+  targeting: {
+    device: deviceTargeting,
+  },
+})
 ```
 
 ```typescript
@@ -55,7 +60,7 @@ createServer(
         },
         payload: '🖥',
       },
-    ])
+    ]),
 ).listen(3_000)
 ```
 

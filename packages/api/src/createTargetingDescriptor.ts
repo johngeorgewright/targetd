@@ -1,5 +1,5 @@
 import type { ZodTypeAny } from 'zod'
-import type TargetingDescriptor from './validators/TargetingDescriptor'
+import type TargetingDescriptor from './parsers/TargetingDescriptor'
 
 export default function createTargetingDescriptor<
   QV extends ZodTypeAny,

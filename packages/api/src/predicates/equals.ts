@@ -1,5 +1,5 @@
-import type TargetingPredicate from '../validators/TargetingPredicate'
-import type TargetingDescriptor from '../validators/TargetingDescriptor'
+import type TargetingPredicate from '../parsers/TargetingPredicate'
+import type TargetingDescriptor from '../parsers/TargetingDescriptor'
 import { type ZodTypeAny } from 'zod'
 
 /**
@@ -17,7 +17,7 @@ export function targetEquals<T extends ZodTypeAny>(
 ): TargetingDescriptor<T, T> {
   return {
     predicate: equalsPredicate(),
-    queryValidator: t,
-    targetingValidator: t,
+    queryParser: t,
+    targetingParser: t,
   }
 }

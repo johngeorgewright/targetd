@@ -7,7 +7,7 @@ Targetd is a key/value store. You may want to use a dot, for exmaple, to represe
 ```typescript
 import { explode } from '@targetd/explode'
 
-data.addRules([
+await data.addRules([
   {
     name: 'foo.bar',
     payload: 'something',
@@ -18,7 +18,7 @@ data.addRules([
   },
 ])
 
-console.info(explode(data.getPayloadForEachName(), '.'))
+console.info(explode(await data.getPayloadForEachName(), '.'))
 /*
 {
   foo: {

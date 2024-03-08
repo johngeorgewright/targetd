@@ -1,103 +1,32 @@
-import { type Data } from '@targetd/api'
+import type { DT } from '@targetd/api'
 import { debounce } from 'lodash'
 import throat from 'throat'
 import { type Options as WatchTreeOptions, unwatchTree, watchTree } from 'watch'
 import { load, pathIsLoadable } from './load'
-import { type ZodRawShape } from 'zod'
 
-export type OnLoad<
-  DataValidators extends ZodRawShape,
-  TargetingValidators extends ZodRawShape,
-  QueryValidators extends ZodRawShape,
-  FallThroughTargetingValidators extends ZodRawShape,
-> = (
-  error: Error | null,
-  data: Data<
-    DataValidators,
-    TargetingValidators,
-    QueryValidators,
-    FallThroughTargetingValidators
-  >,
-) => any
+export type OnLoad<D extends DT.Any> = (error: Error | null, data: D) => any
 
-export function watch<
-  DataValidators extends ZodRawShape,
-  TargetingValidators extends ZodRawShape,
-  QueryValidators extends ZodRawShape,
-  FallThroughTargetingValidators extends ZodRawShape,
->(
-  data: Data<
-    DataValidators,
-    TargetingValidators,
-    QueryValidators,
-    FallThroughTargetingValidators
-  >,
+export function watch<D extends DT.Any>(
+  data: D,
   dir: string,
   options: WatchTreeOptions,
-  onLoad: OnLoad<
-    DataValidators,
-    TargetingValidators,
-    QueryValidators,
-    FallThroughTargetingValidators
-  >,
+  onLoad: OnLoad<D>,
 ): () => void
 
-export function watch<
-  DataValidators extends ZodRawShape,
-  TargetingValidators extends ZodRawShape,
-  QueryValidators extends ZodRawShape,
-  FallThroughTargetingValidators extends ZodRawShape,
->(
-  data: Data<
-    DataValidators,
-    TargetingValidators,
-    QueryValidators,
-    FallThroughTargetingValidators
-  >,
+export function watch<D extends DT.Any>(
+  data: D,
   dir: string,
-  onLoad: OnLoad<
-    DataValidators,
-    TargetingValidators,
-    QueryValidators,
-    FallThroughTargetingValidators
-  >,
+  onLoad: OnLoad<D>,
 ): () => void
 
-export function watch<
-  DataValidators extends ZodRawShape,
-  TargetingValidators extends ZodRawShape,
-  QueryValidators extends ZodRawShape,
-  FallThroughTargetingValidators extends ZodRawShape,
->(
-  data: Data<
-    DataValidators,
-    TargetingValidators,
-    QueryValidators,
-    FallThroughTargetingValidators
-  >,
+export function watch<D extends DT.Any>(
+  data: D,
   dir: string,
-  optionsOrOnLoad:
-    | WatchTreeOptions
-    | OnLoad<
-        DataValidators,
-        TargetingValidators,
-        QueryValidators,
-        FallThroughTargetingValidators
-      >,
-  onLoadParam?: OnLoad<
-    DataValidators,
-    TargetingValidators,
-    QueryValidators,
-    FallThroughTargetingValidators
-  >,
+  optionsOrOnLoad: WatchTreeOptions | OnLoad<D>,
+  onLoadParam?: OnLoad<D>,
 ) {
   const options = onLoadParam ? optionsOrOnLoad : {}
-  const onLoad = (onLoadParam || optionsOrOnLoad) as OnLoad<
-    DataValidators,
-    TargetingValidators,
-    QueryValidators,
-    FallThroughTargetingValidators
-  >
+  const onLoad = (onLoadParam || optionsOrOnLoad) as OnLoad<D>
 
   watchTree(
     dir,
@@ -108,7 +37,7 @@ export function watch<
     debounce(
       throat(1, async () => {
         try {
-          data = await load(data.removeAllRules(), dir)
+          data = (await load(data.removeAllRules(), dir)) as D
         } catch (error: any) {
           return onLoad(error, data)
         }

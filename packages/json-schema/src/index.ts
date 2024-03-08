@@ -1,25 +1,13 @@
-import { type Data, DataItem, DataItems } from '@targetd/api'
-import { type ZodRawShape, string } from 'zod'
+import { DataItemParser, DataItemsParser, type DT } from '@targetd/api'
+import { string } from 'zod'
 import zodToJSONSchema from 'zod-to-json-schema'
 
-export function dataJSONSchemas<
-  DataValidators extends ZodRawShape,
-  TargetingValidators extends ZodRawShape,
-  QueryValidators extends ZodRawShape,
-  FallThroughTargetingValidators extends ZodRawShape,
->(
-  data: Data<
-    DataValidators,
-    TargetingValidators,
-    QueryValidators,
-    FallThroughTargetingValidators
-  >,
-) {
+export function dataJSONSchemas<D extends DT.Any>(data: D) {
   return zodToJSONSchema(
-    DataItems(
-      data.dataValidators,
-      data.targetingValidators,
-      data.fallThroughTargetingValidators,
+    DataItemsParser(
+      data.payloadParsers,
+      data.targetingParsers,
+      data.fallThroughTargetingParsers,
     ).extend({ $schema: string().optional() }),
     {
       effectStrategy: 'input',
@@ -27,25 +15,15 @@ export function dataJSONSchemas<
   )
 }
 
-export function dataJSONSchema<
-  DataValidators extends ZodRawShape,
-  TargetingValidators extends ZodRawShape,
-  QueryValidators extends ZodRawShape,
-  FallThroughTargetingValidators extends ZodRawShape,
->(
-  data: Data<
-    DataValidators,
-    TargetingValidators,
-    QueryValidators,
-    FallThroughTargetingValidators
-  >,
-  name: keyof DataValidators,
+export function dataJSONSchema<D extends DT.Any>(
+  data: D,
+  name: keyof DT.PayloadParsers<D>,
 ) {
   return zodToJSONSchema(
-    DataItem(
-      data.dataValidators[name],
-      data.targetingValidators,
-      data.fallThroughTargetingValidators,
+    DataItemParser(
+      data.payloadParsers[name],
+      data.targetingParsers,
+      data.fallThroughTargetingParsers,
     ).extend({ $schema: string().optional() }),
     {
       effectStrategy: 'input',

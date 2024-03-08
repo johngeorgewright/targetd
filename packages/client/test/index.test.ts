@@ -6,26 +6,33 @@ import { setTimeout } from 'node:timers/promises'
 import { z } from 'zod'
 import { Client, ClientWithData } from '../src'
 
-const data = Data.create()
-  .useDataValidator('foo', z.string())
-  .useDataValidator('bar', z.number())
-  .useDataValidator('timed', z.string())
-  .useTargeting('weather', {
-    predicate: (q) => (t) => typeof q === 'string' && t.includes(q),
-    queryValidator: z.string(),
-    targetingValidator: z.array(z.string()),
-  })
-  .useTargeting('highTide', {
-    predicate: (q) => (t) => q === t,
-    queryValidator: z.boolean(),
-    targetingValidator: z.boolean(),
-  })
-  .useTargeting('asyncThing', {
-    predicate: (q) => setTimeout(10, (t) => q === t && setTimeout(10, true)),
-    queryValidator: z.boolean(),
-    targetingValidator: z.boolean(),
-  })
-  .useTargeting('date', dateRangeTargeting)
+const schema = Data.create({
+  data: {
+    foo: z.string(),
+    bar: z.number(),
+    timed: z.string(),
+  },
+  targeting: {
+    weather: {
+      predicate: (q) => (t) => typeof q === 'string' && t.includes(q),
+      queryParser: z.string(),
+      targetingParser: z.array(z.string()),
+    },
+    highTide: {
+      predicate: (q) => (t) => q === t,
+      queryParser: z.boolean(),
+      targetingParser: z.boolean(),
+    },
+    asyncThing: {
+      predicate: (q) => setTimeout(10, (t) => q === t && setTimeout(10, true)),
+      queryParser: z.boolean(),
+      targetingParser: z.boolean(),
+    },
+    date: dateRangeTargeting,
+  },
+})
+
+const data = schema
   .addRules('foo', [
     {
       targeting: {
@@ -62,29 +69,34 @@ const data = Data.create()
       payload: 'bar',
     },
   ])
-  .addRules('bar', [
-    {
-      payload: 123,
-    },
-  ])
-  .addRules('timed', [
-    {
-      targeting: {
-        date: { start: '2001-01-01', end: '2010-01-01' },
+  .then((data) =>
+    data.addRules('bar', [
+      {
+        payload: 123,
       },
-      payload: 'in time',
-    },
-  ])
+    ]),
+  )
+  .then((data) =>
+    data.addRules('timed', [
+      {
+        targeting: {
+          date: { start: '2001-01-01', end: '2010-01-01' },
+        },
+        payload: 'in time',
+      },
+    ]),
+  )
 
-let client: ClientWithData<typeof data>
+let client: ClientWithData<Awaited<typeof schema>>
 let server: Server
 
-beforeEach(() => {
-  server = createServer(() => data).listen(3_000)
-  client = new Client(`http://localhost:3000`, data)
+beforeAll(async () => {
+  const d = await data
+  server = createServer(() => d).listen(3_000)
+  client = new Client(`http://localhost:3000`, schema)
 })
 
-afterEach(() => {
+afterAll(() => {
   server.close()
 })
 
@@ -94,16 +106,16 @@ test('get one data point', async () => {
   expect(await client.getPayload('foo', { weather: 'rainy' })).toBe('☂️')
   expect(await client.getPayload('foo', { highTide: true })).toBe('🌊')
   expect(
-    await client.getPayload('foo', { highTide: true, weather: 'sunny' })
+    await client.getPayload('foo', { highTide: true, weather: 'sunny' }),
   ).toBe('🏄‍♂️')
   expect(
-    await client.getPayload('foo', { asyncThing: true })
+    await client.getPayload('foo', { asyncThing: true }),
   ).toMatchInlineSnapshot(`"Async payload"`)
   expect(
-    await client.getPayload('timed', { date: { start: '2002-01-01' } })
+    await client.getPayload('timed', { date: { start: '2002-01-01' } }),
   ).toMatchInlineSnapshot(`"in time"`)
   expect(
-    await client.getPayload('timed', { date: { start: '2012-01-01' } })
+    await client.getPayload('timed', { date: { start: '2012-01-01' } }),
   ).toBe(undefined)
 })
 
@@ -140,7 +152,7 @@ test('get all', async () => {
   `)
 
   expect(
-    await client.getPayloadForEachName({ highTide: true, weather: 'sunny' })
+    await client.getPayloadForEachName({ highTide: true, weather: 'sunny' }),
   ).toMatchInlineSnapshot(`
     {
       "bar": 123,

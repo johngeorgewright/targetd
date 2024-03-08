@@ -1,4 +1,4 @@
-import { Data } from '@targetd/api'
+import type { DT } from '@targetd/api'
 import yargs from 'yargs'
 import * as path from 'node:path'
 import { writeFile } from 'node:fs/promises'
@@ -36,13 +36,13 @@ registerTSNode()
   const data = input[dataExport]
   if (!isDataLike(data))
     throw new Error(
-      `Export "${dataExport}" from "${inputModule}" is not of a \`Data\` type.`
+      `Export "${dataExport}" from "${inputModule}" is not of a \`Data\` type.`,
     )
   const jsonSchema = JSON.stringify(dataJSONSchemas(data), null, 2)
   if (outputFile) await writeFile(outputFile, jsonSchema)
   else console.info(jsonSchema)
 
-  function isDataLike(x: any): x is Data<any, any, any, any> {
-    return 'dataValidators' in x && 'targetingValidators' in x
+  function isDataLike(x: any): x is DT.Any {
+    return 'payloadParsers' in x && 'targetingParsers' in x
   }
 })().catch(console.error)

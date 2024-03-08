@@ -1,37 +1,44 @@
-import { type Data } from '@targetd/api'
+import type { DT } from '@targetd/api'
 import cors from 'cors'
 import express from 'express'
 import queryTypes from 'query-types'
 import { errorHandler } from './middleware/error'
 import { StatusError } from './StatusError'
 import { castQueryArrayProps } from './middleware/castQueryArrayProps'
-import { type ZodRawShape } from 'zod'
 
-export function createServer<
-  DataValidators extends ZodRawShape,
-  TargetingValidators extends ZodRawShape,
-  QueryValidators extends ZodRawShape,
-  FallThroughTargetingValidators extends ZodRawShape,
->(
-  data:
-    | Data<
-        DataValidators,
-        TargetingValidators,
-        QueryValidators,
-        FallThroughTargetingValidators
-      >
-    | (() => Data<
-        DataValidators,
-        TargetingValidators,
-        QueryValidators,
-        FallThroughTargetingValidators
-      >),
+/**
+ * @param data
+ * @param pathStructure Use a path structure when you want to create a route that uses request params
+ */
+export function createServer<D extends DT.Any>(
+  data: D | (() => D),
+  pathStructure?: (keyof DT.QueryParsers<D>)[],
 ) {
   const getData = typeof data === 'function' ? data : () => data
 
-  return express()
-    .use(cors())
+  let server = express().use(cors())
 
+  if (pathStructure) {
+    server = server.get(
+      `/:${pathStructure.join('/:')}`,
+      queryTypes.middleware(),
+      castQueryArrayProps(getData),
+      async (req, res, next) => {
+        let payloads: Record<string, any>
+        try {
+          payloads = await getData().getPayloadForEachName({
+            ...req.params,
+            ...req.query,
+          })
+        } catch (err) {
+          return next(err)
+        }
+        res.json(payloads)
+      },
+    )
+  }
+
+  return server
     .get(
       '/:name',
       queryTypes.middleware(),
@@ -39,7 +46,7 @@ export function createServer<
       async (req, res, next) => {
         const data = getData()
 
-        if (!(req.params.name in data.dataValidators)) {
+        if (!(req.params.name in data.payloadParsers)) {
           return next(
             new StatusError(404, `Unknown data property ${req.params.name}`),
           )

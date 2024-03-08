@@ -1,8 +1,7 @@
 import { readFiles } from '@johngw/fs'
 import type { WithFileNamesResult } from '@johngw/fs/dist/readFiles'
-import type { Data } from '@targetd/api'
+import type { DT } from '@targetd/api'
 import YAML from 'yaml'
-import type { Keys } from 'ts-toolbelt/out/Any/Keys'
 import {
   type infer as zInfer,
   array,
@@ -10,7 +9,6 @@ import {
   strictObject,
   string,
   unknown,
-  type ZodRawShape,
 } from 'zod'
 
 const FileData = object({ $schema: string().optional() }).catchall(
@@ -19,27 +17,13 @@ const FileData = object({ $schema: string().optional() }).catchall(
 
 type FileData = zInfer<typeof FileData>
 
-export async function load<
-  DataValidators extends ZodRawShape,
-  TargetingValidators extends ZodRawShape,
-  QueryValidators extends ZodRawShape,
-  FallThroughTargetingValidators extends ZodRawShape,
->(
-  data: Data<
-    DataValidators,
-    TargetingValidators,
-    QueryValidators,
-    FallThroughTargetingValidators
-  >,
-  dir: string,
-) {
+export async function load<D extends DT.Any>(data: D, dir: string): Promise<D> {
   for await (const contents of readFiles(dir, {
     encoding: 'utf8',
     filter: pathIsLoadable,
     withFileNames: true,
-  })) {
-    data = addRules(data, parseFileContents(contents))
-  }
+  }))
+    data = await addRules(data, parseFileContents(contents))
 
   return data
 }
@@ -59,25 +43,26 @@ function parseFileContents({
   )
 }
 
-function addRules<
-  DataValidators extends ZodRawShape,
-  TargetingValidators extends ZodRawShape,
-  QueryValidators extends ZodRawShape,
-  FallThroughTargetingValidators extends ZodRawShape,
->(
-  data: Data<
-    DataValidators,
-    TargetingValidators,
-    QueryValidators,
-    FallThroughTargetingValidators
-  >,
+async function addRules<D extends DT.Any>(
+  data: D,
   fileData: FileData,
-) {
-  return Object.entries(fileData).reduce(
-    (data, [name, value]) =>
-      typeof value === 'object'
-        ? data.addRules(name as Keys<DataValidators>, value.rules as any[])
-        : data,
-    data,
-  )
+): Promise<D> {
+  let result = data
+
+  for (const [key, value] of objectIterator(fileData))
+    if (typeof value === 'object')
+      result = (await result.addRules(key, value.rules as any[])) as D
+
+  return result
 }
+
+export function* objectIterator<T extends Record<string, unknown>>(
+  obj: T,
+): Generator<Entry<T>> {
+  for (const key in obj)
+    if (Object.prototype.hasOwnProperty.call(obj, key)) yield [key, obj[key]]
+}
+
+type Entry<T extends Record<string | symbol, unknown>> = {
+  [K in keyof T]: [K, T[K]]
+}[keyof T]

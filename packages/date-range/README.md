@@ -9,31 +9,37 @@ import { Data } from '@targetd/api'
 import dateRangeTargeting from '@targetd/date-range'
 import z from 'zod'
 
-const data = Data.create()
-  .useTargeting('dateRange', dateRangeTargeting)
-  .useDataValidator('foo', z.string())
-  .addRules('foo', [
-    {
-      targeting: {
-        dateRange: {
-          start: '1939-09-01',
-          end: '1945-09-02',
-        },
+let data = Data.create({
+  data: {
+    foo: z.string(),
+  },
+  targeting: {
+    dateRange: dateRangeTargeting,
+  },
+})
+
+data = await data.addRules('foo', [
+  {
+    targeting: {
+      dateRange: {
+        start: '1939-09-01',
+        end: '1945-09-02',
       },
-      payload: 'WWII',
     },
-    {
-      targeting: {
-        dateRange: {
-          start: '2020-01-01T00:00:00',
-        },
+    payload: 'WWII',
+  },
+  {
+    targeting: {
+      dateRange: {
+        start: '2020-01-01T00:00:00',
       },
-      payload: '😷',
     },
-    {
-      payload: 'bar',
-    },
-  ])
+    payload: '😷',
+  },
+  {
+    payload: 'bar',
+  },
+])
 
 test('will use system time when no targeting is specified', async () => {
   jestDate.advanceTo(new Date('1930-01-01'))
@@ -48,17 +54,17 @@ test('will use system time when no targeting is specified', async () => {
 
 test('filter by queries', async () => {
   expect(
-    await data.getPayload('foo', { dateRange: { start: '2020-01-01' } })
+    await data.getPayload('foo', { dateRange: { start: '2020-01-01' } }),
   ).toBe('😷')
 
   expect(
-    await data.getPayload('foo', { dateRange: { start: '2019-01-01' } })
+    await data.getPayload('foo', { dateRange: { start: '2019-01-01' } }),
   ).toBe('😷')
 
   expect(
     await data.getPayload('foo', {
       dateRange: { start: '2019-01-01', end: '2019-12-01' },
-    })
+    }),
   ).toBe('bar')
 })
 ```
