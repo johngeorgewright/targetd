@@ -3079,7 +3079,7 @@ const RAW_RUNTIME_STATE =
           ["@types/prettier", "npm:3.0.0"],\
           ["@types/rimraf", "npm:4.0.5"],\
           ["@types/yeoman-generator", "npm:5.2.14"],\
-          ["@yeoman/types", "virtual:e385a280e32090a8ccd033eaf2df754a98b1289240d91e1df3ed68695e8080f0aa0c5798abd32cce453f8be19101f4f5a3164b8b933d99a99201221d9bdb78dc#npm:1.1.2"],\
+          ["@yeoman/types", "virtual:e385a280e32090a8ccd033eaf2df754a98b1289240d91e1df3ed68695e8080f0aa0c5798abd32cce453f8be19101f4f5a3164b8b933d99a99201221d9bdb78dc#npm:1.2.0"],\
           ["change-case", "npm:5.4.3"],\
           ["jest", "virtual:78776105526f67704c5d821aa139591fbba11fdbd5f03f51d916c5f752b52ce5b35f9731aa4a7b9fc9fe491d6229cf4b9abfbb54db395f33bbe11c0e0b749fa6#npm:29.7.0"],\
           ["prettier", "npm:3.2.5"],\
@@ -3893,17 +3893,17 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@yeoman/types", [\
-      ["npm:1.1.2", {\
-        "packageLocation": "./.yarn/cache/@yeoman-types-npm-1.1.2-e9f8a2a91a-534d8ed3d5.zip/node_modules/@yeoman/types/",\
+      ["npm:1.2.0", {\
+        "packageLocation": "./.yarn/cache/@yeoman-types-npm-1.2.0-f0551ddc48-e69fe33e73.zip/node_modules/@yeoman/types/",\
         "packageDependencies": [\
-          ["@yeoman/types", "npm:1.1.2"]\
+          ["@yeoman/types", "npm:1.2.0"]\
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:e385a280e32090a8ccd033eaf2df754a98b1289240d91e1df3ed68695e8080f0aa0c5798abd32cce453f8be19101f4f5a3164b8b933d99a99201221d9bdb78dc#npm:1.1.2", {\
-        "packageLocation": "./.yarn/__virtual__/@yeoman-types-virtual-8b31b765a2/0/cache/@yeoman-types-npm-1.1.2-e9f8a2a91a-534d8ed3d5.zip/node_modules/@yeoman/types/",\
+      ["virtual:e385a280e32090a8ccd033eaf2df754a98b1289240d91e1df3ed68695e8080f0aa0c5798abd32cce453f8be19101f4f5a3164b8b933d99a99201221d9bdb78dc#npm:1.2.0", {\
+        "packageLocation": "./.yarn/__virtual__/@yeoman-types-virtual-6daad80dd3/0/cache/@yeoman-types-npm-1.2.0-f0551ddc48-e69fe33e73.zip/node_modules/@yeoman/types/",\
         "packageDependencies": [\
-          ["@yeoman/types", "virtual:e385a280e32090a8ccd033eaf2df754a98b1289240d91e1df3ed68695e8080f0aa0c5798abd32cce453f8be19101f4f5a3164b8b933d99a99201221d9bdb78dc#npm:1.1.2"],\
+          ["@yeoman/types", "virtual:e385a280e32090a8ccd033eaf2df754a98b1289240d91e1df3ed68695e8080f0aa0c5798abd32cce453f8be19101f4f5a3164b8b933d99a99201221d9bdb78dc#npm:1.2.0"],\
           ["@types/inquirer", "npm:9.0.7"],\
           ["@types/mem-fs", null],\
           ["@types/mem-fs-editor", null],\
@@ -16197,7 +16197,7 @@ const RAW_RUNTIME_STATE =
           ["@types/yeoman-environment", null],\
           ["@types/yeoman__types", null],\
           ["@yeoman/namespace", "npm:1.0.0"],\
-          ["@yeoman/types", "virtual:e385a280e32090a8ccd033eaf2df754a98b1289240d91e1df3ed68695e8080f0aa0c5798abd32cce453f8be19101f4f5a3164b8b933d99a99201221d9bdb78dc#npm:1.1.2"],\
+          ["@yeoman/types", "virtual:e385a280e32090a8ccd033eaf2df754a98b1289240d91e1df3ed68695e8080f0aa0c5798abd32cce453f8be19101f4f5a3164b8b933d99a99201221d9bdb78dc#npm:1.2.0"],\
           ["chalk", "npm:5.3.0"],\
           ["debug", "virtual:071d471ccd267160a6f0ec15e4cdc2874728a012db8f34521faf9e64a516aa918ee9ebab3c4c084d955ab74aaac5b8be9afb7a168813c9f210acdb7d88754ab9#npm:4.3.4"],\
           ["execa", "npm:8.0.1"],\
