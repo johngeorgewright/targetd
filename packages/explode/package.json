@@ -25,7 +25,7 @@
     "@targetd/date-range": "workspace:*",
     "@types/cors": "2.8.17",
     "@types/jest": "29.5.12",
-    "@types/node": "20.11.26",
+    "@types/node": "20.11.27",
     "@types/supertest": "6.0.2",
     "jest": "29.7.0",
     "rimraf": "5.0.5",
