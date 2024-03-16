@@ -8,6 +8,10 @@ import {
   type ZodOptional,
 } from 'zod'
 import { type ZodPartialObject } from '../types'
+import {
+  RecursivleyWithVariablePreprocessor,
+  attachVariablePreprocessor,
+} from './VariableResolver'
 
 export function DataItemRuleParser<
   P extends ZodTypeAny,
@@ -90,7 +94,7 @@ export type RuleWithPayloadParser<
         ? MultipleRuleTargeting<Targeting>
         : SingularRuleTargeting<Targeting>
     >
-    payload: Payload
+    payload: RecursivleyWithVariablePreprocessor<Payload>
   },
   'strict'
 >
@@ -105,7 +109,7 @@ export function RuleWithPayloadParser<
       ? MultipleRuleTargeting(targeting)
       : SingularRuleTargeting(targeting)
     ).optional(),
-    payload: Payload,
+    payload: attachVariablePreprocessor(Payload),
   }) as RuleWithPayloadParser<P, T, AllowMultipleTargeting>
 }
 

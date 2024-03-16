@@ -4,6 +4,7 @@ import type { FTTT } from './FallThroughTargeting'
 import type TargetingDescriptor from '../parsers/TargetingDescriptor'
 import type { TT } from './Targeting'
 import type { QT } from './Query'
+import { VT } from './Variables'
 
 /**
  * Data type utilities
@@ -12,31 +13,37 @@ export namespace DT {
   /**
    * Match any Data
    */
-  export type Any = Data<any, any, any, any>
+  export type Any = Data<any, any, any, any, any>
 
   /**
    * Get the PayloadParsers from a Data type
    */
   export type PayloadParsers<D extends Any> =
-    D extends Data<infer V, any, any, any> ? V : never
+    D extends Data<infer V, any, any, any, any> ? V : never
 
   /**
    * Get the TargetingParsers from a Data type
    */
   export type TargetingParsers<D extends Any> =
-    D extends Data<ZodRawShape, infer V, ZodRawShape, ZodRawShape> ? V : never
+    D extends Data<ZodRawShape, infer V, ZodRawShape, ZodRawShape, VT.Any>
+      ? V
+      : never
 
   /**
    * Get the QueryParsers from a Data type
    */
   export type QueryParsers<D extends Any> =
-    D extends Data<ZodRawShape, ZodRawShape, infer V, ZodRawShape> ? V : never
+    D extends Data<ZodRawShape, ZodRawShape, infer V, ZodRawShape, VT.Any>
+      ? V
+      : never
 
   /**
    * Get the FallThroughTargetingParsers from a Data type
    */
   export type FallThroughTargetingParsers<D extends Any> =
-    D extends Data<ZodRawShape, ZodRawShape, ZodRawShape, infer V> ? V : never
+    D extends Data<ZodRawShape, ZodRawShape, ZodRawShape, infer V, VT.Any>
+      ? V
+      : never
 
   /**
    * Create the fall through Data type from a Data type
@@ -45,7 +52,8 @@ export namespace DT {
     PayloadParsers<D>,
     { [K in keyof FallThroughTargetingParsers<D>]: ZodTypeAny },
     Omit<QueryParsers<D>, keyof TargetingParsers<D>>,
-    {}
+    {},
+    { [K in keyof PayloadParsers<D>]: PayloadParsers<D>[K] }
   >
 
   /**
@@ -65,6 +73,7 @@ export namespace DT {
       string,
       ZodTypeAny | TargetingDescriptor<any, any, any>
     >
+    variables?: Record<string, ZodRawShape>
   }
 
   /**
@@ -87,7 +96,8 @@ export namespace DT {
       [K in keyof R['fallThroughTargeting']]: FTTT.ParserFromDescriptor<
         R['fallThroughTargeting'][K]
       >
-    }
+    },
+    VT.FromPayload<R['data']>
   >
 
   export type InsertableData<

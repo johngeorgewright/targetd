@@ -18,12 +18,15 @@ import type { TT } from './types/Targeting'
 import type { FTTT } from './types/FallThroughTargeting'
 import type { PT } from './types/Payload'
 import type { QT } from './types/Query'
+import { VT } from './types/Variables'
+import { DataItemVariablesParser } from './parsers/DataItemVariables'
 
 export default class Data<
   PayloadParsers extends ZodRawShape,
   TargetingParsers extends ZodRawShape,
   QueryParsers extends ZodRawShape,
   FallThroughTargetingParsers extends ZodRawShape,
+  VariableParsers extends VT.FromPayload<PayloadParsers>,
 > {
   readonly #fallThroughTargetingParsers: FallThroughTargetingParsers
   readonly #data: Partial<
@@ -31,7 +34,8 @@ export default class Data<
       DataItemsParser<
         PayloadParsers,
         TargetingParsers,
-        FallThroughTargetingParsers
+        FallThroughTargetingParsers,
+        VariableParsers
       >
     >
   >
@@ -43,15 +47,16 @@ export default class Data<
   readonly #targetingParsers: TargetingParsers
   readonly #queryParsers: QueryParsers
   readonly #QueryParser: ZodPartialObject<QueryParsers, 'strict'>
+  readonly #variableParsers: Partial<VariableParsers>
 
-  static create(): Data<{}, {}, {}, {}>
+  static create(): Data<{}, {}, {}, {}, {}>
 
   static create<Options extends DT.CreateOptions>(
     options: Options,
   ): DT.FromCreateOptions<Options>
 
   static create(options: DT.CreateOptions = {}) {
-    const data = new Data({}, {}, {}, {}, {}, {})
+    const data = new Data({}, {}, {}, {}, {}, {}, {})
     const payloadParsers = options.data
       ? data.#mergePayloadParsers(options.data)
       : data.#payloadParsers
@@ -74,6 +79,7 @@ export default class Data<
       targetingParsers,
       queryParsers,
       fallThroughTargeting,
+      options.variables || {},
     )
   }
 
@@ -83,7 +89,8 @@ export default class Data<
         DataItemsParser<
           PayloadParsers,
           TargetingParsers,
-          FallThroughTargetingParsers
+          FallThroughTargetingParsers,
+          VariableParsers
         >
       >
     >,
@@ -92,6 +99,7 @@ export default class Data<
     targetingParsers: TargetingParsers,
     queryParsers: QueryParsers,
     fallThroughTargetingParsers: FallThroughTargetingParsers,
+    variableParsers: Partial<VariableParsers>,
   ) {
     this.#fallThroughTargetingParsers = Object.freeze(
       fallThroughTargetingParsers,
@@ -102,6 +110,7 @@ export default class Data<
     this.#targetingParsers = Object.freeze(targetingParsers)
     this.#queryParsers = Object.freeze(queryParsers)
     this.#QueryParser = strictObject(this.#queryParsers).partial()
+    this.#variableParsers = variableParsers
   }
 
   get data(): Partial<
@@ -109,7 +118,8 @@ export default class Data<
       DataItemsParser<
         PayloadParsers,
         TargetingParsers,
-        FallThroughTargetingParsers
+        FallThroughTargetingParsers,
+        VariableParsers
       >
     >
   > {
@@ -147,7 +157,8 @@ export default class Data<
       PayloadParsers & Parsers,
       TargetingParsers,
       QueryParsers,
-      FallThroughTargetingParsers
+      FallThroughTargetingParsers,
+      VT.FromPayload<PayloadParsers & Parsers>
     >
   > {
     type NewPayloadParsers = PayloadParsers & Parsers
@@ -158,11 +169,13 @@ export default class Data<
       payloadParsers,
       this.#targetingParsers,
       this.#fallThroughTargetingParsers,
+      this.#variableParsers as VT.FromPayload<PayloadParsers & Parsers>,
     ).parseAsync(this.#data)) as zInfer<
       DataItemsParser<
         NewPayloadParsers,
         TargetingParsers,
-        FallThroughTargetingParsers
+        FallThroughTargetingParsers,
+        VT.FromPayload<PayloadParsers & Parsers>
       >
     >
 
@@ -170,7 +183,8 @@ export default class Data<
       NewPayloadParsers,
       TargetingParsers,
       QueryParsers,
-      FallThroughTargetingParsers
+      FallThroughTargetingParsers,
+      VT.FromPayload<PayloadParsers & Parsers>
     >(
       data,
       payloadParsers,
@@ -178,6 +192,7 @@ export default class Data<
       this.#targetingParsers,
       this.#queryParsers,
       this.#fallThroughTargetingParsers,
+      this.#variableParsers as VT.FromPayload<PayloadParsers & Parsers>,
     )
   }
 
@@ -201,7 +216,8 @@ export default class Data<
       PayloadParsers,
       TargetingParsers,
       QueryParsers,
-      FallThroughTargetingParsers
+      FallThroughTargetingParsers,
+      VariableParsers
     > = this
 
     for (const [key, value] of objectIterator(data)) {
@@ -224,6 +240,47 @@ export default class Data<
     )
   }
 
+  async addVariables<PayloadName extends Keys<PayloadParsers>>(
+    payloadName: PayloadName,
+    variables: input<
+      DataItemVariablesParser<
+        VariableParsers[PayloadName],
+        TargetingParsers,
+        FallThroughTargetingParsers
+      >
+    >,
+  ) {
+    const dataItem = this.#data[payloadName] || { rules: [], variables: {} }
+
+    const data = {
+      ...this.#data,
+      ...(await DataItemsParser(
+        this.#payloadParsers,
+        this.#targetingParsers,
+        this.#fallThroughTargetingParsers,
+        this.#variableParsers,
+      ).parseAsync({
+        [payloadName]: {
+          ...dataItem,
+          variables: {
+            ...dataItem.variables,
+            ...variables,
+          },
+        },
+      })),
+    }
+
+    return new Data(
+      data,
+      this.#payloadParsers,
+      this.#targetingPredicates,
+      this.#targetingParsers,
+      this.#queryParsers,
+      this.#fallThroughTargetingParsers,
+      this.#variableParsers,
+    )
+  }
+
   async addRules<Name extends Keys<PayloadParsers>>(
     name: Name,
     rules: input<
@@ -242,6 +299,7 @@ export default class Data<
         this.#payloadParsers,
         this.#targetingParsers,
         this.#fallThroughTargetingParsers,
+        this.#variableParsers,
       ).parseAsync({
         [name]: {
           ...dataItem,
@@ -257,6 +315,7 @@ export default class Data<
       this.#targetingParsers,
       this.#queryParsers,
       this.#fallThroughTargetingParsers,
+      this.#variableParsers,
     )
   }
 
@@ -268,6 +327,7 @@ export default class Data<
       this.#targetingParsers,
       this.#queryParsers,
       this.#fallThroughTargetingParsers,
+      this.#variableParsers,
     )
   }
 
@@ -278,7 +338,8 @@ export default class Data<
       PayloadParsers,
       TargetingParsers & TT.ParserRecord<TDs>,
       QueryParsers & QT.ParserRecord<TDs>,
-      FallThroughTargetingParsers
+      FallThroughTargetingParsers,
+      VariableParsers
     >
   > {
     type NewTargetingParsers = TargetingParsers & TT.ParserRecord<TDs>
@@ -298,19 +359,22 @@ export default class Data<
       DataItemsParser<
         PayloadParsers,
         NewTargetingParsers,
-        FallThroughTargetingParsers
+        FallThroughTargetingParsers,
+        VariableParsers
       >
     > = await DataItemsParser(
       this.#payloadParsers,
       targetingParsers,
       this.#fallThroughTargetingParsers,
+      this.#variableParsers,
     ).parseAsync(this.#data)
 
     return new Data<
       PayloadParsers,
       NewTargetingParsers,
       NewQueryParsers,
-      FallThroughTargetingParsers
+      FallThroughTargetingParsers,
+      VariableParsers
     >(
       data,
       this.#payloadParsers,
@@ -318,6 +382,7 @@ export default class Data<
       targetingParsers,
       queryParsers,
       this.#fallThroughTargetingParsers,
+      this.#variableParsers,
     )
   }
 
@@ -359,7 +424,8 @@ export default class Data<
       PayloadParsers,
       TargetingParsers,
       QueryParsers,
-      FallThroughTargetingParsers & FTTT.ParsersRecord<TDs>
+      FallThroughTargetingParsers & FTTT.ParsersRecord<TDs>,
+      VariableParsers
     >
   > {
     type NewFallThroughTargetingParsers = FallThroughTargetingParsers &
@@ -372,11 +438,13 @@ export default class Data<
       this.#payloadParsers,
       this.#targetingParsers,
       fallThroughTargetingParsers,
+      this.#variableParsers,
     ).parseAsync(this.#data)) as zInfer<
       DataItemsParser<
         PayloadParsers,
         TargetingParsers,
-        NewFallThroughTargetingParsers
+        NewFallThroughTargetingParsers,
+        VariableParsers
       >
     >
 
@@ -384,7 +452,8 @@ export default class Data<
       PayloadParsers,
       TargetingParsers,
       QueryParsers,
-      NewFallThroughTargetingParsers
+      NewFallThroughTargetingParsers,
+      VariableParsers
     >(
       data,
       this.#payloadParsers,
@@ -392,6 +461,7 @@ export default class Data<
       this.#targetingParsers,
       this.#queryParsers,
       fallThroughTargetingParsers,
+      this.#variableParsers,
     )
   }
 
@@ -494,7 +564,8 @@ export default class Data<
             DataItemParser<
               PayloadParsers[Name],
               TargetingParsers,
-              FallThroughTargetingParsers
+              FallThroughTargetingParsers,
+              VariableParsers[Name]
             >
           >
         }

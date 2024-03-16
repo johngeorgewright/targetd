@@ -547,3 +547,42 @@ test('targeting predicate with full query object', async () => {
   expect(await data.getPayload('foo', { mung: 'mung' })).toBe(undefined)
   expect(await data.getPayload('foo', { bar: true, mung: 'mung' })).toBe('yay')
 })
+
+test.only('variables', async () => {
+  let data = Data.create({
+    data: {
+      foo: z.strictObject({
+        a: z.strictObject({
+          b: z.number(),
+          c: z.string(),
+        }),
+      }),
+    },
+    targeting: {
+      weather: targetIncludes(z.string()),
+    },
+    variables: {
+      foo: {
+        c: z.string(),
+      },
+    },
+  })
+
+  data = await data.addRules('foo', [
+    {
+      payload: {
+        a: {
+          b: 1,
+          c: () => 'foo',
+        },
+      },
+    },
+  ])
+
+  expect(await data.getPayload('foo')).toEqual({
+    a: {
+      b: 1,
+      c: 'foo',
+    },
+  })
+})
