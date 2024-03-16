@@ -11,7 +11,7 @@ const timeout = <T>(ms: number, returnValue: T) =>
 
 test('getPayload', async () => {
   let data = Data.create({
-    data: {
+    payload: {
       foo: z.string(),
     },
     targeting: {
@@ -96,7 +96,7 @@ test('getPayload', async () => {
 
 test('targeting with multiple conditions', async () => {
   let data = Data.create({
-    data: {
+    payload: {
       foo: z.string(),
     },
     targeting: {
@@ -133,7 +133,7 @@ test('targeting with multiple conditions', async () => {
 
 test('targeting without requiring a query', async () => {
   let data = Data.create({
-    data: {
+    payload: {
       foo: z.string(),
     },
     targeting: {
@@ -163,7 +163,7 @@ test('targeting without requiring a query', async () => {
 
 test('getPayloads', async () => {
   let data = Data.create({
-    data: {
+    payload: {
       foo: z.string(),
     },
     targeting: {
@@ -209,7 +209,7 @@ test('getPayloads', async () => {
 test('payload runtype validation', async () => {
   try {
     let data = Data.create({
-      data: {
+      payload: {
         foo: z.string().refine((x) => x === 'bar', 'Should be bar'),
       },
     })
@@ -242,7 +242,7 @@ test('payload runtype validation', async () => {
 
 test('getPayloadForEachName', async () => {
   let data = Data.create({
-    data: {
+    payload: {
       foo: z.string(),
       bar: z.string(),
     },
@@ -312,7 +312,7 @@ test('getPayloadForEachName', async () => {
 
 test('fallThrough targeting', async () => {
   let data = Data.create({
-    data: {
+    payload: {
       foo: z.string(),
       bar: z.string(),
     },
@@ -431,7 +431,7 @@ test('fallThrough targeting', async () => {
 
 test('inserting data', async () => {
   let data = Data.create({
-    data: {
+    payload: {
       moo: z.string(),
       foo: z.string(),
       bar: z.string(),
@@ -518,7 +518,7 @@ test('targeting predicate with full query object', async () => {
   })
 
   let data = Data.create({
-    data: {
+    payload: {
       foo: z.string(),
     },
     targeting: {
@@ -550,7 +550,7 @@ test('targeting predicate with full query object', async () => {
 
 test.only('variables', async () => {
   let data = Data.create({
-    data: {
+    payload: {
       foo: z.strictObject({
         a: z.strictObject({
           b: z.number(),

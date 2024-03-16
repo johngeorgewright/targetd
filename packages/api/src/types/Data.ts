@@ -67,7 +67,7 @@ export namespace DT {
    * The options for Data.create
    */
   export interface CreateOptions {
-    data?: ZodRawShape
+    payload?: ZodRawShape
     targeting?: Record<string, TargetingDescriptor<any, any, any>>
     fallThroughTargeting?: Record<
       string,
@@ -85,7 +85,7 @@ export namespace DT {
       [K in keyof T]: Exclude<T[K], undefined>
     }>,
   > = Data<
-    R['data'],
+    R['payload'],
     {
       [K in keyof R['targeting']]: TT.ParserFromDescriptor<R['targeting'][K]>
     },
@@ -97,7 +97,7 @@ export namespace DT {
         R['fallThroughTargeting'][K]
       >
     },
-    VT.FromPayload<R['data']>
+    VT.FromPayload<R['payload']>
   >
 
   export type InsertableData<

@@ -57,8 +57,8 @@ export default class Data<
 
   static create(options: DT.CreateOptions = {}) {
     const data = new Data({}, {}, {}, {}, {}, {}, {})
-    const payloadParsers = options.data
-      ? data.#mergePayloadParsers(options.data)
+    const payloadParsers = options.payload
+      ? data.#mergePayloadParsers(options.payload)
       : data.#payloadParsers
     const targetingPredicates = options.targeting
       ? data.#mergeTargetingPredicates(options.targeting)
