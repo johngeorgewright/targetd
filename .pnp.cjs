@@ -3361,7 +3361,7 @@ const RAW_RUNTIME_STATE =
           ["@targetd/date-range", "virtual:049c1d28e5b9765667b7008f2694b3886d79f2113b2827f735bfa4f93e239d09c6d92193058dc55e737c58ebb15f0b8530088b5cf795627062174f566080b49f#workspace:packages/date-range"],\
           ["@types/cors", "npm:2.8.17"],\
           ["@types/express", "npm:4.17.21"],\
-          ["@types/express-serve-static-core", "npm:4.17.43"],\
+          ["@types/express-serve-static-core", "npm:4.19.0"],\
           ["@types/jest", "npm:29.5.12"],\
           ["@types/lodash", "npm:4.17.0"],\
           ["@types/node", "npm:20.12.4"],\
@@ -3406,7 +3406,7 @@ const RAW_RUNTIME_STATE =
           ["@targetd/date-range", "virtual:049c1d28e5b9765667b7008f2694b3886d79f2113b2827f735bfa4f93e239d09c6d92193058dc55e737c58ebb15f0b8530088b5cf795627062174f566080b49f#workspace:packages/date-range"],\
           ["@types/cors", "npm:2.8.17"],\
           ["@types/express", "npm:4.17.21"],\
-          ["@types/express-serve-static-core", "npm:4.17.43"],\
+          ["@types/express-serve-static-core", "npm:4.19.0"],\
           ["@types/jest", "npm:29.5.12"],\
           ["@types/lodash", "npm:4.17.0"],\
           ["@types/node", "npm:20.12.4"],\
@@ -3664,6 +3664,17 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/@types-express-serve-static-core-npm-4.17.43-9cbdf8ef01-9079e13747.zip/node_modules/@types/express-serve-static-core/",\
         "packageDependencies": [\
           ["@types/express-serve-static-core", "npm:4.17.43"],\
+          ["@types/node", "npm:20.11.19"],\
+          ["@types/qs", "npm:6.9.7"],\
+          ["@types/range-parser", "npm:1.2.4"],\
+          ["@types/send", "npm:0.17.1"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:4.19.0", {\
+        "packageLocation": "./.yarn/cache/@types-express-serve-static-core-npm-4.19.0-7b35544f17-3e803822f9.zip/node_modules/@types/express-serve-static-core/",\
+        "packageDependencies": [\
+          ["@types/express-serve-static-core", "npm:4.19.0"],\
           ["@types/node", "npm:20.11.19"],\
           ["@types/qs", "npm:6.9.7"],\
           ["@types/range-parser", "npm:1.2.4"],\
