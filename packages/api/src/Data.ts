@@ -10,7 +10,6 @@ import { objectEveryAsync, objectIterator, objectKeys, objectMap } from './util'
 import { DataItemsParser } from './parsers/DataItems'
 import type { DataItemParser } from './parsers/DataItem'
 import type { DataItemRuleParser } from './parsers/DataItemRule'
-import type { Keys } from 'ts-toolbelt/out/Any/Keys'
 import type { MaybePromise, StaticRecord, ZodPartialObject } from './types'
 import { DataItemRulesParser } from './parsers/DataItemRules'
 import type { DT } from './types/Data'
@@ -18,8 +17,8 @@ import type { TT } from './types/Targeting'
 import type { FTTT } from './types/FallThroughTargeting'
 import type { PT } from './types/Payload'
 import type { QT } from './types/Query'
-import { VT } from './types/Variables'
-import { DataItemVariablesParser } from './parsers/DataItemVariables'
+import type { VT } from './types/Variables'
+import { DataItemVariableResolverParser } from './parsers/DataItemVariableResolver'
 
 export default class Data<
   PayloadParsers extends ZodRawShape,
@@ -35,6 +34,7 @@ export default class Data<
         PayloadParsers,
         TargetingParsers,
         FallThroughTargetingParsers,
+        QueryParsers,
         VariableParsers
       >
     >
@@ -47,7 +47,7 @@ export default class Data<
   readonly #targetingParsers: TargetingParsers
   readonly #queryParsers: QueryParsers
   readonly #QueryParser: ZodPartialObject<QueryParsers, 'strict'>
-  readonly #variableParsers: Partial<VariableParsers>
+  readonly #variableParsers: VariableParsers
 
   static create(): Data<{}, {}, {}, {}, {}>
 
@@ -56,7 +56,7 @@ export default class Data<
   ): DT.FromCreateOptions<Options>
 
   static create(options: DT.CreateOptions = {}) {
-    const data = new Data({}, {}, {}, {}, {}, {}, {})
+    const data = new Data({}, {}, {}, {}, {}, {}, {}) as DT.Any
     const payloadParsers = options.payload
       ? data.#mergePayloadParsers(options.payload)
       : data.#payloadParsers
@@ -72,6 +72,7 @@ export default class Data<
     const fallThroughTargeting = options.fallThroughTargeting
       ? data.#mergeFallThroughTargeting(options.fallThroughTargeting)
       : data.#fallThroughTargetingParsers
+    const variableParsers = objectMap(payloadParsers, () => ({}))
     return new Data(
       data.#data,
       payloadParsers,
@@ -79,7 +80,7 @@ export default class Data<
       targetingParsers,
       queryParsers,
       fallThroughTargeting,
-      options.variables || {},
+      variableParsers,
     )
   }
 
@@ -90,6 +91,7 @@ export default class Data<
           PayloadParsers,
           TargetingParsers,
           FallThroughTargetingParsers,
+          QueryParsers,
           VariableParsers
         >
       >
@@ -99,7 +101,7 @@ export default class Data<
     targetingParsers: TargetingParsers,
     queryParsers: QueryParsers,
     fallThroughTargetingParsers: FallThroughTargetingParsers,
-    variableParsers: Partial<VariableParsers>,
+    variableParsers: VariableParsers,
   ) {
     this.#fallThroughTargetingParsers = Object.freeze(
       fallThroughTargetingParsers,
@@ -119,6 +121,7 @@ export default class Data<
         PayloadParsers,
         TargetingParsers,
         FallThroughTargetingParsers,
+        QueryParsers,
         VariableParsers
       >
     >
@@ -165,16 +168,22 @@ export default class Data<
 
     const payloadParsers = this.#mergePayloadParsers(parsers)
 
+    const variableParsers = this.#variableParsers as VT.FromPayload<
+      PayloadParsers & Parsers
+    >
+
     const data = (await DataItemsParser(
       payloadParsers,
       this.#targetingParsers,
       this.#fallThroughTargetingParsers,
-      this.#variableParsers as VT.FromPayload<PayloadParsers & Parsers>,
+      this.#queryParsers,
+      variableParsers,
     ).parseAsync(this.#data)) as zInfer<
       DataItemsParser<
         NewPayloadParsers,
         TargetingParsers,
         FallThroughTargetingParsers,
+        QueryParsers,
         VT.FromPayload<PayloadParsers & Parsers>
       >
     >
@@ -192,7 +201,7 @@ export default class Data<
       this.#targetingParsers,
       this.#queryParsers,
       this.#fallThroughTargetingParsers,
-      this.#variableParsers as VT.FromPayload<PayloadParsers & Parsers>,
+      variableParsers,
     )
   }
 
@@ -209,7 +218,8 @@ export default class Data<
     data: DT.InsertableData<
       PayloadParsers,
       TargetingParsers,
-      FallThroughTargetingParsers
+      FallThroughTargetingParsers,
+      QueryParsers
     >,
   ) {
     let result: Data<
@@ -222,7 +232,7 @@ export default class Data<
 
     for (const [key, value] of objectIterator(data)) {
       result = await result.addRules(
-        key as Keys<PayloadParsers>,
+        key as keyof PayloadParsers,
         this.#isFallThroughRulesPayload(value)
           ? value.__rules__
           : [{ payload: value }],
@@ -233,61 +243,70 @@ export default class Data<
   }
 
   #isFallThroughRulesPayload<Name extends keyof PayloadParsers>(
-    payload: PT.Payload<zInfer<PayloadParsers[Name]>, TargetingParsers>,
-  ): payload is FTTT.Rules<zInfer<PayloadParsers[Name]>, TargetingParsers> {
+    payload: PT.Payload<
+      zInfer<PayloadParsers[Name]>,
+      TargetingParsers,
+      QueryParsers
+    >,
+  ): payload is FTTT.Rules<
+    zInfer<PayloadParsers[Name]>,
+    TargetingParsers,
+    QueryParsers
+  > {
     return (
       typeof payload === 'object' && payload !== null && '__rules__' in payload
     )
   }
 
-  async addVariables<PayloadName extends Keys<PayloadParsers>>(
-    payloadName: PayloadName,
-    variables: input<
-      DataItemVariablesParser<
-        VariableParsers[PayloadName],
-        TargetingParsers,
-        FallThroughTargetingParsers
-      >
-    >,
-  ) {
-    const dataItem = this.#data[payloadName] || { rules: [], variables: {} }
-
-    const data = {
-      ...this.#data,
-      ...(await DataItemsParser(
-        this.#payloadParsers,
-        this.#targetingParsers,
-        this.#fallThroughTargetingParsers,
-        this.#variableParsers,
-      ).parseAsync({
-        [payloadName]: {
-          ...dataItem,
-          variables: {
-            ...dataItem.variables,
-            ...variables,
-          },
+  async addRules<Name extends keyof PayloadParsers>(
+    name: Name,
+    opts:
+      | input<
+          DataItemRulesParser<
+            PayloadParsers[Name],
+            TargetingParsers,
+            FallThroughTargetingParsers,
+            QueryParsers
+          >
+        >
+      | {
+          variables: VT.Input<
+            VariableParsers,
+            TargetingParsers,
+            QueryParsers,
+            Name
+          >
+          rules: (
+            variableResolvers: VT.RuleResolvers<
+              VariableParsers[Name],
+              QueryParsers
+            >,
+          ) => input<
+            DataItemRulesParser<
+              PayloadParsers[Name],
+              TargetingParsers,
+              FallThroughTargetingParsers,
+              QueryParsers
+            >
+          >
         },
-      })),
+  ) {
+    if (Array.isArray(opts)) {
+      return this.#addRules(name, opts)
+    } else {
+      const rules = await this.#createVariableResolvingRules(name, opts)
+      return this.#addRules(name, rules)
     }
-
-    return new Data(
-      data,
-      this.#payloadParsers,
-      this.#targetingPredicates,
-      this.#targetingParsers,
-      this.#queryParsers,
-      this.#fallThroughTargetingParsers,
-      this.#variableParsers,
-    )
   }
 
-  async addRules<Name extends Keys<PayloadParsers>>(
+  async #addRules<Name extends keyof PayloadParsers>(
     name: Name,
     rules: input<
       DataItemRulesParser<
         PayloadParsers[Name],
         TargetingParsers,
-        FallThroughTargetingParsers
+        FallThroughTargetingParsers,
+        QueryParsers
       >
     >,
   ) {
@@ -299,6 +318,7 @@ export default class Data<
         this.#payloadParsers,
         this.#targetingParsers,
         this.#fallThroughTargetingParsers,
+        this.#queryParsers,
         this.#variableParsers,
       ).parseAsync({
         [name]: {
@@ -319,6 +339,66 @@ export default class Data<
     )
   }
 
+  async #createVariableResolvingRules<Name extends keyof PayloadParsers>(
+    name: Name,
+    opts: {
+      variables: VT.Input<VariableParsers, TargetingParsers, QueryParsers, Name>
+      rules: (
+        variableResolvers: VT.RuleResolvers<
+          VariableParsers[Name],
+          QueryParsers
+        >,
+      ) => input<
+        DataItemRulesParser<
+          PayloadParsers[Name],
+          TargetingParsers,
+          FallThroughTargetingParsers,
+          QueryParsers
+        >
+      >
+    },
+  ) {
+    const rulesVariableResolvers: VT.RuleResolvers<
+      VariableParsers[Name],
+      QueryParsers
+    > = objectMap(opts.variables, (variableRules, variableName) => {
+      const variableSchema = new Data<
+        VariableParsers[Name],
+        TargetingParsers,
+        QueryParsers,
+        {},
+        VT.FromPayload<VariableParsers[Name]>
+      >(
+        {},
+        this.#variableParsers[name],
+        this.#targetingPredicates,
+        this.#targetingParsers,
+        this.#queryParsers,
+        {},
+        {} as VT.FromPayload<VariableParsers[Name]>,
+      )
+
+      const variableDataP = variableSchema.#addRules(
+        variableName,
+        variableRules as any,
+      )
+
+      const resolver: input<
+        DataItemVariableResolverParser<
+          VariableParsers[Name][typeof variableName],
+          QueryParsers
+        >
+      > = async (query) => {
+        const variableData = await variableDataP
+        return variableData.getPayload(variableName, query)
+      }
+
+      return resolver
+    })
+
+    return opts.rules(rulesVariableResolvers)
+  }
+
   removeAllRules() {
     return new Data(
       {} as any,
@@ -328,6 +408,46 @@ export default class Data<
       this.#queryParsers,
       this.#fallThroughTargetingParsers,
       this.#variableParsers,
+    )
+  }
+
+  useVariables<Name extends keyof PayloadParsers, Vs extends ZodRawShape>(
+    name: Name,
+    variableParsers: Vs,
+  ) {
+    type NewVariableParsers = VariableParsers & { [K in Name]: Vs }
+
+    const newVariableParsers: NewVariableParsers = {
+      ...this.#variableParsers,
+      [name]: variableParsers,
+    }
+
+    const data = this.#data as Partial<
+      zInfer<
+        DataItemsParser<
+          PayloadParsers,
+          TargetingParsers,
+          FallThroughTargetingParsers,
+          QueryParsers,
+          NewVariableParsers
+        >
+      >
+    >
+
+    return new Data<
+      PayloadParsers,
+      TargetingParsers,
+      QueryParsers,
+      FallThroughTargetingParsers,
+      NewVariableParsers
+    >(
+      data,
+      this.#payloadParsers,
+      this.#targetingPredicates,
+      this.#targetingParsers,
+      this.#queryParsers,
+      this.#fallThroughTargetingParsers,
+      newVariableParsers,
     )
   }
 
@@ -355,19 +475,21 @@ export default class Data<
 
     const queryParsers: NewQueryParsers = this.#mergeQueryPredicates(targeting)
 
-    const data: zInfer<
+    const data = (await DataItemsParser(
+      this.#payloadParsers,
+      targetingParsers,
+      this.#fallThroughTargetingParsers,
+      queryParsers,
+      this.#variableParsers,
+    ).parseAsync(this.#data)) as zInfer<
       DataItemsParser<
         PayloadParsers,
         NewTargetingParsers,
         FallThroughTargetingParsers,
+        NewQueryParsers,
         VariableParsers
       >
-    > = await DataItemsParser(
-      this.#payloadParsers,
-      targetingParsers,
-      this.#fallThroughTargetingParsers,
-      this.#variableParsers,
-    ).parseAsync(this.#data)
+    >
 
     return new Data<
       PayloadParsers,
@@ -438,12 +560,14 @@ export default class Data<
       this.#payloadParsers,
       this.#targetingParsers,
       fallThroughTargetingParsers,
+      this.#queryParsers,
       this.#variableParsers,
     ).parseAsync(this.#data)) as zInfer<
       DataItemsParser<
         PayloadParsers,
         TargetingParsers,
         NewFallThroughTargetingParsers,
+        QueryParsers,
         VariableParsers
       >
     >
@@ -478,12 +602,12 @@ export default class Data<
     }
   }
 
-  async getPayloadForEachName(rawQuery: QT.Raw<QueryParsers> = {}) {
-    const payloads = {} as Partial<{
-      [Name in keyof PayloadParsers]:
-        | PT.Payload<PayloadParsers[Name], TargetingParsers>
+  async getPayloadForEachName(rawQuery: QT.Input<QueryParsers> = {}) {
+    const payloads = {} as {
+      [Name in keyof PayloadParsers]?:
+        | PT.Payload<PayloadParsers[Name], TargetingParsers, QueryParsers>
         | undefined
-    }>
+    }
 
     await Promise.all(
       objectKeys(this.#data).map(async (name) => {
@@ -496,8 +620,12 @@ export default class Data<
 
   async getPayload<Name extends keyof PayloadParsers>(
     name: Name,
-    rawQuery: QT.Raw<QueryParsers> = {},
-  ): Promise<PT.Payload<PayloadParsers[Name], TargetingParsers> | void> {
+    rawQuery: QT.Input<QueryParsers> = {},
+  ): Promise<PT.Payload<
+    PayloadParsers[Name],
+    TargetingParsers,
+    QueryParsers
+  > | void> {
     const predicate = await this.#createRulePredicate(rawQuery)
     for (const rule of this.#getTargetableRules(name))
       if (await predicate(rule as any)) return this.#mapRule(rule)
@@ -505,9 +633,15 @@ export default class Data<
 
   async getPayloads<Name extends keyof PayloadParsers>(
     name: Name,
-    rawQuery: QT.Raw<QueryParsers> = {},
-  ): Promise<PT.Payload<PayloadParsers[Name], TargetingParsers>[]> {
-    const payloads: PT.Payload<PayloadParsers[Name], TargetingParsers>[] = []
+    rawQuery: QT.Input<QueryParsers> = {},
+  ): Promise<
+    PT.Payload<PayloadParsers[Name], TargetingParsers, QueryParsers>[]
+  > {
+    const payloads: PT.Payload<
+      PayloadParsers[Name],
+      TargetingParsers,
+      QueryParsers
+    >[] = []
     const predicate = await this.#createRulePredicate(rawQuery)
     for (const rule of this.#getTargetableRules(name))
       if (await predicate(rule as any)) payloads.push(this.#mapRule(rule))
@@ -519,7 +653,8 @@ export default class Data<
       DataItemRuleParser<
         PayloadParsers[Name],
         TargetingParsers,
-        FallThroughTargetingParsers
+        FallThroughTargetingParsers,
+        QueryParsers
       >
     >,
   ) {
@@ -530,8 +665,10 @@ export default class Data<
         : undefined
   }
 
+  #resolvePayloadVariables() {}
+
   async #createRulePredicate<Name extends keyof PayloadParsers>(
-    rawQuery: QT.Raw<QueryParsers>,
+    rawQuery: QT.Input<QueryParsers>,
   ) {
     const query = await this.#QueryParser.parseAsync(rawQuery)
 
@@ -548,7 +685,8 @@ export default class Data<
         DataItemRuleParser<
           PayloadParsers[Name],
           TargetingParsers,
-          FallThroughTargetingParsers
+          FallThroughTargetingParsers,
+          QueryParsers
         >
       >,
     ) =>
@@ -565,6 +703,7 @@ export default class Data<
               PayloadParsers[Name],
               TargetingParsers,
               FallThroughTargetingParsers,
+              QueryParsers,
               VariableParsers[Name]
             >
           >
@@ -574,7 +713,7 @@ export default class Data<
   }
 
   async #targetingPredicate(
-    query: QT.Raw<QueryParsers>,
+    query: QT.Input<QueryParsers>,
     targeting:
       | Partial<StaticRecord<TargetingParsers>>
       | Partial<StaticRecord<TargetingParsers>>[],

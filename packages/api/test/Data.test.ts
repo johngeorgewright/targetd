@@ -561,23 +561,35 @@ test.only('variables', async () => {
     targeting: {
       weather: targetIncludes(z.string()),
     },
-    variables: {
-      foo: {
-        c: z.string(),
-      },
-    },
+  }).useVariables('foo', {
+    c: z.string(),
   })
 
-  data = await data.addRules('foo', [
-    {
-      payload: {
-        a: {
-          b: 1,
-          c: () => 'foo',
+  data = await data.addRules('foo', {
+    variables: {
+      c: [
+        {
+          targeting: {
+            weather: ['bad'],
+          },
+          payload: 'Argh, I see a storm',
+        },
+        {
+          payload: 'The sea',
+        },
+      ],
+    },
+    rules: (variables) => [
+      {
+        payload: {
+          a: {
+            b: 1,
+            c: variables.c,
+          },
         },
       },
-    },
-  ])
+    ],
+  })
 
   expect(await data.getPayload('foo')).toEqual({
     a: {

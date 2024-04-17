@@ -61,7 +61,7 @@ export namespace DT {
    */
   export type Payload<D extends Any, Name extends keyof PayloadParsers<D>> =
     | zInfer<PayloadParsers<D>[Name]>
-    | FTTT.Rules<PayloadParsers<D>[Name], TargetingParsers<D>>
+    | FTTT.Rules<PayloadParsers<D>[Name], TargetingParsers<D>, QueryParsers<D>>
 
   /**
    * The options for Data.create
@@ -73,7 +73,6 @@ export namespace DT {
       string,
       ZodTypeAny | TargetingDescriptor<any, any, any>
     >
-    variables?: Record<string, ZodRawShape>
   }
 
   /**
@@ -97,17 +96,20 @@ export namespace DT {
         R['fallThroughTargeting'][K]
       >
     },
-    VT.FromPayload<R['payload']>
+    {
+      [K in keyof R['payload']]: {}
+    }
   >
 
   export type InsertableData<
     D extends ZodRawShape,
     TP extends ZodRawShape,
     FTP extends ZodRawShape,
+    QP extends ZodRawShape,
   > = Partial<{
     [Name in keyof D]:
       | zInfer<D[Name]>
-      | FTTT.Rules<D[Name], TP>
-      | FTTT.Rules<D[Name], FTP>
+      | FTTT.Rules<D[Name], TP, QP>
+      | FTTT.Rules<D[Name], FTP, QP>
   }>
 }

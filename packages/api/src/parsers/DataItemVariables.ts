@@ -6,28 +6,27 @@ import { ZodPartialObject } from '../types'
 export function DataItemVariablesParser<
   Vs extends ZodRawShape,
   T extends ZodRawShape,
-  FTT extends ZodRawShape,
+  Q extends ZodRawShape,
 >(
   variableParsers: Vs,
   targeting: T,
-  fallThroughTargeting: FTT,
-): DataItemVariablesParser<Vs, T, FTT> {
+  query: Q,
+): DataItemVariablesParser<Vs, T, Q> {
   return strictObject(
     objectMap(
       variableParsers,
-      (parser) =>
-        DataItemRulesParser(parser, targeting, fallThroughTargeting) as any,
+      (parser) => DataItemRulesParser(parser, targeting, {}, query) as any,
     ),
-  ).partial() as DataItemVariablesParser<Vs, T, FTT>
+  ).partial() as DataItemVariablesParser<Vs, T, Q>
 }
 
 export type DataItemVariablesParser<
   Vs extends ZodRawShape,
   Targeting extends ZodRawShape,
-  FallThroughTargeting extends ZodRawShape,
+  Query extends ZodRawShape,
 > = ZodPartialObject<
   {
-    [K in keyof Vs]: DataItemRulesParser<Vs[K], Targeting, FallThroughTargeting>
+    [K in keyof Vs]: DataItemRulesParser<Vs[K], Targeting, {}, Query>
   },
   'strict'
 >

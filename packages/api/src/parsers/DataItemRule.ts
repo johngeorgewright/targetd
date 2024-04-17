@@ -9,27 +9,35 @@ import {
 } from 'zod'
 import { type ZodPartialObject } from '../types'
 import {
-  RecursivleyWithVariablePreprocessor,
-  attachVariablePreprocessor,
-} from './VariableResolver'
+  RecursivleyWithVariableResolver,
+  attachVariableResolver,
+} from './attachVariableResolver'
 
 export function DataItemRuleParser<
   P extends ZodTypeAny,
   T extends ZodRawShape,
   CT extends ZodRawShape,
+  QT extends ZodRawShape,
   AllowMultipleTargeting extends boolean = true,
 >(
   Payload: P,
   targeting: T,
   fallThroughTargeting: CT,
+  query: QT,
   allowMultipleTargeting = true,
 ) {
-  const Rule = RuleWithPayloadParser(Payload, targeting, allowMultipleTargeting)
+  const Rule = RuleWithPayloadParser(
+    Payload,
+    targeting,
+    query,
+    allowMultipleTargeting,
+  )
 
   const FallThroughRule = RuleWithFallThroughParser(
     Payload,
     targeting,
     fallThroughTargeting,
+    query,
     allowMultipleTargeting,
   )
 
@@ -37,6 +45,7 @@ export function DataItemRuleParser<
     P,
     T,
     CT,
+    QT,
     AllowMultipleTargeting
   >
 }
@@ -45,14 +54,16 @@ export type DataItemRuleParser<
   Payload extends ZodTypeAny,
   Targeting extends ZodRawShape,
   FallThroughTargeting extends ZodRawShape,
+  Query extends ZodRawShape,
   AllowMultipleTargeting extends boolean = true,
 > = ZodUnion<
   [
-    RuleWithPayloadParser<Payload, Targeting, AllowMultipleTargeting>,
+    RuleWithPayloadParser<Payload, Targeting, Query, AllowMultipleTargeting>,
     RuleWithFallThroughParser<
       Payload,
       Targeting,
       FallThroughTargeting,
+      Query,
       AllowMultipleTargeting
     >,
   ]
@@ -86,6 +97,7 @@ function MultipleRuleTargeting<Targeting extends ZodRawShape>(
 export type RuleWithPayloadParser<
   Payload extends ZodTypeAny,
   Targeting extends ZodRawShape,
+  Query extends ZodRawShape,
   AllowMultipleTargeting extends boolean = true,
 > = ZodObject<
   {
@@ -94,7 +106,7 @@ export type RuleWithPayloadParser<
         ? MultipleRuleTargeting<Targeting>
         : SingularRuleTargeting<Targeting>
     >
-    payload: RecursivleyWithVariablePreprocessor<Payload>
+    payload: RecursivleyWithVariableResolver<Payload, Query>
   },
   'strict'
 >
@@ -102,21 +114,22 @@ export type RuleWithPayloadParser<
 export function RuleWithPayloadParser<
   P extends ZodTypeAny,
   T extends ZodRawShape,
+  Q extends ZodRawShape,
   AllowMultipleTargeting extends boolean = true,
->(Payload: P, targeting: T, allowMultipleTargeting = true) {
+>(Payload: P, targeting: T, query: Q, allowMultipleTargeting = true) {
   return strictObject({
     targeting: (allowMultipleTargeting
       ? MultipleRuleTargeting(targeting)
       : SingularRuleTargeting(targeting)
     ).optional(),
-    payload: attachVariablePreprocessor(Payload),
-  }) as RuleWithPayloadParser<P, T, AllowMultipleTargeting>
+    payload: attachVariableResolver(Payload, query),
+  }) as RuleWithPayloadParser<P, T, Q, AllowMultipleTargeting>
 }
-
 export type RuleWithFallThroughParser<
   Payload extends ZodTypeAny,
   Targeting extends ZodRawShape,
   FallThroughTargeting extends ZodRawShape,
+  Query extends ZodRawShape,
   AllowMultipleTargeting extends boolean = true,
 > = ZodObject<
   {
@@ -127,6 +140,7 @@ export type RuleWithFallThroughParser<
       RuleWithPayloadParser<
         Payload,
         FallThroughTargeting,
+        Query,
         AllowMultipleTargeting
       >
     >
@@ -138,22 +152,29 @@ export function RuleWithFallThroughParser<
   Payload extends ZodTypeAny,
   Targeting extends ZodRawShape,
   FallThroughTargeting extends ZodRawShape,
+  Query extends ZodRawShape,
   AllowMultipleTargeting extends boolean = true,
 >(
   payload: Payload,
   targeting: Targeting,
   fallThroughTargeting: FallThroughTargeting,
+  query: Query,
   allowMultipleTargeting = true,
 ) {
   return strictObject({
     targeting: allowMultipleTargeting
       ? MultipleRuleTargeting(targeting)
       : SingularRuleTargeting(targeting),
-    fallThrough: RuleWithPayloadParser(payload, fallThroughTargeting).array(),
+    fallThrough: RuleWithPayloadParser(
+      payload,
+      fallThroughTargeting,
+      query,
+    ).array(),
   }) as RuleWithFallThroughParser<
     Payload,
     Targeting,
     FallThroughTargeting,
+    Query,
     AllowMultipleTargeting
   >
 }

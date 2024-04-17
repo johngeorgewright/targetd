@@ -6,6 +6,7 @@
     "importHelpers": true,
     "declaration": true,
     "sourceMap": true,
+    "noErrorTruncation": true,
     "outDir": "./dist",
     "strict": true,
     "noUnusedLocals": true,

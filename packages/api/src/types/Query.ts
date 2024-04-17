@@ -1,5 +1,5 @@
 import type { ZodRawShape } from 'zod'
-import type { StaticRecord } from '../types'
+import type { StaticRecordInput } from '../types'
 import type TargetingDescriptor from '../parsers/TargetingDescriptor'
 import type { TT } from './Targeting'
 
@@ -7,7 +7,7 @@ import type { TT } from './Targeting'
  * Query type utilities
  */
 export namespace QT {
-  export type Raw<QP extends ZodRawShape> = Partial<StaticRecord<QP>>
+  export type Input<QP extends ZodRawShape> = Partial<StaticRecordInput<QP>>
 
   /**
    * Gets the query parser from a targeting descriptor

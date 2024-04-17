@@ -1,5 +1,6 @@
-import { L } from 'ts-toolbelt'
-import { MaybePromise } from './types'
+import { type L } from 'ts-toolbelt'
+import { type MaybePromise } from './types'
+import { type ZodType, type ZodTypeAny } from 'zod'
 
 export function objectMap<O extends Record<string, unknown>, R>(
   obj: O,
@@ -9,6 +10,21 @@ export function objectMap<O extends Record<string, unknown>, R>(
     (result, [key, value]) => ({ ...result, [key]: fn(value, key) }),
     {} as Record<keyof O, R>,
   )
+}
+
+export async function objectMapAsync<O extends Record<string, unknown>, R>(
+  obj: O,
+  fn: <K extends keyof O>(v: O[K], k: K) => MaybePromise<R>,
+): Promise<Record<keyof O, R>> {
+  let newValue = {} as Record<keyof O, R>
+
+  await Promise.all(
+    objectEntries(obj).map(async ([key, value]) => {
+      newValue[key] = await fn(value, key)
+    }),
+  )
+
+  return newValue
 }
 
 export function objectKeys<O extends Record<string, unknown>>(
@@ -129,3 +145,20 @@ export function arrayLast<T extends unknown[]>(array: T): L.Last<T> {
 type Entries<T extends Record<string | symbol, unknown>> = {
   [K in keyof T]: [K, T[K]]
 }[keyof T]
+
+export function withResolvers<T = void>() {
+  let resolve: (value: T | PromiseLike<T>) => void
+  let reject: (reason?: any) => void
+
+  return {
+    promise: new Promise<T>(($resolve, $reject) => {
+      resolve = $resolve
+      reject = $reject
+    }),
+    resolve: resolve!,
+    reject: reject!,
+  }
+}
+
+export type GetZodTypeDef<Parser extends ZodTypeAny> =
+  Parser extends ZodType<any, infer Def, any> ? Def : never

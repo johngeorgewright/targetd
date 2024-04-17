@@ -35,7 +35,11 @@ export namespace FTTT {
   /**
    * The data shape of a set of fallthrough rules
    */
-  export type Rules<P extends ZodTypeAny, T extends ZodRawShape> = {
-    __rules__: zInfer<RuleWithPayloadParser<P, T>>[]
+  export type Rules<
+    P extends ZodTypeAny,
+    T extends ZodRawShape,
+    Q extends ZodRawShape,
+  > = {
+    __rules__: zInfer<RuleWithPayloadParser<P, T, Q>>[]
   }
 }

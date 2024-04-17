@@ -1,16 +1,19 @@
 import { type ZodRawShape, strictObject } from 'zod'
 import { type ZodPartialObject } from '../types'
 import { DataItemParser } from './DataItem'
+import { VT } from '../types/Variables'
 
 export function DataItemsParser<
   D extends ZodRawShape,
   T extends ZodRawShape,
   CT extends ZodRawShape,
-  Vs extends Record<keyof D, ZodRawShape>,
+  Q extends ZodRawShape,
+  Vs extends VT.FromPayload<D>,
 >(
   payloadParsers: D,
   targeting: T,
   fallThroughTargeting: CT,
+  query: Q,
   variableParsers: Partial<Vs>,
 ) {
   const dataItems: Record<string, any> = {}
@@ -19,22 +22,25 @@ export function DataItemsParser<
       Payload,
       targeting,
       fallThroughTargeting,
+      query,
       variableParsers[key] || {},
     )
-  return strictObject(dataItems).partial() as DataItemsParser<D, T, CT, Vs>
+  return strictObject(dataItems).partial() as DataItemsParser<D, T, CT, Q, Vs>
 }
 
 export type DataItemsParser<
   DataTypes extends ZodRawShape,
   Targeting extends ZodRawShape,
   FallThroughTargeting extends ZodRawShape,
-  Variables extends Record<keyof DataTypes, ZodRawShape>,
+  Query extends ZodRawShape,
+  Variables extends VT.FromPayload<DataTypes>,
 > = ZodPartialObject<
   {
     [Name in keyof DataTypes]: DataItemParser<
       DataTypes[Name],
       Targeting,
       FallThroughTargeting,
+      Query,
       Variables[Name]
     >
   },

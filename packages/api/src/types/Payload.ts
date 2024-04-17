@@ -5,7 +5,9 @@ import type { FTTT } from './FallThroughTargeting'
  * Payload type utilities
  */
 export namespace PT {
-  export type Payload<P extends ZodTypeAny, T extends ZodRawShape> =
-    | zInfer<P>
-    | FTTT.Rules<P, T>
+  export type Payload<
+    P extends ZodTypeAny,
+    T extends ZodRawShape,
+    Q extends ZodRawShape,
+  > = zInfer<P> | FTTT.Rules<P, T, Q>
 }
