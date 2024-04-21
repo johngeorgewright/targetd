@@ -2306,7 +2306,7 @@ __metadata:
     "@types/jest": "npm:29.5.12"
     "@types/node": "npm:20.12.7"
     jest: "npm:29.7.0"
-    jest-date-mock: "npm:1.0.8"
+    jest-date-mock: "npm:1.0.10"
     rimraf: "npm:5.0.5"
     semantic-release: "npm:23.0.8"
     semantic-release-monorepo: "npm:8.0.2"
@@ -7962,10 +7962,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jest-date-mock@npm:1.0.8":
-  version: 1.0.8
-  resolution: "jest-date-mock@npm:1.0.8"
-  checksum: 10/be693e6e001b4e7da0d4bdc470b1d8ade48eb4dd7484397a615eb16975f6358a9c19bf9ad7a906536b1e23f7fed8c63dd881f39354a49bab75904f3ded17f601
+"jest-date-mock@npm:1.0.10":
+  version: 1.0.10
+  resolution: "jest-date-mock@npm:1.0.10"
+  checksum: 10/0c5a642f857db275faf645176be192cbcc15362234dcff7884d3f05c113eafdda8f910e0b709101b3871e62b470a8874cc844be593cb69228019574f4193f703
   languageName: node
   linkType: hard
 

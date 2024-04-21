@@ -3106,7 +3106,7 @@ const RAW_RUNTIME_STATE =
           ["@types/targetd__api", null],\
           ["@types/zod", null],\
           ["jest", "virtual:78776105526f67704c5d821aa139591fbba11fdbd5f03f51d916c5f752b52ce5b35f9731aa4a7b9fc9fe491d6229cf4b9abfbb54db395f33bbe11c0e0b749fa6#npm:29.7.0"],\
-          ["jest-date-mock", "npm:1.0.8"],\
+          ["jest-date-mock", "npm:1.0.10"],\
           ["rimraf", "npm:5.0.5"],\
           ["semantic-release", "npm:23.0.8"],\
           ["semantic-release-monorepo", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:8.0.2"],\
@@ -3136,7 +3136,7 @@ const RAW_RUNTIME_STATE =
           ["@types/jest", "npm:29.5.12"],\
           ["@types/node", "npm:20.12.7"],\
           ["jest", "virtual:78776105526f67704c5d821aa139591fbba11fdbd5f03f51d916c5f752b52ce5b35f9731aa4a7b9fc9fe491d6229cf4b9abfbb54db395f33bbe11c0e0b749fa6#npm:29.7.0"],\
-          ["jest-date-mock", "npm:1.0.8"],\
+          ["jest-date-mock", "npm:1.0.10"],\
           ["rimraf", "npm:5.0.5"],\
           ["semantic-release", "npm:23.0.8"],\
           ["semantic-release-monorepo", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:8.0.2"],\
@@ -9632,10 +9632,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["jest-date-mock", [\
-      ["npm:1.0.8", {\
-        "packageLocation": "./.yarn/cache/jest-date-mock-npm-1.0.8-ccfefdcb39-be693e6e00.zip/node_modules/jest-date-mock/",\
+      ["npm:1.0.10", {\
+        "packageLocation": "./.yarn/cache/jest-date-mock-npm-1.0.10-ab130876a0-0c5a642f85.zip/node_modules/jest-date-mock/",\
         "packageDependencies": [\
-          ["jest-date-mock", "npm:1.0.8"]\
+          ["jest-date-mock", "npm:1.0.10"]\
         ],\
         "linkType": "HARD"\
       }]\
