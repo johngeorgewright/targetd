@@ -2256,7 +2256,7 @@ __metadata:
     ts-toolbelt: "npm:9.6.0"
     tslib: "npm:2.6.2"
     typescript: "npm:5.4.5"
-    zod: "npm:3.23.3"
+    zod: "npm:3.23.4"
   peerDependencies:
     zod: ^3.20.0
   languageName: unknown
@@ -2286,7 +2286,7 @@ __metadata:
     ts-toolbelt: "npm:9.6.0"
     tslib: "npm:2.6.2"
     typescript: "npm:5.4.5"
-    zod: "npm:3.23.3"
+    zod: "npm:3.23.4"
   peerDependencies:
     "@targetd/api": ">=6.0.0"
     zod: ^3.20.0
@@ -2313,7 +2313,7 @@ __metadata:
     ts-jest: "npm:29.1.2"
     tslib: "npm:2.6.2"
     typescript: "npm:5.4.5"
-    zod: "npm:3.23.3"
+    zod: "npm:3.23.4"
   peerDependencies:
     "@targetd/api": ">=6.0.0"
     zod: ^3.20.0
@@ -2344,7 +2344,7 @@ __metadata:
     ts-toolbelt: "npm:9.6.0"
     tslib: "npm:2.6.2"
     typescript: "npm:5.4.5"
-    zod: "npm:3.23.3"
+    zod: "npm:3.23.4"
   peerDependencies:
     "@targetd/api": ">=6.0.0"
     zod: ^3.20.0
@@ -2382,7 +2382,7 @@ __metadata:
     typescript: "npm:5.4.5"
     watch: "npm:1.0.2"
     yaml: "npm:2.4.1"
-    zod: "npm:3.23.3"
+    zod: "npm:3.23.4"
   peerDependencies:
     "@targetd/api": ">=6.0.0"
     zod: ^3.20.0
@@ -2411,7 +2411,7 @@ __metadata:
     tslib: "npm:2.6.2"
     typescript: "npm:5.4.5"
     yargs: "npm:17.7.2"
-    zod: "npm:3.23.3"
+    zod: "npm:3.23.4"
     zod-to-json-schema: "npm:3.23.0"
   peerDependencies:
     "@targetd/api": ">=6.0.0"
@@ -2514,7 +2514,7 @@ __metadata:
     ts-jest: "npm:29.1.2"
     tslib: "npm:2.6.2"
     typescript: "npm:5.4.5"
-    zod: "npm:3.23.3"
+    zod: "npm:3.23.4"
   peerDependencies:
     "@targetd/api": ">=6.0.0"
     zod: ^3.20.0
@@ -14474,9 +14474,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:3.23.3":
-  version: 3.23.3
-  resolution: "zod@npm:3.23.3"
-  checksum: 10/7db67eff699ea2f0f6855cc45d936d0cf055c5ec8a704aa2638e3ba1dc2b3c6ab7a5a2b451c5c5e031908db37a484003dc82b69f5cbc8c183735238f65e8a24e
+"zod@npm:3.23.4":
+  version: 3.23.4
+  resolution: "zod@npm:3.23.4"
+  checksum: 10/29117ce59f16af155d9a3aab024d18e858e55b4b51c1f848772516ec6f019e617a0cdaf4c6e20f15154360a9f4c160056aba34502ec68072c8f0af31dfd653d6
   languageName: node
   linkType: hard
