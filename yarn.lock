@@ -2412,7 +2412,7 @@ __metadata:
     typescript: "npm:5.4.5"
     yargs: "npm:17.7.2"
     zod: "npm:3.23.3"
-    zod-to-json-schema: "npm:3.22.5"
+    zod-to-json-schema: "npm:3.23.0"
   peerDependencies:
     "@targetd/api": ">=6.0.0"
     ts-node: ^10.9.2
@@ -14465,12 +14465,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod-to-json-schema@npm:3.22.5":
-  version: 3.22.5
-  resolution: "zod-to-json-schema@npm:3.22.5"
+"zod-to-json-schema@npm:3.23.0":
+  version: 3.23.0
+  resolution: "zod-to-json-schema@npm:3.23.0"
   peerDependencies:
-    zod: ^3.22.4
-  checksum: 10/c03db6adb4cbc3df58a44c7744a001823a86d6fc6140cd5b4a0ae4730e5f7388d9d2d750859db018a2f3a441bc15f3513f7f3c7765e742303f06f3daf45ed7c0
+    zod: ^3.23.3
+  checksum: 10/f546c5add42cccc63c980dd3dc94eb3aafd70d9d7c18663404fef823ae0c7a359e7d24e7d71206172f50a09d0605caf633aa63d067ab69ae40ca6fa2a51a6fbb
   languageName: node
   linkType: hard
 
