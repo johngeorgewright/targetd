@@ -9,6 +9,7 @@
     { "name": "📦 @targetd/fs", "path": "packages/fs" },
     { "name": "📦 @targetd/json-schema", "path": "packages/json-schema" },
     { "name": "📦 @targetd/server", "path": "packages/server" },
+    { "name": "📦 @targetd/ui", "path": "packages/ui" },
     { "name": "🤖 github", "path": ".github" },
   ],
   "settings": {
