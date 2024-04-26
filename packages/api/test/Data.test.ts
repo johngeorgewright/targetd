@@ -67,10 +67,10 @@ test('getPayload', async () => {
   expect(await data.getPayload('foo', { weather: 'rainy' })).toBe('☂️')
   expect(await data.getPayload('foo', { highTide: true })).toBe('🌊')
   expect(
-    await data.getPayload('foo', { highTide: true, weather: 'sunny' }),
+    await data.getPayload('foo', { highTide: true, weather: 'sunny' })
   ).toBe('🏄‍♂️')
   expect(await data.getPayload('foo', { asyncThing: true })).toBe(
-    'Async payload',
+    'Async payload'
   )
 
   // @ts-expect-error
@@ -78,7 +78,7 @@ test('getPayload', async () => {
 
   expect(
     // @ts-expect-error
-    data.getPayload('foo', { nonExistantKey: 'some value' }),
+    data.getPayload('foo', { nonExistantKey: 'some value' })
   ).rejects.toThrow()
 
   expect(
@@ -90,7 +90,7 @@ test('getPayload', async () => {
         },
         payload: 'error',
       },
-    ]),
+    ])
   ).rejects.toThrow()
 })
 
@@ -123,10 +123,10 @@ test('targeting with multiple conditions', async () => {
   ])
 
   expect(await data.getPayload('foo', { weather: 'sunny' })).toBe(
-    'The time is now',
+    'The time is now'
   )
   expect(await data.getPayload('foo', { highTide: true })).toBe(
-    'The time is now',
+    'The time is now'
   )
   expect(await data.getPayload('foo')).toBe('bar')
 })
@@ -546,4 +546,80 @@ test('targeting predicate with full query object', async () => {
   expect(await data.getPayload('foo')).toBe(undefined)
   expect(await data.getPayload('foo', { mung: 'mung' })).toBe(undefined)
   expect(await data.getPayload('foo', { bar: true, mung: 'mung' })).toBe('yay')
+})
+
+test.only('broken', async () => {
+  const browserTargeting = targetIncludes(z.enum(['chrome', 'edge']))
+
+  const channelTargeting = targetIncludes(z.enum(['foo', 'bar']))
+
+  const payloadSchema = {
+    foo: z.string(),
+  }
+
+  const serverSchema = Data.create({
+    data: payloadSchema,
+    targeting: {
+      channel: channelTargeting,
+    },
+    fallThroughTargeting: {
+      browser: browserTargeting,
+    },
+  })
+
+  const data = await serverSchema.addRules('foo', [
+    {
+      targeting: {
+        channel: ['foo'],
+      },
+      payload: 'face',
+    },
+    {
+      targeting: {
+        channel: ['bar'],
+        browser: ['chrome'],
+      },
+      payload: 'yay',
+    },
+    {
+      targeting: {
+        channel: ['bar'],
+        browser: ['edge'],
+      },
+      payload: 'nay',
+    },
+  ])
+
+  expect(await data.getPayloadForEachName({ channel: 'foo' }))
+    .toMatchInlineSnapshot(`
+    {
+      "foo": "face",
+    }
+  `)
+
+  expect(await data.getPayloadForEachName({ channel: 'bar' }))
+    .toMatchInlineSnapshot(`
+    {
+      "foo": {
+        "__rules__": [
+          {
+            "payload": "yay",
+            "targeting": {
+              "browser": [
+                "chrome",
+              ],
+            },
+          },
+          {
+            "payload": "nay",
+            "targeting": {
+              "browser": [
+                "edge",
+              ],
+            },
+          },
+        ],
+      },
+    }
+  `)
 })

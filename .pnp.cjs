@@ -3020,7 +3020,12 @@ const RAW_RUNTIME_STATE =
           ["@types/jest", "npm:29.5.12"],\
           ["@types/node", "npm:20.12.7"],\
           ["@types/zod", null],\
+          ["fast-deep-equal", "npm:3.1.3"],\
           ["jest", "virtual:78776105526f67704c5d821aa139591fbba11fdbd5f03f51d916c5f752b52ce5b35f9731aa4a7b9fc9fe491d6229cf4b9abfbb54db395f33bbe11c0e0b749fa6#npm:29.7.0"],\
+          ["prettier-2", [\
+            "prettier",\
+            "npm:2.8.8"\
+          ]],\
           ["rimraf", "npm:5.0.5"],\
           ["semantic-release", "npm:23.0.8"],\
           ["semantic-release-monorepo", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:8.0.2"],\
@@ -3047,7 +3052,12 @@ const RAW_RUNTIME_STATE =
           ["@semantic-release/release-notes-generator", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:12.1.0"],\
           ["@types/jest", "npm:29.5.12"],\
           ["@types/node", "npm:20.12.7"],\
+          ["fast-deep-equal", "npm:3.1.3"],\
           ["jest", "virtual:78776105526f67704c5d821aa139591fbba11fdbd5f03f51d916c5f752b52ce5b35f9731aa4a7b9fc9fe491d6229cf4b9abfbb54db395f33bbe11c0e0b749fa6#npm:29.7.0"],\
+          ["prettier-2", [\
+            "prettier",\
+            "npm:2.8.8"\
+          ]],\
           ["rimraf", "npm:5.0.5"],\
           ["semantic-release", "npm:23.0.8"],\
           ["semantic-release-monorepo", "virtual:8bbf7a23f56d69c61ce3fb6739c3b21bfba2be0c26d1f1893012c8f8e9744fa3cbff3928887945483b9bd6461253526eaee40dc6435a5a7b7e057e35f4df3ae7#npm:8.0.2"],\
@@ -13141,6 +13151,13 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["prettier", [\
+      ["npm:2.8.8", {\
+        "packageLocation": "./.yarn/cache/prettier-npm-2.8.8-430828a36c-00cdb6ab02.zip/node_modules/prettier/",\
+        "packageDependencies": [\
+          ["prettier", "npm:2.8.8"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
       ["npm:3.2.5", {\
         "packageLocation": "./.yarn/unplugged/prettier-npm-3.2.5-6859110d6a/node_modules/prettier/",\
         "packageDependencies": [\
