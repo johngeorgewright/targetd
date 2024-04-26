@@ -1,6 +1,6 @@
 {
   "name": "@targetd/server",
-  "version": "5.0.1",
+  "version": "6.0.0",
   "description": "HTTP server for targetd data",
   "main": "dist/index.js",
   "sideEffects": false,
