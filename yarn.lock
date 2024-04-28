@@ -2383,7 +2383,7 @@ __metadata:
     tslib: "npm:2.6.2"
     typescript: "npm:5.4.5"
     watch: "npm:1.0.2"
-    yaml: "npm:2.4.1"
+    yaml: "npm:2.4.2"
     zod: "npm:3.23.4"
   peerDependencies:
     "@targetd/api": ">=6.0.0"
@@ -2416,7 +2416,7 @@ __metadata:
     zod: "npm:3.23.4"
     zod-to-json-schema: "npm:3.23.0"
   peerDependencies:
-    "@targetd/api": ">=6.0.0"
+    "@targetd/api": ">=6.0.1"
     ts-node: ^10.9.2
     zod: ^3.20.0
   bin:
@@ -2518,7 +2518,7 @@ __metadata:
     typescript: "npm:5.4.5"
     zod: "npm:3.23.4"
   peerDependencies:
-    "@targetd/api": ">=6.0.0"
+    "@targetd/api": ">=6.0.1"
     zod: ^3.20.0
   languageName: unknown
   linkType: soft
@@ -14223,12 +14223,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"yaml@npm:2.4.1":
-  version: 2.4.1
-  resolution: "yaml@npm:2.4.1"
+"yaml@npm:2.4.2":
+  version: 2.4.2
+  resolution: "yaml@npm:2.4.2"
   bin:
     yaml: bin.mjs
-  checksum: 10/2c54fd69ef59126758ae710f9756405a7d41abcbb61aca894250d0e81e76057c14dc9bb00a9528f72f99b8f24077f694a6f7fd09cdd6711fcec2eebfbb5df409
+  checksum: 10/6eafbcd68dead734035f6f72af21bd820c29214caf7d8e40c595671a3c908535cef8092b9660a1c055c5833aa148aa640e0c5fa4adb5af2dacd6d28296ccd81c
   languageName: node
   linkType: hard
 
