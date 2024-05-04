@@ -3204,7 +3204,7 @@ const RAW_RUNTIME_STATE =
           ["@targetd/json-schema", "virtual:d3a13509bf0bdde0bdb604fbd5c32837fd3e38c0a8124a34b32ee1a2ede97c78f6c2f7d96b35a098cb1c736f505b5a271607ee7df28e5bb82c33fd616d4ce19b#workspace:packages/json-schema"],\
           ["@types/fs-extra", "npm:11.0.4"],\
           ["@types/jest", "npm:29.5.12"],\
-          ["@types/lodash", "npm:4.17.0"],\
+          ["@types/lodash", "npm:4.17.1"],\
           ["@types/node", "npm:20.12.8"],\
           ["@types/watch", "npm:1.0.6"],\
           ["fs-extra", "npm:11.2.0"],\
@@ -3374,7 +3374,7 @@ const RAW_RUNTIME_STATE =
           ["@types/express", "npm:4.17.21"],\
           ["@types/express-serve-static-core", "npm:4.19.0"],\
           ["@types/jest", "npm:29.5.12"],\
-          ["@types/lodash", "npm:4.17.0"],\
+          ["@types/lodash", "npm:4.17.1"],\
           ["@types/node", "npm:20.12.8"],\
           ["@types/supertest", "npm:6.0.2"],\
           ["@types/targetd__api", null],\
@@ -3419,7 +3419,7 @@ const RAW_RUNTIME_STATE =
           ["@types/express", "npm:4.17.21"],\
           ["@types/express-serve-static-core", "npm:4.19.0"],\
           ["@types/jest", "npm:29.5.12"],\
-          ["@types/lodash", "npm:4.17.0"],\
+          ["@types/lodash", "npm:4.17.1"],\
           ["@types/node", "npm:20.12.8"],\
           ["@types/supertest", "npm:6.0.2"],\
           ["cors", "npm:2.8.5"],\
@@ -3823,10 +3823,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@types/lodash", [\
-      ["npm:4.17.0", {\
-        "packageLocation": "./.yarn/cache/@types-lodash-npm-4.17.0-11e757616b-2053203292.zip/node_modules/@types/lodash/",\
+      ["npm:4.17.1", {\
+        "packageLocation": "./.yarn/cache/@types-lodash-npm-4.17.1-8c731628b2-384bdd2934.zip/node_modules/@types/lodash/",\
         "packageDependencies": [\
-          ["@types/lodash", "npm:4.17.0"]\
+          ["@types/lodash", "npm:4.17.1"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -3836,7 +3836,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/@types-lodash-es-npm-4.17.9-256f3fab3d-5e3a8a7413.zip/node_modules/@types/lodash-es/",\
         "packageDependencies": [\
           ["@types/lodash-es", "npm:4.17.9"],\
-          ["@types/lodash", "npm:4.17.0"]\
+          ["@types/lodash", "npm:4.17.1"]\
         ],\
         "linkType": "HARD"\
       }]\
