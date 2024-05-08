@@ -3034,7 +3034,7 @@ const RAW_RUNTIME_STATE =
           ["ts-toolbelt", "npm:9.6.0"],\
           ["tslib", "npm:2.6.2"],\
           ["typescript", "patch:typescript@npm%3A5.4.5#optional!builtin<compat/typescript>::version=5.4.5&hash=5adc0c"],\
-          ["zod", "npm:3.23.7"]\
+          ["zod", "npm:3.23.8"]\
         ],\
         "packagePeers": [\
           "@types/zod",\
@@ -3066,7 +3066,7 @@ const RAW_RUNTIME_STATE =
           ["ts-toolbelt", "npm:9.6.0"],\
           ["tslib", "npm:2.6.2"],\
           ["typescript", "patch:typescript@npm%3A5.4.5#optional!builtin<compat/typescript>::version=5.4.5&hash=5adc0c"],\
-          ["zod", "npm:3.23.7"]\
+          ["zod", "npm:3.23.8"]\
         ],\
         "linkType": "SOFT"\
       }]\
@@ -3096,7 +3096,7 @@ const RAW_RUNTIME_STATE =
           ["ts-toolbelt", "npm:9.6.0"],\
           ["tslib", "npm:2.6.2"],\
           ["typescript", "patch:typescript@npm%3A5.4.5#optional!builtin<compat/typescript>::version=5.4.5&hash=5adc0c"],\
-          ["zod", "npm:3.23.7"]\
+          ["zod", "npm:3.23.8"]\
         ],\
         "linkType": "SOFT"\
       }]\
@@ -3124,7 +3124,7 @@ const RAW_RUNTIME_STATE =
           ["ts-jest", "virtual:78776105526f67704c5d821aa139591fbba11fdbd5f03f51d916c5f752b52ce5b35f9731aa4a7b9fc9fe491d6229cf4b9abfbb54db395f33bbe11c0e0b749fa6#npm:29.1.2"],\
           ["tslib", "npm:2.6.2"],\
           ["typescript", "patch:typescript@npm%3A5.4.5#optional!builtin<compat/typescript>::version=5.4.5&hash=5adc0c"],\
-          ["zod", "npm:3.23.7"]\
+          ["zod", "npm:3.23.8"]\
         ],\
         "packagePeers": [\
           "@targetd/api",\
@@ -3154,7 +3154,7 @@ const RAW_RUNTIME_STATE =
           ["ts-jest", "virtual:78776105526f67704c5d821aa139591fbba11fdbd5f03f51d916c5f752b52ce5b35f9731aa4a7b9fc9fe491d6229cf4b9abfbb54db395f33bbe11c0e0b749fa6#npm:29.1.2"],\
           ["tslib", "npm:2.6.2"],\
           ["typescript", "patch:typescript@npm%3A5.4.5#optional!builtin<compat/typescript>::version=5.4.5&hash=5adc0c"],\
-          ["zod", "npm:3.23.7"]\
+          ["zod", "npm:3.23.8"]\
         ],\
         "linkType": "SOFT"\
       }]\
@@ -3184,7 +3184,7 @@ const RAW_RUNTIME_STATE =
           ["ts-toolbelt", "npm:9.6.0"],\
           ["tslib", "npm:2.6.2"],\
           ["typescript", "patch:typescript@npm%3A5.4.5#optional!builtin<compat/typescript>::version=5.4.5&hash=5adc0c"],\
-          ["zod", "npm:3.23.7"]\
+          ["zod", "npm:3.23.8"]\
         ],\
         "linkType": "SOFT"\
       }]\
@@ -3221,7 +3221,7 @@ const RAW_RUNTIME_STATE =
           ["typescript", "patch:typescript@npm%3A5.4.5#optional!builtin<compat/typescript>::version=5.4.5&hash=5adc0c"],\
           ["watch", "npm:1.0.2"],\
           ["yaml", "npm:2.4.2"],\
-          ["zod", "npm:3.23.7"]\
+          ["zod", "npm:3.23.8"]\
         ],\
         "linkType": "SOFT"\
       }]\
@@ -3252,7 +3252,7 @@ const RAW_RUNTIME_STATE =
           ["tslib", "npm:2.6.2"],\
           ["typescript", "patch:typescript@npm%3A5.4.5#optional!builtin<compat/typescript>::version=5.4.5&hash=5adc0c"],\
           ["yargs", "npm:17.7.2"],\
-          ["zod", "npm:3.23.7"],\
+          ["zod", "npm:3.23.8"],\
           ["zod-to-json-schema", "virtual:659caa87d33ab88e9ed1cb569b7408c960a2f6005079eafaf1ff1411303e6211aa0f750b69155738e7cdda8f02669eca60098d12e1c88a4525149f95a87567f2#npm:3.23.0"]\
         ],\
         "packagePeers": [\
@@ -3287,7 +3287,7 @@ const RAW_RUNTIME_STATE =
           ["tslib", "npm:2.6.2"],\
           ["typescript", "patch:typescript@npm%3A5.4.5#optional!builtin<compat/typescript>::version=5.4.5&hash=5adc0c"],\
           ["yargs", "npm:17.7.2"],\
-          ["zod", "npm:3.23.7"],\
+          ["zod", "npm:3.23.8"],\
           ["zod-to-json-schema", "virtual:659caa87d33ab88e9ed1cb569b7408c960a2f6005079eafaf1ff1411303e6211aa0f750b69155738e7cdda8f02669eca60098d12e1c88a4525149f95a87567f2#npm:3.23.0"]\
         ],\
         "linkType": "SOFT"\
@@ -3392,7 +3392,7 @@ const RAW_RUNTIME_STATE =
           ["ts-jest", "virtual:78776105526f67704c5d821aa139591fbba11fdbd5f03f51d916c5f752b52ce5b35f9731aa4a7b9fc9fe491d6229cf4b9abfbb54db395f33bbe11c0e0b749fa6#npm:29.1.2"],\
           ["tslib", "npm:2.6.2"],\
           ["typescript", "patch:typescript@npm%3A5.4.5#optional!builtin<compat/typescript>::version=5.4.5&hash=5adc0c"],\
-          ["zod", "npm:3.23.7"]\
+          ["zod", "npm:3.23.8"]\
         ],\
         "packagePeers": [\
           "@targetd/api",\
@@ -3435,7 +3435,7 @@ const RAW_RUNTIME_STATE =
           ["ts-jest", "virtual:78776105526f67704c5d821aa139591fbba11fdbd5f03f51d916c5f752b52ce5b35f9731aa4a7b9fc9fe491d6229cf4b9abfbb54db395f33bbe11c0e0b749fa6#npm:29.1.2"],\
           ["tslib", "npm:2.6.2"],\
           ["typescript", "patch:typescript@npm%3A5.4.5#optional!builtin<compat/typescript>::version=5.4.5&hash=5adc0c"],\
-          ["zod", "npm:3.23.7"]\
+          ["zod", "npm:3.23.8"]\
         ],\
         "linkType": "SOFT"\
       }]\
@@ -16684,10 +16684,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["zod", [\
-      ["npm:3.23.7", {\
-        "packageLocation": "./.yarn/cache/zod-npm-3.23.7-1a96354863-e98987daa9.zip/node_modules/zod/",\
+      ["npm:3.23.8", {\
+        "packageLocation": "./.yarn/cache/zod-npm-3.23.8-11c49c85b5-846fd73e1a.zip/node_modules/zod/",\
         "packageDependencies": [\
-          ["zod", "npm:3.23.7"]\
+          ["zod", "npm:3.23.8"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -16705,7 +16705,7 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["zod-to-json-schema", "virtual:659caa87d33ab88e9ed1cb569b7408c960a2f6005079eafaf1ff1411303e6211aa0f750b69155738e7cdda8f02669eca60098d12e1c88a4525149f95a87567f2#npm:3.23.0"],\
           ["@types/zod", null],\
-          ["zod", "npm:3.23.7"]\
+          ["zod", "npm:3.23.8"]\
         ],\
         "packagePeers": [\
           "@types/zod",\
@@ -18039,6 +18039,12 @@ class ProxiedFS extends FakeFS {
   rmdirSync(p, opts) {
     return this.baseFs.rmdirSync(this.mapToBase(p), opts);
   }
+  async rmPromise(p, opts) {
+    return this.baseFs.rmPromise(this.mapToBase(p), opts);
+  }
+  rmSync(p, opts) {
+    return this.baseFs.rmSync(this.mapToBase(p), opts);
+  }
   async linkPromise(existingP, newP) {
     return this.baseFs.linkPromise(this.mapToBase(existingP), this.mapToBase(newP));
   }
@@ -18419,6 +18425,18 @@ class NodeFS extends BasePortableFakeFS {
   }
   rmdirSync(p, opts) {
     return this.realFs.rmdirSync(npath.fromPortablePath(p), opts);
+  }
+  async rmPromise(p, opts) {
+    return await new Promise((resolve, reject) => {
+      if (opts) {
+        this.realFs.rm(npath.fromPortablePath(p), opts, this.makeCallback(resolve, reject));
+      } else {
+        this.realFs.rm(npath.fromPortablePath(p), this.makeCallback(resolve, reject));
+      }
+    });
+  }
+  rmSync(p, opts) {
+    return this.realFs.rmSync(npath.fromPortablePath(p), opts);
   }
   async linkPromise(existingP, newP) {
     return await new Promise((resolve, reject) => {
@@ -19075,6 +19093,20 @@ class MountFS extends BasePortableFakeFS {
       return mountFs.rmdirSync(subPath, opts);
     });
   }
+  async rmPromise(p, opts) {
+    return await this.makeCallPromise(p, async () => {
+      return await this.baseFs.rmPromise(p, opts);
+    }, async (mountFs, { subPath }) => {
+      return await mountFs.rmPromise(subPath, opts);
+    });
+  }
+  rmSync(p, opts) {
+    return this.makeCallSync(p, () => {
+      return this.baseFs.rmSync(p, opts);
+    }, (mountFs, { subPath }) => {
+      return mountFs.rmSync(subPath, opts);
+    });
+  }
   async linkPromise(existingP, newP) {
     return await this.makeCallPromise(newP, async () => {
       return await this.baseFs.linkPromise(existingP, newP);
@@ -19713,6 +19745,7 @@ const SYNC_IMPLEMENTATIONS = /* @__PURE__ */ new Set([
   `realpathSync`,
   `renameSync`,
   `rmdirSync`,
+  `rmSync`,
   `statSync`,
   `symlinkSync`,
   `truncateSync`,
@@ -19748,6 +19781,7 @@ const ASYNC_IMPLEMENTATIONS = /* @__PURE__ */ new Set([
   `readlinkPromise`,
   `renamePromise`,
   `rmdirPromise`,
+  `rmPromise`,
   `statPromise`,
   `symlinkPromise`,
   `truncatePromise`,
@@ -21771,6 +21805,27 @@ class ZipFS extends BasePortableFakeFS {
     const index = this.entries.get(resolvedP);
     if (typeof index === `undefined`)
       throw EINVAL(`rmdir '${p}'`);
+    this.deleteEntry(p, index);
+  }
+  async rmPromise(p, opts) {
+    return this.rmSync(p, opts);
+  }
+  rmSync(p, { recursive = false } = {}) {
+    if (this.readOnly)
+      throw EROFS(`rm '${p}'`);
+    if (recursive) {
+      this.removeSync(p);
+      return;
+    }
+    const resolvedP = this.resolveFilename(`rm '${p}'`, p);
+    const directoryListing = this.listings.get(resolvedP);
+    if (!directoryListing)
+      throw ENOTDIR(`rm '${p}'`);
+    if (directoryListing.size > 0)
+      throw ENOTEMPTY(`rm '${p}'`);
+    const index = this.entries.get(resolvedP);
+    if (typeof index === `undefined`)
+      throw EINVAL(`rm '${p}'`);
     this.deleteEntry(p, index);
   }
   hydrateDirectory(resolvedP) {
