@@ -2251,7 +2251,7 @@ __metadata:
     fast-deep-equal: "npm:3.1.3"
     jest: "npm:29.7.0"
     prettier-2: "npm:prettier@^2"
-    rimraf: "npm:5.0.5"
+    rimraf: "npm:5.0.6"
     semantic-release: "npm:23.0.8"
     semantic-release-monorepo: "npm:8.0.2"
     ts-jest: "npm:29.1.2"
@@ -2281,7 +2281,7 @@ __metadata:
     "@types/node": "npm:20.12.11"
     express: "npm:4.18.3"
     jest: "npm:29.7.0"
-    rimraf: "npm:5.0.5"
+    rimraf: "npm:5.0.6"
     semantic-release: "npm:23.0.8"
     semantic-release-monorepo: "npm:8.0.2"
     ts-jest: "npm:29.1.2"
@@ -2309,7 +2309,7 @@ __metadata:
     "@types/node": "npm:20.12.11"
     jest: "npm:29.7.0"
     jest-date-mock: "npm:1.0.10"
-    rimraf: "npm:5.0.5"
+    rimraf: "npm:5.0.6"
     semantic-release: "npm:23.0.8"
     semantic-release-monorepo: "npm:8.0.2"
     ts-jest: "npm:29.1.2"
@@ -2338,7 +2338,7 @@ __metadata:
     "@types/node": "npm:20.12.11"
     "@types/supertest": "npm:6.0.2"
     jest: "npm:29.7.0"
-    rimraf: "npm:5.0.5"
+    rimraf: "npm:5.0.6"
     semantic-release: "npm:23.0.8"
     semantic-release-monorepo: "npm:8.0.2"
     supertest: "npm:6.3.4"
@@ -2373,7 +2373,7 @@ __metadata:
     fs-extra: "npm:11.2.0"
     jest: "npm:29.7.0"
     lodash: "npm:4.17.21"
-    rimraf: "npm:5.0.5"
+    rimraf: "npm:5.0.6"
     semantic-release: "npm:23.0.8"
     semantic-release-monorepo: "npm:8.0.2"
     throat: "npm:6.0.2"
@@ -2405,7 +2405,7 @@ __metadata:
     "@types/node": "npm:20.12.11"
     "@types/yargs": "npm:^17.0.32"
     jest: "npm:29.7.0"
-    rimraf: "npm:5.0.5"
+    rimraf: "npm:5.0.6"
     semantic-release: "npm:23.0.8"
     semantic-release-monorepo: "npm:8.0.2"
     ts-jest: "npm:29.1.2"
@@ -2472,7 +2472,7 @@ __metadata:
     change-case: "npm:5.4.4"
     jest: "npm:29.7.0"
     prettier: "npm:3.2.5"
-    rimraf: "npm:5.0.5"
+    rimraf: "npm:5.0.6"
     semantic-release: "npm:23.0.8"
     semantic-release-monorepo: "npm:8.0.2"
     ts-jest: "npm:29.1.2"
@@ -2509,7 +2509,7 @@ __metadata:
     jest: "npm:29.7.0"
     lodash: "npm:4.17.21"
     query-types: "npm:0.1.4"
-    rimraf: "npm:5.0.5"
+    rimraf: "npm:5.0.6"
     semantic-release: "npm:23.0.8"
     semantic-release-monorepo: "npm:8.0.2"
     supertest: "npm:6.3.4"
@@ -11996,7 +11996,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rimraf@npm:*, rimraf@npm:5.0.5":
+"rimraf@npm:*":
   version: 5.0.5
   resolution: "rimraf@npm:5.0.5"
   dependencies:
@@ -12004,6 +12004,17 @@ __metadata:
   bin:
     rimraf: dist/esm/bin.mjs
   checksum: 10/a612c7184f96258b7d1328c486b12ca7b60aa30e04229a08bbfa7e964486deb1e9a1b52d917809311bdc39a808a4055c0f950c0280fba194ba0a09e6f0d404f6
+  languageName: node
+  linkType: hard
+
+"rimraf@npm:5.0.6":
+  version: 5.0.6
+  resolution: "rimraf@npm:5.0.6"
+  dependencies:
+    glob: "npm:^10.3.7"
+  bin:
+    rimraf: dist/esm/bin.mjs
+  checksum: 10/d27b9af8f47a595f5efaac6141ed1b6aca8ff376710a38dce5b958b113a4ec031f0d10e448fbd832b64e769a064a6ea252391b3cb3fe0e5bdd26097e11fd6fe9
   languageName: node
   linkType: hard
 
