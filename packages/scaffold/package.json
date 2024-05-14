@@ -21,7 +21,7 @@
     "@semantic-release/release-notes-generator": "12.1.0",
     "@types/inquirer": "9.0.7",
     "@types/jest": "29.5.12",
-    "@types/node": "20.12.11",
+    "@types/node": "20.12.12",
     "@types/prettier": "3.0.0",
     "@types/rimraf": "4.0.5",
     "@types/yeoman-generator": "5.2.14",
