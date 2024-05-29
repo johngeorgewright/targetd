@@ -2512,7 +2512,7 @@ __metadata:
     "@targetd/date-range": "workspace:*"
     "@types/cors": "npm:2.8.17"
     "@types/express": "npm:4.17.21"
-    "@types/express-serve-static-core": "npm:4.19.1"
+    "@types/express-serve-static-core": "npm:4.19.2"
     "@types/jest": "npm:29.5.12"
     "@types/lodash": "npm:^4.14.202"
     "@types/node": "npm:20.12.13"
@@ -2723,15 +2723,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/express-serve-static-core@npm:4.19.1":
-  version: 4.19.1
-  resolution: "@types/express-serve-static-core@npm:4.19.1"
+"@types/express-serve-static-core@npm:4.19.2":
+  version: 4.19.2
+  resolution: "@types/express-serve-static-core@npm:4.19.2"
   dependencies:
     "@types/node": "npm:*"
     "@types/qs": "npm:*"
     "@types/range-parser": "npm:*"
     "@types/send": "npm:*"
-  checksum: 10/a400e2c6a2d64373290f0fa25fa2d70bad44fbb1d12a56237a8dfb3bf300bc102d6f5fa6aaed2ce853e37226589905ce0d658ad1b9c0115d9cd7ce446608140c
+  checksum: 10/a8a8efdbe0565aff86130f3d75a1d2ce8e6cb477904f4208784bc1d042fb5c4db5f08d8d50db9900249000b42bced90112a63981c7a7a61f8d90a855cc9539e1
   languageName: node
   linkType: hard
 
