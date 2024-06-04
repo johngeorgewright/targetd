@@ -38,7 +38,7 @@
   },
   "dependencies": {
     "ts-toolbelt": "9.6.0",
-    "tslib": "2.6.2"
+    "tslib": "2.6.3"
   },
   "peerDependencies": {
     "@targetd/api": ">=6.0.0",

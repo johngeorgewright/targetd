@@ -34,7 +34,7 @@
     "zod": "3.23.8"
   },
   "dependencies": {
-    "tslib": "2.6.2"
+    "tslib": "2.6.3"
   },
   "peerDependencies": {
     "@targetd/api": ">=6.0.0",
