@@ -2397,7 +2397,7 @@ __metadata:
     tslib: "npm:2.6.3"
     typescript: "npm:5.4.5"
     watch: "npm:1.0.2"
-    yaml: "npm:2.4.3"
+    yaml: "npm:2.4.4"
     zod: "npm:3.23.8"
   peerDependencies:
     "@targetd/api": ">=6.0.0"
@@ -14373,12 +14373,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"yaml@npm:2.4.3":
-  version: 2.4.3
-  resolution: "yaml@npm:2.4.3"
+"yaml@npm:2.4.4":
+  version: 2.4.4
+  resolution: "yaml@npm:2.4.4"
   bin:
     yaml: bin.mjs
-  checksum: 10/a618d3b968e3fb601cf7266db6e250e5cdd3b81853039a59108145202d5055b47c2d23a8e1ab661f8ba3ba095dcf6b4bb55cea2c14b97a418e5b059d27f8814e
+  checksum: 10/bfceb9e98acd53f3135978f93ffd8fea83413ab155be944df8ca976e62c91ab4135dbcdcc1906571d915426c67dc46f477b7450fffcea8857e2c61d600979820
   languageName: node
   linkType: hard
 
