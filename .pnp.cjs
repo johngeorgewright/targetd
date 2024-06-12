@@ -81,7 +81,7 @@ const RAW_RUNTIME_STATE =
           ["husky", "npm:9.0.11"],\
           ["isbinaryfile", "npm:5.0.2"],\
           ["jest-runner", "npm:29.7.0"],\
-          ["lint-staged", "npm:15.2.6"],\
+          ["lint-staged", "npm:15.2.7"],\
           ["mkdirp-infer-owner", "npm:2.0.0"],\
           ["prettier", "npm:3.3.2"],\
           ["semantic-release", "npm:23.1.1"],\
@@ -3328,7 +3328,7 @@ const RAW_RUNTIME_STATE =
           ["husky", "npm:9.0.11"],\
           ["isbinaryfile", "npm:5.0.2"],\
           ["jest-runner", "npm:29.7.0"],\
-          ["lint-staged", "npm:15.2.6"],\
+          ["lint-staged", "npm:15.2.7"],\
           ["mkdirp-infer-owner", "npm:2.0.0"],\
           ["prettier", "npm:3.3.2"],\
           ["semantic-release", "npm:23.1.1"],\
@@ -10507,10 +10507,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["lint-staged", [\
-      ["npm:15.2.6", {\
-        "packageLocation": "./.yarn/cache/lint-staged-npm-15.2.6-52e1324c4d-d2e7b61060.zip/node_modules/lint-staged/",\
+      ["npm:15.2.7", {\
+        "packageLocation": "./.yarn/cache/lint-staged-npm-15.2.7-2a90203033-7557bcf4e8.zip/node_modules/lint-staged/",\
         "packageDependencies": [\
-          ["lint-staged", "npm:15.2.6"],\
+          ["lint-staged", "npm:15.2.7"],\
           ["chalk", "npm:5.3.0"],\
           ["commander", "npm:12.1.0"],\
           ["debug", "virtual:071d471ccd267160a6f0ec15e4cdc2874728a012db8f34521faf9e64a516aa918ee9ebab3c4c084d955ab74aaac5b8be9afb7a168813c9f210acdb7d88754ab9#npm:4.3.4"],\
