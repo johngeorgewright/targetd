@@ -2261,7 +2261,7 @@ __metadata:
     "@semantic-release/github": "npm:9.2.6"
     "@semantic-release/release-notes-generator": "npm:12.1.0"
     "@types/jest": "npm:29.5.12"
-    "@types/node": "npm:20.14.9"
+    "@types/node": "npm:20.14.10"
     fast-deep-equal: "npm:3.1.3"
     jest: "npm:29.7.0"
     prettier-2: "npm:prettier@^2"
@@ -2292,7 +2292,7 @@ __metadata:
     "@targetd/server": "workspace:*"
     "@types/express": "npm:4.17.21"
     "@types/jest": "npm:29.5.12"
-    "@types/node": "npm:20.14.9"
+    "@types/node": "npm:20.14.10"
     express: "npm:4.18.3"
     jest: "npm:29.7.0"
     rimraf: "npm:5.0.7"
@@ -2320,7 +2320,7 @@ __metadata:
     "@semantic-release/release-notes-generator": "npm:12.1.0"
     "@targetd/api": "workspace:packages/api"
     "@types/jest": "npm:29.5.12"
-    "@types/node": "npm:20.14.9"
+    "@types/node": "npm:20.14.10"
     jest: "npm:29.7.0"
     jest-date-mock: "npm:1.0.10"
     rimraf: "npm:5.0.7"
@@ -2349,7 +2349,7 @@ __metadata:
     "@targetd/date-range": "workspace:*"
     "@types/cors": "npm:2.8.17"
     "@types/jest": "npm:29.5.12"
-    "@types/node": "npm:20.14.9"
+    "@types/node": "npm:20.14.10"
     "@types/supertest": "npm:6.0.2"
     jest: "npm:29.7.0"
     rimraf: "npm:5.0.7"
@@ -2382,7 +2382,7 @@ __metadata:
     "@types/fs-extra": "npm:11.0.4"
     "@types/jest": "npm:29.5.12"
     "@types/lodash": "npm:^4.14.202"
-    "@types/node": "npm:20.14.9"
+    "@types/node": "npm:20.14.10"
     "@types/watch": "npm:^1.0.6"
     fs-extra: "npm:11.2.0"
     jest: "npm:29.7.0"
@@ -2416,7 +2416,7 @@ __metadata:
     "@semantic-release/release-notes-generator": "npm:12.1.0"
     "@targetd/api": "workspace:*"
     "@types/jest": "npm:29.5.12"
-    "@types/node": "npm:20.14.9"
+    "@types/node": "npm:20.14.10"
     "@types/yargs": "npm:^17.0.32"
     jest: "npm:29.7.0"
     rimraf: "npm:5.0.7"
@@ -2450,7 +2450,7 @@ __metadata:
     "@semantic-release/github": "npm:9.2.6"
     "@semantic-release/release-notes-generator": "npm:12.1.0"
     "@types/jest": "npm:29.5.12"
-    "@types/node": "npm:20.14.9"
+    "@types/node": "npm:20.14.10"
     commitizen: "npm:4.3.0"
     cz-conventional-changelog: "npm:3.3.0"
     husky: "npm:9.0.11"
@@ -2478,7 +2478,7 @@ __metadata:
     "@semantic-release/release-notes-generator": "npm:12.1.0"
     "@types/inquirer": "npm:9.0.7"
     "@types/jest": "npm:29.5.12"
-    "@types/node": "npm:20.14.9"
+    "@types/node": "npm:20.14.10"
     "@types/prettier": "npm:3.0.0"
     "@types/rimraf": "npm:4.0.5"
     "@types/yeoman-generator": "npm:5.2.14"
@@ -2515,7 +2515,7 @@ __metadata:
     "@types/express-serve-static-core": "npm:4.19.5"
     "@types/jest": "npm:29.5.12"
     "@types/lodash": "npm:^4.14.202"
-    "@types/node": "npm:20.14.9"
+    "@types/node": "npm:20.14.10"
     "@types/supertest": "npm:6.0.2"
     cors: "npm:2.8.5"
     express: "npm:4.18.3"
@@ -2956,12 +2956,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:20.14.9":
-  version: 20.14.9
-  resolution: "@types/node@npm:20.14.9"
+"@types/node@npm:20.14.10":
+  version: 20.14.10
+  resolution: "@types/node@npm:20.14.10"
   dependencies:
     undici-types: "npm:~5.26.4"
-  checksum: 10/f313b06c79be92f5d3541159ef813b9fc606941f951ecf826e940658c6d4952755ca2f06277b746326cef0697ed79a04676ecde053d32e1121b3352c8168d2e9
+  checksum: 10/672892cf94d0d95cf052f11271990686a0fd204cd1e5fe7a4ef240e5315e06711765dc47b9ec98627d3adac18b8c92bb7e2d8db21d18faa20bc3e3203a143e79
   languageName: node
   linkType: hard
 
