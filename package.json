@@ -35,7 +35,7 @@
     "@types/node": "20.14.11",
     "commitizen": "4.3.0",
     "cz-conventional-changelog": "3.3.0",
-    "husky": "9.1.0",
+    "husky": "9.1.1",
     "isbinaryfile": "5.0.2",
     "jest-runner": "29.7.0",
     "lint-staged": "15.2.7",
