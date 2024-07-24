@@ -46,7 +46,7 @@
     "ts-toolbelt": "9.6.0",
     "tslib": "2.6.3",
     "watch": "1.0.2",
-    "yaml": "2.4.5"
+    "yaml": "2.5.0"
   },
   "peerDependencies": {
     "@targetd/api": ">=6.0.0",
