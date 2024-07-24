@@ -3236,7 +3236,7 @@ const RAW_RUNTIME_STATE =
           ["tslib", "npm:2.6.3"],\
           ["typescript", "patch:typescript@npm%3A5.4.5#optional!builtin<compat/typescript>::version=5.4.5&hash=5adc0c"],\
           ["watch", "npm:1.0.2"],\
-          ["yaml", "npm:2.4.5"],\
+          ["yaml", "npm:2.5.0"],\
           ["zod", "npm:3.23.8"]\
         ],\
         "linkType": "SOFT"\
@@ -16581,10 +16581,10 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "HARD"\
       }],\
-      ["npm:2.4.5", {\
-        "packageLocation": "./.yarn/cache/yaml-npm-2.4.5-4752f3d852-b09bf5a615.zip/node_modules/yaml/",\
+      ["npm:2.5.0", {\
+        "packageLocation": "./.yarn/cache/yaml-npm-2.5.0-402c6c0928-72e903fdbe.zip/node_modules/yaml/",\
         "packageDependencies": [\
-          ["yaml", "npm:2.4.5"]\
+          ["yaml", "npm:2.5.0"]\
         ],\
         "linkType": "HARD"\
       }]\
