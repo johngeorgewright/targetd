@@ -1491,7 +1491,7 @@ const RAW_RUNTIME_STATE =
           ["@types/istanbul-lib-coverage", "npm:2.0.4"],\
           ["@types/istanbul-reports", "npm:3.0.1"],\
           ["@types/node", "npm:20.11.19"],\
-          ["@types/yargs", "npm:17.0.32"],\
+          ["@types/yargs", "npm:17.0.33"],\
           ["chalk", "npm:4.1.2"]\
         ],\
         "linkType": "HARD"\
@@ -3257,7 +3257,7 @@ const RAW_RUNTIME_STATE =
           ["@types/node", "npm:20.14.14"],\
           ["@types/targetd__api", null],\
           ["@types/ts-node", null],\
-          ["@types/yargs", "npm:17.0.32"],\
+          ["@types/yargs", "npm:17.0.33"],\
           ["@types/zod", null],\
           ["jest", "virtual:78776105526f67704c5d821aa139591fbba11fdbd5f03f51d916c5f752b52ce5b35f9731aa4a7b9fc9fe491d6229cf4b9abfbb54db395f33bbe11c0e0b749fa6#npm:29.7.0"],\
           ["rimraf", "npm:5.0.10"],\
@@ -3293,7 +3293,7 @@ const RAW_RUNTIME_STATE =
           ["@targetd/api", "virtual:049c1d28e5b9765667b7008f2694b3886d79f2113b2827f735bfa4f93e239d09c6d92193058dc55e737c58ebb15f0b8530088b5cf795627062174f566080b49f#workspace:packages/api"],\
           ["@types/jest", "npm:29.5.12"],\
           ["@types/node", "npm:20.14.14"],\
-          ["@types/yargs", "npm:17.0.32"],\
+          ["@types/yargs", "npm:17.0.33"],\
           ["jest", "virtual:78776105526f67704c5d821aa139591fbba11fdbd5f03f51d916c5f752b52ce5b35f9731aa4a7b9fc9fe491d6229cf4b9abfbb54db395f33bbe11c0e0b749fa6#npm:29.7.0"],\
           ["rimraf", "npm:5.0.10"],\
           ["semantic-release", "npm:23.1.1"],\
@@ -4118,10 +4118,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@types/yargs", [\
-      ["npm:17.0.32", {\
-        "packageLocation": "./.yarn/cache/@types-yargs-npm-17.0.32-38712e567a-1e2b267384.zip/node_modules/@types/yargs/",\
+      ["npm:17.0.33", {\
+        "packageLocation": "./.yarn/cache/@types-yargs-npm-17.0.33-1d6cca6a2e-16f6681bf4.zip/node_modules/@types/yargs/",\
         "packageDependencies": [\
-          ["@types/yargs", "npm:17.0.32"],\
+          ["@types/yargs", "npm:17.0.33"],\
           ["@types/yargs-parser", "npm:21.0.0"]\
         ],\
         "linkType": "HARD"\
