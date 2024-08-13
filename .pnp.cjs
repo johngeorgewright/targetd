@@ -81,7 +81,7 @@ const RAW_RUNTIME_STATE =
           ["husky", "npm:9.1.4"],\
           ["isbinaryfile", "npm:5.0.2"],\
           ["jest-runner", "npm:29.7.0"],\
-          ["lint-staged", "npm:15.2.8"],\
+          ["lint-staged", "npm:15.2.9"],\
           ["mkdirp-infer-owner", "npm:2.0.0"],\
           ["prettier", "npm:3.3.3"],\
           ["semantic-release", "npm:23.1.1"],\
@@ -3328,7 +3328,7 @@ const RAW_RUNTIME_STATE =
           ["husky", "npm:9.1.4"],\
           ["isbinaryfile", "npm:5.0.2"],\
           ["jest-runner", "npm:29.7.0"],\
-          ["lint-staged", "npm:15.2.8"],\
+          ["lint-staged", "npm:15.2.9"],\
           ["mkdirp-infer-owner", "npm:2.0.0"],\
           ["prettier", "npm:3.3.3"],\
           ["semantic-release", "npm:23.1.1"],\
@@ -6421,12 +6421,12 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "HARD"\
       }],\
-      ["virtual:a35208a143e582bb3158539d5dc1e269672846333cedd0593984f3a8722f2553efc18ed6e4d2ea6ccdc88bc379f1dad2a4469de2d67ba89f314e444a335bd181#npm:2.6.9", {\
-        "packageLocation": "./.yarn/__virtual__/debug-virtual-92e12ff279/0/cache/debug-npm-2.6.9-7d4cb597dc-e07005f2b4.zip/node_modules/debug/",\
+      ["virtual:092f3073820446e516cc06ce7526276734f4b9f3261d1fcd2126aa21fe567465c65e776307f3da2178400eab74142717a8f1c9e2ee9a38c913fd009cf77e8d00#npm:4.3.6", {\
+        "packageLocation": "./.yarn/__virtual__/debug-virtual-64b81dbdf5/0/cache/debug-npm-4.3.6-ecb233d831-d3adb9af7d.zip/node_modules/debug/",\
         "packageDependencies": [\
-          ["debug", "virtual:a35208a143e582bb3158539d5dc1e269672846333cedd0593984f3a8722f2553efc18ed6e4d2ea6ccdc88bc379f1dad2a4469de2d67ba89f314e444a335bd181#npm:2.6.9"],\
+          ["debug", "virtual:092f3073820446e516cc06ce7526276734f4b9f3261d1fcd2126aa21fe567465c65e776307f3da2178400eab74142717a8f1c9e2ee9a38c913fd009cf77e8d00#npm:4.3.6"],\
           ["@types/supports-color", null],\
-          ["ms", "npm:2.0.0"],\
+          ["ms", "npm:2.1.2"],\
           ["supports-color", null]\
         ],\
         "packagePeers": [\
@@ -6435,12 +6435,12 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "HARD"\
       }],\
-      ["virtual:cf794cd20d1c77a6745012fb3e6893ee787433f2164c2d3c86af728659d28a4502cd44ce93fec4506890f3252dd5b24c2f609b349a0aa1cce1bf098a85ac1fac#npm:4.3.6", {\
-        "packageLocation": "./.yarn/__virtual__/debug-virtual-1c70d8b4d2/0/cache/debug-npm-4.3.6-ecb233d831-d3adb9af7d.zip/node_modules/debug/",\
+      ["virtual:a35208a143e582bb3158539d5dc1e269672846333cedd0593984f3a8722f2553efc18ed6e4d2ea6ccdc88bc379f1dad2a4469de2d67ba89f314e444a335bd181#npm:2.6.9", {\
+        "packageLocation": "./.yarn/__virtual__/debug-virtual-92e12ff279/0/cache/debug-npm-2.6.9-7d4cb597dc-e07005f2b4.zip/node_modules/debug/",\
         "packageDependencies": [\
-          ["debug", "virtual:cf794cd20d1c77a6745012fb3e6893ee787433f2164c2d3c86af728659d28a4502cd44ce93fec4506890f3252dd5b24c2f609b349a0aa1cce1bf098a85ac1fac#npm:4.3.6"],\
+          ["debug", "virtual:a35208a143e582bb3158539d5dc1e269672846333cedd0593984f3a8722f2553efc18ed6e4d2ea6ccdc88bc379f1dad2a4469de2d67ba89f314e444a335bd181#npm:2.6.9"],\
           ["@types/supports-color", null],\
-          ["ms", "npm:2.1.2"],\
+          ["ms", "npm:2.0.0"],\
           ["supports-color", null]\
         ],\
         "packagePeers": [\
@@ -10553,13 +10553,13 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["lint-staged", [\
-      ["npm:15.2.8", {\
-        "packageLocation": "./.yarn/cache/lint-staged-npm-15.2.8-cf794cd20d-cabeb05407.zip/node_modules/lint-staged/",\
+      ["npm:15.2.9", {\
+        "packageLocation": "./.yarn/cache/lint-staged-npm-15.2.9-092f307382-2f7342ca3f.zip/node_modules/lint-staged/",\
         "packageDependencies": [\
-          ["lint-staged", "npm:15.2.8"],\
+          ["lint-staged", "npm:15.2.9"],\
           ["chalk", "npm:5.3.0"],\
           ["commander", "npm:12.1.0"],\
-          ["debug", "virtual:cf794cd20d1c77a6745012fb3e6893ee787433f2164c2d3c86af728659d28a4502cd44ce93fec4506890f3252dd5b24c2f609b349a0aa1cce1bf098a85ac1fac#npm:4.3.6"],\
+          ["debug", "virtual:092f3073820446e516cc06ce7526276734f4b9f3261d1fcd2126aa21fe567465c65e776307f3da2178400eab74142717a8f1c9e2ee9a38c913fd009cf77e8d00#npm:4.3.6"],\
           ["execa", "npm:8.0.1"],\
           ["lilconfig", "npm:3.1.2"],\
           ["listr2", "npm:8.2.4"],\

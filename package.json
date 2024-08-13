@@ -38,7 +38,7 @@
     "husky": "9.1.4",
     "isbinaryfile": "5.0.2",
     "jest-runner": "29.7.0",
-    "lint-staged": "15.2.8",
+    "lint-staged": "15.2.9",
     "mkdirp-infer-owner": "2.0.0",
     "prettier": "3.3.3",
     "semantic-release": "23.1.1",
