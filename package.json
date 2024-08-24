@@ -61,5 +61,5 @@
     "@types/jest": "29.5.12",
     "tslib": "2.7.0"
   },
-  "packageManager": "yarn@4.4.0"
+  "packageManager": "yarn@4.4.1"
 }
