@@ -2482,7 +2482,7 @@ __metadata:
     "@types/prettier": "npm:3.0.0"
     "@types/rimraf": "npm:4.0.5"
     "@types/yeoman-generator": "npm:5.2.14"
-    "@yeoman/types": "npm:1.2.0"
+    "@yeoman/types": "npm:1.2.1"
     change-case: "npm:5.4.4"
     jest: "npm:29.7.0"
     prettier: "npm:3.3.3"
@@ -3174,9 +3174,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@yeoman/types@npm:1.2.0":
-  version: 1.2.0
-  resolution: "@yeoman/types@npm:1.2.0"
+"@yeoman/types@npm:1.2.1":
+  version: 1.2.1
+  resolution: "@yeoman/types@npm:1.2.1"
   dependencies:
     "@types/node": "npm:^16.18.26"
   peerDependencies:
@@ -3190,7 +3190,7 @@ __metadata:
       optional: true
     mem-fs-editor:
       optional: true
-  checksum: 10/e69fe33e73c62d2d59199d4ae385fc554a85523f7419985b92a491151524089b2853c1a726b83bc16ba95482b689f10b1f52ad6e34c75b293d89ddec0233d9df
+  checksum: 10/7f814d5e94220aedfaed086d902147091386ebd97464bde6ec2d76e73910205a752d89dc0d2e610008193252a58899ef71ea0c48240911d207ae2a982f610d1e
   languageName: node
   linkType: hard
 
