@@ -12,11 +12,17 @@ import { castQueryArrayProps } from './middleware/castQueryArrayProps'
  */
 export function createServer<D extends DT.Any>(
   data: D | (() => D),
-  pathStructure?: (keyof DT.QueryParsers<D>)[],
+  {
+    app = express(),
+    pathStructure,
+  }: {
+    app?: express.Express
+    pathStructure?: (keyof DT.QueryParsers<D>)[]
+  } = {},
 ) {
   const getData = typeof data === 'function' ? data : () => data
 
-  let server = express().use(cors())
+  let server = app.use(cors())
 
   if (pathStructure) {
     server = server.get(

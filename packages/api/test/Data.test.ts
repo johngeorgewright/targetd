@@ -548,6 +548,82 @@ test('targeting predicate with full query object', async () => {
   expect(await data.getPayload('foo', { bar: true, mung: 'mung' })).toBe('yay')
 })
 
+test('broken', async () => {
+  const browserTargeting = targetIncludes(z.enum(['chrome', 'edge']))
+
+  const channelTargeting = targetIncludes(z.enum(['foo', 'bar']))
+
+  const payloadSchema = {
+    foo: z.string(),
+  }
+
+  const serverSchema = Data.create({
+    data: payloadSchema,
+    targeting: {
+      channel: channelTargeting,
+    },
+    fallThroughTargeting: {
+      browser: browserTargeting,
+    },
+  })
+
+  const data = await serverSchema.addRules('foo', [
+    {
+      targeting: {
+        channel: ['foo'],
+      },
+      payload: 'face',
+    },
+    {
+      targeting: {
+        channel: ['bar'],
+        browser: ['chrome'],
+      },
+      payload: 'yay',
+    },
+    {
+      targeting: {
+        channel: ['bar'],
+        browser: ['edge'],
+      },
+      payload: 'nay',
+    },
+  ])
+
+  expect(await data.getPayloadForEachName({ channel: 'foo' }))
+    .toMatchInlineSnapshot(`
+    {
+      "foo": "face",
+    }
+  `)
+
+  expect(await data.getPayloadForEachName({ channel: 'bar' }))
+    .toMatchInlineSnapshot(`
+    {
+      "foo": {
+        "__rules__": [
+          {
+            "payload": "yay",
+            "targeting": {
+              "browser": [
+                "chrome",
+              ],
+            },
+          },
+          {
+            "payload": "nay",
+            "targeting": {
+              "browser": [
+                "edge",
+              ],
+            },
+          },
+        ],
+      },
+    }
+  `)
+})
+
 test.only('variables', async () => {
   let data = Data.create({
     payload: {

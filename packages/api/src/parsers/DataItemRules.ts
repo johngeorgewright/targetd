@@ -3,13 +3,8 @@ import {
   RuleWithFallThroughParser,
   RuleWithPayloadParser,
 } from './DataItemRule'
-import {
-  arrayLast,
-  intersection,
-  intersectionKeys,
-  objectSize,
-  someKeysIntersect,
-} from '../util'
+import { arrayLast, intersection, objectSize, someKeysIntersect } from '../util'
+import deepEqual from 'fast-deep-equal'
 import {
   type ZodTransformer,
   type ZodRawShape,
@@ -140,16 +135,20 @@ function canRulesCombine(
   a: output<RuleWithPayloadParser<ZodTypeAny, ZodRawShape, ZodRawShape, false>>,
   b: output<RuleWithPayloadParser<ZodTypeAny, ZodRawShape, ZodRawShape, false>>,
 ) {
-  const aTargetingKeys = a.targeting
-    ? intersectionKeys(a.targeting, targetingParsers)
-    : []
+  const aTargeting = a.targeting
+    ? intersection(a.targeting, targetingParsers)
+    : {}
 
-  const bTargetingKeys = b.targeting
-    ? intersectionKeys(b.targeting, targetingParsers)
-    : []
+  const aTargetingKeys = Object.keys(aTargeting)
+
+  const bTargeting = b.targeting
+    ? intersection(b.targeting, targetingParsers)
+    : {}
+
+  const bTargetingKeys = Object.keys(bTargeting)
 
   return (
-    aTargetingKeys.every((key) => bTargetingKeys.includes(key)) &&
+    deepEqual(aTargeting, bTargeting) &&
     (bTargetingKeys.length !== objectSize(b.targeting || {}) ||
       aTargetingKeys.length !== objectSize(a.targeting || {}))
   )
