@@ -1181,6 +1181,15 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["@inquirer/figures", [\
+      ["npm:1.0.5", {\
+        "packageLocation": "./.yarn/cache/@inquirer-figures-npm-1.0.5-38621a455d-60a51b2cde.zip/node_modules/@inquirer/figures/",\
+        "packageDependencies": [\
+          ["@inquirer/figures", "npm:1.0.5"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["@isaacs/cliui", [\
       ["npm:8.0.2", {\
         "packageLocation": "./.yarn/cache/@isaacs-cliui-npm-8.0.2-f4364666d5-e9ed5fd27c.zip/node_modules/@isaacs/cliui/",\
@@ -3356,7 +3365,7 @@ const RAW_RUNTIME_STATE =
           ["@types/prettier", "npm:3.0.0"],\
           ["@types/rimraf", "npm:4.0.5"],\
           ["@types/yeoman-generator", "npm:5.2.14"],\
-          ["@yeoman/types", "virtual:e385a280e32090a8ccd033eaf2df754a98b1289240d91e1df3ed68695e8080f0aa0c5798abd32cce453f8be19101f4f5a3164b8b933d99a99201221d9bdb78dc#npm:1.3.0"],\
+          ["@yeoman/types", "virtual:e385a280e32090a8ccd033eaf2df754a98b1289240d91e1df3ed68695e8080f0aa0c5798abd32cce453f8be19101f4f5a3164b8b933d99a99201221d9bdb78dc#npm:1.4.0"],\
           ["change-case", "npm:5.4.4"],\
           ["jest", "virtual:78776105526f67704c5d821aa139591fbba11fdbd5f03f51d916c5f752b52ce5b35f9731aa4a7b9fc9fe491d6229cf4b9abfbb54db395f33bbe11c0e0b749fa6#npm:29.7.0"],\
           ["prettier", "npm:3.3.3"],\
@@ -4171,6 +4180,22 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["@yeoman/adapter", [\
+      ["npm:1.6.0", {\
+        "packageLocation": "./.yarn/cache/@yeoman-adapter-npm-1.6.0-fbfacd3242-f0665735f4.zip/node_modules/@yeoman/adapter/",\
+        "packageDependencies": [\
+          ["@yeoman/adapter", "npm:1.6.0"],\
+          ["@types/inquirer", "npm:9.0.7"],\
+          ["chalk", "npm:5.3.0"],\
+          ["inquirer", "npm:9.3.6"],\
+          ["log-symbols", "npm:7.0.0"],\
+          ["ora", "npm:8.1.0"],\
+          ["p-queue", "npm:8.0.1"],\
+          ["text-table", "npm:0.2.0"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["@yeoman/namespace", [\
       ["npm:1.0.0", {\
         "packageLocation": "./.yarn/cache/@yeoman-namespace-npm-1.0.0-3bd20e4c53-f694508113.zip/node_modules/@yeoman/namespace/",\
@@ -4181,30 +4206,29 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@yeoman/types", [\
-      ["npm:1.3.0", {\
-        "packageLocation": "./.yarn/cache/@yeoman-types-npm-1.3.0-4975446db9-31835e9f41.zip/node_modules/@yeoman/types/",\
+      ["npm:1.4.0", {\
+        "packageLocation": "./.yarn/cache/@yeoman-types-npm-1.4.0-a7f6212ca4-227cc9cd9c.zip/node_modules/@yeoman/types/",\
         "packageDependencies": [\
-          ["@yeoman/types", "npm:1.3.0"]\
+          ["@yeoman/types", "npm:1.4.0"]\
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:e385a280e32090a8ccd033eaf2df754a98b1289240d91e1df3ed68695e8080f0aa0c5798abd32cce453f8be19101f4f5a3164b8b933d99a99201221d9bdb78dc#npm:1.3.0", {\
-        "packageLocation": "./.yarn/__virtual__/@yeoman-types-virtual-f537e2fd36/0/cache/@yeoman-types-npm-1.3.0-4975446db9-31835e9f41.zip/node_modules/@yeoman/types/",\
+      ["virtual:e385a280e32090a8ccd033eaf2df754a98b1289240d91e1df3ed68695e8080f0aa0c5798abd32cce453f8be19101f4f5a3164b8b933d99a99201221d9bdb78dc#npm:1.4.0", {\
+        "packageLocation": "./.yarn/__virtual__/@yeoman-types-virtual-77f301b790/0/cache/@yeoman-types-npm-1.4.0-a7f6212ca4-227cc9cd9c.zip/node_modules/@yeoman/types/",\
         "packageDependencies": [\
-          ["@yeoman/types", "virtual:e385a280e32090a8ccd033eaf2df754a98b1289240d91e1df3ed68695e8080f0aa0c5798abd32cce453f8be19101f4f5a3164b8b933d99a99201221d9bdb78dc#npm:1.3.0"],\
-          ["@types/inquirer", "npm:9.0.7"],\
+          ["@yeoman/types", "virtual:e385a280e32090a8ccd033eaf2df754a98b1289240d91e1df3ed68695e8080f0aa0c5798abd32cce453f8be19101f4f5a3164b8b933d99a99201221d9bdb78dc#npm:1.4.0"],\
           ["@types/mem-fs", null],\
           ["@types/mem-fs-editor", null],\
           ["@types/node", "npm:16.18.82"],\
-          ["inquirer", null],\
+          ["@types/yeoman__adapter", null],\
+          ["@yeoman/adapter", "npm:1.6.0"],\
           ["mem-fs", null],\
           ["mem-fs-editor", null]\
         ],\
         "packagePeers": [\
-          "@types/inquirer",\
           "@types/mem-fs-editor",\
           "@types/mem-fs",\
-          "inquirer",\
+          "@types/yeoman__adapter",\
           "mem-fs-editor",\
           "mem-fs"\
         ],\
@@ -5577,6 +5601,13 @@ const RAW_RUNTIME_STATE =
           ["cli-spinners", "npm:2.9.0"]\
         ],\
         "linkType": "HARD"\
+      }],\
+      ["npm:2.9.2", {\
+        "packageLocation": "./.yarn/cache/cli-spinners-npm-2.9.2-be9c08efee-a0a863f442.zip/node_modules/cli-spinners/",\
+        "packageDependencies": [\
+          ["cli-spinners", "npm:2.9.2"]\
+        ],\
+        "linkType": "HARD"\
       }]\
     ]],\
     ["cli-table", [\
@@ -5623,6 +5654,13 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/cli-width-npm-3.0.0-387b3f68f9-8730848b04.zip/node_modules/cli-width/",\
         "packageDependencies": [\
           ["cli-width", "npm:3.0.0"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:4.1.0", {\
+        "packageLocation": "./.yarn/cache/cli-width-npm-4.1.0-c08b53be83-b58876fbf0.zip/node_modules/cli-width/",\
+        "packageDependencies": [\
+          ["cli-width", "npm:4.1.0"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -8968,6 +9006,25 @@ const RAW_RUNTIME_STATE =
           ["wrap-ansi", "npm:7.0.0"]\
         ],\
         "linkType": "HARD"\
+      }],\
+      ["npm:9.3.6", {\
+        "packageLocation": "./.yarn/cache/inquirer-npm-9.3.6-12701957cb-bf420e03d4.zip/node_modules/inquirer/",\
+        "packageDependencies": [\
+          ["inquirer", "npm:9.3.6"],\
+          ["@inquirer/figures", "npm:1.0.5"],\
+          ["ansi-escapes", "npm:4.3.2"],\
+          ["cli-width", "npm:4.1.0"],\
+          ["external-editor", "npm:3.1.0"],\
+          ["mute-stream", "npm:1.0.0"],\
+          ["ora", "npm:5.4.1"],\
+          ["run-async", "npm:3.0.0"],\
+          ["rxjs", "npm:7.8.1"],\
+          ["string-width", "npm:4.2.3"],\
+          ["strip-ansi", "npm:6.0.1"],\
+          ["wrap-ansi", "npm:6.2.0"],\
+          ["yoctocolors-cjs", "npm:2.1.2"]\
+        ],\
+        "linkType": "HARD"\
       }]\
     ]],\
     ["into-stream", [\
@@ -9157,6 +9214,13 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/is-interactive-npm-1.0.0-7ff7c6e04a-824808776e.zip/node_modules/is-interactive/",\
         "packageDependencies": [\
           ["is-interactive", "npm:1.0.0"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:2.0.0", {\
+        "packageLocation": "./.yarn/cache/is-interactive-npm-2.0.0-dcec8b26d7-e8d52ad490.zip/node_modules/is-interactive/",\
+        "packageDependencies": [\
+          ["is-interactive", "npm:2.0.0"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -9358,6 +9422,13 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/is-unicode-supported-npm-0.1.0-0833e1bbfb-a2aab86ee7.zip/node_modules/is-unicode-supported/",\
         "packageDependencies": [\
           ["is-unicode-supported", "npm:0.1.0"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:1.3.0", {\
+        "packageLocation": "./.yarn/cache/is-unicode-supported-npm-1.3.0-9371ea1eda-20a1fc161a.zip/node_modules/is-unicode-supported/",\
+        "packageDependencies": [\
+          ["is-unicode-supported", "npm:1.3.0"]\
         ],\
         "linkType": "HARD"\
       }],\
@@ -10860,6 +10931,24 @@ const RAW_RUNTIME_STATE =
           ["log-symbols", "npm:4.1.0"],\
           ["chalk", "npm:4.1.2"],\
           ["is-unicode-supported", "npm:0.1.0"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:6.0.0", {\
+        "packageLocation": "./.yarn/cache/log-symbols-npm-6.0.0-126324bed0-510cdda367.zip/node_modules/log-symbols/",\
+        "packageDependencies": [\
+          ["log-symbols", "npm:6.0.0"],\
+          ["chalk", "npm:5.3.0"],\
+          ["is-unicode-supported", "npm:1.3.0"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:7.0.0", {\
+        "packageLocation": "./.yarn/cache/log-symbols-npm-7.0.0-8585337037-a6cb6e90bf.zip/node_modules/log-symbols/",\
+        "packageDependencies": [\
+          ["log-symbols", "npm:7.0.0"],\
+          ["is-unicode-supported", "npm:2.0.0"],\
+          ["yoctocolors", "npm:2.1.1"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -12494,6 +12583,22 @@ const RAW_RUNTIME_STATE =
           ["wcwidth", "npm:1.0.1"]\
         ],\
         "linkType": "HARD"\
+      }],\
+      ["npm:8.1.0", {\
+        "packageLocation": "./.yarn/cache/ora-npm-8.1.0-6b935545cd-2b394b79cc.zip/node_modules/ora/",\
+        "packageDependencies": [\
+          ["ora", "npm:8.1.0"],\
+          ["chalk", "npm:5.3.0"],\
+          ["cli-cursor", "npm:5.0.0"],\
+          ["cli-spinners", "npm:2.9.2"],\
+          ["is-interactive", "npm:2.0.0"],\
+          ["is-unicode-supported", "npm:2.0.0"],\
+          ["log-symbols", "npm:6.0.0"],\
+          ["stdin-discarder", "npm:0.2.2"],\
+          ["string-width", "npm:7.2.0"],\
+          ["strip-ansi", "npm:7.1.0"]\
+        ],\
+        "linkType": "HARD"\
       }]\
     ]],\
     ["os-homedir", [\
@@ -12734,6 +12839,15 @@ const RAW_RUNTIME_STATE =
           ["p-timeout", "npm:3.2.0"]\
         ],\
         "linkType": "HARD"\
+      }],\
+      ["npm:8.0.1", {\
+        "packageLocation": "./.yarn/cache/p-queue-npm-8.0.1-fe1ddcd827-8dcf8fbb83.zip/node_modules/p-queue/",\
+        "packageDependencies": [\
+          ["p-queue", "npm:8.0.1"],\
+          ["eventemitter3", "npm:5.0.1"],\
+          ["p-timeout", "npm:6.1.2"]\
+        ],\
+        "linkType": "HARD"\
       }]\
     ]],\
     ["p-reduce", [\
@@ -12777,6 +12891,13 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["p-timeout", "npm:3.2.0"],\
           ["p-finally", "npm:1.0.0"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:6.1.2", {\
+        "packageLocation": "./.yarn/cache/p-timeout-npm-6.1.2-865f078862-ca3ede368d.zip/node_modules/p-timeout/",\
+        "packageDependencies": [\
+          ["p-timeout", "npm:6.1.2"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -14225,6 +14346,13 @@ const RAW_RUNTIME_STATE =
           ["run-async", "npm:2.4.1"]\
         ],\
         "linkType": "HARD"\
+      }],\
+      ["npm:3.0.0", {\
+        "packageLocation": "./.yarn/cache/run-async-npm-3.0.0-bfba9a6e47-97fb8747f7.zip/node_modules/run-async/",\
+        "packageDependencies": [\
+          ["run-async", "npm:3.0.0"]\
+        ],\
+        "linkType": "HARD"\
       }]\
     ]],\
     ["run-parallel", [\
@@ -14942,6 +15070,15 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["stdin-discarder", [\
+      ["npm:0.2.2", {\
+        "packageLocation": "./.yarn/cache/stdin-discarder-npm-0.2.2-6afaccfb3e-642ffd05bd.zip/node_modules/stdin-discarder/",\
+        "packageDependencies": [\
+          ["stdin-discarder", "npm:0.2.2"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["stream-combiner2", [\
       ["npm:1.1.1", {\
         "packageLocation": "./.yarn/cache/stream-combiner2-npm-1.1.1-72d11c75e4-dd32d179fa.zip/node_modules/stream-combiner2/",\
@@ -15037,6 +15174,16 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/string-width-npm-7.0.0-1bcc0b3bce-bc0de5700a.zip/node_modules/string-width/",\
         "packageDependencies": [\
           ["string-width", "npm:7.0.0"],\
+          ["emoji-regex", "npm:10.3.0"],\
+          ["get-east-asian-width", "npm:1.2.0"],\
+          ["strip-ansi", "npm:7.1.0"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:7.2.0", {\
+        "packageLocation": "./.yarn/cache/string-width-npm-7.2.0-93572222c9-42f9e82f61.zip/node_modules/string-width/",\
+        "packageDependencies": [\
+          ["string-width", "npm:7.2.0"],\
           ["emoji-regex", "npm:10.3.0"],\
           ["get-east-asian-width", "npm:1.2.0"],\
           ["strip-ansi", "npm:7.1.0"]\
@@ -16519,6 +16666,16 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "HARD"\
       }],\
+      ["npm:6.2.0", {\
+        "packageLocation": "./.yarn/cache/wrap-ansi-npm-6.2.0-439a7246d8-0d64f2d438.zip/node_modules/wrap-ansi/",\
+        "packageDependencies": [\
+          ["wrap-ansi", "npm:6.2.0"],\
+          ["ansi-styles", "npm:4.3.0"],\
+          ["string-width", "npm:4.2.3"],\
+          ["strip-ansi", "npm:6.0.1"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
       ["npm:7.0.0", {\
         "packageLocation": "./.yarn/cache/wrap-ansi-npm-7.0.0-ad6e1a0554-cebdaeca3a.zip/node_modules/wrap-ansi/",\
         "packageDependencies": [\
@@ -16796,7 +16953,7 @@ const RAW_RUNTIME_STATE =
           ["@types/yeoman-environment", null],\
           ["@types/yeoman__types", null],\
           ["@yeoman/namespace", "npm:1.0.0"],\
-          ["@yeoman/types", "virtual:e385a280e32090a8ccd033eaf2df754a98b1289240d91e1df3ed68695e8080f0aa0c5798abd32cce453f8be19101f4f5a3164b8b933d99a99201221d9bdb78dc#npm:1.3.0"],\
+          ["@yeoman/types", "virtual:e385a280e32090a8ccd033eaf2df754a98b1289240d91e1df3ed68695e8080f0aa0c5798abd32cce453f8be19101f4f5a3164b8b933d99a99201221d9bdb78dc#npm:1.4.0"],\
           ["chalk", "npm:5.3.0"],\
           ["debug", "virtual:071d471ccd267160a6f0ec15e4cdc2874728a012db8f34521faf9e64a516aa918ee9ebab3c4c084d955ab74aaac5b8be9afb7a168813c9f210acdb7d88754ab9#npm:4.3.4"],\
           ["execa", "npm:8.0.1"],\
@@ -16892,6 +17049,22 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/yoctocolors-npm-2.0.0-f1f9532a48-ae0e5a244b.zip/node_modules/yoctocolors/",\
         "packageDependencies": [\
           ["yoctocolors", "npm:2.0.0"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:2.1.1", {\
+        "packageLocation": "./.yarn/cache/yoctocolors-npm-2.1.1-b7d3fb8a79-563fbec88b.zip/node_modules/yoctocolors/",\
+        "packageDependencies": [\
+          ["yoctocolors", "npm:2.1.1"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["yoctocolors-cjs", [\
+      ["npm:2.1.2", {\
+        "packageLocation": "./.yarn/cache/yoctocolors-cjs-npm-2.1.2-52d47e1a9b-d731e3ba77.zip/node_modules/yoctocolors-cjs/",\
+        "packageDependencies": [\
+          ["yoctocolors-cjs", "npm:2.1.2"]\
         ],\
         "linkType": "HARD"\
       }]\
