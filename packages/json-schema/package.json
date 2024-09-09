@@ -41,7 +41,7 @@
   "dependencies": {
     "tslib": "2.7.0",
     "yargs": "17.7.2",
-    "zod-to-json-schema": "3.23.2"
+    "zod-to-json-schema": "3.23.3"
   },
   "peerDependencies": {
     "@targetd/api": ">=6.0.1",
