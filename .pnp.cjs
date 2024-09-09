@@ -3278,7 +3278,7 @@ const RAW_RUNTIME_STATE =
           ["typescript", "patch:typescript@npm%3A5.4.5#optional!builtin<compat/typescript>::version=5.4.5&hash=5adc0c"],\
           ["yargs", "npm:17.7.2"],\
           ["zod", "npm:3.23.8"],\
-          ["zod-to-json-schema", "virtual:659caa87d33ab88e9ed1cb569b7408c960a2f6005079eafaf1ff1411303e6211aa0f750b69155738e7cdda8f02669eca60098d12e1c88a4525149f95a87567f2#npm:3.23.2"]\
+          ["zod-to-json-schema", "virtual:659caa87d33ab88e9ed1cb569b7408c960a2f6005079eafaf1ff1411303e6211aa0f750b69155738e7cdda8f02669eca60098d12e1c88a4525149f95a87567f2#npm:3.23.3"]\
         ],\
         "packagePeers": [\
           "@targetd/api",\
@@ -3313,7 +3313,7 @@ const RAW_RUNTIME_STATE =
           ["typescript", "patch:typescript@npm%3A5.4.5#optional!builtin<compat/typescript>::version=5.4.5&hash=5adc0c"],\
           ["yargs", "npm:17.7.2"],\
           ["zod", "npm:3.23.8"],\
-          ["zod-to-json-schema", "virtual:659caa87d33ab88e9ed1cb569b7408c960a2f6005079eafaf1ff1411303e6211aa0f750b69155738e7cdda8f02669eca60098d12e1c88a4525149f95a87567f2#npm:3.23.2"]\
+          ["zod-to-json-schema", "virtual:659caa87d33ab88e9ed1cb569b7408c960a2f6005079eafaf1ff1411303e6211aa0f750b69155738e7cdda8f02669eca60098d12e1c88a4525149f95a87567f2#npm:3.23.3"]\
         ],\
         "linkType": "SOFT"\
       }]\
@@ -17104,17 +17104,17 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["zod-to-json-schema", [\
-      ["npm:3.23.2", {\
-        "packageLocation": "./.yarn/cache/zod-to-json-schema-npm-3.23.2-c000dcbc34-316fc53901.zip/node_modules/zod-to-json-schema/",\
+      ["npm:3.23.3", {\
+        "packageLocation": "./.yarn/cache/zod-to-json-schema-npm-3.23.3-86415b1ed5-09f783a232.zip/node_modules/zod-to-json-schema/",\
         "packageDependencies": [\
-          ["zod-to-json-schema", "npm:3.23.2"]\
+          ["zod-to-json-schema", "npm:3.23.3"]\
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:659caa87d33ab88e9ed1cb569b7408c960a2f6005079eafaf1ff1411303e6211aa0f750b69155738e7cdda8f02669eca60098d12e1c88a4525149f95a87567f2#npm:3.23.2", {\
-        "packageLocation": "./.yarn/__virtual__/zod-to-json-schema-virtual-0916d768e3/0/cache/zod-to-json-schema-npm-3.23.2-c000dcbc34-316fc53901.zip/node_modules/zod-to-json-schema/",\
+      ["virtual:659caa87d33ab88e9ed1cb569b7408c960a2f6005079eafaf1ff1411303e6211aa0f750b69155738e7cdda8f02669eca60098d12e1c88a4525149f95a87567f2#npm:3.23.3", {\
+        "packageLocation": "./.yarn/__virtual__/zod-to-json-schema-virtual-a9960d11a7/0/cache/zod-to-json-schema-npm-3.23.3-86415b1ed5-09f783a232.zip/node_modules/zod-to-json-schema/",\
         "packageDependencies": [\
-          ["zod-to-json-schema", "virtual:659caa87d33ab88e9ed1cb569b7408c960a2f6005079eafaf1ff1411303e6211aa0f750b69155738e7cdda8f02669eca60098d12e1c88a4525149f95a87567f2#npm:3.23.2"],\
+          ["zod-to-json-schema", "virtual:659caa87d33ab88e9ed1cb569b7408c960a2f6005079eafaf1ff1411303e6211aa0f750b69155738e7cdda8f02669eca60098d12e1c88a4525149f95a87567f2#npm:3.23.3"],\
           ["@types/zod", null],\
           ["zod", "npm:3.23.8"]\
         ],\
