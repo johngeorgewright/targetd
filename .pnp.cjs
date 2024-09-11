@@ -78,7 +78,7 @@ const RAW_RUNTIME_STATE =
           ["@types/node", "npm:20.16.5"],\
           ["commitizen", "npm:4.3.0"],\
           ["cz-conventional-changelog", "npm:3.3.0"],\
-          ["husky", "npm:9.1.5"],\
+          ["husky", "npm:9.1.6"],\
           ["isbinaryfile", "npm:5.0.2"],\
           ["jest-runner", "npm:29.7.0"],\
           ["lint-staged", "npm:15.2.10"],\
@@ -3333,7 +3333,7 @@ const RAW_RUNTIME_STATE =
           ["@types/node", "npm:20.16.5"],\
           ["commitizen", "npm:4.3.0"],\
           ["cz-conventional-changelog", "npm:3.3.0"],\
-          ["husky", "npm:9.1.5"],\
+          ["husky", "npm:9.1.6"],\
           ["isbinaryfile", "npm:5.0.2"],\
           ["jest-runner", "npm:29.7.0"],\
           ["lint-staged", "npm:15.2.10"],\
@@ -8740,10 +8740,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["husky", [\
-      ["npm:9.1.5", {\
-        "packageLocation": "./.yarn/cache/husky-npm-9.1.5-691154a935-21a3036dd0.zip/node_modules/husky/",\
+      ["npm:9.1.6", {\
+        "packageLocation": "./.yarn/cache/husky-npm-9.1.6-f05821288d-421ccd8850.zip/node_modules/husky/",\
         "packageDependencies": [\
-          ["husky", "npm:9.1.5"]\
+          ["husky", "npm:9.1.6"]\
         ],\
         "linkType": "HARD"\
       }]\
