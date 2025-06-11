@@ -91,7 +91,7 @@ beforeAll(async () => {
   const serverResolvers = Promise.withResolvers<void>()
   server = createServer(() => d).listen(
     0,
-    (err) => err ? serverResolvers.reject(err) : serverResolvers.resolve(),
+    serverResolvers.resolve,
   )
   await serverResolvers.promise
   const address = server.address() as AddressInfo

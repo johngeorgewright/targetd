@@ -1,3 +1,4 @@
+// @ts-types='npm:@types/express@4'
 import type express from 'express'
 import { ZodError } from 'zod'
 

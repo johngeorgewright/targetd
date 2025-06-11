@@ -1,4 +1,5 @@
 import type { Data } from '@targetd/api'
+// @ts-types='npm:@types/express@4'
 import type { RequestHandler } from 'express'
 import { ZodFirstPartyTypeKind, type ZodRawShape } from 'zod'
 

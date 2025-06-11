@@ -114,11 +114,8 @@ beforeEach(async () => {
   data = await createData()
   app = createServer(() => data)
 
-  const { promise, resolve, reject } = Promise.withResolvers<void>()
-  server = app.listen(0, (err) => {
-    if (err) reject(err)
-    else resolve()
-  })
+  const { promise, resolve } = Promise.withResolvers<void>()
+  server = app.listen(0, resolve)
   return promise
 })
 
