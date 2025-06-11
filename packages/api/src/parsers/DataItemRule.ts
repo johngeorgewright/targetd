@@ -1,13 +1,13 @@
 import {
-  type ZodUnion,
-  type ZodRawShape,
-  type ZodTypeAny,
   strictObject,
   type ZodArray,
   type ZodObject,
   type ZodOptional,
+  type ZodRawShape,
+  type ZodTypeAny,
+  type ZodUnion,
 } from 'zod'
-import { type ZodPartialObject } from '../types'
+import type { ZodPartialObject } from '../types.ts'
 
 export function DataItemRuleParser<
   P extends ZodTypeAny,
@@ -86,8 +86,7 @@ export type RuleWithPayloadParser<
 > = ZodObject<
   {
     targeting: ZodOptional<
-      AllowMultipleTargeting extends true
-        ? MultipleRuleTargeting<Targeting>
+      AllowMultipleTargeting extends true ? MultipleRuleTargeting<Targeting>
         : SingularRuleTargeting<Targeting>
     >
     payload: Payload
@@ -103,8 +102,7 @@ export function RuleWithPayloadParser<
   return strictObject({
     targeting: (allowMultipleTargeting
       ? MultipleRuleTargeting(targeting)
-      : SingularRuleTargeting(targeting)
-    ).optional(),
+      : SingularRuleTargeting(targeting)).optional(),
     payload: Payload,
   }) as RuleWithPayloadParser<P, T, AllowMultipleTargeting>
 }

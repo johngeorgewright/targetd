@@ -1,10 +1,10 @@
-import { readFiles } from '@johngw/fs'
+import fs from '@johngw/fs'
 import type { WithFileNamesResult } from '@johngw/fs/dist/readFiles'
 import type { DT } from '@targetd/api'
 import YAML from 'yaml'
 import {
-  type infer as zInfer,
   array,
+  type infer as zInfer,
   object,
   strictObject,
   string,
@@ -18,12 +18,15 @@ const FileData = object({ $schema: string().optional() }).catchall(
 type FileData = zInfer<typeof FileData>
 
 export async function load<D extends DT.Any>(data: D, dir: string): Promise<D> {
-  for await (const contents of readFiles(dir, {
-    encoding: 'utf8',
-    filter: pathIsLoadable,
-    withFileNames: true,
-  }))
+  for await (
+    const contents of fs.readFiles(dir, {
+      encoding: 'utf8',
+      filter: pathIsLoadable,
+      withFileNames: true,
+    })
+  ) {
     data = await addRules(data, parseFileContents(contents))
+  }
 
   return data
 }
@@ -49,9 +52,11 @@ async function addRules<D extends DT.Any>(
 ): Promise<D> {
   let result = data
 
-  for (const [key, value] of objectIterator(fileData))
-    if (typeof value === 'object')
+  for (const [key, value] of objectIterator(fileData)) {
+    if (typeof value === 'object') {
       result = (await result.addRules(key, value.rules as any[])) as D
+    }
+  }
 
   return result
 }
@@ -59,8 +64,9 @@ async function addRules<D extends DT.Any>(
 export function* objectIterator<T extends Record<string, unknown>>(
   obj: T,
 ): Generator<Entry<T>> {
-  for (const key in obj)
+  for (const key in obj) {
     if (Object.prototype.hasOwnProperty.call(obj, key)) yield [key, obj[key]]
+  }
 }
 
 type Entry<T extends Record<string | symbol, unknown>> = {

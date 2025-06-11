@@ -1,6 +1,6 @@
-import { type ZodRawShape, strictObject } from 'zod'
-import { type ZodPartialObject } from '../types'
-import { DataItemParser } from './DataItem'
+import { strictObject, type ZodRawShape } from 'zod'
+import type { ZodPartialObject } from '../types.ts'
+import { DataItemParser } from './DataItem.ts'
 
 export function DataItemsParser<
   D extends ZodRawShape,
@@ -8,8 +8,9 @@ export function DataItemsParser<
   CT extends ZodRawShape,
 >(payloadParsers: D, targeting: T, fallThroughTargeting: CT) {
   const dataItems: Record<string, any> = {}
-  for (const [key, Payload] of Object.entries(payloadParsers))
+  for (const [key, Payload] of Object.entries(payloadParsers)) {
     dataItems[key] = DataItemParser(Payload, targeting, fallThroughTargeting)
+  }
   return strictObject(dataItems).partial() as DataItemsParser<D, T, CT>
 }
 

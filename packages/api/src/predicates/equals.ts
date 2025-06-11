@@ -1,6 +1,6 @@
-import type TargetingPredicate from '../parsers/TargetingPredicate'
-import type TargetingDescriptor from '../parsers/TargetingDescriptor'
-import { type ZodTypeAny } from 'zod'
+import type TargetingPredicate from '../parsers/TargetingPredicate.ts'
+import type TargetingDescriptor from '../parsers/TargetingDescriptor.ts'
+import type { ZodTypeAny } from 'zod'
 
 /**
  * The query has to match the targeting exactly.

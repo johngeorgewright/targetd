@@ -1,13 +1,14 @@
+import { assertSnapshot } from 'jsr:@std/testing/snapshot'
+import { test } from 'jsr:@std/testing/bdd'
+import { expect } from 'jsr:@std/expect'
+import { setTimeout } from 'node:timers/promises'
 import z from 'zod'
 import {
-  Data,
   createTargetingDescriptor,
+  Data,
   targetEquals,
   targetIncludes,
-} from '../src'
-
-const timeout = <T>(ms: number, returnValue: T) =>
-  new Promise<T>((resolve) => setTimeout(() => resolve(returnValue), ms))
+} from '@targetd/api'
 
 test('getPayload', async () => {
   let data = Data.create({
@@ -18,7 +19,8 @@ test('getPayload', async () => {
       weather: targetIncludes(z.string()),
       highTide: targetEquals(z.boolean()),
       asyncThing: {
-        predicate: (q) => timeout(10, (t) => q === t && timeout(10, true)),
+        predicate: (q) =>
+          setTimeout(10, (t: boolean) => q === t && setTimeout(10, true)),
         queryParser: z.boolean(),
         targetingParser: z.boolean(),
       },
@@ -67,30 +69,30 @@ test('getPayload', async () => {
   expect(await data.getPayload('foo', { weather: 'rainy' })).toBe('☂️')
   expect(await data.getPayload('foo', { highTide: true })).toBe('🌊')
   expect(
-    await data.getPayload('foo', { highTide: true, weather: 'sunny' })
+    await data.getPayload('foo', { highTide: true, weather: 'sunny' }),
   ).toBe('🏄‍♂️')
   expect(await data.getPayload('foo', { asyncThing: true })).toBe(
-    'Async payload'
+    'Async payload',
   )
 
-  // @ts-expect-error
+  // @ts-expect-error Mung data type does not exist
   await data.getPayload('mung')
 
-  expect(
-    // @ts-expect-error
-    data.getPayload('foo', { nonExistantKey: 'some value' })
+  await expect(
+    // @ts-expect-error 'nonExistantKey' is not a queriable value
+    data.getPayload('foo', { nonExistantKey: 'some value' }),
   ).rejects.toThrow()
 
-  expect(
+  await expect(
     data.addRules('foo', [
       {
         targeting: {
-          // @ts-expect-error
+          // @ts-expect-error 'nonExistantKey' is not a targetable value
           nonExistantKey: 'some value',
         },
         payload: 'error',
       },
-    ])
+    ]),
   ).rejects.toThrow()
 })
 
@@ -123,10 +125,10 @@ test('targeting with multiple conditions', async () => {
   ])
 
   expect(await data.getPayload('foo', { weather: 'sunny' })).toBe(
-    'The time is now'
+    'The time is now',
   )
   expect(await data.getPayload('foo', { highTide: true })).toBe(
-    'The time is now'
+    'The time is now',
   )
   expect(await data.getPayload('foo')).toBe('bar')
 })
@@ -161,7 +163,7 @@ test('targeting without requiring a query', async () => {
   expect(await data.getPayload('foo')).toBe('The time is now')
 })
 
-test('getPayloads', async () => {
+test('getPayloads', async (t) => {
   let data = Data.create({
     data: {
       foo: z.string(),
@@ -196,17 +198,10 @@ test('getPayloads', async () => {
     },
   ])
 
-  expect(await data.getPayloads('foo', { weather: 'sunny' }))
-    .toMatchInlineSnapshot(`
-    [
-      "😎",
-      "☂️",
-      "bar",
-    ]
-  `)
+  await assertSnapshot(t, await data.getPayloads('foo', { weather: 'sunny' }))
 })
 
-test('payload runtype validation', async () => {
+test('payload runtype validation', async (t) => {
   try {
     let data = Data.create({
       data: {
@@ -216,31 +211,19 @@ test('payload runtype validation', async () => {
 
     data = await data.addRules('foo', [
       {
+        // @ts-expect-error Type '"rab"' is not assignable to type '"bar"'
         payload: 'rab',
       },
     ])
-  } catch (error: any) {
-    expect(error).toMatchInlineSnapshot(`
-      [ZodError: [
-        {
-          "code": "custom",
-          "message": "Should be bar",
-          "path": [
-            "foo",
-            "rules",
-            0,
-            "payload"
-          ]
-        }
-      ]]
-    `)
+  } catch (error) {
+    await assertSnapshot(t, error)
     return
   }
 
   throw new Error('Didnt error correctly')
 })
 
-test('getPayloadForEachName', async () => {
+test('getPayloadForEachName', async (t) => {
   let data = Data.create({
     data: {
       foo: z.string(),
@@ -250,7 +233,8 @@ test('getPayloadForEachName', async () => {
       weather: targetIncludes(z.string()),
       highTide: targetIncludes(z.boolean()),
       asyncThing: {
-        predicate: (q) => timeout(10, (t) => q === t && timeout(10, true)),
+        predicate: (q) =>
+          setTimeout(10, (t: boolean) => q === t && setTimeout(10, true)),
         queryParser: z.boolean(),
         targetingParser: z.boolean(),
       },
@@ -293,24 +277,17 @@ test('getPayloadForEachName', async () => {
     },
   ])
 
-  expect(await data.getPayloadForEachName({ weather: 'sunny' }))
-    .toMatchInlineSnapshot(`
-    {
-      "bar": "😁",
-      "foo": "😎",
-    }
-  `)
-
-  expect(await data.getPayloadForEachName({ asyncThing: true }))
-    .toMatchInlineSnapshot(`
-    {
-      "bar": "async payloads!",
-      "foo": undefined,
-    }
-  `)
+  await assertSnapshot(
+    t,
+    await data.getPayloadForEachName({ weather: 'sunny' }),
+  )
+  await assertSnapshot(
+    t,
+    await data.getPayloadForEachName({ asyncThing: true }),
+  )
 })
 
-test('fallThrough targeting', async () => {
+test('fallThrough targeting', async (t) => {
   let data = Data.create({
     data: {
       foo: z.string(),
@@ -356,80 +333,10 @@ test('fallThrough targeting', async () => {
     },
   ])
 
-  expect(data.data).toMatchInlineSnapshot(`
-    {
-      "bar": {
-        "rules": [
-          {
-            "fallThrough": [
-              {
-                "payload": "😟",
-                "targeting": {
-                  "weather": [
-                    "rainy",
-                  ],
-                },
-              },
-              {
-                "payload": "😁",
-                "targeting": {
-                  "weather": [
-                    "sunny",
-                  ],
-                },
-              },
-            ],
-            "targeting": {},
-          },
-        ],
-      },
-      "foo": {
-        "rules": [
-          {
-            "fallThrough": [
-              {
-                "payload": "🏄‍♂️",
-                "targeting": {
-                  "weather": [
-                    "sunny",
-                  ],
-                },
-              },
-            ],
-            "targeting": {
-              "surf": [
-                "strong",
-              ],
-            },
-          },
-          {
-            "fallThrough": [
-              {
-                "payload": "😎",
-                "targeting": {
-                  "weather": [
-                    "sunny",
-                  ],
-                },
-              },
-              {
-                "payload": "☂️",
-                "targeting": {
-                  "weather": [
-                    "rainy",
-                  ],
-                },
-              },
-            ],
-            "targeting": {},
-          },
-        ],
-      },
-    }
-  `)
+  await assertSnapshot(t, data.data)
 })
 
-test('inserting data', async () => {
+test('inserting data', async (t) => {
   let data = Data.create({
     data: {
       moo: z.string(),
@@ -480,41 +387,20 @@ test('inserting data', async () => {
     moo: 'glue',
   })
 
-  expect(await data.getPayloadForEachName({ weather: 'sunny' }))
-    .toMatchInlineSnapshot(`
-    {
-      "bar": {
-        "__rules__": [
-          {
-            "payload": "😟",
-            "targeting": {
-              "highTide": false,
-            },
-          },
-          {
-            "payload": "😁",
-            "targeting": {
-              "highTide": true,
-            },
-          },
-        ],
-      },
-      "foo": "😎",
-      "moo": "glue",
-    }
-  `)
+  await assertSnapshot(
+    t,
+    await data.getPayloadForEachName({ weather: 'sunny' }),
+  )
 })
 
 test('targeting predicate with full query object', async () => {
   const mungTargeting = createTargetingDescriptor({
     queryParser: z.string(),
     targetingParser: z.string().array(),
-    predicate:
-      (queryValue, { bar }: { bar?: boolean }) =>
-      (targeting) =>
-        bar === true &&
-        queryValue !== undefined &&
-        targeting.includes(queryValue),
+    predicate: (queryValue, { bar }: { bar?: boolean }) => (targeting) =>
+      bar === true &&
+      queryValue !== undefined &&
+      targeting.includes(queryValue),
   })
 
   let data = Data.create({
@@ -548,7 +434,7 @@ test('targeting predicate with full query object', async () => {
   expect(await data.getPayload('foo', { bar: true, mung: 'mung' })).toBe('yay')
 })
 
-test.only('broken', async () => {
+test('broken', async (t) => {
   const browserTargeting = targetIncludes(z.enum(['chrome', 'edge']))
 
   const channelTargeting = targetIncludes(z.enum(['foo', 'bar']))
@@ -590,36 +476,6 @@ test.only('broken', async () => {
     },
   ])
 
-  expect(await data.getPayloadForEachName({ channel: 'foo' }))
-    .toMatchInlineSnapshot(`
-    {
-      "foo": "face",
-    }
-  `)
-
-  expect(await data.getPayloadForEachName({ channel: 'bar' }))
-    .toMatchInlineSnapshot(`
-    {
-      "foo": {
-        "__rules__": [
-          {
-            "payload": "yay",
-            "targeting": {
-              "browser": [
-                "chrome",
-              ],
-            },
-          },
-          {
-            "payload": "nay",
-            "targeting": {
-              "browser": [
-                "edge",
-              ],
-            },
-          },
-        ],
-      },
-    }
-  `)
+  await assertSnapshot(t, await data.getPayloadForEachName({ channel: 'foo' }))
+  await assertSnapshot(t, await data.getPayloadForEachName({ channel: 'bar' }))
 })

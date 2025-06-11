@@ -1,5 +1,5 @@
-import { type ZodTypeAny } from 'zod'
-import type TargetingPredicate from './TargetingPredicate'
+import type { ZodTypeAny } from 'zod'
+import type TargetingPredicate from './TargetingPredicate.ts'
 
 export default interface TargetingDescriptor<
   TV extends ZodTypeAny,

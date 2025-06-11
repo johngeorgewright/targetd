@@ -1,4 +1,4 @@
-import express from 'express'
+import type express from 'express'
 import { ZodError } from 'zod'
 
 export function errorHandler(): express.ErrorRequestHandler {

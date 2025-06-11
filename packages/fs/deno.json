@@ -1,0 +1,21 @@
+{
+  "name": "@targetd/fs",
+  "version": "5.0.0",
+  "exports": "./src/index.ts",
+  "imports": {
+    "@johngw/fs": "npm:@johngw/fs@^3.0.1",
+    "lodash": "npm:lodash@^4.17.21",
+    "throat": "npm:throat@^6.0.2",
+    "ts-toolbelt": "npm:ts-toolbelt@^9.6.0",
+    "watch": "npm:watch@^1.0.2",
+    "yaml": "npm:yaml@^2.5.1",
+    "zod": "npm:zod@^3.20.0"
+  },
+  "fmt": {
+    "semiColons": false,
+    "singleQuote": true
+  },
+  "tasks": {
+    "test": "deno test --allow-all --trace-leaks"
+  }
+}

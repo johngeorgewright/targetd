@@ -1,0 +1,66 @@
+export const snapshot = {};
+
+snapshot[`json schema for simple data object 1`] = `
+{
+  "\$schema": "http://json-schema.org/draft-07/schema#",
+  additionalProperties: false,
+  properties: {
+    "\$schema": {
+      type: "string",
+    },
+    foo: {
+      additionalProperties: false,
+      properties: {
+        rules: {
+          items: {
+            additionalProperties: false,
+            properties: {
+              payload: {
+                type: "string",
+              },
+              targeting: {
+                anyOf: [
+                  {
+                    additionalProperties: false,
+                    properties: {
+                      browser: {
+                        items: {
+                          type: "string",
+                        },
+                        type: "array",
+                      },
+                      weather: {
+                        items: {
+                          type: "string",
+                        },
+                        type: "array",
+                      },
+                    },
+                    type: "object",
+                  },
+                  {
+                    items: {
+                      "\$ref": "#/properties/foo/properties/rules/items/properties/targeting/anyOf/0",
+                    },
+                    type: "array",
+                  },
+                ],
+              },
+            },
+            required: [
+              "payload",
+            ],
+            type: "object",
+          },
+          type: "array",
+        },
+      },
+      required: [
+        "rules",
+      ],
+      type: "object",
+    },
+  },
+  type: "object",
+}
+`;

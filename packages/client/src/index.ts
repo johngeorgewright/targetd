@@ -58,11 +58,13 @@ export class Client<
   async getPayloadForEachName(
     rawQuery: Partial<StaticRecord<QueryParsers>> = {},
   ): Promise<
-    Partial<{
-      [Name in keyof PayloadParsers]:
-        | PT.Payload<PayloadParsers[Name], TargetingParsers>
-        | undefined
-    }>
+    Partial<
+      {
+        [Name in keyof PayloadParsers]:
+          | PT.Payload<PayloadParsers[Name], TargetingParsers>
+          | undefined
+      }
+    >
   > {
     const query = this.#data.QueryParser.parse(rawQuery)
     const urlSearchParams = queryToURLSearchParams(query)
@@ -76,7 +78,7 @@ export class Client<
 }
 
 export type ClientWithData<
-  D extends Data<ZodRawShape, ZodRawShape, ZodRawShape, ZodRawShape>,
+  D extends Data<any, any, any, any>,
 > = Client<
   DT.PayloadParsers<D>,
   DT.TargetingParsers<D>,
@@ -86,9 +88,11 @@ export type ClientWithData<
 
 function queryToURLSearchParams(query: Record<string, unknown>) {
   const urlSearchParams = new URLSearchParams()
-  for (const [key, value] of Object.entries(query))
-    for (const [n, v] of queryValueToParams(key, value))
+  for (const [key, value] of Object.entries(query)) {
+    for (const [n, v] of queryValueToParams(key, value)) {
       urlSearchParams.append(n, v)
+    }
+  }
   return urlSearchParams
 }
 
@@ -96,12 +100,13 @@ function* queryValueToParams(
   key: string,
   value: unknown,
 ): Generator<[string, string]> {
-  if (Array.isArray(value))
+  if (Array.isArray(value)) {
     for (const item of value) yield* queryValueToParams(key, item)
-  else if (isObject(value))
-    for (const [k, v] of Object.entries(value))
+  } else if (isObject(value)) {
+    for (const [k, v] of Object.entries(value)) {
       yield* queryValueToParams(`${key}[${k}]`, v)
-  else yield [key, String(value)]
+    }
+  } else yield [key, String(value)]
 }
 
 function isObject(x: unknown): x is Record<string, unknown> {

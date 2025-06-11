@@ -1,23 +1,28 @@
 import {
-  strictObject,
   type infer as zInfer,
-  type ZodRawShape,
   type input,
+  strictObject,
+  type ZodRawShape,
   ZodType,
 } from 'zod'
-import type TargetingPredicates from './parsers/TargetingPredicates'
-import { objectEveryAsync, objectIterator, objectKeys, objectMap } from './util'
-import { DataItemsParser } from './parsers/DataItems'
-import type { DataItemParser } from './parsers/DataItem'
-import type { DataItemRuleParser } from './parsers/DataItemRule'
+import type TargetingPredicates from './parsers/TargetingPredicates.ts'
+import {
+  objectEveryAsync,
+  objectIterator,
+  objectKeys,
+  objectMap,
+} from './util.ts'
+import { DataItemsParser } from './parsers/DataItems.ts'
+import type { DataItemParser } from './parsers/DataItem.ts'
+import type { DataItemRuleParser } from './parsers/DataItemRule.ts'
 import type { Keys } from 'ts-toolbelt/out/Any/Keys'
-import type { MaybePromise, StaticRecord, ZodPartialObject } from './types'
-import { DataItemRulesParser } from './parsers/DataItemRules'
-import type { DT } from './types/Data'
-import type { TT } from './types/Targeting'
-import type { FTTT } from './types/FallThroughTargeting'
-import type { PT } from './types/Payload'
-import type { QT } from './types/Query'
+import type { MaybePromise, StaticRecord, ZodPartialObject } from './types.ts'
+import type { DataItemRulesParser } from './parsers/DataItemRules.ts'
+import type * as DT from './types/Data.ts'
+import type * as TT from './types/Targeting.ts'
+import type * as FTTT from './types/FallThroughTargeting.ts'
+import type * as PT from './types/Payload.ts'
+import type * as QT from './types/Query.ts'
 
 export default class Data<
   PayloadParsers extends ZodRawShape,
@@ -197,6 +202,7 @@ export default class Data<
       FallThroughTargetingParsers
     >,
   ) {
+    // deno-lint-ignore no-this-alias
     let result: Data<
       PayloadParsers,
       TargetingParsers,
@@ -285,8 +291,9 @@ export default class Data<
 
     type NewQueryParsers = QueryParsers & QT.ParserRecord<TDs>
 
-    const targetingParsers: NewTargetingParsers =
-      this.#mergeTargetingParsers(targeting)
+    const targetingParsers: NewTargetingParsers = this.#mergeTargetingParsers(
+      targeting,
+    )
 
     const targetingPredicates = this.#mergeTargetingPredicates(
       targeting,
@@ -335,10 +342,9 @@ export default class Data<
       ...this.#targetingPredicates,
       ...objectMap(targeting, (targetingDescriptor) => ({
         predicate: targetingDescriptor.predicate,
-        requiresQuery:
-          'requiresQuery' in targetingDescriptor
-            ? targetingDescriptor.requiresQuery
-            : true,
+        requiresQuery: 'requiresQuery' in targetingDescriptor
+          ? targetingDescriptor.requiresQuery
+          : true,
       })),
     }
   }
@@ -362,11 +368,13 @@ export default class Data<
       FallThroughTargetingParsers & FTTT.ParsersRecord<TDs>
     >
   > {
-    type NewFallThroughTargetingParsers = FallThroughTargetingParsers &
-      FTTT.ParsersRecord<TDs>
+    type NewFallThroughTargetingParsers =
+      & FallThroughTargetingParsers
+      & FTTT.ParsersRecord<TDs>
 
-    const fallThroughTargetingParsers =
-      this.#mergeFallThroughTargeting(targeting)
+    const fallThroughTargetingParsers = this.#mergeFallThroughTargeting(
+      targeting,
+    )
 
     const data = (await DataItemsParser(
       this.#payloadParsers,
@@ -400,20 +408,24 @@ export default class Data<
   ): FallThroughTargetingParsers & FTTT.ParsersRecord<TDs> {
     return {
       ...this.#fallThroughTargetingParsers,
-      ...objectMap(targeting, (descriptorOrParser) =>
-        descriptorOrParser instanceof ZodType
-          ? descriptorOrParser
-          : descriptorOrParser.targetingParser,
+      ...objectMap(
+        targeting,
+        (descriptorOrParser) =>
+          descriptorOrParser instanceof ZodType
+            ? descriptorOrParser
+            : descriptorOrParser.targetingParser,
       ),
     }
   }
 
   async getPayloadForEachName(rawQuery: QT.Raw<QueryParsers> = {}) {
-    const payloads = {} as Partial<{
-      [Name in keyof PayloadParsers]:
-        | PT.Payload<PayloadParsers[Name], TargetingParsers>
-        | undefined
-    }>
+    const payloads = {} as Partial<
+      {
+        [Name in keyof PayloadParsers]:
+          | PT.Payload<PayloadParsers[Name], TargetingParsers>
+          | undefined
+      }
+    >
 
     await Promise.all(
       objectKeys(this.#data).map(async (name) => {
@@ -429,8 +441,9 @@ export default class Data<
     rawQuery: QT.Raw<QueryParsers> = {},
   ): Promise<PT.Payload<PayloadParsers[Name], TargetingParsers> | void> {
     const predicate = await this.#createRulePredicate(rawQuery)
-    for (const rule of this.#getTargetableRules(name))
+    for (const rule of this.#getTargetableRules(name)) {
       if (await predicate(rule as any)) return this.#mapRule(rule)
+    }
   }
 
   async getPayloads<Name extends keyof PayloadParsers>(
@@ -439,8 +452,9 @@ export default class Data<
   ): Promise<PT.Payload<PayloadParsers[Name], TargetingParsers>[]> {
     const payloads: PT.Payload<PayloadParsers[Name], TargetingParsers>[] = []
     const predicate = await this.#createRulePredicate(rawQuery)
-    for (const rule of this.#getTargetableRules(name))
+    for (const rule of this.#getTargetableRules(name)) {
       if (await predicate(rule as any)) payloads.push(this.#mapRule(rule))
+    }
     return payloads
   }
 
@@ -456,22 +470,14 @@ export default class Data<
     return hasPayload(rule)
       ? rule.payload
       : 'fallThrough' in rule
-        ? { __rules__: rule.fallThrough }
-        : undefined
+      ? { __rules__: rule.fallThrough }
+      : undefined
   }
 
   async #createRulePredicate<Name extends keyof PayloadParsers>(
     rawQuery: QT.Raw<QueryParsers>,
   ) {
     const query = await this.#QueryParser.parseAsync(rawQuery)
-
-    const targeting = objectMap(
-      this.#targetingPredicates,
-      (target, targetingKey) => ({
-        predicate: target.predicate(query[targetingKey], query as any),
-        requiresQuery: target.requiresQuery,
-      }),
-    )
 
     return (
       rule: zInfer<
@@ -483,7 +489,17 @@ export default class Data<
       >,
     ) =>
       !('targeting' in rule) ||
-      this.#targetingPredicate(query, rule.targeting!, targeting)
+      this.#targetingPredicate(
+        query,
+        rule.targeting!,
+        objectMap(
+          this.#targetingPredicates,
+          (target, targetingKey) => ({
+            predicate: target.predicate(query[targetingKey], query as any),
+            requiresQuery: target.requiresQuery,
+          }),
+        ),
+      )
   }
 
   #getTargetableRules<Name extends keyof PayloadParsers>(name: Name) {
@@ -516,7 +532,7 @@ export default class Data<
     >,
   ) {
     const targetings = Array.isArray(targeting) ? targeting : [targeting]
-    for (const targeting of targetings)
+    for (const targeting of targetings) {
       if (
         await objectEveryAsync(
           targeting,
@@ -524,19 +540,23 @@ export default class Data<
             if (
               !(targetingKey in query) &&
               predicates[targetingKey]?.requiresQuery
-            )
+            ) {
               return false
+            }
 
-            if (targetingKey in predicates)
+            if (targetingKey in predicates) {
               return (await predicates[targetingKey].predicate)(targetingValue)
-            else
+            } else {
               console.warn(`Invalid targeting property ${String(targetingKey)}`)
+            }
 
             return false
           },
         )
-      )
+      ) {
         return true
+      }
+    }
     return false
   }
 }

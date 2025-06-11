@@ -1,4 +1,4 @@
-import { Explode } from './types'
+import type { Explode } from "./types.ts";
 
 export function explode<
   T extends Record<string, unknown>,
@@ -11,17 +11,17 @@ export function explode<
         PathSeparator
       >,
     {} as Explode<T, PathSeparator>,
-  )
+  );
 }
 
 function set(obj: object, path: string[], value: unknown) {
   path.reduce<any>(
     (acc, key, i) => {
-      if (acc[key] === undefined) acc[key] = {}
-      if (i === path.length - 1) acc[key] = value
-      return acc[key]
+      if (acc[key] === undefined) acc[key] = {};
+      if (i === path.length - 1) acc[key] = value;
+      return acc[key];
     },
     obj as Record<string, unknown>,
-  )
-  return obj
+  );
+  return obj;
 }

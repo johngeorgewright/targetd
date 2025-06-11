@@ -1,22 +1,17 @@
 import type { ZodRawShape } from 'zod'
-import type { StaticRecord } from '../types'
-import type TargetingDescriptor from '../parsers/TargetingDescriptor'
-import type { TT } from './Targeting'
+import type { StaticRecord } from '../types.ts'
+import type TargetingDescriptor from '../parsers/TargetingDescriptor.ts'
+import type * as TT from './Targeting.ts'
+
+export type Raw<QP extends ZodRawShape> = Partial<StaticRecord<QP>>
 
 /**
- * Query type utilities
+ * Gets the query parser from a targeting descriptor
  */
-export namespace QT {
-  export type Raw<QP extends ZodRawShape> = Partial<StaticRecord<QP>>
+export type ParserFromDescriptor<
+  TD extends TargetingDescriptor<any, any, any>,
+> = TD extends TargetingDescriptor<any, infer QV, any> ? QV : never
 
-  /**
-   * Gets the query parser from a targeting descriptor
-   */
-  export type ParserFromDescriptor<
-    TD extends TargetingDescriptor<any, any, any>,
-  > = TD extends TargetingDescriptor<any, infer QV, any> ? QV : never
-
-  export type ParserRecord<TDs extends TT.DescriptorRecord> = {
-    [K in keyof TDs]: ParserFromDescriptor<TDs[K]>
-  }
+export type ParserRecord<TDs extends TT.DescriptorRecord> = {
+  [K in keyof TDs]: ParserFromDescriptor<TDs[K]>
 }

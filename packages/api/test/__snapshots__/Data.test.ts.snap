@@ -1,0 +1,188 @@
+export const snapshot = {};
+
+snapshot[`getPayloads 1`] = `
+[
+  "😎",
+  "☂️",
+  "bar",
+]
+`;
+
+snapshot[`payload runtype validation 1`] = `
+ZodError: [
+  {
+    "code": "custom",
+    "message": "Should be bar",
+    "path": [
+      "foo",
+      "rules",
+      0,
+      "payload"
+    ]
+  }
+]
+    at Object.get error (file:///Users/john.wright/Library/Caches/deno/npm/registry.npmjs.org/zod/3.25.56/dist/esm/v3/types.js:39:31)
+    at ZodObject.parseAsync (file:///Users/john.wright/Library/Caches/deno/npm/registry.npmjs.org/zod/3.25.56/dist/esm/v3/types.js:177:22)
+    at async Data.addRules (file:///Users/john.wright/Workspace/targetd/packages/api/src/Data.ts:247:11)
+    at async Object.<anonymous> (file:///Users/john.wright/Workspace/targetd/packages/api/test/Data.test.ts:212:12)
+    at async fn (https://jsr.io/@std/testing/1.0.13/bdd.ts:598:11)
+    at async innerWrapped (ext:cli/40_test.js:180:5)
+    at async exitSanitizer (ext:cli/40_test.js:96:27)
+    at async outerWrapped (ext:cli/40_test.js:123:14) {
+  addIssue: [Function (anonymous)],
+  addIssues: [Function (anonymous)],
+  issues: [
+    {
+      code: "custom",
+      message: "Should be bar",
+      path: [
+        "foo",
+        "rules",
+        0,
+        "payload",
+      ],
+    },
+  ],
+  name: "ZodError",
+}
+`;
+
+snapshot[`getPayloadForEachName 1`] = `
+{
+  bar: "😁",
+  foo: "😎",
+}
+`;
+
+snapshot[`getPayloadForEachName 2`] = `
+{
+  bar: "async payloads!",
+  foo: undefined,
+}
+`;
+
+snapshot[`fallThrough targeting 1`] = `
+{
+  bar: {
+    rules: [
+      {
+        fallThrough: [
+          {
+            payload: "😟",
+            targeting: {
+              weather: [
+                "rainy",
+              ],
+            },
+          },
+          {
+            payload: "😁",
+            targeting: {
+              weather: [
+                "sunny",
+              ],
+            },
+          },
+        ],
+        targeting: {},
+      },
+    ],
+  },
+  foo: {
+    rules: [
+      {
+        fallThrough: [
+          {
+            payload: "🏄‍♂️",
+            targeting: {
+              weather: [
+                "sunny",
+              ],
+            },
+          },
+        ],
+        targeting: {
+          surf: [
+            "strong",
+          ],
+        },
+      },
+      {
+        fallThrough: [
+          {
+            payload: "😎",
+            targeting: {
+              weather: [
+                "sunny",
+              ],
+            },
+          },
+          {
+            payload: "☂️",
+            targeting: {
+              weather: [
+                "rainy",
+              ],
+            },
+          },
+        ],
+        targeting: {},
+      },
+    ],
+  },
+}
+`;
+
+snapshot[`inserting data 1`] = `
+{
+  bar: {
+    __rules__: [
+      {
+        payload: "😟",
+        targeting: {
+          highTide: false,
+        },
+      },
+      {
+        payload: "😁",
+        targeting: {
+          highTide: true,
+        },
+      },
+    ],
+  },
+  foo: "😎",
+  moo: "glue",
+}
+`;
+
+snapshot[`broken 1`] = `
+{
+  foo: "face",
+}
+`;
+
+snapshot[`broken 2`] = `
+{
+  foo: {
+    __rules__: [
+      {
+        payload: "yay",
+        targeting: {
+          browser: [
+            "chrome",
+          ],
+        },
+      },
+      {
+        payload: "nay",
+        targeting: {
+          browser: [
+            "edge",
+          ],
+        },
+      },
+    ],
+  },
+}
+`;

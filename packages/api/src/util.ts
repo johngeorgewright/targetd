@@ -1,5 +1,5 @@
-import { L } from 'ts-toolbelt'
-import { MaybePromise } from './types'
+import type { L } from 'ts-toolbelt'
+import type { MaybePromise } from './types.ts'
 
 export function objectMap<O extends Record<string, unknown>, R>(
   obj: O,
@@ -40,9 +40,10 @@ export function omit<T extends Record<string, unknown>, K extends keyof T>(
 
 export function* objectIterator<T extends Record<string, unknown>>(
   obj: T,
-): Generator<Entries<T>> {
-  for (const key in obj)
+): Generator<Entries<Required<T>>> {
+  for (const key in obj) {
     if (Object.prototype.hasOwnProperty.call(obj, key)) yield [key, obj[key]]
+  }
 }
 
 export function objectFitler<T extends Record<string, unknown>>(
@@ -51,8 +52,9 @@ export function objectFitler<T extends Record<string, unknown>>(
 ): Partial<T> {
   const result: Partial<T> = {}
 
-  for (const [key, value] of objectIterator(obj))
+  for (const [key, value] of objectIterator(obj)) {
     if (predicate(value, key)) result[key] = value
+  }
 
   return result
 }
@@ -61,8 +63,9 @@ export function objectSome<T extends Record<string, unknown>>(
   obj: T,
   predicate: <K extends keyof T>(value: T[K], key: K) => boolean,
 ): boolean {
-  for (const [key, value] of objectIterator(obj))
+  for (const [key, value] of objectIterator(obj)) {
     if (predicate(value, key)) return true
+  }
 
   return false
 }
