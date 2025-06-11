@@ -9,7 +9,7 @@ snapshot[`getPayloads 1`] = `
 `;
 
 snapshot[`payload runtype validation 1`] = `
-ZodError: [
+'[
   {
     "code": "custom",
     "message": "Should be bar",
@@ -20,31 +20,7 @@ ZodError: [
       "payload"
     ]
   }
-]
-    at Object.get error (file:///Users/john.wright/Library/Caches/deno/npm/registry.npmjs.org/zod/3.25.61/dist/esm/v3/types.js:39:31)
-    at ZodObject.parseAsync (file:///Users/john.wright/Library/Caches/deno/npm/registry.npmjs.org/zod/3.25.61/dist/esm/v3/types.js:177:22)
-    at async Data.addRules (file:///Users/john.wright/Workspace/targetd/packages/api/src/Data.ts:264:11)
-    at async Object.<anonymous> (file:///Users/john.wright/Workspace/targetd/packages/api/test/Data.test.ts:212:12)
-    at async fn (https://jsr.io/@std/testing/1.0.13/bdd.ts:598:11)
-    at async innerWrapped (ext:cli/40_test.js:180:5)
-    at async exitSanitizer (ext:cli/40_test.js:96:27)
-    at async outerWrapped (ext:cli/40_test.js:123:14) {
-  addIssue: [Function (anonymous)],
-  addIssues: [Function (anonymous)],
-  issues: [
-    {
-      code: "custom",
-      message: "Should be bar",
-      path: [
-        "foo",
-        "rules",
-        0,
-        "payload",
-      ],
-    },
-  ],
-  name: "ZodError",
-}
+]'
 `;
 
 snapshot[`getPayloadForEachName 1`] = `

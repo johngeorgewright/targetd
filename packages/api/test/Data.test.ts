@@ -215,8 +215,8 @@ test('payload runtype validation', async (t) => {
         payload: 'rab',
       },
     ])
-  } catch (error) {
-    await assertSnapshot(t, error)
+  } catch (error: any) {
+    await assertSnapshot(t, error.message)
     return
   }
 
