@@ -19,10 +19,10 @@ jobs:
           deno-version: v2.x
 
       - name: Check
-        run: deno check --frozen src
+        run: deno check --frozen packages/**/src
 
       - name: Lint
-        run: deno lint src
+        run: deno lint packages/**/src
 
       - name: Test
-        run: deno test --frozen --allow-all test
+        run: deno test --frozen --allow-all packages/**/test

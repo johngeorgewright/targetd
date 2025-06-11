@@ -22,7 +22,11 @@ export function DataItemRulesParser<
   P extends ZodTypeAny,
   T extends ZodRawShape,
   FTT extends ZodRawShape,
->(payloadParser: P, targetingParsers: T, fallThroughTargetingParsers: FTT) {
+>(
+  payloadParser: P,
+  targetingParsers: T,
+  fallThroughTargetingParsers: FTT,
+): DataItemRulesParser<P, T, FTT> {
   return RuleWithPayloadParser<P, T & FTT>(payloadParser, {
     ...targetingParsers,
     ...fallThroughTargetingParsers,

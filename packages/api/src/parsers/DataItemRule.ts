@@ -19,7 +19,12 @@ export function DataItemRuleParser<
   targeting: T,
   fallThroughTargeting: CT,
   allowMultipleTargeting = true,
-) {
+): DataItemRuleParser<
+  P,
+  T,
+  CT,
+  AllowMultipleTargeting
+> {
   const Rule = RuleWithPayloadParser(Payload, targeting, allowMultipleTargeting)
 
   const FallThroughRule = RuleWithFallThroughParser(
@@ -98,7 +103,11 @@ export function RuleWithPayloadParser<
   P extends ZodTypeAny,
   T extends ZodRawShape,
   AllowMultipleTargeting extends boolean = true,
->(Payload: P, targeting: T, allowMultipleTargeting = true) {
+>(
+  Payload: P,
+  targeting: T,
+  allowMultipleTargeting = true,
+): RuleWithPayloadParser<P, T, AllowMultipleTargeting> {
   return strictObject({
     targeting: (allowMultipleTargeting
       ? MultipleRuleTargeting(targeting)
@@ -138,7 +147,12 @@ export function RuleWithFallThroughParser<
   targeting: Targeting,
   fallThroughTargeting: FallThroughTargeting,
   allowMultipleTargeting = true,
-) {
+): RuleWithFallThroughParser<
+  Payload,
+  Targeting,
+  FallThroughTargeting,
+  AllowMultipleTargeting
+> {
   return strictObject({
     targeting: allowMultipleTargeting
       ? MultipleRuleTargeting(targeting)

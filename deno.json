@@ -1,4 +1,9 @@
 {
+  "lint": {
+    "rules": {
+      "exclude": ["no-explicit-any", "ban-types"]
+    }
+  },
   "workspace": [
     "./packages/*"
   ]

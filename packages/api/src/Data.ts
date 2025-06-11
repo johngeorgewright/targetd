@@ -121,27 +121,30 @@ export default class Data<
     return this.#data
   }
 
-  get payloadParsers() {
+  get payloadParsers(): PayloadParsers {
     return this.#payloadParsers
   }
 
-  get targetingPredicates() {
-    return this.#targetingPredicate
+  get targetingPredicates(): TargetingPredicates<
+    TargetingParsers,
+    QueryParsers
+  > {
+    return this.#targetingPredicates
   }
 
-  get targetingParsers() {
+  get targetingParsers(): TargetingParsers {
     return this.#targetingParsers
   }
 
-  get queryParsers() {
+  get queryParsers(): QueryParsers {
     return this.#queryParsers
   }
 
-  get QueryParser() {
+  get QueryParser(): ZodPartialObject<QueryParsers, 'strict'> {
     return this.#QueryParser
   }
 
-  get fallThroughTargetingParsers() {
+  get fallThroughTargetingParsers(): FallThroughTargetingParsers {
     return this.#fallThroughTargetingParsers
   }
 
@@ -201,7 +204,14 @@ export default class Data<
       TargetingParsers,
       FallThroughTargetingParsers
     >,
-  ) {
+  ): Promise<
+    Data<
+      PayloadParsers,
+      TargetingParsers,
+      QueryParsers,
+      FallThroughTargetingParsers
+    >
+  > {
     // deno-lint-ignore no-this-alias
     let result: Data<
       PayloadParsers,
@@ -239,7 +249,14 @@ export default class Data<
         FallThroughTargetingParsers
       >
     >,
-  ) {
+  ): Promise<
+    Data<
+      PayloadParsers,
+      TargetingParsers,
+      QueryParsers,
+      FallThroughTargetingParsers
+    >
+  > {
     const dataItem = this.#data[name] || { rules: [] }
 
     const data = {
@@ -266,7 +283,12 @@ export default class Data<
     )
   }
 
-  removeAllRules() {
+  removeAllRules(): Data<
+    PayloadParsers,
+    TargetingParsers,
+    QueryParsers,
+    FallThroughTargetingParsers
+  > {
     return new Data(
       {} as any,
       this.#payloadParsers,
@@ -418,7 +440,17 @@ export default class Data<
     }
   }
 
-  async getPayloadForEachName(rawQuery: QT.Raw<QueryParsers> = {}) {
+  async getPayloadForEachName(
+    rawQuery: QT.Raw<QueryParsers> = {},
+  ): Promise<
+    Partial<
+      {
+        [Name in keyof PayloadParsers]:
+          | PT.Payload<PayloadParsers[Name], TargetingParsers>
+          | undefined
+      }
+    >
+  > {
     const payloads = {} as Partial<
       {
         [Name in keyof PayloadParsers]:
