@@ -9,7 +9,7 @@
     "express": "npm:express@^4.18.3",
     "express-query-boolean": "npm:express-query-boolean@^2.0.0",
     "query-types": "npm:query-types@^0.1.4",
-    "zod": "npm:zod@^3.20.0"
+    "zod": "npm:zod@^3.25.0"
   },
   "fmt": {
     "semiColons": false,

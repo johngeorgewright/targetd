@@ -34,7 +34,7 @@
     "npm:yaml@^2.5.1": "2.8.0",
     "npm:yargs@^17.7.2": "17.7.2",
     "npm:zod-to-json-schema@^3.23.3": "3.24.5_zod@3.25.61",
-    "npm:zod@^3.20.0": "3.25.61"
+    "npm:zod@^3.25.0": "3.25.61"
   },
   "jsr": {
     "@std/assert@1.0.13": {
@@ -866,24 +866,24 @@
         "dependencies": [
           "npm:fast-deep-equal@3",
           "npm:ts-toolbelt@9",
-          "npm:zod@^3.20.0"
+          "npm:zod@^3.25.0"
         ]
       },
       "packages/client": {
         "dependencies": [
           "npm:ts-toolbelt@9.6.0",
-          "npm:zod@^3.20.0"
+          "npm:zod@^3.25.0"
         ]
       },
       "packages/date-range": {
         "dependencies": [
-          "npm:zod@^3.20.0"
+          "npm:zod@^3.25.0"
         ]
       },
       "packages/explode": {
         "dependencies": [
           "npm:ts-toolbelt@9",
-          "npm:zod@^3.20.0"
+          "npm:zod@^3.25.0"
         ]
       },
       "packages/fs": {
@@ -894,14 +894,14 @@
           "npm:ts-toolbelt@^9.6.0",
           "npm:watch@^1.0.2",
           "npm:yaml@^2.5.1",
-          "npm:zod@^3.20.0"
+          "npm:zod@^3.25.0"
         ]
       },
       "packages/json-schema": {
         "dependencies": [
           "npm:yargs@^17.7.2",
           "npm:zod-to-json-schema@^3.23.3",
-          "npm:zod@^3.20.0"
+          "npm:zod@^3.25.0"
         ]
       },
       "packages/server": {
@@ -912,7 +912,7 @@
           "npm:express-query-boolean@2",
           "npm:express@^4.18.3",
           "npm:query-types@~0.1.4",
-          "npm:zod@^3.20.0"
+          "npm:zod@^3.25.0"
         ]
       }
     }

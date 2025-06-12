@@ -3,7 +3,7 @@
   "version": "4.0.0",
   "exports": "./src/index.ts",
   "imports": {
-    "zod": "npm:zod@^3.20.0"
+    "zod": "npm:zod@^3.25.0"
   },
   "fmt": {
     "semiColons": false,
