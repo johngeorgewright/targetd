@@ -1,7 +1,9 @@
+import { test } from 'jsr:@std/testing/bdd'
+import { FakeTime } from 'jsr:@std/testing/time'
+import { expect } from 'jsr:@std/expect'
 import { Data } from '@targetd/api'
-import * as jestDate from 'jest-date-mock'
 import z from 'zod'
-import dateRangeTargeting from '../src'
+import dateRangeTargeting from '@targetd/date-range'
 
 test('date range predicate', async () => {
   const data = await Data.create({
@@ -34,14 +36,17 @@ test('date range predicate', async () => {
     },
   ])
 
-  jestDate.advanceTo(new Date('1930-01-01'))
+  let fakeTime = new FakeTime(new Date('1930-01-01'))
   expect(await data.getPayload('foo', {})).toBe('bar')
+  fakeTime.restore()
 
-  jestDate.advanceTo(new Date('1940-01-01'))
+  fakeTime = new FakeTime(new Date('1940-01-01'))
   expect(await data.getPayload('foo', {})).toBe('WWII')
+  fakeTime.restore()
 
-  jestDate.advanceTo(new Date('2021-01-01'))
+  fakeTime = new FakeTime(new Date('2021-01-01'))
   expect(await data.getPayload('foo', {})).toBe('😷')
+  fakeTime.restore()
 
   expect(
     await data.getPayload('foo', { dateRange: { start: '2020-01-01' } }),

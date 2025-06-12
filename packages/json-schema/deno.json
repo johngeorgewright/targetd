@@ -1,0 +1,17 @@
+{
+  "name": "@targetd/json-schema",
+  "version": "3.0.1",
+  "exports": "./src/index.ts",
+  "imports": {
+    "yargs": "npm:yargs@^17.7.2",
+    "zod": "npm:zod@^3.20.0",
+    "zod-to-json-schema": "npm:zod-to-json-schema@^3.23.3"
+  },
+  "fmt": {
+    "semiColons": false,
+    "singleQuote": true
+  },
+  "tasks": {
+    "test": "deno test --allow-all --trace-leaks"
+  }
+}

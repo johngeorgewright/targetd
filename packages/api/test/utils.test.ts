@@ -1,4 +1,11 @@
-import { arrayInit, arrayLast, objectEveryAsync, objectMap } from '../src/util'
+import { expect } from 'jsr:@std/expect'
+import { test } from 'jsr:@std/testing/bdd'
+import {
+  arrayInit,
+  arrayLast,
+  objectEveryAsync,
+  objectMap,
+} from '../src/util.ts'
 
 test('objectMap', () => {
   expect(
@@ -7,8 +14,8 @@ test('objectMap', () => {
         foo: 123,
         bar: 321,
       },
-      (v) => v + 1
-    )
+      (v) => v + 1,
+    ),
   ).toEqual({
     foo: 124,
     bar: 322,
@@ -24,8 +31,8 @@ test('objectEveryAsync', async () => {
         goo: 3,
         car: 4,
       },
-      (value) => Promise.resolve(value).then((v) => v > 2)
-    )
+      (value) => Promise.resolve(value).then((v) => v > 2),
+    ),
   ).toBe(false)
   expect(
     await objectEveryAsync(
@@ -35,8 +42,8 @@ test('objectEveryAsync', async () => {
         goo: 3,
         car: 4,
       },
-      (value) => Promise.resolve(value).then((v) => v > 0)
-    )
+      (value) => Promise.resolve(value).then((v) => v > 0),
+    ),
   ).toBe(true)
 })
 

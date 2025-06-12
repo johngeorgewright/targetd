@@ -1,0 +1,28 @@
+name: Pull Request
+
+on:
+  pull_request:
+  workflow_call: 
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v4
+
+      - name: Use Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - name: Check
+        run: deno check --frozen packages/**/src
+
+      - name: Lint
+        run: deno lint packages/**/src
+
+      - name: Test
+        run: deno test --frozen --allow-all packages/**/test

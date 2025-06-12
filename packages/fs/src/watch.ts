@@ -1,8 +1,8 @@
 import type { DT } from '@targetd/api'
-import { debounce } from 'lodash'
+import _ from 'lodash'
 import throat from 'throat'
 import { type Options as WatchTreeOptions, unwatchTree, watchTree } from 'watch'
-import { load, pathIsLoadable } from './load'
+import { load, pathIsLoadable } from './load.ts'
 
 export type OnLoad<D extends DT.Any> = (error: Error | null, data: D) => any
 
@@ -34,8 +34,8 @@ export function watch<D extends DT.Any>(
       filter: pathIsLoadable,
       ...options,
     },
-    debounce(
-      throat(1, async () => {
+    _.debounce(
+      throat.default(1, async () => {
         try {
           data = (await load(data.removeAllRules(), dir)) as D
         } catch (error: any) {

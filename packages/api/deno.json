@@ -1,0 +1,17 @@
+{
+  "name": "@targetd/api",
+  "version": "6.0.1",
+  "exports": "./src/index.ts",
+  "fmt": {
+    "semiColons": false,
+    "singleQuote": true
+  },
+  "tasks": {
+    "test": "deno test --allow-all --trace-leaks"
+  },
+  "imports": {
+    "fast-deep-equal": "npm:fast-deep-equal@^3.0.0",
+    "ts-toolbelt": "npm:ts-toolbelt@^9.0.0",
+    "zod": "npm:zod@^3.20.0"
+  }
+}

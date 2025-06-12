@@ -1,7 +1,6 @@
 {
   "folders": [
     { "name": "✨ @targetd/mono-repo", "path": "." },
-    { "name": "🏗 @targetd/scaffold", "path": "packages/scaffold" },
     { "name": "📦 @targetd/api", "path": "packages/api" },
     { "name": "📦 @targetd/client", "path": "packages/client" },
     { "name": "📦 @targetd/date-range", "path": "packages/date-range" },
@@ -9,15 +8,36 @@
     { "name": "📦 @targetd/fs", "path": "packages/fs" },
     { "name": "📦 @targetd/json-schema", "path": "packages/json-schema" },
     { "name": "📦 @targetd/server", "path": "packages/server" },
-    { "name": "🤖 github", "path": ".github" },
+    { "name": "🤖 github", "path": ".github" }
   ],
   "settings": {
-    "prettier.prettierPath": "../../.yarn/sdks/prettier/index.cjs",
-    "search.exclude": { "**/dist": true, "**/.yarn": true, "**/.pnp.*": true },
-    "typescript.tsdk": "✨ @targetd/mono-repo/.yarn/sdks/typescript/lib",
-    "typescript.enablePromptUseWorkspaceTsdk": true,
+    "deno.enable": true,
+    "deno.lint": true,
+    "eslint.enable": false,
+    "editor.defaultFormatter": "denoland.vscode-deno",
+    "[typescript]": {
+      "editor.defaultFormatter": "denoland.vscode-deno"
+    },
+    "[typescriptreact]": {
+      "editor.defaultFormatter": "denoland.vscode-deno"
+    },
+    "[json]": {
+      "editor.defaultFormatter": "denoland.vscode-deno"
+    },
+    "[javascript]": {
+      "editor.defaultFormatter": "denoland.vscode-deno"
+    },
+    "[jsonc]": {
+      "editor.defaultFormatter": "denoland.vscode-deno"
+    },
+    "[yaml]": {
+      "editor.defaultFormatter": "denoland.vscode-deno"
+    },
+    "[html]": {
+      "editor.defaultFormatter": "denoland.vscode-deno"
+    }
   },
   "extensions": {
-    "recommendations": ["arcanis.vscode-zipfs", "esbenp.prettier-vscode"],
-  },
+    "recommendations": ["denoland.vscode-deno"]
+  }
 }

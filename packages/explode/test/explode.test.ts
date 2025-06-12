@@ -1,40 +1,42 @@
-import { Explode, explode } from '../src'
+import { test } from "jsr:@std/testing/bdd";
+import { expect } from "jsr:@std/expect";
+import { type Explode, explode } from "@targetd/explode";
 
-test('Explode', () => {
+test("Explode", () => {
   function check(
     x: Explode<
       {
-        'foo.bar': 'something'
-        'a.b.c.d.e.f': 'g'
-        'a.b.c.d.e.g': 'h'
+        "foo.bar": "something";
+        "a.b.c.d.e.f": "g";
+        "a.b.c.d.e.g": "h";
       },
-      '.'
+      "."
     >,
   ) {
-    return x
+    return x;
   }
 
   check({
     foo: {
-      bar: 'something',
+      bar: "something",
     },
     a: {
       b: {
         c: {
           d: {
             e: {
-              f: 'g',
-              g: 'h',
+              f: "g",
+              g: "h",
             },
           },
         },
       },
     },
-  })
+  });
 
   check({
     foo: {
-      bar: 'something',
+      bar: "something",
     },
     a: {
       b: {
@@ -42,42 +44,42 @@ test('Explode', () => {
           d: {
             e: {
               // @ts-expect-error Type '"h"' is not assignable to type '"g"'.
-              f: 'h',
+              f: "h",
               // @ts-expect-error Type '"g"' is not assignable to type '"h"'.
-              g: 'g',
+              g: "g",
             },
           },
         },
       },
     },
-  })
-})
+  });
+});
 
-test('explode()', () => {
+test("explode()", () => {
   expect(
     explode(
       {
-        'foo.bar': 'something',
-        'a.b.c.d.e.f': 'g',
-        'a.b.c.d.e.g': 'h',
+        "foo.bar": "something",
+        "a.b.c.d.e.f": "g",
+        "a.b.c.d.e.g": "h",
       },
-      '.',
+      ".",
     ),
   ).toEqual({
     foo: {
-      bar: 'something',
+      bar: "something",
     },
     a: {
       b: {
         c: {
           d: {
             e: {
-              f: 'g',
-              g: 'h',
+              f: "g",
+              g: "h",
             },
           },
         },
       },
     },
-  })
-})
+  });
+});

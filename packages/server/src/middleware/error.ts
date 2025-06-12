@@ -1,4 +1,5 @@
-import express from 'express'
+// @ts-types='npm:@types/express@4'
+import type express from 'express'
 import { ZodError } from 'zod'
 
 export function errorHandler(): express.ErrorRequestHandler {

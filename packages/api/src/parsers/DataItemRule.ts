@@ -1,13 +1,13 @@
 import {
-  type ZodUnion,
-  type ZodRawShape,
-  type ZodTypeAny,
   strictObject,
   type ZodArray,
   type ZodObject,
   type ZodOptional,
+  type ZodRawShape,
+  type ZodTypeAny,
+  type ZodUnion,
 } from 'zod'
-import { type ZodPartialObject } from '../types'
+import type { ZodPartialObject } from '../types.ts'
 
 export function DataItemRuleParser<
   P extends ZodTypeAny,
@@ -19,7 +19,12 @@ export function DataItemRuleParser<
   targeting: T,
   fallThroughTargeting: CT,
   allowMultipleTargeting = true,
-) {
+): DataItemRuleParser<
+  P,
+  T,
+  CT,
+  AllowMultipleTargeting
+> {
   const Rule = RuleWithPayloadParser(Payload, targeting, allowMultipleTargeting)
 
   const FallThroughRule = RuleWithFallThroughParser(
@@ -86,8 +91,7 @@ export type RuleWithPayloadParser<
 > = ZodObject<
   {
     targeting: ZodOptional<
-      AllowMultipleTargeting extends true
-        ? MultipleRuleTargeting<Targeting>
+      AllowMultipleTargeting extends true ? MultipleRuleTargeting<Targeting>
         : SingularRuleTargeting<Targeting>
     >
     payload: Payload
@@ -99,12 +103,15 @@ export function RuleWithPayloadParser<
   P extends ZodTypeAny,
   T extends ZodRawShape,
   AllowMultipleTargeting extends boolean = true,
->(Payload: P, targeting: T, allowMultipleTargeting = true) {
+>(
+  Payload: P,
+  targeting: T,
+  allowMultipleTargeting = true,
+): RuleWithPayloadParser<P, T, AllowMultipleTargeting> {
   return strictObject({
     targeting: (allowMultipleTargeting
       ? MultipleRuleTargeting(targeting)
-      : SingularRuleTargeting(targeting)
-    ).optional(),
+      : SingularRuleTargeting(targeting)).optional(),
     payload: Payload,
   }) as RuleWithPayloadParser<P, T, AllowMultipleTargeting>
 }
@@ -140,7 +147,12 @@ export function RuleWithFallThroughParser<
   targeting: Targeting,
   fallThroughTargeting: FallThroughTargeting,
   allowMultipleTargeting = true,
-) {
+): RuleWithFallThroughParser<
+  Payload,
+  Targeting,
+  FallThroughTargeting,
+  AllowMultipleTargeting
+> {
   return strictObject({
     targeting: allowMultipleTargeting
       ? MultipleRuleTargeting(targeting)

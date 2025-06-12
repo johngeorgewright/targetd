@@ -1,0 +1,15 @@
+{
+  "lint": {
+    "rules": {
+      "exclude": ["no-explicit-any", "ban-types"]
+    }
+  },
+  "tasks": {
+    "check": "deno check --frozen packages/**/src",
+    "lint": "deno lint packages/**/src",
+    "test": "deno test --frozen --allow-all packages/**/test"
+  },
+  "workspace": [
+    "./packages/*"
+  ]
+}

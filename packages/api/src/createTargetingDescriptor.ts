@@ -1,9 +1,9 @@
 import type { ZodTypeAny } from 'zod'
-import type TargetingDescriptor from './parsers/TargetingDescriptor'
+import type TargetingDescriptor from './parsers/TargetingDescriptor.ts'
 
 export default function createTargetingDescriptor<
-  QV extends ZodTypeAny,
   TV extends ZodTypeAny,
+  QV extends ZodTypeAny,
   Query extends Record<string, any> = {},
 >(
   targetingDescriptor: TargetingDescriptor<TV, QV, Query>,

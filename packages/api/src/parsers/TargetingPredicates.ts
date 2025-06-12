@@ -1,6 +1,6 @@
 import type { Keys } from 'ts-toolbelt/out/Any/Keys'
-import type TargetingPredicate from './TargetingPredicate'
-import type { ZodObject, infer as zInfer, ZodRawShape, ZodTypeAny } from 'zod'
+import type TargetingPredicate from './TargetingPredicate.ts'
+import type { infer as zInfer, ZodObject, ZodRawShape, ZodTypeAny } from 'zod'
 
 type TargetingPredicates<
   Targeting extends ZodRawShape,

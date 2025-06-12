@@ -1,23 +1,32 @@
 import {
-  DataItemRuleParser,
-  RuleWithFallThroughParser,
+  type DataItemRuleParser,
+  type RuleWithFallThroughParser,
   RuleWithPayloadParser,
-} from './DataItemRule'
-import { arrayLast, intersection, objectSize, someKeysIntersect } from '../util'
-import deepEqual from 'fast-deep-equal'
+} from './DataItemRule.ts'
 import {
-  type ZodTransformer,
-  type infer as zInfer,
-  type ZodRawShape,
-  type ZodTypeAny,
-  type ZodArray,
+  arrayLast,
+  intersection,
+  objectSize,
+  someKeysIntersect,
+} from '../util.ts'
+import deepEqual from 'fast-deep-equal'
+import type {
+  infer as zInfer,
+  ZodArray,
+  ZodRawShape,
+  ZodTransformer,
+  ZodTypeAny,
 } from 'zod'
 
 export function DataItemRulesParser<
   P extends ZodTypeAny,
   T extends ZodRawShape,
   FTT extends ZodRawShape,
->(payloadParser: P, targetingParsers: T, fallThroughTargetingParsers: FTT) {
+>(
+  payloadParser: P,
+  targetingParsers: T,
+  fallThroughTargetingParsers: FTT,
+): DataItemRulesParser<P, T, FTT> {
   return RuleWithPayloadParser<P, T & FTT>(payloadParser, {
     ...targetingParsers,
     ...fallThroughTargetingParsers,
@@ -147,10 +156,10 @@ function adaptRule<
   return (
     someKeysIntersect(fallThroughTargetingParsers, rule.targeting || {})
       ? adaptRuleIntoFallThroughRule(
-          targetingParsers,
-          fallThroughTargetingParsers,
-          rule as zInfer<DataItemRuleParser<P, T, FTT, false>>,
-        )
+        targetingParsers,
+        fallThroughTargetingParsers,
+        rule as zInfer<DataItemRuleParser<P, T, FTT, false>>,
+      )
       : rule
   ) as zInfer<DataItemRuleParser<P, T, FTT, false>>
 }

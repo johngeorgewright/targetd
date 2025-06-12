@@ -1,10 +1,10 @@
 import {
+  strictObject,
   type ZodObject,
   type ZodRawShape,
   type ZodTypeAny,
-  strictObject,
 } from 'zod'
-import { DataItemRulesParser } from './DataItemRules'
+import { DataItemRulesParser } from './DataItemRules.ts'
 
 export function DataItemParser<
   P extends ZodTypeAny,

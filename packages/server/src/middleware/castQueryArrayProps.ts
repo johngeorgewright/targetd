@@ -1,6 +1,7 @@
-import { Data } from '@targetd/api'
-import { RequestHandler } from 'express'
-import { ZodFirstPartyTypeKind, ZodRawShape } from 'zod'
+import type { Data } from '@targetd/api'
+// @ts-types='npm:@types/express@4'
+import type { RequestHandler } from 'express'
+import { ZodFirstPartyTypeKind, type ZodRawShape } from 'zod'
 
 export function castQueryArrayProps<
   PayloadParsers extends ZodRawShape,
@@ -18,14 +19,16 @@ export function castQueryArrayProps<
   return (req, _res, next) => {
     const { queryParsers } = getData()
 
-    for (const [key, value] of Object.entries(req.query))
+    for (const [key, value] of Object.entries(req.query)) {
       if (
         key in queryParsers &&
         queryParsers[key]._def.typeName === ZodFirstPartyTypeKind.ZodArray &&
         value !== undefined &&
         !Array.isArray(value)
-      )
+      ) {
         req.query[key] = [value as any]
+      }
+    }
 
     next()
   }

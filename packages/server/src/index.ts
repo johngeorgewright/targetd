@@ -1,10 +1,11 @@
 import type { DT } from '@targetd/api'
 import cors from 'cors'
+// @ts-types='npm:@types/express@4'
 import express from 'express'
 import queryTypes from 'query-types'
-import { errorHandler } from './middleware/error'
-import { StatusError } from './StatusError'
-import { castQueryArrayProps } from './middleware/castQueryArrayProps'
+import { errorHandler } from './middleware/error.ts'
+import { StatusError } from './StatusError.ts'
+import { castQueryArrayProps } from './middleware/castQueryArrayProps.ts'
 
 /**
  * @param data
@@ -69,7 +70,6 @@ export function createServer<D extends DT.Any>(
         else res.json(payload)
       },
     )
-
     .get(
       '/',
       queryTypes.middleware(),
@@ -84,6 +84,5 @@ export function createServer<D extends DT.Any>(
         res.json(payloads)
       },
     )
-
     .use(errorHandler())
 }
