@@ -2,6 +2,14 @@
 
 > Load rules from JSON and YAML files
 
+## Installation
+
+| JS Runtime | Command                                 |
+| ---------- | --------------------------------------- |
+| Node.js    | `npx jsr add @targetd/api @targetd/fs`  |
+| Bun        | `bunx jsr add @targetd/api @targetd/fs` |
+| Deno       | `deno add @targetd/api @targetd/fs`     |
+
 ## Example
 
 ```json
@@ -34,9 +42,7 @@ watch(
       b: z.string(),
     },
   }),
-
   path.join(__dirname, 'rules'),
-
   async (data) => {
     expect(await data.getPayload('foo', {})).toBe('bar')
     expect(await data.getPayload('b', {})).toBe('b is a letter')
