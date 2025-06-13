@@ -33,7 +33,6 @@
     "npm:watch@^1.0.2": "1.0.2",
     "npm:yaml@^2.5.1": "2.8.0",
     "npm:yargs@^17.7.2": "17.7.2",
-    "npm:zod-to-json-schema@^3.23.3": "3.24.5_zod@3.25.61",
     "npm:zod@^3.25.0": "3.25.61"
   },
   "jsr": {
@@ -850,12 +849,6 @@
         "yargs-parser"
       ]
     },
-    "zod-to-json-schema@3.24.5_zod@3.25.61": {
-      "integrity": "sha512-/AuWwMP+YqiPbsJx5D6TfgRTc4kTLjsh5SOcd4bLsfUg2RcEXrFMJl1DGgdHy2aCfsIA/cr/1JM0xcB2GZji8g==",
-      "dependencies": [
-        "zod"
-      ]
-    },
     "zod@3.25.61": {
       "integrity": "sha512-fzfJgUw78LTNnHujj9re1Ov/JJQkRZZGDMcYqSx7Hp4rPOkKywaFHq0S6GoHeXs0wGNE/sIOutkXgnwzrVOGCQ=="
     }
@@ -900,7 +893,6 @@
       "packages/json-schema": {
         "dependencies": [
           "npm:yargs@^17.7.2",
-          "npm:zod-to-json-schema@^3.23.3",
           "npm:zod@^3.25.0"
         ]
       },
