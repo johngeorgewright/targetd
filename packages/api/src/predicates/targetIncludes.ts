@@ -1,23 +1,24 @@
 import type TargetingPredicate from '../parsers/TargetingPredicate.ts'
 import type TargetingDescriptor from '../parsers/TargetingDescriptor.ts'
-import type { ZodArray, ZodTypeAny } from 'zod'
+import type { $ZodType, output } from 'zod/v4/core'
+import { array, type ZodMiniArray } from 'zod/v4-mini'
 
 /**
  * Targeting can contain a singular query value.
  */
 export function targetIncludesPredicate<
-  QV extends ZodTypeAny,
-  TV extends ZodTypeAny,
->(): TargetingPredicate<QV, ZodArray<TV>> {
-  return (q) => (t) => t.includes(q)
+  QV extends $ZodType,
+  TV extends $ZodType,
+>(): TargetingPredicate<QV, ZodMiniArray<TV>> {
+  return (q) => (t) => !q || t.includes(q as output<TV>)
 }
 
-export function targetIncludes<T extends ZodTypeAny>(
+export function targetIncludes<T extends $ZodType>(
   t: T,
-): TargetingDescriptor<ZodArray<T>, T> {
+): TargetingDescriptor<ZodMiniArray<T>, T> {
   return {
     predicate: targetIncludesPredicate(),
     queryParser: t,
-    targetingParser: t.array(),
+    targetingParser: array(t),
   }
 }
