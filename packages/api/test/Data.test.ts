@@ -2,7 +2,7 @@ import { assertSnapshot } from 'jsr:@std/testing/snapshot'
 import { test } from 'jsr:@std/testing/bdd'
 import { expect } from 'jsr:@std/expect'
 import { setTimeout } from 'node:timers/promises'
-import z from 'zod'
+import z from 'zod/v4'
 import {
   createTargetingDescriptor,
   Data,
@@ -211,7 +211,6 @@ test('payload runtype validation', async (t) => {
 
     data = await data.addRules('foo', [
       {
-        // @ts-expect-error Type '"rab"' is not assignable to type '"bar"'
         payload: 'rab',
       },
     ])

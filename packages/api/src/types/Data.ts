@@ -1,9 +1,9 @@
-import type { infer as zInfer, ZodRawShape, ZodTypeAny } from 'zod'
 import type Data from '../Data.ts'
 import type * as FTTT from './FallThroughTargeting.ts'
 import type TargetingDescriptor from '../parsers/TargetingDescriptor.ts'
 import type * as TT from './Targeting.ts'
 import type * as QT from './Query.ts'
+import type { $ZodShape, $ZodType, output } from 'zod/v4/core'
 
 /**
  * Match any Data
@@ -40,7 +40,7 @@ export type FallThroughTargetingParsers<D extends Any> = D extends
  */
 export type FallThrough<D extends Any> = Data<
   PayloadParsers<D>,
-  { [K in keyof FallThroughTargetingParsers<D>]: ZodTypeAny },
+  { [K in keyof FallThroughTargetingParsers<D>]: $ZodType },
   Omit<QueryParsers<D>, keyof TargetingParsers<D>>,
   {}
 >
@@ -49,18 +49,18 @@ export type FallThrough<D extends Any> = Data<
  * A union of possible payloads for a Data's PayloadParser
  */
 export type Payload<D extends Any, Name extends keyof PayloadParsers<D>> =
-  | zInfer<PayloadParsers<D>[Name]>
+  | output<PayloadParsers<D>[Name]>
   | FTTT.Rules<PayloadParsers<D>[Name], TargetingParsers<D>>
 
 /**
  * The options for Data.create
  */
 export interface CreateOptions {
-  data?: ZodRawShape
+  data?: $ZodShape
   targeting?: Record<string, TargetingDescriptor<any, any, any>>
   fallThroughTargeting?: Record<
     string,
-    ZodTypeAny | TargetingDescriptor<any, any, any>
+    $ZodType | TargetingDescriptor<any, any, any>
   >
 }
 
@@ -90,13 +90,13 @@ export type FromCreateOptions<
 >
 
 export type InsertableData<
-  D extends ZodRawShape,
-  TP extends ZodRawShape,
-  FTP extends ZodRawShape,
+  D extends $ZodShape,
+  TP extends $ZodShape,
+  FTP extends $ZodShape,
 > = Partial<
   {
     [Name in keyof D]:
-      | zInfer<D[Name]>
+      | output<D[Name]>
       | FTTT.Rules<D[Name], TP>
       | FTTT.Rules<D[Name], FTP>
   }

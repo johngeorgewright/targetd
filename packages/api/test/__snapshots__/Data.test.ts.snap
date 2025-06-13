@@ -12,13 +12,13 @@ snapshot[`payload runtype validation 1`] = `
 '[
   {
     "code": "custom",
-    "message": "Should be bar",
     "path": [
       "foo",
       "rules",
       0,
       "payload"
-    ]
+    ],
+    "message": "Should be bar"
   }
 ]'
 `;
@@ -111,23 +111,6 @@ snapshot[`fallThrough targeting 1`] = `
 
 snapshot[`inserting data 1`] = `
 {
-  bar: {
-    __rules__: [
-      {
-        payload: "😟",
-        targeting: {
-          highTide: false,
-        },
-      },
-      {
-        payload: "😁",
-        targeting: {
-          highTide: true,
-        },
-      },
-    ],
-  },
-  foo: "😎",
   moo: "glue",
 }
 `;

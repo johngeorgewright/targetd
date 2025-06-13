@@ -7,7 +7,7 @@ import type express from 'express'
 import { setTimeout } from 'node:timers/promises'
 // @ts-types='npm:@types/supertest'
 import request from 'npm:supertest'
-import z from 'zod'
+import z from 'zod/v4'
 import { createServer } from '@targetd/server'
 import type { Server } from 'node:http'
 
