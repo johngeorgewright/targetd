@@ -1,10 +1,5 @@
 import type TargetingPredicates from './parsers/TargetingPredicates.ts'
-import {
-  objectEveryAsync,
-  objectIterator,
-  objectKeys,
-  objectMap,
-} from './util.ts'
+import { objectEveryAsync, objectKeys, objectMap } from './util.ts'
 import { type DataItemsOut, DataItemsParser } from './parsers/DataItems.ts'
 import type { DataItemOut } from './parsers/DataItem.ts'
 import type { DataItemRule } from './parsers/DataItemRule.ts'
