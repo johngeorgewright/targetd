@@ -111,6 +111,23 @@ snapshot[`fallThrough targeting 1`] = `
 
 snapshot[`inserting data 1`] = `
 {
+  bar: {
+    __rules__: [
+      {
+        payload: "😟",
+        targeting: {
+          highTide: false,
+        },
+      },
+      {
+        payload: "😁",
+        targeting: {
+          highTide: true,
+        },
+      },
+    ],
+  },
+  foo: "😎",
   moo: "glue",
 }
 `;

@@ -201,36 +201,36 @@ export default class Data<
       FallThroughTargetingParsers
     >
   > {
-    let newData = this.#data
-
-    for (const [name, value] of objectIterator(data)) {
-      const dataItem = this.#data[name] ||
-        {
-          rules: [] as DataItemRulesOut<
-            PayloadParsers[keyof PayloadParsers],
-            TargetingParsers,
-            FallThroughTargetingParsers
-          >,
-        }
-
-      newData = {
-        ...this.#data,
-        ...(await DataItemsParser(
-          this.#payloadParsers,
-          this.#targetingParsers,
-          this.#fallThroughTargetingParsers,
-        ).parseAsync({
-          [name]: {
-            ...dataItem,
-            rules: [
-              ...dataItem.rules,
-              ...this.#isFallThroughRulesPayload(value!)
-                ? value.__rules__
-                : [{ payload: value }],
-            ],
-          },
-        })),
-      }
+    const newData = {
+      ...this.#data,
+      ...(await DataItemsParser(
+        this.#payloadParsers,
+        this.#targetingParsers,
+        this.#fallThroughTargetingParsers,
+      ).parseAsync(
+        Object.entries(data).reduce((data, [name, value]) => {
+          const dataItem = this.#data[name] ||
+            {
+              rules: [] as DataItemRulesOut<
+                PayloadParsers[keyof PayloadParsers],
+                TargetingParsers,
+                FallThroughTargetingParsers
+              >,
+            }
+          return {
+            ...data,
+            [name]: {
+              ...dataItem,
+              rules: [
+                ...dataItem.rules,
+                ...this.#isFallThroughRulesPayload(value!)
+                  ? value.__rules__
+                  : [{ payload: value }],
+              ],
+            },
+          }
+        }, {}),
+      )),
     }
 
     return new Data(
