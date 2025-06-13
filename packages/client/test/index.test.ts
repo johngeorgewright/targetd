@@ -7,7 +7,7 @@ import { createServer } from '@targetd/server'
 import type { Server } from 'node:http'
 import type { AddressInfo } from 'node:net'
 import { setTimeout } from 'node:timers/promises'
-import z from 'zod'
+import z from 'zod/v4'
 import { Client, type ClientWithData } from '@targetd/client'
 
 const schema = Data.create({
