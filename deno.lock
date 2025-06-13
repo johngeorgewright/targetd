@@ -17,6 +17,7 @@
     "npm:@types/express@4": "4.17.23",
     "npm:@types/node@*": "22.15.15",
     "npm:@types/supertest@*": "6.0.3",
+    "npm:@types/yargs@*": "17.0.33",
     "npm:cors@^2.8.5": "2.8.5",
     "npm:express-query-boolean@2": "2.0.0",
     "npm:express@^4.18.3": "4.21.2",
@@ -191,6 +192,15 @@
       "dependencies": [
         "@types/methods",
         "@types/superagent"
+      ]
+    },
+    "@types/yargs-parser@21.0.3": {
+      "integrity": "sha512-I4q9QU9MQv4oEOz4tAHJtNz1cwuLxn2F3xcc2iV5WdqLPpUnj30aUuxt1mAxYTG+oe8CZMV/+6rU4S4gRDzqtQ=="
+    },
+    "@types/yargs@17.0.33": {
+      "integrity": "sha512-WpxBCKWPLr4xSsHgz511rFJAM+wS28w2zEO1QDNY5zM/S8ok70NNfztH0xwhqKyaK0OHCbN98LDAZuy1ctxDkA==",
+      "dependencies": [
+        "@types/yargs-parser"
       ]
     },
     "accepts@1.3.8": {

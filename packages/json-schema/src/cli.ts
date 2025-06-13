@@ -1,10 +1,11 @@
 import type { DT } from '@targetd/api'
+// @ts-types='npm:@types/yargs@17.0.33'
 import yargs from 'yargs'
 import * as path from 'node:path'
 import { writeFile } from 'node:fs/promises'
 import { dataJSONSchemas } from './index.ts'
 
-const { dataExport, inputModule, outputFile } = await yargs
+const { dataExport, inputModule, outputFile } = await yargs()
   .usage('targetd-json-schema [args]')
   .options({
     dataExport: {
