@@ -458,19 +458,12 @@ export default class Data<
   async getPayloadForEachName(
     rawQuery: QT.Raw<QueryParsers> = {},
   ): Promise<
-    {
-      [Name in keyof PayloadParsers]?: PT.Payload<
-        PayloadParsers[Name],
-        FallThroughTargetingParsers
-      >
-    }
+    PT.Payloads<PayloadParsers, FallThroughTargetingParsers>
   > {
-    const payloads = {} as {
-      [Name in keyof PayloadParsers]?: PT.Payload<
-        PayloadParsers[Name],
-        FallThroughTargetingParsers
-      >
-    }
+    const payloads = {} as PT.Payloads<
+      PayloadParsers,
+      FallThroughTargetingParsers
+    >
 
     await Promise.all(
       objectKeys(this.#data).map(async (name) => {
@@ -503,7 +496,12 @@ export default class Data<
     >[] = []
     const predicate = await this.#createRulePredicate(rawQuery)
     for (const rule of this.#getTargetableRules(name)) {
-      if (await predicate(rule as any)) payloads.push(this.#mapRule(rule))
+      if (await predicate(rule as any)) {
+        const mappedRule = this.#mapRule(rule)
+        if (mappedRule) {
+          payloads.push(mappedRule)
+        }
+      }
     }
     return payloads
   }
@@ -514,7 +512,7 @@ export default class Data<
       TargetingParsers,
       FallThroughTargetingParsers
     >,
-  ): PT.Payload<PayloadParser, FallThroughTargetingParsers> {
+  ): PT.Payload<PayloadParser, FallThroughTargetingParsers> | undefined {
     return hasPayload(rule)
       ? rule.payload as output<PayloadParser>
       : 'fallThrough' in rule
@@ -522,7 +520,7 @@ export default class Data<
         PayloadParser,
         FallThroughTargetingParsers
       >
-      : undefined as output<PayloadParser>
+      : undefined
   }
 
   async #createRulePredicate<Name extends keyof PayloadParsers>(
@@ -531,7 +529,7 @@ export default class Data<
     const query = await this.#QueryParser.parseAsync(rawQuery)
 
     return (
-      rule: DataItemRulesOut<
+      rule: DataItemRule<
         PayloadParsers[Name],
         TargetingParsers,
         FallThroughTargetingParsers
