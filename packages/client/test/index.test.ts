@@ -10,13 +10,13 @@ import { setTimeout } from 'node:timers/promises'
 import z from 'zod/v4'
 import { Client, type ClientWithData } from '@targetd/client'
 
-const schema = Data.create({
-  data: {
+const data = await Data.create()
+  .usePayload({
     foo: z.string(),
     bar: z.number(),
     timed: z.string(),
-  },
-  targeting: {
+  })
+  .useTargeting({
     weather: targetIncludes(z.string()),
     highTide: targetEquals(z.boolean()),
     asyncThing: {
@@ -25,10 +25,7 @@ const schema = Data.create({
       targetingParser: z.boolean(),
     },
     date: dateRangeTargeting,
-  },
-})
-
-const data = schema
+  })
   .addRules('foo', [
     {
       targeting: {
@@ -83,11 +80,11 @@ const data = schema
     ])
   )
 
-let client: ClientWithData<Awaited<typeof schema>>
+let client: ClientWithData<Awaited<typeof data>>
 let server: Server
 
 beforeAll(async () => {
-  const d = await data
+  const d = data
   const serverResolvers = Promise.withResolvers<void>()
   server = createServer(() => d).listen(
     0,
@@ -95,7 +92,7 @@ beforeAll(async () => {
   )
   await serverResolvers.promise
   const address = server.address() as AddressInfo
-  client = new Client(`http://localhost:${address.port}`, schema)
+  client = new Client(`http://localhost:${address.port}`, data)
 })
 
 afterAll(() => {

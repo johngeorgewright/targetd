@@ -6,35 +6,35 @@ import z from 'zod/v4'
 import dateRangeTargeting from '@targetd/date-range'
 
 test('date range predicate', async () => {
-  const data = await Data.create({
-    targeting: {
-      dateRange: dateRangeTargeting,
-    },
-    data: {
+  const data = await Data.create()
+    .usePayload({
       foo: z.string(),
-    },
-  }).addRules('foo', [
-    {
-      targeting: {
-        dateRange: {
-          start: '1939-09-01',
-          end: '1945-09-02',
+    })
+    .useTargeting({
+      dateRange: dateRangeTargeting,
+    })
+    .addRules('foo', [
+      {
+        targeting: {
+          dateRange: {
+            start: '1939-09-01',
+            end: '1945-09-02',
+          },
         },
+        payload: 'WWII',
       },
-      payload: 'WWII',
-    },
-    {
-      targeting: {
-        dateRange: {
-          start: '2020-01-01T00:00:00',
+      {
+        targeting: {
+          dateRange: {
+            start: '2020-01-01T00:00:00',
+          },
         },
+        payload: '😷',
       },
-      payload: '😷',
-    },
-    {
-      payload: 'bar',
-    },
-  ])
+      {
+        payload: 'bar',
+      },
+    ])
 
   let fakeTime = new FakeTime(new Date('1930-01-01'))
   expect(await data.getPayload('foo', {})).toBe('bar')

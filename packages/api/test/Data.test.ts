@@ -11,11 +11,9 @@ import {
 } from '@targetd/api'
 
 test('getPayload', async () => {
-  let data = Data.create({
-    data: {
-      foo: z.string(),
-    },
-    targeting: {
+  const data = await Data.create()
+    .usePayload({ 'foo': z.string() })
+    .useTargeting({
       weather: targetIncludes(z.string()),
       highTide: targetEquals(z.boolean()),
       asyncThing: {
@@ -24,45 +22,43 @@ test('getPayload', async () => {
         queryParser: z.boolean(),
         targetingParser: z.boolean(),
       },
-    },
-  })
-
-  data = await data.addRules('foo', [
-    {
-      targeting: {
-        highTide: true,
-        weather: ['sunny'],
+    })
+    .addRules('foo', [
+      {
+        targeting: {
+          highTide: true,
+          weather: ['sunny'],
+        },
+        payload: '🏄‍♂️',
       },
-      payload: '🏄‍♂️',
-    },
-    {
-      targeting: {
-        weather: ['sunny'],
+      {
+        targeting: {
+          weather: ['sunny'],
+        },
+        payload: '😎',
       },
-      payload: '😎',
-    },
-    {
-      targeting: {
-        weather: ['rainy'],
+      {
+        targeting: {
+          weather: ['rainy'],
+        },
+        payload: '☂️',
       },
-      payload: '☂️',
-    },
-    {
-      targeting: {
-        highTide: true,
+      {
+        targeting: {
+          highTide: true,
+        },
+        payload: '🌊',
       },
-      payload: '🌊',
-    },
-    {
-      targeting: {
-        asyncThing: true,
+      {
+        targeting: {
+          asyncThing: true,
+        },
+        payload: 'Async payload',
       },
-      payload: 'Async payload',
-    },
-    {
-      payload: 'bar',
-    },
-  ])
+      {
+        payload: 'bar',
+      },
+    ])
 
   expect(await data.getPayload('foo')).toBe('bar')
   expect(await data.getPayload('foo', { weather: 'sunny' })).toBe('😎')
@@ -97,32 +93,28 @@ test('getPayload', async () => {
 })
 
 test('targeting with multiple conditions', async () => {
-  let data = Data.create({
-    data: {
-      foo: z.string(),
-    },
-    targeting: {
+  const data = await Data.create()
+    .usePayload({ foo: z.string() })
+    .useTargeting({
       weather: targetIncludes(z.string()),
       highTide: targetEquals(z.boolean()),
-    },
-  })
-
-  data = await data.addRules('foo', [
-    {
-      targeting: [
-        {
-          weather: ['sunny'],
-        },
-        {
-          highTide: true,
-        },
-      ],
-      payload: 'The time is now',
-    },
-    {
-      payload: 'bar',
-    },
-  ])
+    })
+    .addRules('foo', [
+      {
+        targeting: [
+          {
+            weather: ['sunny'],
+          },
+          {
+            highTide: true,
+          },
+        ],
+        payload: 'The time is now',
+      },
+      {
+        payload: 'bar',
+      },
+    ])
 
   expect(await data.getPayload('foo', { weather: 'sunny' })).toBe(
     'The time is now',
@@ -134,86 +126,80 @@ test('targeting with multiple conditions', async () => {
 })
 
 test('targeting without requiring a query', async () => {
-  let data = Data.create({
-    data: {
+  const data = await Data.create()
+    .usePayload({
       foo: z.string(),
-    },
-    targeting: {
+    })
+    .useTargeting({
       time: {
         predicate: () => (t) => t === 'now!',
         queryParser: z.undefined(),
         requiresQuery: false,
         targetingParser: z.literal('now!'),
       },
-    },
-  })
-
-  data = await data.addRules('foo', [
-    {
-      targeting: {
-        time: 'now!',
+    })
+    .addRules('foo', [
+      {
+        targeting: {
+          time: 'now!',
+        },
+        payload: 'The time is now',
       },
-      payload: 'The time is now',
-    },
-    {
-      payload: 'bar',
-    },
-  ])
+      {
+        payload: 'bar',
+      },
+    ])
 
   expect(await data.getPayload('foo')).toBe('The time is now')
 })
 
 test('getPayloads', async (t) => {
-  let data = Data.create({
-    data: {
+  const data = await Data.create()
+    .usePayload({
       foo: z.string(),
-    },
-    targeting: {
+    })
+    .useTargeting({
       weather: targetIncludes(z.string()),
       highTide: targetEquals(z.boolean()),
-    },
-  })
-
-  data = await data.addRules('foo', [
-    {
-      targeting: {
-        weather: ['sunny'],
+    })
+    .addRules('foo', [
+      {
+        targeting: {
+          weather: ['sunny'],
+        },
+        payload: '😎',
       },
-      payload: '😎',
-    },
-    {
-      targeting: {
-        weather: ['rainy', 'sunny'],
+      {
+        targeting: {
+          weather: ['rainy', 'sunny'],
+        },
+        payload: '☂️',
       },
-      payload: '☂️',
-    },
-    {
-      targeting: {
-        highTide: true,
+      {
+        targeting: {
+          highTide: true,
+        },
+        payload: '🏄‍♂️',
       },
-      payload: '🏄‍♂️',
-    },
-    {
-      payload: 'bar',
-    },
-  ])
+      {
+        payload: 'bar',
+      },
+    ])
 
   await assertSnapshot(t, await data.getPayloads('foo', { weather: 'sunny' }))
 })
 
 test('payload runtype validation', async (t) => {
   try {
-    let data = Data.create({
-      data: {
+    await Data.create()
+      .usePayload({
         foo: z.string().refine((x) => x === 'bar', 'Should be bar'),
-      },
-    })
-
-    data = await data.addRules('foo', [
-      {
-        payload: 'rab',
-      },
-    ])
+      })
+      .addRules('foo', [
+        {
+          payload: 'rab',
+        },
+      ])
   } catch (error: any) {
     await assertSnapshot(t, error.message)
     return
@@ -223,12 +209,12 @@ test('payload runtype validation', async (t) => {
 })
 
 test('getPayloadForEachName', async (t) => {
-  let data = Data.create({
-    data: {
+  const data = await Data.create()
+    .usePayload({
       foo: z.string(),
       bar: z.string(),
-    },
-    targeting: {
+    })
+    .useTargeting({
       weather: targetIncludes(z.string()),
       highTide: targetIncludes(z.boolean()),
       asyncThing: {
@@ -237,44 +223,41 @@ test('getPayloadForEachName', async (t) => {
         queryParser: z.boolean(),
         targetingParser: z.boolean(),
       },
-    },
-  })
-
-  data = await data.addRules('foo', [
-    {
-      targeting: {
-        weather: ['sunny'],
+    })
+    .addRules('foo', [
+      {
+        targeting: {
+          weather: ['sunny'],
+        },
+        payload: '😎',
       },
-      payload: '😎',
-    },
-    {
-      targeting: {
-        weather: ['rainy'],
+      {
+        targeting: {
+          weather: ['rainy'],
+        },
+        payload: '☂️',
       },
-      payload: '☂️',
-    },
-  ])
-
-  data = await data.addRules('bar', [
-    {
-      targeting: {
-        weather: ['rainy'],
+    ])
+    .addRules('bar', [
+      {
+        targeting: {
+          weather: ['rainy'],
+        },
+        payload: '😟',
       },
-      payload: '😟',
-    },
-    {
-      targeting: {
-        weather: ['sunny'],
+      {
+        targeting: {
+          weather: ['sunny'],
+        },
+        payload: '😁',
       },
-      payload: '😁',
-    },
-    {
-      targeting: {
-        asyncThing: true,
+      {
+        targeting: {
+          asyncThing: true,
+        },
+        payload: 'async payloads!',
       },
-      payload: 'async payloads!',
-    },
-  ])
+    ])
 
   await assertSnapshot(
     t,
@@ -287,104 +270,100 @@ test('getPayloadForEachName', async (t) => {
 })
 
 test('fallThrough targeting', async (t) => {
-  let data = Data.create({
-    data: {
+  const data = await Data.create()
+    .usePayload({
       foo: z.string(),
       bar: z.string(),
-    },
-    targeting: { surf: targetIncludes(z.string()) },
-    fallThroughTargeting: { weather: z.array(z.string()) },
-  })
-
-  data = await data.addRules('foo', [
-    {
-      targeting: {
-        surf: ['strong'],
-        weather: ['sunny'],
+    })
+    .useTargeting({ surf: targetIncludes(z.string()) })
+    .useFallThroughTargeting({ weather: z.array(z.string()) })
+    .addRules('foo', [
+      {
+        targeting: {
+          surf: ['strong'],
+          weather: ['sunny'],
+        },
+        payload: '🏄‍♂️',
       },
-      payload: '🏄‍♂️',
-    },
-    {
-      targeting: {
-        weather: ['sunny'],
+      {
+        targeting: {
+          weather: ['sunny'],
+        },
+        payload: '😎',
       },
-      payload: '😎',
-    },
-    {
-      targeting: {
-        weather: ['rainy'],
+      {
+        targeting: {
+          weather: ['rainy'],
+        },
+        payload: '☂️',
       },
-      payload: '☂️',
-    },
-  ])
-  data = await data.addRules('bar', [
-    {
-      targeting: {
-        weather: ['rainy'],
+    ])
+    .addRules('bar', [
+      {
+        targeting: {
+          weather: ['rainy'],
+        },
+        payload: '😟',
       },
-      payload: '😟',
-    },
-    {
-      targeting: {
-        weather: ['sunny'],
+      {
+        targeting: {
+          weather: ['sunny'],
+        },
+        payload: '😁',
       },
-      payload: '😁',
-    },
-  ])
+    ])
 
   await assertSnapshot(t, data.data)
 })
 
 test('inserting data', async (t) => {
-  let data = Data.create({
-    data: {
+  const data = await Data.create()
+    .usePayload({
       moo: z.string(),
       foo: z.string(),
       bar: z.string(),
-    },
-    targeting: {
+    })
+    .useTargeting({
       weather: targetIncludes(z.string()),
-    },
-    fallThroughTargeting: {
+    })
+    .useFallThroughTargeting({
       highTide: targetEquals(z.boolean()),
-    },
-  })
-
-  data = await data.insert({
-    bar: {
-      __rules__: [
-        {
-          payload: '😟',
-          targeting: {
-            highTide: false,
+    })
+    .insert({
+      bar: {
+        __rules__: [
+          {
+            payload: '😟',
+            targeting: {
+              highTide: false,
+            },
           },
-        },
-        {
-          payload: '😁',
-          targeting: {
-            highTide: true,
+          {
+            payload: '😁',
+            targeting: {
+              highTide: true,
+            },
           },
-        },
-      ],
-    },
-    foo: {
-      __rules__: [
-        {
-          payload: '😎',
-          targeting: {
-            weather: ['sunny'],
+        ],
+      },
+      foo: {
+        __rules__: [
+          {
+            payload: '😎',
+            targeting: {
+              weather: ['sunny'],
+            },
           },
-        },
-        {
-          payload: '☂️',
-          targeting: {
-            weather: ['rainy'],
+          {
+            payload: '☂️',
+            targeting: {
+              weather: ['rainy'],
+            },
           },
-        },
-      ],
-    },
-    moo: 'glue',
-  })
+        ],
+      },
+      moo: 'glue',
+    })
 
   await assertSnapshot(
     t,
@@ -402,11 +381,11 @@ test('targeting predicate with full query object', async () => {
       targeting.includes(queryValue),
   })
 
-  let data = Data.create({
-    data: {
+  const data = await Data.create()
+    .usePayload({
       foo: z.string(),
-    },
-    targeting: {
+    })
+    .useTargeting({
       oof: {
         queryParser: z.string(),
         targetingParser: z.string(),
@@ -418,15 +397,13 @@ test('targeting predicate with full query object', async () => {
         predicate: (q) => (t) => q === t,
       },
       mung: mungTargeting,
-    },
-  })
-
-  data = await data.addRules('foo', [
-    {
-      targeting: { mung: ['mung'] },
-      payload: 'yay',
-    },
-  ])
+    })
+    .addRules('foo', [
+      {
+        targeting: { mung: ['mung'] },
+        payload: 'yay',
+      },
+    ])
 
   expect(await data.getPayload('foo')).toBe(undefined)
   expect(await data.getPayload('foo', { mung: 'mung' })).toBe(undefined)
@@ -442,38 +419,36 @@ test('broken', async (t) => {
     foo: z.string(),
   }
 
-  const serverSchema = Data.create({
-    data: payloadSchema,
-    targeting: {
+  const data = await Data.create()
+    .usePayload(payloadSchema)
+    .useTargeting({
       channel: channelTargeting,
-    },
-    fallThroughTargeting: {
+    })
+    .useFallThroughTargeting({
       browser: browserTargeting,
-    },
-  })
-
-  const data = await serverSchema.addRules('foo', [
-    {
-      targeting: {
-        channel: ['foo'],
+    })
+    .addRules('foo', [
+      {
+        targeting: {
+          channel: ['foo'],
+        },
+        payload: 'face',
       },
-      payload: 'face',
-    },
-    {
-      targeting: {
-        channel: ['bar'],
-        browser: ['chrome'],
+      {
+        targeting: {
+          channel: ['bar'],
+          browser: ['chrome'],
+        },
+        payload: 'yay',
       },
-      payload: 'yay',
-    },
-    {
-      targeting: {
-        channel: ['bar'],
-        browser: ['edge'],
+      {
+        targeting: {
+          channel: ['bar'],
+          browser: ['edge'],
+        },
+        payload: 'nay',
       },
-      payload: 'nay',
-    },
-  ])
+    ])
 
   await assertSnapshot(t, await data.getPayloadForEachName({ channel: 'foo' }))
   await assertSnapshot(t, await data.getPayloadForEachName({ channel: 'bar' }))

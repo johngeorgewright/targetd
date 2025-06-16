@@ -8,21 +8,23 @@ test('json schema for simple data object', async (t) => {
   await assertSnapshot(
     t,
     dataJSONSchemas(
-      await Data.create({
-        data: {
-          foo: z.string(),
-        },
-        targeting: {
+      await Data.create()
+        .usePayload(
+          {
+            foo: z.string(),
+          },
+        )
+        .useTargeting({
           weather: targetIncludes(z.string()),
-        },
-        fallThroughTargeting: {
+        })
+        .useFallThroughTargeting({
           browser: targetIncludes(z.string()),
-        },
-      }).addRules('foo', [
-        {
-          payload: 'bar',
-        },
-      ]),
+        })
+        .addRules('foo', [
+          {
+            payload: 'bar',
+          },
+        ]),
     ),
   )
 })
