@@ -44,7 +44,7 @@ export default class Data<
   readonly #queryParsers: QueryParsers
   readonly #QueryParser: ZodPartialObject<QueryParsers>
 
-  static create() {
+  static create(): Data<{}, {}, {}, {}> {
     return new Data({}, {}, {}, {}, {}, {})
   }
 
