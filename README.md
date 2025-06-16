@@ -57,14 +57,14 @@ meaning that you must use the returned value of every function. For exampe:
 import { Data } from '@targetd/api'
 
 // THE BELOW IS INCORRECT!!! the data object has not had any targeting or rules added
-const data = Data.create()
-data.useTargeting(...)
-data.addRules(...)
+const data = await Data.create()
+await data.useTargeting(...)
+await data.addRules(...)
 
 // ✅ This is better.
-let data = Data.create({ ...initialOptions })
-data = await data.useTargeting(...)
-data = await data.addRules(...)
+const data = await Data.create({ ...initialOptions })
+  .useTargeting(...)
+  .addRules(...)
 ```
 
 ### Typing Data (payloads)
@@ -77,13 +77,12 @@ understand and you'll need to know some of the basics.
 import { Data } from "@targetd/api";
 import z from "zod/v4";
 
-let data = await Data.create().useData(
-  "blog",
-  z.strictObject({
+let data = await Data.create().usePayload({
+  blog: z.strictObject({
     title: z.string(),
     body: z.string(),
   }),
-);
+});
 ```
 
 Now I can safely add some rules. Without the above, however, you'll receive an
@@ -107,15 +106,17 @@ As mentioned above, all typing and validation is done using the [zod][zod]
 project.
 
 ```typescript
-data = await data.useTargeting("category", {
-  // Restrict queries to be string
-  queryParser: z.string(),
+data = await data.useTargeting({
+  category: {
+    // Restrict queries to be string
+    queryParser: z.string(),
 
-  // Restrict stored targeting values as an array of "news" or "weather"
-  targetingParser: z.array(z.enum(["news", "weather"])),
+    // Restrict stored targeting values as an array of "news" or "weather"
+    targetingParser: z.array(z.enum(["news", "weather"])),
 
-  // The targeting logic
-  predicate: (query) => (targeting) => targeting.includes(query),
+    // The targeting logic
+    predicate: (query) => (targeting) => targeting.includes(query),
+  },
 });
 ```
 
@@ -157,7 +158,7 @@ through" targeting.
 // data.ts
 import { Data } from "@targetd/api";
 
-export const data = await Data.create().useData("foo", z.string());
+export const data = await Data.create().usePayload({ foo: z.string() });
 ```
 
 ```typescript
@@ -166,27 +167,24 @@ import { targetIncludes } from "@targeted/api";
 import { z } from "zod/v4";
 import { data } from "./data";
 
-let _service1Data = await data.useTargeting(
-  "weather",
-  targetIncludes(z.string()),
-);
-_service1Data = await _service1Data.useFallthroughTargeting(
-  "browser",
-  targetIncludes(z.string()),
-);
-_service1Data = await _service1Data.addRules("foo", [
-  {
-    targeting: {
-      // Targeting "browser" cannot be targeted by this server
-      // and therefore will be passed to service-2
-      browser: ["chrome"],
-      weather: ["sunny"],
+export const service1Data = await data
+  .useTargeting({
+    weather: targetIncludes(z.string()),
+  })
+  .useFallthroughTargeting({
+    browser:    targetIncludes(z.string()),
+  });
+  .addRules("foo", [
+    {
+      targeting: {
+        // Targeting "browser" cannot be targeted by this server
+        // and therefore will be passed to service-2
+        browser: ["chrome"],
+        weather: ["sunny"],
+      },
+      payload: "Chrome and sunny",
     },
-    payload: "Chrome and sunny",
-  },
-]);
-
-export const service1Data = _service1Data;
+  ]);
 ```
 
 ```typescript
@@ -195,13 +193,13 @@ import { targetIncludes } from "@targeted/api";
 import { z } from "zod/v4";
 import { data } from "./data";
 
-let service2Data = await data.useTargeting(
-  "browser",
-  targetIncludes(z.string()),
-);
-service2Data = await service2Data.insert(
-  data.getPayloadForEachName({ weather: "sunny" }),
-);
+const service2Data = await data
+  .useTargeting({
+    browser: targetIncludes(z.string()),
+  });
+  .insert(
+    data.getPayloadForEachName({ weather: "sunny" }),
+  );
 
 // ...
 ```

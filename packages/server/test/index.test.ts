@@ -16,13 +16,13 @@ let data: Awaited<ReturnType<typeof createData>>
 let server: Server
 
 async function createData() {
-  let data = Data.create({
-    data: {
+  return await Data.create()
+    .usePayload({
       foo: z.string(),
       bar: z.number(),
       timed: z.string(),
-    },
-    targeting: {
+    })
+    .useTargeting({
       weather: targetIncludes(z.string()),
       highTide: targetEquals(z.boolean()),
       asyncThing: {
@@ -37,77 +37,71 @@ async function createData() {
         targetingParser: z.string().array(),
       },
       date: dateRangeTargeting,
-    },
-  })
-
-  data = await data.addRules('foo', [
-    {
-      targeting: {
-        highTide: true,
-        weather: ['sunny'],
+    })
+    .addRules('foo', [
+      {
+        targeting: {
+          highTide: true,
+          weather: ['sunny'],
+        },
+        payload: '🏄‍♂️',
       },
-      payload: '🏄‍♂️',
-    },
-    {
-      targeting: {
-        weather: ['sunny'],
+      {
+        targeting: {
+          weather: ['sunny'],
+        },
+        payload: '😎',
       },
-      payload: '😎',
-    },
-    {
-      targeting: {
-        weather: ['rainy'],
+      {
+        targeting: {
+          weather: ['rainy'],
+        },
+        payload: '☂️',
       },
-      payload: '☂️',
-    },
-    {
-      targeting: {
-        highTide: true,
+      {
+        targeting: {
+          highTide: true,
+        },
+        payload: '🌊',
       },
-      payload: '🌊',
-    },
-    {
-      targeting: {
-        asyncThing: true,
+      {
+        targeting: {
+          asyncThing: true,
+        },
+        payload: 'Async payload',
       },
-      payload: 'Async payload',
-    },
-    {
-      targeting: {
-        arrayThing: ['a'],
+      {
+        targeting: {
+          arrayThing: ['a'],
+        },
+        payload: "a t'ing",
       },
-      payload: "a t'ing",
-    },
-    {
-      targeting: {
-        arrayThing: ['a', 'b'],
+      {
+        targeting: {
+          arrayThing: ['a', 'b'],
+        },
+        payload: "b t'ing",
       },
-      payload: "b t'ing",
-    },
-    {
-      payload: 'bar',
-    },
-  ])
-
-  data = await data.addRules('bar', [
-    {
-      payload: 123,
-    },
-  ])
-
-  data = await data.addRules('timed', [
-    {
-      targeting: {
-        date: { start: '2001-01-01', end: '2010-01-01' },
+      {
+        payload: 'bar',
       },
-      payload: 'in time',
-    },
-    {
-      payload: 'out of time',
-    },
-  ])
-
-  return data
+    ])
+    .addRules('bar', [
+      {
+        payload: 123,
+      },
+    ])
+    .addRules('timed', [
+      {
+        targeting: {
+          date: { start: '2001-01-01', end: '2010-01-01' },
+        },
+        payload: 'in time',
+      },
+      {
+        payload: 'out of time',
+      },
+    ])
 }
 
 beforeEach(async () => {
