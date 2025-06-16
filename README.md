@@ -8,11 +8,11 @@ key/values.
 
 ## Installation
 
-| JS Runtime | Command                     |
-| ---------- | --------------------------- |
-| Node.js    | `npx jsr add @targetd/api`  |
-| Bun        | `bunx jsr add @targetd/api` |
-| Deno       | `deno add @targetd/api`     |
+| JS Runtime | Command                                       |
+| ---------- | --------------------------------------------- |
+| Node.js    | `npm install zod && npx jsr add @targetd/api` |
+| Bun        | `bun add zod && bunx jsr add @targetd/api`    |
+| Deno       | `deno add npm:zod jsr:@targetd/api`           |
 
 ## When to use @targetd
 
