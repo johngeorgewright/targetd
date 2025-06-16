@@ -1,8 +1,5 @@
 import type Data from '../Data.ts'
 import type * as FTTT from './FallThroughTargeting.ts'
-import type TargetingDescriptor from '../parsers/TargetingDescriptor.ts'
-import type * as TT from './Targeting.ts'
-import type * as QT from './Query.ts'
 import type { $ZodShape, $ZodType, output } from 'zod/v4/core'
 
 /**
@@ -51,43 +48,6 @@ export type FallThrough<D extends Any> = Data<
 export type Payload<D extends Any, Name extends keyof PayloadParsers<D>> =
   | output<PayloadParsers<D>[Name]>
   | FTTT.Rules<PayloadParsers<D>[Name], TargetingParsers<D>>
-
-/**
- * The options for Data.create
- */
-export interface CreateOptions {
-  data?: $ZodShape
-  targeting?: Record<string, TargetingDescriptor<any, any, any>>
-  fallThroughTargeting?: Record<
-    string,
-    $ZodType | TargetingDescriptor<any, any, any>
-  >
-}
-
-/**
- * Create a {@link Data} from a {@link CreateOptions} type.
- */
-export type FromCreateOptions<
-  T extends CreateOptions,
-  R extends Required<CreateOptions> = Required<
-    {
-      [K in keyof T]: Exclude<T[K], undefined>
-    }
-  >,
-> = Data<
-  R['data'],
-  {
-    [K in keyof R['targeting']]: TT.ParserFromDescriptor<R['targeting'][K]>
-  },
-  {
-    [K in keyof R['targeting']]: QT.ParserFromDescriptor<R['targeting'][K]>
-  },
-  {
-    [K in keyof R['fallThroughTargeting']]: FTTT.ParserFromDescriptor<
-      R['fallThroughTargeting'][K]
-    >
-  }
->
 
 export type InsertableData<
   D extends $ZodShape,
