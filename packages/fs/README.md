@@ -4,11 +4,11 @@
 
 ## Installation
 
-| JS Runtime | Command                                 |
-| ---------- | --------------------------------------- |
-| Node.js    | `npx jsr add @targetd/api @targetd/fs`  |
-| Bun        | `bunx jsr add @targetd/api @targetd/fs` |
-| Deno       | `deno add @targetd/api @targetd/fs`     |
+| JS Runtime | Command                                     |
+| ---------- | ------------------------------------------- |
+| Node.js    | `npx jsr add @targetd/api @targetd/fs`      |
+| Bun        | `bunx jsr add @targetd/api @targetd/fs`     |
+| Deno       | `deno add jsr:@targetd/api jsr:@targetd/fs` |
 
 ## Example
 
@@ -24,7 +24,7 @@
 ```
 
 ```yaml
-# rules/d.yaml
+# rules/b.yaml
 b:
   - payload: b is a letter
 ```

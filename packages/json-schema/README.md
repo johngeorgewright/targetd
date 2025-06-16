@@ -4,8 +4,8 @@
 
 ## Installation
 
-| JS Runtime | Command                                          |
-| ---------- | ------------------------------------------------ |
-| Node.js    | `npx jsr add @targetd/api @targetd/json-schema`  |
-| Bun        | `bunx jsr add @targetd/api @targetd/json-schema` |
-| Deno       | `deno add @targetd/api @targetd/json-schema`     |
+| JS Runtime | Command                                              |
+| ---------- | ---------------------------------------------------- |
+| Node.js    | `npx jsr add @targetd/api @targetd/json-schema`      |
+| Bun        | `bunx jsr add @targetd/api @targetd/json-schema`     |
+| Deno       | `deno add jsr:@targetd/api jsr:@targetd/json-schema` |

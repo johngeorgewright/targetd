@@ -2,13 +2,13 @@
 
 ## Installation
 
-| JS Runtime | Command                                      |
-| ---------- | -------------------------------------------- |
-| Node.js    | `npx jsr add @targetd/api @targetd/explode`  |
-| Bun        | `bunx jsr add @targetd/api @targetd/explode` |
-| Deno       | `deno add @targetd/api @targetd/explode`     |
+| JS Runtime | Command                                          |
+| ---------- | ------------------------------------------------ |
+| Node.js    | `npx jsr add @targetd/api @targetd/explode`      |
+| Bun        | `bunx jsr add @targetd/api @targetd/explode`     |
+| Deno       | `deno add jsr:@targetd/api jsr:@targetd/explode` |
 
-Use this package if you wish to explode your payloads in to a nest object.
+Use this package if you wish to explode your payloads in to a nested object.
 
 Targetd is a key/value store. You may want to use a dot, for exmaple, to
 represent nested/namespaced properties in the name.
