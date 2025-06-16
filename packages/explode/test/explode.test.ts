@@ -1,85 +1,85 @@
-import { test } from "jsr:@std/testing/bdd";
-import { expect } from "jsr:@std/expect";
-import { type Explode, explode } from "@targetd/explode";
+import { test } from 'jsr:@std/testing/bdd'
+import { expect } from 'jsr:@std/expect'
+import { type Explode, explode } from '@targetd/explode'
 
-test("Explode", () => {
+test('Explode', () => {
   function check(
     x: Explode<
       {
-        "foo.bar": "something";
-        "a.b.c.d.e.f": "g";
-        "a.b.c.d.e.g": "h";
+        'foo.bar': 'something'
+        'a.b.c.d.e.f': 'g'
+        'a.b.c.d.e.g': 'h'
       },
-      "."
+      '.'
     >,
   ) {
-    return x;
+    return x
   }
 
   check({
     foo: {
-      bar: "something",
+      bar: 'something',
     },
     a: {
       b: {
         c: {
           d: {
             e: {
-              f: "g",
-              g: "h",
+              f: 'g',
+              g: 'h',
             },
           },
         },
       },
     },
-  });
+  })
 
   check({
     foo: {
-      bar: "something",
+      bar: 'something',
     },
     a: {
       b: {
         c: {
           d: {
             e: {
-              // @ts-expect-error Type '"h"' is not assignable to type '"g"'.
-              f: "h",
-              // @ts-expect-error Type '"g"' is not assignable to type '"h"'.
-              g: "g",
+              // @ts-expect-error Type '"h"' is not assignable to type '"f"'.
+              f: 'h',
+              // @ts-expect-error Type '"g"' is not assignable to type '"g"'.
+              g: 'g',
             },
           },
         },
       },
     },
-  });
-});
+  })
+})
 
-test("explode()", () => {
+test('explode()', () => {
   expect(
     explode(
       {
-        "foo.bar": "something",
-        "a.b.c.d.e.f": "g",
-        "a.b.c.d.e.g": "h",
+        'foo.bar': 'something',
+        'a.b.c.d.e.f': 'g',
+        'a.b.c.d.e.g': 'h',
       },
-      ".",
+      '.',
     ),
   ).toEqual({
     foo: {
-      bar: "something",
+      bar: 'something',
     },
     a: {
       b: {
         c: {
           d: {
             e: {
-              f: "g",
-              g: "h",
+              f: 'g',
+              g: 'h',
             },
           },
         },
       },
     },
-  });
-});
+  })
+})
