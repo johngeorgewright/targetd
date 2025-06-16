@@ -2,20 +2,14 @@ import fs from '@johngw/fs'
 import type { WithFileNamesResult } from '@johngw/fs/dist/readFiles'
 import type { DT } from '@targetd/api'
 import YAML from 'yaml'
-import {
-  array,
-  type infer as zInfer,
-  object,
-  strictObject,
-  string,
-  unknown,
-} from 'zod'
+import { array, object, optional, strictObject, string, unknown } from 'zod/v4'
+import type { output } from 'zod/v4/core'
 
-const FileData = object({ $schema: string().optional() }).catchall(
+const FileData = object({ $schema: optional(string()) }).catchall(
   strictObject({ rules: array(unknown()) }),
 )
 
-type FileData = zInfer<typeof FileData>
+type FileData = output<typeof FileData>
 
 export async function load<D extends DT.Any>(data: D, dir: string): Promise<D> {
   for await (
