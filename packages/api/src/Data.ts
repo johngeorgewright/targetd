@@ -44,8 +44,8 @@ export default class Data<
   readonly #queryParsers: QueryParsers
   readonly #QueryParser: ZodPartialObject<QueryParsers>
 
-  static create(): Data<{}, {}, {}, {}> {
-    return new Data({}, {}, {}, {}, {}, {})
+  static create(): PromisedData<{}, {}, {}, {}> {
+    return new PromisedData(new Data({}, {}, {}, {}, {}, {}))
   }
 
   private constructor(
@@ -106,37 +106,42 @@ export default class Data<
     return this.#fallThroughTargetingParsers
   }
 
-  usePayload<Parsers extends $ZodShape>(
+  async usePayload<Parsers extends $ZodShape>(
     parsers: Parsers,
-  ): PromisedData<
-    PayloadParsers & Parsers,
-    TargetingParsers,
-    QueryParsers,
-    FallThroughTargetingParsers
+  ): Promise<
+    Data<
+      PayloadParsers & Parsers,
+      TargetingParsers,
+      QueryParsers,
+      FallThroughTargetingParsers
+    >
   > {
     type NewPayloadParsers = PayloadParsers & Parsers
 
     const payloadParsers = this.#mergePayloadParsers(parsers)
 
-    return new PromisedData(
-      DataItemsParser(
-        payloadParsers,
-        this.#targetingParsers,
-        this.#fallThroughTargetingParsers,
-      ).parseAsync(this.#data).then((data) =>
-        new Data(
-          data as DataItemsOut<
-            NewPayloadParsers,
-            TargetingParsers,
-            FallThroughTargetingParsers
-          >,
-          payloadParsers,
-          this.#targetingPredicates,
-          this.#targetingParsers,
-          this.#queryParsers,
-          this.#fallThroughTargetingParsers,
-        )
-      ),
+    const data = (await DataItemsParser(
+      payloadParsers,
+      this.#targetingParsers,
+      this.#fallThroughTargetingParsers,
+    ).parseAsync(this.#data)) as DataItemsOut<
+      NewPayloadParsers,
+      TargetingParsers,
+      FallThroughTargetingParsers
+    >
+
+    return new Data<
+      NewPayloadParsers,
+      TargetingParsers,
+      QueryParsers,
+      FallThroughTargetingParsers
+    >(
+      data,
+      payloadParsers,
+      this.#targetingPredicates,
+      this.#targetingParsers,
+      this.#queryParsers,
+      this.#fallThroughTargetingParsers,
     )
   }
 
@@ -149,20 +154,23 @@ export default class Data<
     }
   }
 
-  insert(
+  async insert(
     data: DT.InsertableData<
       PayloadParsers,
       TargetingParsers,
       FallThroughTargetingParsers
     >,
-  ): PromisedData<
-    PayloadParsers,
-    TargetingParsers,
-    QueryParsers,
-    FallThroughTargetingParsers
+  ): Promise<
+    Data<
+      PayloadParsers,
+      TargetingParsers,
+      QueryParsers,
+      FallThroughTargetingParsers
+    >
   > {
-    return new PromisedData(
-      DataItemsParser(
+    const newData = {
+      ...this.#data,
+      ...(await DataItemsParser(
         this.#payloadParsers,
         this.#targetingParsers,
         this.#fallThroughTargetingParsers,
@@ -189,16 +197,16 @@ export default class Data<
             },
           }
         }, {}),
-      ).then((data) =>
-        new Data(
-          { ...this.#data, ...data },
-          this.#payloadParsers,
-          this.#targetingPredicates,
-          this.#targetingParsers,
-          this.#queryParsers,
-          this.#fallThroughTargetingParsers,
-        )
-      ),
+      )),
+    }
+
+    return new Data(
+      newData,
+      this.#payloadParsers,
+      this.#targetingPredicates,
+      this.#targetingParsers,
+      this.#queryParsers,
+      this.#fallThroughTargetingParsers,
     )
   }
 
@@ -216,7 +224,7 @@ export default class Data<
     )
   }
 
-  addRules<
+  async addRules<
     Name extends keyof PayloadParsers,
   >(
     name: Name,
@@ -225,11 +233,13 @@ export default class Data<
       TargetingParsers,
       FallThroughTargetingParsers
     >,
-  ): PromisedData<
-    PayloadParsers,
-    TargetingParsers,
-    QueryParsers,
-    FallThroughTargetingParsers
+  ): Promise<
+    Data<
+      PayloadParsers,
+      TargetingParsers,
+      QueryParsers,
+      FallThroughTargetingParsers
+    >
   > {
     const dataItem = this.#data[name] ||
       {
@@ -240,8 +250,9 @@ export default class Data<
         >,
       }
 
-    return new PromisedData(
-      DataItemsParser(
+    const data = {
+      ...this.#data,
+      ...(await DataItemsParser(
         this.#payloadParsers,
         this.#targetingParsers,
         this.#fallThroughTargetingParsers,
@@ -250,16 +261,16 @@ export default class Data<
           ...dataItem,
           rules: [...dataItem.rules, ...rules],
         },
-      }).then((data) =>
-        new Data(
-          { ...this.#data, ...data },
-          this.#payloadParsers,
-          this.#targetingPredicates,
-          this.#targetingParsers,
-          this.#queryParsers,
-          this.#fallThroughTargetingParsers,
-        )
-      ),
+      })),
+    }
+
+    return new Data(
+      data,
+      this.#payloadParsers,
+      this.#targetingPredicates,
+      this.#targetingParsers,
+      this.#queryParsers,
+      this.#fallThroughTargetingParsers,
     )
   }
 
@@ -270,7 +281,7 @@ export default class Data<
     FallThroughTargetingParsers
   > {
     return new Data(
-      {},
+      {} as any,
       this.#payloadParsers,
       this.#targetingPredicates,
       this.#targetingParsers,
@@ -279,13 +290,15 @@ export default class Data<
     )
   }
 
-  useTargeting<TDs extends TT.DescriptorRecord>(
+  async useTargeting<TDs extends TT.DescriptorRecord>(
     targeting: TDs,
-  ): PromisedData<
-    PayloadParsers,
-    TargetingParsers & TT.ParserRecord<TDs>,
-    QueryParsers & QT.ParserRecord<TDs>,
-    FallThroughTargetingParsers
+  ): Promise<
+    Data<
+      PayloadParsers,
+      TargetingParsers & TT.ParserRecord<TDs>,
+      QueryParsers & QT.ParserRecord<TDs>,
+      FallThroughTargetingParsers
+    >
   > {
     type NewTargetingParsers = TargetingParsers & TT.ParserRecord<TDs>
 
@@ -301,25 +314,28 @@ export default class Data<
 
     const queryParsers: NewQueryParsers = this.#mergeQueryPredicates(targeting)
 
-    return new PromisedData(
-      DataItemsParser(
-        this.#payloadParsers,
-        targetingParsers,
-        this.#fallThroughTargetingParsers,
-      ).parseAsync(this.#data).then((data) =>
-        new Data(
-          data as DataItemsOut<
-            PayloadParsers,
-            NewTargetingParsers,
-            FallThroughTargetingParsers
-          >,
-          this.#payloadParsers,
-          targetingPredicates,
-          targetingParsers,
-          queryParsers,
-          this.#fallThroughTargetingParsers,
-        )
-      ),
+    const data = await DataItemsParser(
+      this.#payloadParsers,
+      targetingParsers,
+      this.#fallThroughTargetingParsers,
+    ).parseAsync(this.#data) as DataItemsOut<
+      PayloadParsers,
+      NewTargetingParsers,
+      FallThroughTargetingParsers
+    >
+
+    return new Data<
+      PayloadParsers,
+      NewTargetingParsers,
+      NewQueryParsers,
+      FallThroughTargetingParsers
+    >(
+      data,
+      this.#payloadParsers,
+      targetingPredicates,
+      targetingParsers,
+      queryParsers,
+      this.#fallThroughTargetingParsers,
     )
   }
 
@@ -353,13 +369,15 @@ export default class Data<
     }
   }
 
-  useFallThroughTargeting<TDs extends FTTT.DescriptorRecord>(
+  async useFallThroughTargeting<TDs extends FTTT.DescriptorRecord>(
     targeting: TDs,
-  ): PromisedData<
-    PayloadParsers,
-    TargetingParsers,
-    QueryParsers,
-    FallThroughTargetingParsers & FTTT.ParsersRecord<TDs>
+  ): Promise<
+    Data<
+      PayloadParsers,
+      TargetingParsers,
+      QueryParsers,
+      FallThroughTargetingParsers & FTTT.ParsersRecord<TDs>
+    >
   > {
     type NewFallThroughTargetingParsers =
       & FallThroughTargetingParsers
@@ -369,26 +387,28 @@ export default class Data<
       targeting,
     )
 
-    return new PromisedData(
-      DataItemsParser(
-        this.#payloadParsers,
-        this.#targetingParsers,
-        fallThroughTargetingParsers,
-      ).parseAsync(this.#data)
-        .then((data) =>
-          new Data(
-            data as DataItemsOut<
-              PayloadParsers,
-              TargetingParsers,
-              NewFallThroughTargetingParsers
-            >,
-            this.#payloadParsers,
-            this.#targetingPredicates,
-            this.#targetingParsers,
-            this.#queryParsers,
-            fallThroughTargetingParsers,
-          )
-        ),
+    const data = (await DataItemsParser(
+      this.#payloadParsers,
+      this.#targetingParsers,
+      fallThroughTargetingParsers,
+    ).parseAsync(this.#data)) as DataItemsOut<
+      PayloadParsers,
+      TargetingParsers,
+      NewFallThroughTargetingParsers
+    >
+
+    return new Data<
+      PayloadParsers,
+      TargetingParsers,
+      QueryParsers,
+      NewFallThroughTargetingParsers
+    >(
+      data,
+      this.#payloadParsers,
+      this.#targetingPredicates,
+      this.#targetingParsers,
+      this.#queryParsers,
+      fallThroughTargetingParsers,
     )
   }
 

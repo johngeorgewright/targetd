@@ -30,16 +30,25 @@ export default class PromisedData<
   >
 
   constructor(
-    promisedData: PromiseLike<
-      Data<
+    promisedData:
+      | Data<
         PayloadParsers,
         TargetingParsers,
         QueryParsers,
         FallThroughTargetingParsers
       >
-    >,
+      | PromiseLike<
+        Data<
+          PayloadParsers,
+          TargetingParsers,
+          QueryParsers,
+          FallThroughTargetingParsers
+        >
+      >,
   ) {
-    this.#promisedData = promisedData
+    this.#promisedData = promisedData instanceof Promise
+      ? promisedData
+      : Promise.resolve(promisedData)
   }
 
   then<
