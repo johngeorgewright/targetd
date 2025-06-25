@@ -1,21 +1,22 @@
 import { afterEach, beforeEach, test } from 'jsr:@std/testing/bdd'
 import { expect } from 'jsr:@std/expect'
 import * as path from 'node:path'
+// @ts-types='npm:@types/fs-extra'
 import { copy, emptyDir } from 'npm:fs-extra'
 import { watch } from '@targetd/fs'
 import { data } from './fixtures/data.ts'
 
 let stopWatching: undefined | (() => void)
-
-const dirTo = path.join(import.meta.dirname ?? '', 'fixtures-watch')
+let dirTo: string
 
 beforeEach(async () => {
+  dirTo = await Deno.makeTempDir()
   await emptyDir(dirTo)
 })
 
 afterEach(async () => {
   stopWatching?.()
-  await emptyDir(dirTo)
+  await Deno.remove(dirTo)
 })
 
 test('watch', () => {
