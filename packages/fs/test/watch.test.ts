@@ -5,11 +5,11 @@ import { copy } from 'npm:fs-extra'
 import { watch } from '@targetd/fs'
 import { data } from './fixtures/data.ts'
 
-Deno.test('watch', async (t) => {
+Deno.test('watch', async (test) => {
   const dirTo = await Deno.makeTempDir()
   let stopWatching: undefined | (() => void)
 
-  await t.step('data is updated when files are changed', () => {
+  await test.step('data is updated when files are changed', () => {
     let initiated = false
     const { promise, resolve } = Promise.withResolvers<void>()
 
@@ -29,7 +29,7 @@ Deno.test('watch', async (t) => {
     return promise
   })
 
-  await t.step('cleanup', async () => {
+  await test.step('cleanup', async () => {
     stopWatching?.()
     await Deno.remove(dirTo, { recursive: true })
   })
