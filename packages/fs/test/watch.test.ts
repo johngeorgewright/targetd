@@ -3,26 +3,21 @@ import * as path from 'node:path'
 // @ts-types='npm:@types/fs-extra'
 import { copy } from 'npm:fs-extra'
 import { data } from './fixtures/data.ts'
-import { createDisposableWatcher } from '../src/disposableWatcher.ts'
+import { watch } from '@targetd/fs'
 
 Deno.test('watch', async () => {
   await using dirTo = await createDisposableTempDir()
   const { promise, resolve } = Promise.withResolvers<void>()
-  let initiated = false
 
-  using _watcher = createDisposableWatcher(
+  using _watcher = watch(
     data,
     dirTo.path,
-    async (error, data) => {
-      if (!initiated) {
-        initiated = true
-        return
-      }
+    onlySubsequentCalls(async (error, data) => {
       expect(error).toBeNull()
       expect(await data.getPayload('foo', {})).toBe('bar')
       expect(await data.getPayload('b', {})).toBe('b is a letter')
       resolve()
-    },
+    }),
   )
 
   copy(path.join(import.meta.dirname ?? '', 'fixtures', 'rules'), dirTo.path)
@@ -30,12 +25,27 @@ Deno.test('watch', async () => {
   await promise
 })
 
-async function createDisposableTempDir(): Promise<
-  AsyncDisposable & { path: string }
-> {
+function onlySubsequentCalls<Args extends unknown[]>(
+  fn: (...args: Args) => Promise<void>,
+) {
+  let firstCall = false
+  return (...args: Args) => {
+    if (!firstCall) {
+      firstCall = true
+      return
+    }
+    return fn(...args)
+  }
+}
+
+async function createDisposableTempDir(): Promise<DisposableTempDir> {
   const path = await Deno.makeTempDir()
   return {
     path,
     [Symbol.asyncDispose]: () => Deno.remove(path, { recursive: true }),
   }
+}
+
+interface DisposableTempDir extends AsyncDisposable {
+  path: string
 }
