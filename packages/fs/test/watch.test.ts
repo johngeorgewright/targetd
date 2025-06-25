@@ -16,7 +16,7 @@ beforeEach(async () => {
 
 afterEach(async () => {
   stopWatching?.()
-  await Deno.remove(dirTo)
+  await Deno.remove(dirTo, { recursive: true })
 })
 
 test('watch', () => {
