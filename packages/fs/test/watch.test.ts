@@ -39,13 +39,14 @@ function onlySubsequentCalls<Args extends unknown[]>(
 }
 
 async function createDisposableTempDir(): Promise<DisposableTempDir> {
-  const path = await Deno.makeTempDir()
-  return {
-    path,
-    [Symbol.asyncDispose]: () => Deno.remove(path, { recursive: true }),
-  }
+  const dispose: DisposableTempDir = () =>
+    Deno.remove(dispose.path, { recursive: true })
+  dispose.path = await Deno.makeTempDir()
+  dispose[Symbol.asyncDispose] = dispose
+  return dispose
 }
 
 interface DisposableTempDir extends AsyncDisposable {
+  (): Promise<void>
   path: string
 }
