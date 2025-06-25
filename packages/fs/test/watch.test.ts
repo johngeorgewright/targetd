@@ -1,40 +1,36 @@
-import { afterEach, beforeEach, test } from 'jsr:@std/testing/bdd'
 import { expect } from 'jsr:@std/expect'
 import * as path from 'node:path'
 // @ts-types='npm:@types/fs-extra'
-import { copy, emptyDir } from 'npm:fs-extra'
+import { copy } from 'npm:fs-extra'
 import { watch } from '@targetd/fs'
 import { data } from './fixtures/data.ts'
 
-let stopWatching: undefined | (() => void)
-let dirTo: string
+Deno.test('watch', async (t) => {
+  const dirTo = await Deno.makeTempDir()
+  let stopWatching: undefined | (() => void)
 
-beforeEach(async () => {
-  dirTo = await Deno.makeTempDir()
-  await emptyDir(dirTo)
-})
+  await t.step('data is updated when files are changed', () => {
+    let initiated = false
+    const { promise, resolve } = Promise.withResolvers<void>()
 
-afterEach(async () => {
-  stopWatching?.()
-  await Deno.remove(dirTo, { recursive: true })
-})
+    stopWatching = watch(data, dirTo, async (error, data) => {
+      if (!initiated) {
+        initiated = true
+        return
+      }
+      expect(error).toBeNull()
+      expect(await data.getPayload('foo', {})).toBe('bar')
+      expect(await data.getPayload('b', {})).toBe('b is a letter')
+      resolve()
+    })
 
-test('watch', () => {
-  let initiated = false
-  const { promise, resolve } = Promise.withResolvers<void>()
+    copy(path.join(import.meta.dirname ?? '', 'fixtures', 'rules'), dirTo)
 
-  stopWatching = watch(data, dirTo, async (error, data) => {
-    if (!initiated) {
-      initiated = true
-      return
-    }
-    expect(error).toBeNull()
-    expect(await data.getPayload('foo', {})).toBe('bar')
-    expect(await data.getPayload('b', {})).toBe('b is a letter')
-    resolve()
+    return promise
   })
 
-  copy(path.join(import.meta.dirname ?? '', 'fixtures', 'rules'), dirTo)
-
-  return promise
+  await t.step('cleanup', async () => {
+    stopWatching?.()
+    await Deno.remove(dirTo, { recursive: true })
+  })
 })
