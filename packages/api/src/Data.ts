@@ -45,7 +45,7 @@ export default class Data<
   readonly #QueryParser: ZodPartialObject<QueryParsers>
 
   static create(): PromisedData<{}, {}, {}, {}> {
-    return new PromisedData(new Data({}, {}, {}, {}, {}, {}))
+    return PromisedData.create(new Data({}, {}, {}, {}, {}, {}))
   }
 
   private constructor(

@@ -5,78 +5,90 @@ import type * as TT from './types/Targeting.ts'
 import type * as FTTT from './types/FallThroughTargeting.ts'
 import type * as QT from './types/Query.ts'
 import type { DataItemRulesIn } from './parsers/DataItemRules.ts'
+import type { MaybePromise } from './types.ts'
 
 export default class PromisedData<
   PayloadParsers extends $ZodShape,
   TargetingParsers extends $ZodShape,
   QueryParsers extends $ZodShape,
   FallThroughTargetingParsers extends $ZodShape,
-> implements
-  PromiseLike<
-    Data<
-      PayloadParsers,
-      TargetingParsers,
-      QueryParsers,
-      FallThroughTargetingParsers
-    >
-  > {
-  #promisedData: PromiseLike<
-    Data<
-      PayloadParsers,
-      TargetingParsers,
-      QueryParsers,
-      FallThroughTargetingParsers
-    >
+> extends Promise<
+  Data<
+    PayloadParsers,
+    TargetingParsers,
+    QueryParsers,
+    FallThroughTargetingParsers
   >
-
+> {
   constructor(
-    promisedData:
-      | Data<
+    executor: (
+      resolve: (
+        value: MaybePromise<
+          Data<
+            PayloadParsers,
+            TargetingParsers,
+            QueryParsers,
+            FallThroughTargetingParsers
+          >
+        >,
+      ) => void,
+      reject: (reason?: any) => void,
+    ) => void,
+  ) {
+    super(executor)
+  }
+
+  static create<
+    PayloadParsers extends $ZodShape,
+    TargetingParsers extends $ZodShape,
+    QueryParsers extends $ZodShape,
+    FallThroughTargetingParsers extends $ZodShape,
+  >(
+    promisedData: MaybePromise<
+      Data<
         PayloadParsers,
         TargetingParsers,
         QueryParsers,
         FallThroughTargetingParsers
       >
-      | PromiseLike<
-        Data<
-          PayloadParsers,
-          TargetingParsers,
-          QueryParsers,
-          FallThroughTargetingParsers
-        >
-      >,
-  ) {
-    this.#promisedData = promisedData instanceof Promise
-      ? promisedData
-      : Promise.resolve(promisedData)
+    >,
+  ): PromisedData<
+    PayloadParsers,
+    TargetingParsers,
+    QueryParsers,
+    FallThroughTargetingParsers
+  > {
+    return new PromisedData((resolve) => resolve(promisedData))
   }
 
-  then<
-    TResult1 = Data<
-      PayloadParsers,
-      TargetingParsers,
-      QueryParsers,
-      FallThroughTargetingParsers
-    >,
-    TResult2 = never,
+  #create<
+    NewPayloadParsers extends $ZodShape,
+    NewTargetingParsers extends $ZodShape,
+    NewQueryParsers extends $ZodShape,
+    NewFallThroughTargetingParsers extends $ZodShape,
   >(
-    onfulfilled?:
-      | ((
-        value: Data<
-          PayloadParsers,
-          TargetingParsers,
-          QueryParsers,
-          FallThroughTargetingParsers
-        >,
-      ) => TResult1 | PromiseLike<TResult1>)
-      | null
-      | undefined,
-    onrejected?:
-      | ((reason: any) => TResult2 | PromiseLike<TResult2>)
-      | null
-      | undefined,
-  ): PromiseLike<TResult1 | TResult2> {
-    return this.#promisedData.then(onfulfilled, onrejected)
+    cb: (
+      data: Data<
+        PayloadParsers,
+        TargetingParsers,
+        QueryParsers,
+        FallThroughTargetingParsers
+      >,
+    ) => MaybePromise<
+      Data<
+        NewPayloadParsers,
+        NewTargetingParsers,
+        NewQueryParsers,
+        NewFallThroughTargetingParsers
+      >
+    >,
+  ): PromisedData<
+    NewPayloadParsers,
+    NewTargetingParsers,
+    NewQueryParsers,
+    NewFallThroughTargetingParsers
+  > {
+    return new PromisedData((resolve) => resolve(this.then(cb)))
   }
 
   usePayload<Parsers extends $ZodShape>(
@@ -87,13 +99,11 @@ export default class PromisedData<
     QueryParsers,
     FallThroughTargetingParsers
   > {
-    return new PromisedData(
-      this.#promisedData.then((data) => data.usePayload(parsers)),
-    )
+    return this.#create((data) => data.usePayload(parsers))
   }
 
   insert(
-    data: DT.InsertableData<
+    insertableData: DT.InsertableData<
       PayloadParsers,
       TargetingParsers,
       FallThroughTargetingParsers
@@ -104,7 +114,7 @@ export default class PromisedData<
     QueryParsers,
     FallThroughTargetingParsers
   > {
-    return new PromisedData(this.#promisedData.then((d) => d.insert(data)))
+    return this.#create((data) => data.insert(insertableData))
   }
 
   addRules<
@@ -122,9 +132,7 @@ export default class PromisedData<
     QueryParsers,
     FallThroughTargetingParsers
   > {
-    return new PromisedData(
-      this.#promisedData.then((data) => data.addRules(name, rules)),
-    )
+    return this.#create((data) => data.addRules(name, rules))
   }
 
   useTargeting<TDs extends TT.DescriptorRecord>(
@@ -135,9 +143,7 @@ export default class PromisedData<
     QueryParsers & QT.ParserRecord<TDs>,
     FallThroughTargetingParsers
   > {
-    return new PromisedData(
-      this.#promisedData.then((data) => data.useTargeting(targeting)),
-    )
+    return this.#create((data) => data.useTargeting(targeting))
   }
 
   useFallThroughTargeting<TDs extends FTTT.DescriptorRecord>(
@@ -148,10 +154,6 @@ export default class PromisedData<
     QueryParsers,
     FallThroughTargetingParsers & FTTT.ParsersRecord<TDs>
   > {
-    return new PromisedData(
-      this.#promisedData.then((data) =>
-        data.useFallThroughTargeting(targeting)
-      ),
-    )
+    return this.#create((data) => data.useFallThroughTargeting(targeting))
   }
 }
