@@ -1,19 +1,135 @@
 import { assertSnapshot } from 'jsr:@std/testing/snapshot'
-import { afterEach, beforeEach, test } from 'jsr:@std/testing/bdd'
 import { Data, targetEquals, targetIncludes } from '@targetd/api'
 import dateRangeTargeting from '@targetd/date-range'
 import _ from 'npm:lodash'
-import type express from 'express'
 import { setTimeout } from 'node:timers/promises'
 // @ts-types='npm:@types/supertest'
 import request from 'npm:supertest'
 import z from 'zod/v4'
 import { createServer } from '@targetd/server'
-import type { Server } from 'node:http'
 
-let app: express.Application
-let data: Awaited<ReturnType<typeof createData>>
-let server: Server
+Deno.test('get one data point', async () => {
+  await using disposable = await createDisposableServer()
+  const { server } = disposable
+
+  await request(server)
+    .get('/foo')
+    .expect('Content-Type', /json/)
+    .expect(200)
+    .expect('"bar"')
+
+  await request(server)
+    .get('/foo?weather=sunny')
+    .expect('Content-Type', /json/)
+    .expect(200)
+    .expect('"😎"')
+
+  await request(server)
+    .get('/foo?weather=rainy')
+    .expect('Content-Type', /json/)
+    .expect(200)
+    .expect('"☂️"')
+
+  await request(server)
+    .get('/foo?highTide=true')
+    .expect('Content-Type', /json/)
+    .expect(200)
+    .expect('"🌊"')
+
+  await request(server)
+    .get('/foo?highTide=true&weather=sunny')
+    .expect('Content-Type', /json/)
+    .expect(200)
+    .expect('"🏄‍♂️"')
+
+  await request(server)
+    .get('/foo?asyncThing=true')
+    .expect('Content-Type', /json/)
+    .expect(200)
+    .expect('"Async payload"')
+
+  await request(server)
+    .get('/timed?date[start]=2002-01-01')
+    .expect('Content-Type', /json/)
+    .expect(200)
+    .expect('"in time"')
+
+  await request(server)
+    .get('/timed?date[start]=2012-01-01')
+    .expect('Content-Type', /json/)
+    .expect(200)
+    .expect('"out of time"')
+
+  await request(server)
+    .get('/foo?arrayThing=a')
+    .expect('Content-Type', /json/)
+    .expect(200)
+    .expect('"a t\'ing"')
+
+  await request(server)
+    .get('/foo?arrayThing=a&arrayThing=b')
+    .expect('Content-Type', /json/)
+    .expect(200)
+    .expect('"b t\'ing"')
+})
+
+Deno.test('get all', async (t) => {
+  await using disposable = await createDisposableServer()
+  const { server } = disposable
+
+  let response = await request(server)
+    .get('/')
+    .expect('Content-Type', /json/)
+    .expect(200)
+  await assertSnapshot(t, response.body)
+
+  response = await request(server)
+    .get('/?weather=sunny')
+    .expect('Content-Type', /json/)
+    .expect(200)
+  await assertSnapshot(t, response.body)
+
+  response = await request(server)
+    .get('/?weather=rainy')
+    .expect('Content-Type', /json/)
+    .expect(200)
+  await assertSnapshot(t, response.body)
+
+  response = await request(server)
+    .get('/?highTide=true')
+    .expect('Content-Type', /json/)
+    .expect(200)
+  await assertSnapshot(t, response.body)
+
+  response = await request(server)
+    .get('/?highTide=true&weather=sunny')
+    .expect('Content-Type', /json/)
+    .expect(200)
+  await assertSnapshot(t, response.body)
+
+  response = await request(server)
+    .get('/?asyncThing=true')
+    .expect('Content-Type', /json/)
+    .expect(200)
+  await assertSnapshot(t, response.body)
+})
+
+async function createDisposableServer() {
+  const app = createServer(await createData())
+  const { promise, resolve } = Promise.withResolvers<void>()
+  const server = app.listen(0, resolve)
+  await promise
+  return {
+    server,
+    [Symbol.asyncDispose]: () =>
+      new Promise<void>((resolve, reject) => {
+        server.close((err) => {
+          if (err) reject(err)
+          else resolve()
+        })
+      }),
+  }
+}
 
 async function createData() {
   return await Data.create()
@@ -103,121 +219,3 @@ async function createData() {
       },
     ])
 }
-
-beforeEach(async () => {
-  data = await createData()
-  app = createServer(() => data)
-
-  const { promise, resolve } = Promise.withResolvers<void>()
-  server = app.listen(0, resolve)
-  return promise
-})
-
-afterEach(() => {
-  return new Promise<void>((resolve, reject) => {
-    server.close((err) => {
-      if (err) reject(err)
-      else resolve()
-    })
-  })
-})
-
-test('get one data point', async () => {
-  await request(server)
-    .get('/foo')
-    .expect('Content-Type', /json/)
-    .expect(200)
-    .expect('"bar"')
-
-  await request(server)
-    .get('/foo?weather=sunny')
-    .expect('Content-Type', /json/)
-    .expect(200)
-    .expect('"😎"')
-
-  await request(server)
-    .get('/foo?weather=rainy')
-    .expect('Content-Type', /json/)
-    .expect(200)
-    .expect('"☂️"')
-
-  await request(server)
-    .get('/foo?highTide=true')
-    .expect('Content-Type', /json/)
-    .expect(200)
-    .expect('"🌊"')
-
-  await request(server)
-    .get('/foo?highTide=true&weather=sunny')
-    .expect('Content-Type', /json/)
-    .expect(200)
-    .expect('"🏄‍♂️"')
-
-  await request(server)
-    .get('/foo?asyncThing=true')
-    .expect('Content-Type', /json/)
-    .expect(200)
-    .expect('"Async payload"')
-
-  await request(server)
-    .get('/timed?date[start]=2002-01-01')
-    .expect('Content-Type', /json/)
-    .expect(200)
-    .expect('"in time"')
-
-  await request(server)
-    .get('/timed?date[start]=2012-01-01')
-    .expect('Content-Type', /json/)
-    .expect(200)
-    .expect('"out of time"')
-
-  await request(server)
-    .get('/foo?arrayThing=a')
-    .expect('Content-Type', /json/)
-    .expect(200)
-    .expect('"a t\'ing"')
-
-  await request(server)
-    .get('/foo?arrayThing=a&arrayThing=b')
-    .expect('Content-Type', /json/)
-    .expect(200)
-    .expect('"b t\'ing"')
-})
-
-test('get all', async (t) => {
-  let response = await request(server)
-    .get('/')
-    .expect('Content-Type', /json/)
-    .expect(200)
-  await assertSnapshot(t, response.body)
-
-  response = await request(server)
-    .get('/?weather=sunny')
-    .expect('Content-Type', /json/)
-    .expect(200)
-  await assertSnapshot(t, response.body)
-
-  response = await request(server)
-    .get('/?weather=rainy')
-    .expect('Content-Type', /json/)
-    .expect(200)
-  await assertSnapshot(t, response.body)
-
-  response = await request(server)
-    .get('/?highTide=true')
-    .expect('Content-Type', /json/)
-    .expect(200)
-  await assertSnapshot(t, response.body)
-
-  response = await request(server)
-    .get('/?highTide=true&weather=sunny')
-    .expect('Content-Type', /json/)
-    .expect(200)
-  await assertSnapshot(t, response.body)
-
-  response = await request(server)
-    .get('/?asyncThing=true')
-    .expect('Content-Type', /json/)
-    .expect(200)
-  await assertSnapshot(t, response.body)
-})

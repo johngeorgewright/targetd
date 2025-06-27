@@ -1,6 +1,6 @@
 export const snapshot = {};
 
-snapshot[`global > get all 1`] = `
+snapshot[`get all 1`] = `
 {
   bar: 123,
   foo: "bar",
@@ -8,7 +8,7 @@ snapshot[`global > get all 1`] = `
 }
 `;
 
-snapshot[`global > get all 2`] = `
+snapshot[`get all 2`] = `
 {
   bar: 123,
   foo: "😎",
@@ -16,7 +16,7 @@ snapshot[`global > get all 2`] = `
 }
 `;
 
-snapshot[`global > get all 3`] = `
+snapshot[`get all 3`] = `
 {
   bar: 123,
   foo: "☂️",
@@ -24,7 +24,7 @@ snapshot[`global > get all 3`] = `
 }
 `;
 
-snapshot[`global > get all 4`] = `
+snapshot[`get all 4`] = `
 {
   bar: 123,
   foo: "🌊",
@@ -32,7 +32,7 @@ snapshot[`global > get all 4`] = `
 }
 `;
 
-snapshot[`global > get all 5`] = `
+snapshot[`get all 5`] = `
 {
   bar: 123,
   foo: "🏄‍♂️",
@@ -40,7 +40,7 @@ snapshot[`global > get all 5`] = `
 }
 `;
 
-snapshot[`global > get all 6`] = `
+snapshot[`get all 6`] = `
 {
   bar: 123,
   foo: "Async payload",
