@@ -514,12 +514,13 @@ export default class Data<
         objectMap(
           this.#targetingPredicates,
           (target, targetingKey) => ({
-            predicate: target.predicate(
-              // We haven't yet made sure that the QueryParsers
-              // and TargetingParsers have the same keys.
-              (query as any)[targetingKey],
-              query as any,
-            ),
+            predicate: () =>
+              target.predicate(
+                // We haven't yet made sure that the QueryParsers
+                // and TargetingParsers have the same keys.
+                (query as any)[targetingKey],
+                query as any,
+              ),
             requiresQuery: target.requiresQuery,
           }),
         ),
@@ -548,7 +549,7 @@ export default class Data<
     predicates: Record<
       keyof any,
       {
-        predicate: MaybePromise<(targeting: any) => MaybePromise<boolean>>
+        predicate: () => MaybePromise<(targeting: any) => MaybePromise<boolean>>
         requiresQuery: boolean
       }
     >,
@@ -567,7 +568,9 @@ export default class Data<
             }
 
             if (targetingKey in predicates) {
-              return (await predicates[targetingKey].predicate)(targetingValue)
+              return (await predicates[targetingKey].predicate())(
+                targetingValue,
+              )
             } else {
               console.warn(`Invalid targeting property ${String(targetingKey)}`)
             }
