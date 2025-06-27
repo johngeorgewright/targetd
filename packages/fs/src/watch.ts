@@ -11,13 +11,13 @@ export function watch<D extends DT.Any>(
   dir: string,
   options: WatchTreeOptions,
   onLoad: OnLoad<D>,
-): Watcher
+): WatchDisposer
 
 export function watch<D extends DT.Any>(
   data: D,
   dir: string,
   onLoad: OnLoad<D>,
-): Watcher
+): WatchDisposer
 
 export function watch<D extends DT.Any>(
   data: D,
@@ -48,12 +48,11 @@ export function watch<D extends DT.Any>(
     ),
   )
 
-  const stop: Watcher = () => unwatchTree(dir)
-  stop[Symbol.dispose] = stop
+  const stop: WatchDisposer = () => unwatchTree(dir)
 
   return stop
 }
 
-interface Watcher extends Disposable {
+interface WatchDisposer {
   (): void
 }
