@@ -1,6 +1,5 @@
 import { assertRejects, assertStrictEquals } from 'jsr:@std/assert'
 import { assertSnapshot } from 'jsr:@std/testing/snapshot'
-import { test } from 'jsr:@std/testing/bdd'
 import { setTimeout } from 'node:timers/promises'
 import z from 'zod/v4'
 import {
@@ -94,7 +93,7 @@ Deno.test('getPayload', async () => {
   )
 })
 
-test('targeting with multiple conditions', async () => {
+Deno.test('targeting with multiple conditions', async () => {
   const data = await Data.create()
     .usePayload({ foo: z.string() })
     .useTargeting({
@@ -129,7 +128,7 @@ test('targeting with multiple conditions', async () => {
   assertStrictEquals(await data.getPayload('foo'), 'bar')
 })
 
-test('targeting without requiring a query', async () => {
+Deno.test('targeting without requiring a query', async () => {
   const data = await Data.create()
     .usePayload({
       foo: z.string(),
@@ -157,7 +156,7 @@ test('targeting without requiring a query', async () => {
   assertStrictEquals(await data.getPayload('foo'), 'The time is now')
 })
 
-test('getPayloads', async (t) => {
+Deno.test('getPayloads', async (t) => {
   const data = await Data.create()
     .usePayload({
       foo: z.string(),
@@ -193,7 +192,7 @@ test('getPayloads', async (t) => {
   await assertSnapshot(t, await data.getPayloads('foo', { weather: 'sunny' }))
 })
 
-test('payload runtype validation', async (t) => {
+Deno.test('payload runtype validation', async (t) => {
   try {
     await Data.create()
       .usePayload({
@@ -212,7 +211,7 @@ test('payload runtype validation', async (t) => {
   throw new Error('Didnt error correctly')
 })
 
-test('getPayloadForEachName', async (t) => {
+Deno.test('getPayloadForEachName', async (t) => {
   const data = await Data.create()
     .usePayload({
       foo: z.string(),
@@ -273,7 +272,7 @@ test('getPayloadForEachName', async (t) => {
   )
 })
 
-test('fallThrough targeting', async (t) => {
+Deno.test('fallThrough targeting', async (t) => {
   const data = await Data.create()
     .usePayload({
       foo: z.string(),
@@ -320,7 +319,7 @@ test('fallThrough targeting', async (t) => {
   await assertSnapshot(t, data.data)
 })
 
-test('inserting data', async (t) => {
+Deno.test('inserting data', async (t) => {
   const data = await Data.create()
     .usePayload({
       moo: z.string(),
@@ -375,7 +374,7 @@ test('inserting data', async (t) => {
   )
 })
 
-test('targeting predicate with full query object', async () => {
+Deno.test('targeting predicate with full query object', async () => {
   const mungTargeting = createTargetingDescriptor({
     queryParser: z.string(),
     targetingParser: z.string().array(),
@@ -417,7 +416,7 @@ test('targeting predicate with full query object', async () => {
   )
 })
 
-test('broken', async (t) => {
+Deno.test('broken', async (t) => {
   const browserTargeting = targetIncludes(z.enum(['chrome', 'edge']))
 
   const channelTargeting = targetIncludes(z.enum(['foo', 'bar']))
