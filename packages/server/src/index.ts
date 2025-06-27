@@ -11,16 +11,19 @@ import { castQueryArrayProps } from './middleware/castQueryArrayProps.ts'
  * @param data
  * @param pathStructure Use a path structure when you want to create a route that uses request params
  */
-export function createServer<D extends DT.Any>(
+export function createServer<
+  D extends DT.Any,
+  App extends express.Express = express.Express,
+>(
   data: D | (() => D),
   {
-    app = express(),
+    app = express() as App,
     pathStructure,
   }: {
-    app?: express.Express
+    app?: App
     pathStructure?: (keyof DT.QueryParsers<D>)[]
   } = {},
-) {
+): App {
   const getData = typeof data === 'function' ? data : () => data
 
   let server = app.use(cors())
