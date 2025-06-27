@@ -7,9 +7,10 @@
     "singleQuote": true
   },
   "tasks": {
-    "test": "deno test --allow-all --trace-leaks"
+    "test": "deno test --doc --allow-all --trace-leaks"
   },
   "imports": {
+    "@myty/promise-chain": "jsr:@myty/promise-chain@^0.4.6",
     "fast-deep-equal": "npm:fast-deep-equal@^3.0.0",
     "ts-toolbelt": "npm:ts-toolbelt@^9.0.0",
     "zod": "npm:zod@^3.25.0"

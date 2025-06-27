@@ -21,7 +21,7 @@ import {
   type output,
 } from 'zod/v4/core'
 import { partial, strictObject } from 'zod/v4-mini'
-import PromisedData from './PromisedData.ts'
+import { type PromisedData, promisedData } from './PromisedData.ts'
 
 export default class Data<
   PayloadParsers extends $ZodShape,
@@ -45,7 +45,7 @@ export default class Data<
   readonly #QueryParser: ZodPartialObject<QueryParsers>
 
   static create(): PromisedData<{}, {}, {}, {}> {
-    return PromisedData.create(new Data({}, {}, {}, {}, {}, {}))
+    return promisedData(new Data({}, {}, {}, {}, {}, {}))
   }
 
   private constructor(
