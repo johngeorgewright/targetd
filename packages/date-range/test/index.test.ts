@@ -1,11 +1,10 @@
-import { test } from 'jsr:@std/testing/bdd'
+import { assertStrictEquals } from 'jsr:@std/assert'
 import { FakeTime } from 'jsr:@std/testing/time'
-import { expect } from 'jsr:@std/expect'
 import { Data } from '@targetd/api'
 import z from 'zod/v4'
 import dateRangeTargeting from '@targetd/date-range'
 
-test('date range predicate', async () => {
+Deno.test('date range predicate', async () => {
   const data = await Data.create()
     .usePayload({
       foo: z.string(),
@@ -37,28 +36,31 @@ test('date range predicate', async () => {
     ])
 
   let fakeTime = new FakeTime(new Date('1930-01-01'))
-  expect(await data.getPayload('foo', {})).toBe('bar')
+  assertStrictEquals(await data.getPayload('foo', {}), 'bar')
   fakeTime.restore()
 
   fakeTime = new FakeTime(new Date('1940-01-01'))
-  expect(await data.getPayload('foo', {})).toBe('WWII')
+  assertStrictEquals(await data.getPayload('foo', {}), 'WWII')
   fakeTime.restore()
 
   fakeTime = new FakeTime(new Date('2021-01-01'))
-  expect(await data.getPayload('foo', {})).toBe('😷')
+  assertStrictEquals(await data.getPayload('foo', {}), '😷')
   fakeTime.restore()
 
-  expect(
+  assertStrictEquals(
     await data.getPayload('foo', { dateRange: { start: '2020-01-01' } }),
-  ).toBe('😷')
+    '😷',
+  )
 
-  expect(
+  assertStrictEquals(
     await data.getPayload('foo', { dateRange: { start: '2019-01-01' } }),
-  ).toBe('😷')
+    '😷',
+  )
 
-  expect(
+  assertStrictEquals(
     await data.getPayload('foo', {
       dateRange: { start: '2019-01-01', end: '2019-12-01' },
     }),
-  ).toBe('bar')
+    'bar',
+  )
 })

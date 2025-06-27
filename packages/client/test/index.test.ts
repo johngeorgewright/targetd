@@ -1,14 +1,12 @@
+import { assertStrictEquals } from 'jsr:@std/assert'
 import { assertSnapshot } from 'jsr:@std/testing/snapshot'
-import { afterAll, beforeAll, test } from 'jsr:@std/testing/bdd'
-import { expect } from 'jsr:@std/expect'
 import { Data, targetEquals, targetIncludes } from '@targetd/api'
 import dateRangeTargeting from '@targetd/date-range'
 import { createServer } from '@targetd/server'
-import type { Server } from 'node:http'
 import type { AddressInfo } from 'node:net'
 import { setTimeout } from 'node:timers/promises'
 import z from 'zod/v4'
-import { Client, type ClientWithData } from '@targetd/client'
+import { Client } from '@targetd/client'
 
 const data = await Data.create()
   .usePayload({
@@ -62,62 +60,47 @@ const data = await Data.create()
       payload: 'bar',
     },
   ])
-  .then((data) =>
-    data.addRules('bar', [
-      {
-        payload: 123,
+  .addRules('bar', [
+    {
+      payload: 123,
+    },
+  ])
+  .addRules('timed', [
+    {
+      targeting: {
+        date: { start: '2001-01-01', end: '2010-01-01' },
       },
-    ])
-  )
-  .then((data) =>
-    data.addRules('timed', [
-      {
-        targeting: {
-          date: { start: '2001-01-01', end: '2010-01-01' },
-        },
-        payload: 'in time',
-      },
-    ])
-  )
+      payload: 'in time',
+    },
+  ])
 
-let client: ClientWithData<Awaited<typeof data>>
-let server: Server
+Deno.test('get one data point', async (t) => {
+  await using disposable = await createClient()
+  const { client } = disposable
 
-beforeAll(async () => {
-  const d = data
-  const serverResolvers = Promise.withResolvers<void>()
-  server = createServer(() => d).listen(
-    0,
-    serverResolvers.resolve,
-  )
-  await serverResolvers.promise
-  const address = server.address() as AddressInfo
-  client = new Client(`http://localhost:${address.port}`, data)
-})
-
-afterAll(() => {
-  server.close()
-})
-
-test('get one data point', async (t) => {
-  expect(await client.getPayload('foo')).toBe('bar')
-  expect(await client.getPayload('foo', { weather: 'sunny' })).toBe('😎')
-  expect(await client.getPayload('foo', { weather: 'rainy' })).toBe('☂️')
-  expect(await client.getPayload('foo', { highTide: true })).toBe('🌊')
-  expect(
+  assertStrictEquals(await client.getPayload('foo'), 'bar')
+  assertStrictEquals(await client.getPayload('foo', { weather: 'sunny' }), '😎')
+  assertStrictEquals(await client.getPayload('foo', { weather: 'rainy' }), '☂️')
+  assertStrictEquals(await client.getPayload('foo', { highTide: true }), '🌊')
+  assertStrictEquals(
     await client.getPayload('foo', { highTide: true, weather: 'sunny' }),
-  ).toBe('🏄‍♂️')
+    '🏄‍♂️',
+  )
   await assertSnapshot(t, await client.getPayload('foo', { asyncThing: true }))
   await assertSnapshot(
     t,
     await client.getPayload('timed', { date: { start: '2002-01-01' } }),
   )
-  expect(
+  assertStrictEquals(
     await client.getPayload('timed', { date: { start: '2012-01-01' } }),
-  ).toBe(undefined)
+    undefined,
+  )
 })
 
-test('get all', async (t) => {
+Deno.test('get all', async (t) => {
+  await using disposable = await createClient()
+  const { client } = disposable
+
   await assertSnapshot(t, await client.getPayloadForEachName())
   await assertSnapshot(
     t,
@@ -140,3 +123,22 @@ test('get all', async (t) => {
     await client.getPayloadForEachName({ asyncThing: true }),
   )
 })
+
+async function createClient() {
+  const app = createServer(data)
+  const { promise, resolve } = Promise.withResolvers<void>()
+  const server = app.listen(0, resolve)
+  await promise
+  const address = server.address() as AddressInfo
+  const client = new Client(`http://localhost:${address.port}`, data)
+  return {
+    client,
+    [Symbol.asyncDispose]: () =>
+      new Promise<void>((resolve, reject) => {
+        server.close((err) => {
+          if (err) reject(err)
+          else resolve()
+        })
+      }),
+  }
+}

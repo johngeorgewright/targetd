@@ -1,4 +1,4 @@
-import { expect } from 'jsr:@std/expect'
+import { assertStrictEquals } from 'jsr:@std/assert'
 import * as path from 'node:path'
 // @ts-types='npm:@types/fs-extra'
 import { copy } from 'npm:fs-extra'
@@ -20,9 +20,9 @@ Deno.test('watch', async () => {
       data,
       dirTo,
       onlySubsequentCalls(async (error, data) => {
-        expect(error).toBeNull()
-        expect(await data.getPayload('foo', {})).toBe('bar')
-        expect(await data.getPayload('b', {})).toBe('b is a letter')
+        assertStrictEquals(error, null)
+        assertStrictEquals(await data.getPayload('foo', {}), 'bar')
+        assertStrictEquals(await data.getPayload('b', {}), 'b is a letter')
         resolve()
       }),
     ),
