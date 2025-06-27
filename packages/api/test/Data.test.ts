@@ -1,6 +1,6 @@
+import { assertRejects, assertStrictEquals } from 'jsr:@std/assert'
 import { assertSnapshot } from 'jsr:@std/testing/snapshot'
 import { test } from 'jsr:@std/testing/bdd'
-import { expect } from 'jsr:@std/expect'
 import { setTimeout } from 'node:timers/promises'
 import z from 'zod/v4'
 import {
@@ -10,7 +10,7 @@ import {
   targetIncludes,
 } from '@targetd/api'
 
-test('getPayload', async () => {
+Deno.test('getPayload', async () => {
   const data = await Data.create()
     .usePayload({ 'foo': z.string() })
     .useTargeting({
@@ -60,26 +60,28 @@ test('getPayload', async () => {
       },
     ])
 
-  expect(await data.getPayload('foo')).toBe('bar')
-  expect(await data.getPayload('foo', { weather: 'sunny' })).toBe('😎')
-  expect(await data.getPayload('foo', { weather: 'rainy' })).toBe('☂️')
-  expect(await data.getPayload('foo', { highTide: true })).toBe('🌊')
-  expect(
+  assertStrictEquals(await data.getPayload('foo'), 'bar')
+  assertStrictEquals(await data.getPayload('foo', { weather: 'sunny' }), '😎')
+  assertStrictEquals(await data.getPayload('foo', { weather: 'rainy' }), '☂️')
+  assertStrictEquals(await data.getPayload('foo', { highTide: true }), '🌊')
+  assertStrictEquals(
     await data.getPayload('foo', { highTide: true, weather: 'sunny' }),
-  ).toBe('🏄‍♂️')
-  expect(await data.getPayload('foo', { asyncThing: true })).toBe(
+    '🏄‍♂️',
+  )
+  assertStrictEquals(
+    await data.getPayload('foo', { asyncThing: true }),
     'Async payload',
   )
 
   // @ts-expect-error Mung data type does not exist
   await data.getPayload('mung')
 
-  await expect(
+  await assertRejects(() =>
     // @ts-expect-error 'nonExistantKey' is not a queriable value
-    data.getPayload('foo', { nonExistantKey: 'some value' }),
-  ).rejects.toThrow()
+    data.getPayload('foo', { nonExistantKey: 'some value' })
+  )
 
-  await expect(
+  await assertRejects(() =>
     data.addRules('foo', [
       {
         targeting: {
@@ -88,8 +90,8 @@ test('getPayload', async () => {
         },
         payload: 'error',
       },
-    ]),
-  ).rejects.toThrow()
+    ])
+  )
 })
 
 test('targeting with multiple conditions', async () => {
@@ -116,13 +118,15 @@ test('targeting with multiple conditions', async () => {
       },
     ])
 
-  expect(await data.getPayload('foo', { weather: 'sunny' })).toBe(
+  assertStrictEquals(
+    await data.getPayload('foo', { weather: 'sunny' }),
     'The time is now',
   )
-  expect(await data.getPayload('foo', { highTide: true })).toBe(
+  assertStrictEquals(
+    await data.getPayload('foo', { highTide: true }),
     'The time is now',
   )
-  expect(await data.getPayload('foo')).toBe('bar')
+  assertStrictEquals(await data.getPayload('foo'), 'bar')
 })
 
 test('targeting without requiring a query', async () => {
@@ -150,7 +154,7 @@ test('targeting without requiring a query', async () => {
       },
     ])
 
-  expect(await data.getPayload('foo')).toBe('The time is now')
+  assertStrictEquals(await data.getPayload('foo'), 'The time is now')
 })
 
 test('getPayloads', async (t) => {
@@ -405,9 +409,12 @@ test('targeting predicate with full query object', async () => {
       },
     ])
 
-  expect(await data.getPayload('foo')).toBe(undefined)
-  expect(await data.getPayload('foo', { mung: 'mung' })).toBe(undefined)
-  expect(await data.getPayload('foo', { bar: true, mung: 'mung' })).toBe('yay')
+  assertStrictEquals(await data.getPayload('foo'), undefined)
+  assertStrictEquals(await data.getPayload('foo', { mung: 'mung' }), undefined)
+  assertStrictEquals(
+    await data.getPayload('foo', { bar: true, mung: 'mung' }),
+    'yay',
+  )
 })
 
 test('broken', async (t) => {
