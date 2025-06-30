@@ -7,6 +7,7 @@ import type { AddressInfo } from 'node:net'
 import { setTimeout } from 'node:timers/promises'
 import z from 'zod/v4'
 import { Client } from '@targetd/client'
+import { promisify } from 'node:util'
 
 const data = await Data.create()
   .usePayload({
@@ -133,12 +134,6 @@ async function createClient() {
   const client = new Client(`http://localhost:${address.port}`, data)
   return {
     client,
-    [Symbol.asyncDispose]: () =>
-      new Promise<void>((resolve, reject) => {
-        server.close((err) => {
-          if (err) reject(err)
-          else resolve()
-        })
-      }),
+    [Symbol.asyncDispose]: promisify(server.close.bind(server)),
   }
 }

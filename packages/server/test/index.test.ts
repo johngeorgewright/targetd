@@ -7,6 +7,7 @@ import { setTimeout } from 'node:timers/promises'
 import request from 'npm:supertest'
 import z from 'zod/v4'
 import { createServer } from '@targetd/server'
+import { promisify } from 'node:util'
 
 Deno.test('get one data point', async () => {
   await using disposable = await createDisposableServer()
@@ -121,13 +122,7 @@ async function createDisposableServer() {
   await promise
   return {
     server,
-    [Symbol.asyncDispose]: () =>
-      new Promise<void>((resolve, reject) => {
-        server.close((err) => {
-          if (err) reject(err)
-          else resolve()
-        })
-      }),
+    [Symbol.asyncDispose]: promisify(server.close.bind(server)),
   }
 }
 
