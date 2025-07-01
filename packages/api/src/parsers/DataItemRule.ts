@@ -12,6 +12,71 @@ import {
 import type { ZodPartialObject } from '../types.ts'
 import type { $strict, $ZodShape, $ZodType, output } from 'zod/v4/core'
 
+/**
+ * Parses a single item rule.
+ *
+ * @example
+ * Payload only rules
+ * ```ts
+ * import { equal, assertThrows } from 'jsr:@std/assert'
+ * import { z } from 'zod/v4-mini'
+ * const dataItemRuleParser = DataItemRuleParser(
+ *   z.number(),
+ *   {},
+ *   {}
+ * )
+ * equal(
+ *   z.parse(dataItemRuleParser, { payload: 123 }),
+ *   { payload: 123 }
+ * )
+ * assertThrows(() => z.parse(dataItemRuleParser, {}))
+ * assertThrows(() => z.parse(dataItemRuleParser, { payload: '123' }))
+ * ```
+ *
+ * With targeting.
+ * ```ts
+ * import { equal } from 'jsr:@std/assert'
+ * import { z } from 'zod/v4-mini'
+ * const dataItemRuleParser = DataItemRuleParser(
+ *   z.number(),
+ *   { foo: z.array(z.string()) },
+ *   {}
+ * )
+ * equal(
+ *   z.parse(dataItemRuleParser, {
+ *     targeting: { foo: ['bar'] },
+ *     payload: 123
+ *   }),
+ *   {
+ *     targeting: { foo: ['bar'] },
+ *     payload: 123
+ *   }
+ * )
+ * ```
+ *
+ * With fall through targeting:
+ * ```ts
+ * import { assertThrows, equal } from 'jsr:@std/assert'
+ * import { z } from 'zod/v4-mini'
+ * const dataItemRuleParser = DataItemRuleParser(
+ *   z.number(),
+ *   {},
+ *   { foo: z.array(z.string()) },
+ * )
+ * equal(
+ *   z.parse(dataItemRuleParser, {
+ *     fallThrough: [{ targeting: { foo: ['bar'] }, payload: 123 }],
+ *   }),
+ *   {
+ *     fallThrough: [{ targeting: { foo: ['bar'] }, payload: 123 }],
+ *   }
+ * )
+ * assertThrows(() => z.parse(dataItemRuleParser, {
+ *   targeting: { foo: ['bar'] },
+ *   fallThrough: [{ payload: 123 }]
+ * }))
+ * ```
+ */
 export function DataItemRuleParser<
   P extends $ZodType,
   T extends $ZodShape,

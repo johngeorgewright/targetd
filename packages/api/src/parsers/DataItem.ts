@@ -6,6 +6,15 @@ import {
   DataItemRulesParser,
 } from './DataItemRules.ts'
 
+/**
+ * Parses an "item".
+ *
+ * An item, within the Data class, contains all the details of that piece
+ * of data.
+ *
+ * @remarks
+ * Currently this is just restricted to `rules`.
+ */
 export function DataItemParser<
   P extends $ZodType,
   T extends $ZodShape,
@@ -31,6 +40,9 @@ export type DataItemParser<
   $strict
 >
 
+/**
+ * The data shape expected for {@link DataItemParser} inputs.
+ */
 export interface DataItemIn<
   Payload extends $ZodType,
   Targeting extends $ZodShape,
@@ -39,6 +51,9 @@ export interface DataItemIn<
   rules: DataItemRulesIn<Payload, Targeting, FallThroughTargeting>
 }
 
+/**
+ * The data shape expected for {@link DataItemParser} outputs.
+ */
 export interface DataItemOut<
   Payload extends $ZodType,
   Targeting extends $ZodShape,

@@ -22,6 +22,40 @@ import {
 } from 'zod/v4-mini'
 import type { $InferObjectOutput, $ZodShape, $ZodType } from 'zod/v4/core'
 
+/**
+ * Parses an item's `rules` field.
+ *
+ * @remarks
+ * This will transform rules in to fallthrough rules where needed.
+ *
+ * @example
+ * ```ts
+ * import { equal, assertThrows } from 'jsr:@std/assert'
+ * import { z } from 'zod/v4-mini'
+ * const dataItemRulesParser = DataItemRulesParser(
+ *   z.number(),
+ *   { foo: z.string() },
+ *   { bar: z.string() }
+ * )
+ * equal(
+ *   z.parse(dataItemRulesParser, [
+ *     { targeting: { foo: 'foo', bar: 'bar' }, payload: 123 },
+ *     { targeting: { foo: 'foo' }, payload: 456 },
+ *     { payload: 789 },
+ *   ]),
+ *   [
+ *     {
+ *       targeting: { foo: 'foo' },
+ *       fallThrough: [
+ *         { targeting: { bar: 'bar' }, payload: 123 },
+ *         { payload: 456 }
+ *       ],
+ *     },
+ *     { payload: 789 },
+ *   ]
+ * )
+ * ```
+ */
 export function DataItemRulesParser<
   P extends $ZodType,
   T extends $ZodShape,
@@ -42,13 +76,13 @@ export function DataItemRulesParser<
       ): DataItemRule<P, T, FTT, false>[] => {
         const singularTargetedRules = spreadMultiTargetsToSeparateRules(rules)
 
-        let $rules: DataItemRule<P, T, FTT, false>[] = []
+        let transformedRules: DataItemRule<P, T, FTT, false>[] = []
 
         for (const rule of singularTargetedRules) {
-          const prevRule = arrayLast($rules)
+          const prevRule = arrayLast(transformedRules)
 
           if (!prevRule) {
-            $rules.push(
+            transformedRules.push(
               adaptRule(targetingParsers, fallThroughTargetingParsers, rule),
             )
             continue
@@ -75,15 +109,18 @@ export function DataItemRulesParser<
 
             adaptedPrevRule.fallThrough.push(...adaptedRule.fallThrough)
 
-            $rules = [...$rules.slice(0, -1), adaptedPrevRule]
+            transformedRules = [
+              ...transformedRules.slice(0, -1),
+              adaptedPrevRule,
+            ]
           } else {
-            $rules.push(
+            transformedRules.push(
               adaptRule(targetingParsers, fallThroughTargetingParsers, rule),
             )
           }
         }
 
-        return $rules
+        return transformedRules
       },
     ),
   )

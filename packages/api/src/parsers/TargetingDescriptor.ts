@@ -1,6 +1,9 @@
 import type { $ZodType } from 'zod/v4/core'
 import type TargetingPredicate from './TargetingPredicate.ts'
 
+/**
+ * Instructions on a targeting field.
+ */
 export default interface TargetingDescriptor<
   TV extends $ZodType,
   QV extends $ZodType,

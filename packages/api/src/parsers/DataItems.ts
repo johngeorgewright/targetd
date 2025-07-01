@@ -7,6 +7,28 @@ import {
 import { partial, strictObject } from 'zod/v4-mini'
 import type { $strict, $ZodShape } from 'zod/v4/core'
 
+/**
+ * Parses all items in a Data class.
+ *
+ * @example
+ * ```ts
+ * import { equal, assertThrows } from 'jsr:@std/assert'
+ * import { z } from 'zod/v4-mini'
+ * const dataItemsParser = DataItemsParser(
+ *   { a: z.number() },
+ *   { foo: z.string() },
+ *   {},
+ * )
+ * equal(
+ *   z.parse(dataItemsParser, {
+ *     a: { rules: [{ targeting: { foo: 'bar' }, payload: 123 }] }
+ *   }),
+ *   {
+ *     a: { rules: [{ targeting: { foo: 'bar' }, payload: 123 }] }
+ *   }
+ * )
+ * ```
+ */
 export function DataItemsParser<
   D extends $ZodShape,
   T extends $ZodShape,
