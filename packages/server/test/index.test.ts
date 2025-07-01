@@ -8,10 +8,10 @@ import request from 'npm:supertest'
 import z from 'zod/v4'
 import { createServer } from '@targetd/server'
 import { promisify } from 'node:util'
+import type { Server } from 'node:http'
 
 Deno.test('get one data point', async () => {
-  await using disposable = await createDisposableServer()
-  const { server } = disposable
+  await using server = await createDisposableServer()
 
   await request(server)
     .get('/foo')
@@ -72,11 +72,31 @@ Deno.test('get one data point', async () => {
     .expect('Content-Type', /json/)
     .expect(200)
     .expect('"b t\'ing"')
+
+  await request(server)
+    .get('/foo?weather=rainy&weather=sunny')
+    .expect(400)
+    .expect(JSON.stringify(
+      {
+        name: '$ZodError',
+        message: [
+          {
+            'expected': 'string',
+            'code': 'invalid_type',
+            'path': [
+              'weather',
+            ],
+            'message': 'Invalid input: expected string, received array',
+          },
+        ],
+      },
+      null,
+      2,
+    ))
 })
 
 Deno.test('get all', async (t) => {
-  await using disposable = await createDisposableServer()
-  const { server } = disposable
+  await using server = await createDisposableServer()
 
   let response = await request(server)
     .get('/')
@@ -115,15 +135,13 @@ Deno.test('get all', async (t) => {
   await assertSnapshot(t, response.body)
 })
 
-async function createDisposableServer() {
+async function createDisposableServer(): Promise<Server & AsyncDisposable> {
   const app = createServer(await createData())
   const { promise, resolve } = Promise.withResolvers<void>()
   const server = app.listen(0, resolve)
   await promise
-  return {
-    server,
-    [Symbol.asyncDispose]: promisify(server.close.bind(server)),
-  }
+  server[Symbol.asyncDispose] = promisify(server.close.bind(server))
+  return server
 }
 
 async function createData() {

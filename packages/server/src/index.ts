@@ -8,7 +8,6 @@ import { StatusError } from './StatusError.ts'
 import { castQueryArrayProps } from './middleware/castQueryArrayProps.ts'
 
 /**
- * @param data
  * @param pathStructure Use a path structure when you want to create a route that uses request params
  */
 export function createServer<
