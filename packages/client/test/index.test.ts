@@ -6,7 +6,7 @@ import { createServer } from '@targetd/server'
 import type { AddressInfo } from 'node:net'
 import { setTimeout } from 'node:timers/promises'
 import z from 'zod/v4'
-import { Client } from '@targetd/client'
+import { Client, type ClientWithData } from '@targetd/client'
 import { promisify } from 'node:util'
 
 const data = await Data.create()
@@ -125,7 +125,9 @@ Deno.test('get all', async (t) => {
   )
 })
 
-async function createClient() {
+async function createClient(): Promise<
+  AsyncDisposable & { client: ClientWithData<typeof data> }
+> {
   const app = createServer(data)
   const { promise, resolve } = Promise.withResolvers<void>()
   const server = app.listen(0, resolve)

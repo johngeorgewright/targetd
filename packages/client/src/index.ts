@@ -1,5 +1,6 @@
 import type { Data, DT, PT, StaticRecord } from '@targetd/api'
 import type { $ZodShape } from 'zod/v4/core'
+import { queryToURLSearchParams } from './queryToURLSearchParams.ts'
 
 export class Client<
   PayloadParsers extends $ZodShape,
@@ -80,37 +81,10 @@ export class Client<
 }
 
 export type ClientWithData<
-  D extends Data<any, any, any, any>,
+  D extends DT.Any,
 > = Client<
   DT.PayloadParsers<D>,
   DT.TargetingParsers<D>,
   DT.QueryParsers<D>,
   DT.FallThroughTargetingParsers<D>
 >
-
-function queryToURLSearchParams(query: Record<string, unknown>) {
-  const urlSearchParams = new URLSearchParams()
-  for (const [key, value] of Object.entries(query)) {
-    for (const [n, v] of queryValueToParams(key, value)) {
-      urlSearchParams.append(n, v)
-    }
-  }
-  return urlSearchParams
-}
-
-function* queryValueToParams(
-  key: string,
-  value: unknown,
-): Generator<[string, string]> {
-  if (Array.isArray(value)) {
-    for (const item of value) yield* queryValueToParams(key, item)
-  } else if (isObject(value)) {
-    for (const [k, v] of Object.entries(value)) {
-      yield* queryValueToParams(`${key}[${k}]`, v)
-    }
-  } else yield [key, String(value)]
-}
-
-function isObject(x: unknown): x is Record<string, unknown> {
-  return typeof x === 'object' && x !== null
-}
