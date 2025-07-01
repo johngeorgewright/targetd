@@ -1,16 +1,14 @@
 export { default as Data } from './Data.ts'
 export { DataItemParser } from './parsers/DataItem.ts'
-export { DataItemRuleParser } from './parsers/DataItemRule.ts'
 export { DataItemsParser } from './parsers/DataItems.ts'
+export { DataItemRuleParser } from './parsers/DataItemRule.ts'
+export { DataItemRulesParser } from './parsers/DataItemRules.ts'
 export { default as createTargetingDescriptor } from './createTargetingDescriptor.ts'
 export type { default as TargetingDescriptor } from './parsers/TargetingDescriptor.ts'
 export type { default as TargetingPredicate } from './parsers/TargetingPredicate.ts'
 export type { default as TargetingPredicates } from './parsers/TargetingPredicates.ts'
-export { equalsPredicate, targetEquals } from './predicates/equals.ts'
-export {
-  targetIncludes,
-  targetIncludesPredicate,
-} from './predicates/targetIncludes.ts'
+export { targetEquals } from './predicates/equals.ts'
+export { targetIncludes } from './predicates/targetIncludes.ts'
 export type { StaticRecord } from './types.ts'
 export type * as DT from './types/Data.ts'
 export type * as FTTT from './types/FallThroughTargeting.ts'
