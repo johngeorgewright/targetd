@@ -1,6 +1,5 @@
 import { assertStrictEquals } from 'jsr:@std/assert'
 import * as path from 'node:path'
-// @ts-types='npm:@types/fs-extra'
 import { copy } from 'npm:fs-extra'
 import { data } from './fixtures/data.ts'
 import { watch } from '@targetd/fs'
@@ -37,12 +36,9 @@ Deno.test('watch', async () => {
 function onlySubsequentCalls<Args extends unknown[]>(
   fn: (...args: Args) => Promise<void>,
 ) {
-  let firstCall = false
-  return (...args: Args) => {
-    if (!firstCall) {
-      firstCall = true
-      return
-    }
-    return fn(...args)
+  let $fn: (...args: Args) => Promise<void> = () => {
+    $fn = fn
+    return Promise.resolve()
   }
+  return (...args: Args) => $fn(...args)
 }
