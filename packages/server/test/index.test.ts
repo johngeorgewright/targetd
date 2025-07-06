@@ -79,19 +79,21 @@ Deno.test('get one data point', async () => {
     .expect(JSON.stringify(
       {
         name: '$ZodError',
-        message: [
-          {
-            'expected': 'string',
-            'code': 'invalid_type',
-            'path': [
-              'weather',
-            ],
-            'message': 'Invalid input: expected string, received array',
-          },
-        ],
+        message: JSON.stringify(
+          [
+            {
+              'expected': 'string',
+              'code': 'invalid_type',
+              'path': [
+                'weather',
+              ],
+              'message': 'Invalid input: expected string, received array',
+            },
+          ],
+          null,
+          2,
+        ),
       },
-      null,
-      2,
     ))
 })
 
