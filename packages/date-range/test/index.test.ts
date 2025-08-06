@@ -43,7 +43,7 @@ Deno.test('date range predicate', async () => {
   await assertUsingRange({ start: '2019-01-01', end: '2019-12-01' }, 'bar')
 
   async function assertUsingFakeTime(iso: string, expectation: string) {
-    using _ = fakeTime(iso)
+    using _fakeTime = setTime(iso)
     assertStrictEquals(await data.getPayload('foo'), expectation)
   }
 
@@ -60,7 +60,7 @@ Deno.test('date range predicate', async () => {
   }
 })
 
-function fakeTime(iso: string): Disposable {
+function setTime(iso: string) {
   const fakeTime = new FakeTime(iso)
   return { [Symbol.dispose]: () => fakeTime.restore() }
 }
