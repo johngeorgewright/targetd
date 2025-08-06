@@ -1,7 +1,6 @@
 import type { DT } from '@targetd/api'
 import cors from 'cors'
 import express from 'express'
-import './middleware/query-types.d.ts'
 import { errorHandler } from './middleware/error.ts'
 import { StatusError } from './StatusError.ts'
 import { castQueryArrayProps } from './middleware/castQueryArrayProps.ts'
