@@ -4,7 +4,7 @@ import { Data } from '@targetd/api'
 import z from 'zod/v4'
 import dateRangeTargeting from '@targetd/date-range'
 
-Deno.test('date range predicate', async (t) => {
+Deno.test('date range predicate', async () => {
   const data = await Data.create()
     .usePayload({
       foo: z.string(),
@@ -35,37 +35,29 @@ Deno.test('date range predicate', async (t) => {
       },
     ])
 
-  await t.step('1930-01-01', async () => {
-    using _ = fakeTime('1930-01-01')
-    assertStrictEquals(await data.getPayload('foo', {}), 'bar')
-  })
+  await assertUsingFakeTime('1930-01-01', 'bar')
+  await assertUsingFakeTime('1940-01-01', 'WWII')
+  await assertUsingFakeTime('2021-01-01', '😷')
+  await assertUsingRange({ start: '2020-01-01' }, '😷')
+  await assertUsingRange({ start: '2019-01-01' }, '😷')
+  await assertUsingRange({ start: '2019-01-01', end: '2019-12-01' }, 'bar')
 
-  await t.step('1940-01-01', async () => {
-    using _ = fakeTime('1940-01-01')
-    assertStrictEquals(await data.getPayload('foo', {}), 'WWII')
-  })
+  async function assertUsingFakeTime(iso: string, expectation: string) {
+    using _ = fakeTime(iso)
+    assertStrictEquals(await data.getPayload('foo'), expectation)
+  }
 
-  await t.step('2021-01-01', async () => {
-    using _ = fakeTime('2021-01-01')
-    assertStrictEquals(await data.getPayload('foo', {}), '😷')
-  })
-
-  assertStrictEquals(
-    await data.getPayload('foo', { dateRange: { start: '2020-01-01' } }),
-    '😷',
-  )
-
-  assertStrictEquals(
-    await data.getPayload('foo', { dateRange: { start: '2019-01-01' } }),
-    '😷',
-  )
-
-  assertStrictEquals(
-    await data.getPayload('foo', {
-      dateRange: { start: '2019-01-01', end: '2019-12-01' },
-    }),
-    'bar',
-  )
+  async function assertUsingRange(
+    dateRange: NonNullable<
+      Required<Parameters<typeof data.getPayload>[1]>
+    >['dateRange'],
+    expectation: string,
+  ) {
+    assertStrictEquals(
+      await data.getPayload('foo', { dateRange }),
+      expectation,
+    )
+  }
 })
 
 function fakeTime(iso: string): Disposable {
