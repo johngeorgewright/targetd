@@ -16,7 +16,7 @@ import type * as QT from './types/Query.ts'
 import {
   type $InferObjectOutput,
   type $strict,
-  $ZodOptional,
+  type $ZodOptional,
   type $ZodShape,
   $ZodType,
   type output,
