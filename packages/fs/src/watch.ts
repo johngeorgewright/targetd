@@ -1,6 +1,5 @@
 import type { DT } from '@targetd/api'
-import _ from 'lodash'
-import throat from 'throat'
+import { debounce, Mutex } from '@es-toolkit/es-toolkit'
 import { type Options as WatchTreeOptions, unwatchTree, watchTree } from 'watch'
 import { load, pathIsLoadable } from './load.ts'
 
@@ -27,6 +26,7 @@ export function watch<D extends DT.Any>(
 ) {
   const options = onLoadParam ? optionsOrOnLoad : {}
   const onLoad = (onLoadParam || optionsOrOnLoad) as OnLoad<D>
+  const mutex = new MutexResource()
 
   watchTree(
     dir,
@@ -34,16 +34,16 @@ export function watch<D extends DT.Any>(
       filter: pathIsLoadable,
       ...options,
     },
-    _.debounce(
-      throat.default(1, async () => {
+    debounce(
+      async () => {
+        using _mutexDisposable = await mutex.use()
         try {
-          data = (await load(data.removeAllRules(), dir)) as D
+          data = await load(data.removeAllRules(), dir) as D
         } catch (error: any) {
           return onLoad(error, data)
         }
-
         onLoad(null, data)
-      }),
+      },
       300,
     ),
   )
@@ -55,4 +55,11 @@ export function watch<D extends DT.Any>(
 
 interface WatchDisposer {
   (): void
+}
+
+class MutexResource extends Mutex {
+  async use(): Promise<Disposable> {
+    await this.acquire()
+    return { [Symbol.dispose]: () => this.release() }
+  }
 }
