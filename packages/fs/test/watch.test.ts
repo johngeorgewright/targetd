@@ -1,6 +1,6 @@
 import { assertStrictEquals } from 'jsr:@std/assert'
 import * as path from 'node:path'
-import { copy } from 'npm:fs-extra'
+import { copy } from 'jsr:@std/fs/copy'
 import { data } from './fixtures/data.ts'
 import { watch } from '@targetd/fs'
 
@@ -28,7 +28,9 @@ Deno.test('watch', async () => {
     (stopWatching) => stopWatching(),
   )
 
-  copy(path.join(import.meta.dirname ?? '', 'fixtures', 'rules'), dirTo)
+  copy(path.join(import.meta.dirname ?? '', 'fixtures', 'rules'), dirTo, {
+    overwrite: true,
+  })
 
   await promise
 })
