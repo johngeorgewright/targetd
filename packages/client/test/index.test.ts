@@ -76,8 +76,8 @@ const data = await Data.create()
   ])
 
 Deno.test('get one data point', async (t) => {
-  await using disposable = await createClient()
-  const { client } = disposable
+  await using service = await startService()
+  const { client } = service
 
   assertStrictEquals(await client.getPayload('foo'), 'bar')
   assertStrictEquals(await client.getPayload('foo', { weather: 'sunny' }), '😎')
@@ -99,8 +99,8 @@ Deno.test('get one data point', async (t) => {
 })
 
 Deno.test('get all', async (t) => {
-  await using disposable = await createClient()
-  const { client } = disposable
+  await using service = await startService()
+  const { client } = service
 
   await assertSnapshot(t, await client.getPayloadForEachName())
   await assertSnapshot(
@@ -125,7 +125,7 @@ Deno.test('get all', async (t) => {
   )
 })
 
-async function createClient(): Promise<
+async function startService(): Promise<
   AsyncDisposable & { client: ClientWithData<typeof data> }
 > {
   const app = createServer(data)
