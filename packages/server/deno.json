@@ -4,12 +4,13 @@
   "exports": "./src/index.ts",
   "imports": {
     "@johngw/error": "npm:@johngw/error@^2.2.2",
-    "@types/express": "npm:@types/express@^4.17.23",
+    "@types/express": "npm:@types/express@^5.0.3",
+    "@types/qs": "npm:@types/qs@^6.14.0",
     "cors": "npm:cors@^2.8.5",
-    "express": "npm:express@^4.18.3",
+    "express": "npm:express@^5.1.0",
     "express-query-boolean": "npm:express-query-boolean@^2.0.0",
-    "query-types": "npm:query-types@^0.1.4",
-    "zod": "npm:zod@^3.25.0"
+    "qs": "npm:qs@^6.14.0",
+    "zod": "npm:zod@^4.0.15"
   },
   "fmt": {
     "semiColons": false,

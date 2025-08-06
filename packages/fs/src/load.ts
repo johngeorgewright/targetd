@@ -2,7 +2,7 @@ import fs from '@johngw/fs'
 import type { WithFileNamesResult } from '@johngw/fs/dist/readFiles'
 import type { DT } from '@targetd/api'
 import YAML from 'yaml'
-import { array, object, optional, strictObject, string, unknown } from 'zod/v4'
+import { array, object, optional, strictObject, string, unknown } from 'zod'
 import type { output } from 'zod/v4/core'
 
 const FileData = object({ $schema: optional(string()) }).catchall(

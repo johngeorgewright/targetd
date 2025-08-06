@@ -5,7 +5,7 @@ import _ from 'npm:lodash'
 import { setTimeout } from 'node:timers/promises'
 // @ts-types='npm:@types/supertest'
 import request from 'npm:supertest'
-import z from 'zod/v4'
+import z from 'zod'
 import { createServer } from '@targetd/server'
 import { promisify } from 'node:util'
 import type { Server } from 'node:http'
@@ -16,62 +16,62 @@ Deno.test('get one data point', async () => {
   await request(server)
     .get('/foo')
     .expect('Content-Type', /json/)
-    .expect(200)
     .expect('"bar"')
+    .expect(200)
 
   await request(server)
     .get('/foo?weather=sunny')
     .expect('Content-Type', /json/)
-    .expect(200)
     .expect('"😎"')
+    .expect(200)
 
   await request(server)
     .get('/foo?weather=rainy')
     .expect('Content-Type', /json/)
-    .expect(200)
     .expect('"☂️"')
+    .expect(200)
 
   await request(server)
     .get('/foo?highTide=true')
     .expect('Content-Type', /json/)
-    .expect(200)
     .expect('"🌊"')
+    .expect(200)
 
   await request(server)
     .get('/foo?highTide=true&weather=sunny')
     .expect('Content-Type', /json/)
-    .expect(200)
     .expect('"🏄‍♂️"')
+    .expect(200)
 
   await request(server)
     .get('/foo?asyncThing=true')
     .expect('Content-Type', /json/)
-    .expect(200)
     .expect('"Async payload"')
+    .expect(200)
 
   await request(server)
     .get('/timed?date[start]=2002-01-01')
     .expect('Content-Type', /json/)
-    .expect(200)
     .expect('"in time"')
+    .expect(200)
 
   await request(server)
     .get('/timed?date[start]=2012-01-01')
     .expect('Content-Type', /json/)
-    .expect(200)
     .expect('"out of time"')
+    .expect(200)
 
   await request(server)
     .get('/foo?arrayThing=a')
     .expect('Content-Type', /json/)
-    .expect(200)
     .expect('"a t\'ing"')
+    .expect(200)
 
   await request(server)
     .get('/foo?arrayThing=a&arrayThing=b')
     .expect('Content-Type', /json/)
-    .expect(200)
     .expect('"b t\'ing"')
+    .expect(200)
 
   await request(server)
     .get('/foo?weather=rainy&weather=sunny')
@@ -139,8 +139,8 @@ Deno.test('get all', async (t) => {
 
 async function createDisposableServer(): Promise<Server & AsyncDisposable> {
   const app = createServer(await createData())
-  const { promise, resolve } = Promise.withResolvers<void>()
-  const server = app.listen(0, resolve)
+  const { promise, reject, resolve } = Promise.withResolvers<void>()
+  const server = app.listen(0, (error) => error ? reject(error) : resolve())
   await promise
   server[Symbol.asyncDispose] = promisify(server.close.bind(server))
   return server

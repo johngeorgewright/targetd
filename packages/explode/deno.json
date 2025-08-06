@@ -5,7 +5,7 @@
   "imports": {
     "flat": "npm:flat@^6.0.1",
     "ts-toolbelt": "npm:ts-toolbelt@^9.0.0",
-    "zod": "npm:zod@^3.25.0"
+    "zod": "npm:zod@^4.0.15"
   },
   "fmt": {
     "semiColons": false,

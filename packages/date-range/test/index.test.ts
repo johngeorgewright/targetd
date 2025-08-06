@@ -1,7 +1,7 @@
 import { assertStrictEquals } from 'jsr:@std/assert'
 import { FakeTime } from 'jsr:@std/testing/time'
 import { Data } from '@targetd/api'
-import z from 'zod/v4'
+import z from 'zod'
 import dateRangeTargeting from '@targetd/date-range'
 
 Deno.test('date range predicate', async () => {

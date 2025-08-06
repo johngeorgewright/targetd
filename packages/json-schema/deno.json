@@ -7,8 +7,8 @@
   },
   "imports": {
     "@types/yargs": "npm:@types/yargs@^17.0.33",
-    "yargs": "npm:yargs@^17.7.2",
-    "zod": "npm:zod@^3.25.0"
+    "yargs": "npm:yargs@^18.0.0",
+    "zod": "npm:zod@^4.0.15"
   },
   "fmt": {
     "semiColons": false,

@@ -5,7 +5,7 @@ import dateRangeTargeting from '@targetd/date-range'
 import { createServer } from '@targetd/server'
 import type { AddressInfo } from 'node:net'
 import { setTimeout } from 'node:timers/promises'
-import z from 'zod/v4'
+import z from 'zod'
 import { Client, type ClientWithData } from '@targetd/client'
 import { promisify } from 'node:util'
 
@@ -129,8 +129,8 @@ async function startService(): Promise<
   AsyncDisposable & { client: ClientWithData<typeof data> }
 > {
   const app = createServer(data)
-  const { promise, resolve } = Promise.withResolvers<void>()
-  const server = app.listen(0, resolve)
+  const { promise, reject, resolve } = Promise.withResolvers<void>()
+  const server = app.listen(0, (error) => error ? reject(error) : resolve())
   await promise
   const address = server.address() as AddressInfo
   const client = new Client(`http://localhost:${address.port}`, data)

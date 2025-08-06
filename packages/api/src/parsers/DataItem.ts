@@ -1,4 +1,4 @@
-import { strictObject, type ZodMiniObject } from 'zod/v4-mini'
+import { strictObject, type ZodMiniObject } from 'zod/mini'
 import type { $strict, $ZodShape, $ZodType } from 'zod/v4/core'
 import {
   type DataItemRulesIn,

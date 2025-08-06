@@ -8,7 +8,7 @@ import {
   type ZodMiniObject,
   type ZodMiniOptional,
   type ZodMiniUnion,
-} from 'zod/v4-mini'
+} from 'zod/mini'
 import type { ZodPartialObject } from '../types.ts'
 import type { $strict, $ZodShape, $ZodType, output } from 'zod/v4/core'
 
@@ -19,7 +19,7 @@ import type { $strict, $ZodShape, $ZodType, output } from 'zod/v4/core'
  * Payload only rules
  * ```ts
  * import { equal, assertThrows } from 'jsr:@std/assert'
- * import { z } from 'zod/v4-mini'
+ * import { z } from 'zod/mini'
  * const dataItemRuleParser = DataItemRuleParser(
  *   z.number(),
  *   {},
@@ -36,7 +36,7 @@ import type { $strict, $ZodShape, $ZodType, output } from 'zod/v4/core'
  * With targeting.
  * ```ts
  * import { equal } from 'jsr:@std/assert'
- * import { z } from 'zod/v4-mini'
+ * import { z } from 'zod/mini'
  * const dataItemRuleParser = DataItemRuleParser(
  *   z.number(),
  *   { foo: z.array(z.string()) },
@@ -57,7 +57,7 @@ import type { $strict, $ZodShape, $ZodType, output } from 'zod/v4/core'
  * With fall through targeting:
  * ```ts
  * import { assertThrows, equal } from 'jsr:@std/assert'
- * import { z } from 'zod/v4-mini'
+ * import { z } from 'zod/mini'
  * const dataItemRuleParser = DataItemRuleParser(
  *   z.number(),
  *   {},

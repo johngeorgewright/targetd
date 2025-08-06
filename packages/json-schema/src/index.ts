@@ -1,5 +1,5 @@
 import { DataItemParser, DataItemsParser, type DT } from '@targetd/api'
-import { extend, optional, string, toJSONSchema } from 'zod/v4-mini'
+import { extend, optional, string, toJSONSchema } from 'zod/mini'
 
 export function dataJSONSchemas<D extends DT.Any>(data: D) {
   return toJSONSchema(

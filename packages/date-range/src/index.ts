@@ -1,5 +1,5 @@
 import { createTargetingDescriptor } from '@targetd/api'
-import { array, partial, regex, strictObject, string, union } from 'zod/v4-mini'
+import { array, partial, regex, strictObject, string, union } from 'zod/mini'
 import type { output } from 'zod/v4/core'
 
 const ISODateTime = string().check(

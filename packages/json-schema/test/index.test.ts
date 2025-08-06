@@ -1,7 +1,7 @@
 import { assertSnapshot } from 'jsr:@std/testing/snapshot'
 import { Data, targetIncludes } from '@targetd/api'
 import { dataJSONSchemas } from '@targetd/json-schema'
-import { z } from 'zod/v4'
+import { z } from 'zod'
 
 Deno.test('json schema for simple data object', async (t) => {
   await assertSnapshot(

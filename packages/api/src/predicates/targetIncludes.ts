@@ -1,6 +1,6 @@
 import type TargetingDescriptor from '../parsers/TargetingDescriptor.ts'
 import type { $ZodType } from 'zod/v4/core'
-import { array, type ZodMiniArray } from 'zod/v4-mini'
+import { array, type ZodMiniArray } from 'zod/mini'
 
 /**
  * Targeting can contain a singular query value.

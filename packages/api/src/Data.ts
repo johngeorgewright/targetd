@@ -3,7 +3,7 @@ import { objectEveryAsync, objectKeys, objectMap } from './util.ts'
 import { type DataItemsOut, DataItemsParser } from './parsers/DataItems.ts'
 import type { DataItemOut } from './parsers/DataItem.ts'
 import type { DataItemRule } from './parsers/DataItemRule.ts'
-import type { MaybePromise, ZodPartialObject } from './types.ts'
+import type { MaybeArray, MaybePromise, ZodPartialObject } from './types.ts'
 import type {
   DataItemRulesIn,
   DataItemRulesOut,
@@ -16,11 +16,12 @@ import type * as QT from './types/Query.ts'
 import {
   type $InferObjectOutput,
   type $strict,
+  $ZodOptional,
   type $ZodShape,
   $ZodType,
   type output,
 } from 'zod/v4/core'
-import { partial, strictObject } from 'zod/v4-mini'
+import { partial, strictObject } from 'zod/mini'
 import { type PromisedData, promisedData } from './PromisedData.ts'
 
 export default class Data<
@@ -542,10 +543,16 @@ export default class Data<
   }
 
   async #targetingPredicate(
-    query: Partial<$InferObjectOutput<QueryParsers, any>>,
-    targeting:
-      | Partial<$InferObjectOutput<TargetingParsers, any>>
-      | Partial<$InferObjectOutput<TargetingParsers, any>>[],
+    query: $InferObjectOutput<
+      { [K in keyof QueryParsers]: $ZodOptional<QueryParsers[K]> },
+      {}
+    >,
+    targeting: MaybeArray<
+      $InferObjectOutput<
+        { [K in keyof TargetingParsers]: $ZodOptional<TargetingParsers[K]> },
+        {}
+      >
+    >,
     predicates: Record<
       keyof any,
       {

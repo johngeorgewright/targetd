@@ -8,8 +8,8 @@
     "throat": "npm:throat@^6.0.2",
     "ts-toolbelt": "npm:ts-toolbelt@^9.6.0",
     "watch": "npm:watch@^1.0.2",
-    "yaml": "npm:yaml@^2.5.1",
-    "zod": "npm:zod@^3.25.0"
+    "yaml": "npm:yaml@^2.8.1",
+    "zod": "npm:zod@^4.0.15"
   },
   "fmt": {
     "semiColons": false,

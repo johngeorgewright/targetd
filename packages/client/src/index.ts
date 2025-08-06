@@ -1,6 +1,8 @@
 import type { Data, DT, PT, StaticRecord } from '@targetd/api'
 import type { $ZodShape } from 'zod/v4/core'
 import { queryToURLSearchParams } from './queryToURLSearchParams.ts'
+import { ZodError } from 'zod'
+import { ResponseError } from './ResponseError.ts'
 
 export class Client<
   PayloadParsers extends $ZodShape,
@@ -49,12 +51,29 @@ export class Client<
         ...this.#init,
       },
     )
-    if (response.status === 204) return undefined
-    else {
-      const data = await this.#data.insert({
-        [name]: await response.json(),
-      } as any)
-      return data.getPayload(name)
+
+    switch (true) {
+      case response.status === 204:
+        return undefined
+      case response.status === 400:
+        await response.json()
+          .then(
+            (error) => {
+              if (error.name === '$ZodError') {
+                throw new ZodError(JSON.parse(error.message))
+              }
+            },
+            () => {},
+          )
+      // fallthrough
+      case response.status > 200 || response.status < 200:
+        throw new ResponseError(response)
+      default: {
+        const data = await this.#data.insert({
+          [name]: await response.json(),
+        } as any)
+        return data.getPayload(name)
+      }
     }
   }
 

@@ -4,7 +4,7 @@ import {
   type DataItemOut,
   DataItemParser,
 } from './DataItem.ts'
-import { partial, strictObject } from 'zod/v4-mini'
+import { partial, strictObject } from 'zod/mini'
 import type { $strict, $ZodShape } from 'zod/v4/core'
 
 /**
@@ -13,7 +13,7 @@ import type { $strict, $ZodShape } from 'zod/v4/core'
  * @example
  * ```ts
  * import { equal, assertThrows } from 'jsr:@std/assert'
- * import { z } from 'zod/v4-mini'
+ * import { z } from 'zod/mini'
  * const dataItemsParser = DataItemsParser(
  *   { a: z.number() },
  *   { foo: z.string() },

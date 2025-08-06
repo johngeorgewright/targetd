@@ -5,7 +5,7 @@ import type {
   $ZodOptional,
   $ZodShape,
 } from 'zod/v4/core'
-import type { ZodMiniObject } from 'zod/v4-mini'
+import type { ZodMiniObject } from 'zod/mini'
 
 export type StaticRecord<
   R extends $ZodShape,
@@ -23,3 +23,10 @@ export type ZodPartialObject<
   },
   Config
 >
+
+export type ZodPartialInferObject<Shape extends $ZodShape> = $InferObjectOutput<
+  { [K in keyof Shape]: $ZodOptional<Shape[K]> },
+  {}
+>
+
+export type MaybeArray<T> = T | T[]

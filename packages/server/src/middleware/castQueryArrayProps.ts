@@ -1,5 +1,4 @@
 import type { Data } from '@targetd/api'
-// @ts-types='npm:@types/express@4'
 import type { RequestHandler } from 'express'
 import type { $ZodShape } from 'zod/v4/core'
 
@@ -16,7 +15,7 @@ export function castQueryArrayProps<
     FallThroughTargetingParsers
   >,
 ): RequestHandler {
-  return (req, _res, next) => {
+  return (req, res, next) => {
     const { queryParsers } = getData()
 
     for (const [key, value] of Object.entries(req.query)) {
@@ -26,7 +25,8 @@ export function castQueryArrayProps<
         value !== undefined &&
         !Array.isArray(value)
       ) {
-        req.query[key] = [value as any]
+        res.locals.query ?? {}
+        res.locals.query[key] = [value]
       }
     }
 

@@ -19,7 +19,7 @@ import {
   type ZodMiniOptional,
   type ZodMiniPipe,
   type ZodMiniTransform,
-} from 'zod/v4-mini'
+} from 'zod/mini'
 import type { $InferObjectOutput, $ZodShape, $ZodType } from 'zod/v4/core'
 
 /**
@@ -31,7 +31,7 @@ import type { $InferObjectOutput, $ZodShape, $ZodType } from 'zod/v4/core'
  * @example
  * ```ts
  * import { equal, assertThrows } from 'jsr:@std/assert'
- * import { z } from 'zod/v4-mini'
+ * import { z } from 'zod/mini'
  * const dataItemRulesParser = DataItemRulesParser(
  *   z.number(),
  *   { foo: z.string() },

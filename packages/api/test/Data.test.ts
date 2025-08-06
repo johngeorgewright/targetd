@@ -1,7 +1,7 @@
 import { assertRejects, assertStrictEquals } from 'jsr:@std/assert'
 import { assertSnapshot } from 'jsr:@std/testing/snapshot'
 import { setTimeout } from 'node:timers/promises'
-import z from 'zod/v4'
+import z from 'zod'
 import {
   createTargetingDescriptor,
   Data,

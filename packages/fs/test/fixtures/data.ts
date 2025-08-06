@@ -1,5 +1,5 @@
 import { Data } from '@targetd/api'
-import { z } from 'zod/v4'
+import { z } from 'zod'
 
 export const data = await Data.create()
   .usePayload({
