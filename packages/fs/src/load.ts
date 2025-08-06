@@ -1,7 +1,6 @@
 import fs from '@johngw/fs'
 import type { WithFileNamesResult } from '@johngw/fs/dist/readFiles'
 import type { DT } from '@targetd/api'
-import YAML from 'yaml'
 import { array, object, optional, strictObject, string, unknown } from 'zod'
 import type { output } from 'zod/v4/core'
 
@@ -19,7 +18,7 @@ export async function load<D extends DT.Any>(data: D, dir: string): Promise<D> {
       withFileNames: true,
     })
   ) {
-    data = await addRules(data, parseFileContents(contents))
+    data = await addRules(data, await parseFileContents(contents))
   }
 
   return data
@@ -31,12 +30,14 @@ export function pathIsLoadable(path: string) {
   )
 }
 
-function parseFileContents({
+async function parseFileContents({
   fileName,
   contents,
 }: WithFileNamesResult<string>) {
   return FileData.parse(
-    fileName.endsWith('.json') ? JSON.parse(contents) : YAML.parse(contents),
+    fileName.endsWith('.json')
+      ? JSON.parse(contents)
+      : (await import('yaml')).parse(contents),
   )
 }
 
