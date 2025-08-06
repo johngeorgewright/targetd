@@ -1,5 +1,4 @@
 import type { DT } from '@targetd/api'
-// @ts-types='npm:@types/yargs@17.0.33'
 import yargs from 'yargs'
 import * as path from 'node:path'
 import { writeFile } from 'node:fs/promises'

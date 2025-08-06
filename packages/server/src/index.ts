@@ -1,6 +1,5 @@
 import type { DT } from '@targetd/api'
 import cors from 'cors'
-// @ts-types='npm:@types/express@4'
 import express from 'express'
 import queryTypes from 'query-types'
 import { errorHandler } from './middleware/error.ts'

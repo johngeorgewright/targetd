@@ -6,6 +6,7 @@
     "./cli": "./src/cli.ts"
   },
   "imports": {
+    "@types/yargs": "npm:@types/yargs@^17.0.33",
     "yargs": "npm:yargs@^17.7.2",
     "zod": "npm:zod@^3.25.0"
   },
