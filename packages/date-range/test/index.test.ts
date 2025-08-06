@@ -49,7 +49,7 @@ Deno.test('date range predicate', async () => {
 
   async function assertUsingRange(
     dateRange: NonNullable<
-      Required<Parameters<typeof data.getPayload>[1]>
+      Required<Parameters<typeof data.getPayload<'foo'>>[1]>
     >['dateRange'],
     expectation: string,
   ) {
