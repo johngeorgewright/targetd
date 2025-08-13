@@ -5,7 +5,7 @@ import type {
   $ZodOptional,
   $ZodShape,
 } from 'zod/v4/core'
-import type { ZodMiniObject } from 'zod/mini'
+import type { ZodMiniObject, ZodMiniOptional } from 'zod/mini'
 
 export type StaticRecord<
   R extends $ZodShape,
@@ -19,7 +19,7 @@ export type ZodPartialObject<
   Config extends $ZodObjectConfig = $strip,
 > = ZodMiniObject<
   {
-    [K in keyof T]: $ZodOptional<T[K]>
+    [K in keyof T]: ZodMiniOptional<T[K]>
   },
   Config
 >

@@ -459,3 +459,57 @@ Deno.test('broken', async (t) => {
   await assertSnapshot(t, await data.getPayloadForEachName({ channel: 'foo' }))
   await assertSnapshot(t, await data.getPayloadForEachName({ channel: 'bar' }))
 })
+
+Deno.test('variables', async (t) => {
+  const data = await Data.create()
+    .usePayload({
+      foo: z.strictObject({
+        a: z.strictObject({
+          b: z.strictObject({
+            c: z.string(),
+            d: z.number(),
+          }),
+        }),
+      }),
+    })
+    .useTargeting({
+      channel: targetIncludes(z.enum(['foo', 'bar'])),
+    })
+    .useFallThroughTargeting({
+      browser: targetIncludes(z.enum(['chrome', 'edge'])),
+    })
+    .addRules('foo', {
+      variables: {
+        c: [
+          {
+            targeting: {
+              channel: ['bar'],
+            },
+            payload: 'foo',
+          },
+          {
+            payload: 'bar',
+          },
+        ],
+        d: [
+          { payload: 1 },
+        ],
+      },
+      rules: [
+        {
+          payload: {
+            a: {
+              b: {
+                c: '{{c}}',
+                d: '{{d}}',
+              },
+            },
+          },
+        },
+      ],
+    })
+
+  assertSnapshot(t, await data.getPayload('foo', { channel: 'bar' }))
+
+  assertSnapshot(t, await data.getPayload('foo'))
+})

@@ -1,10 +1,11 @@
-import { strictObject, type ZodMiniObject } from 'zod/mini'
+import { strictObject, type ZodMiniAny, type ZodMiniObject } from 'zod/mini'
 import type { $strict, $ZodShape, $ZodType } from 'zod/v4/core'
 import {
   type DataItemRulesIn,
   type DataItemRulesOut,
   DataItemRulesParser,
 } from './DataItemRules.ts'
+import { DataItemVariablesParser } from './DataItemVariablesParser.ts'
 
 /**
  * Parses an "item".
@@ -25,7 +26,12 @@ export function DataItemParser<
   fallThroughTargeting: FTT,
 ): DataItemParser<P, T, FTT> {
   return strictObject({
-    rules: DataItemRulesParser(Payload, targeting, fallThroughTargeting),
+    rules: DataItemRulesParser(
+      Payload,
+      targeting,
+      fallThroughTargeting,
+    ),
+    variables: DataItemVariablesParser(targeting, fallThroughTargeting),
   })
 }
 
@@ -35,7 +41,12 @@ export type DataItemParser<
   FallThroughTargeting extends $ZodShape,
 > = ZodMiniObject<
   {
-    rules: DataItemRulesParser<Payload, Targeting, FallThroughTargeting>
+    rules: DataItemRulesParser<
+      Payload,
+      Targeting,
+      FallThroughTargeting
+    >
+    variables: DataItemVariablesParser<Targeting, FallThroughTargeting>
   },
   $strict
 >
@@ -49,6 +60,10 @@ export interface DataItemIn<
   FallThroughTargeting extends $ZodShape,
 > {
   rules: DataItemRulesIn<Payload, Targeting, FallThroughTargeting>
+  variables?: Record<
+    string,
+    DataItemRulesIn<ZodMiniAny, Targeting, FallThroughTargeting>
+  >
 }
 
 /**
@@ -60,4 +75,8 @@ export interface DataItemOut<
   FallThroughTargeting extends $ZodShape,
 > {
   rules: DataItemRulesOut<Payload, Targeting, FallThroughTargeting>
+  variables: Record<
+    string,
+    DataItemRulesOut<ZodMiniAny, Targeting, FallThroughTargeting>
+  >
 }

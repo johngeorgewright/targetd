@@ -63,6 +63,7 @@ snapshot[`fallThrough targeting 1`] = `
         targeting: {},
       },
     ],
+    variables: {},
   },
   foo: {
     rules: [
@@ -105,6 +106,7 @@ snapshot[`fallThrough targeting 1`] = `
         targeting: {},
       },
     ],
+    variables: {},
   },
 }
 `;
@@ -159,6 +161,28 @@ snapshot[`broken 2`] = `
         },
       },
     ],
+  },
+}
+`;
+
+snapshot[`variables 1`] = `
+{
+  a: {
+    b: {
+      c: "foo",
+      d: 1,
+    },
+  },
+}
+`;
+
+snapshot[`variables 2`] = `
+{
+  a: {
+    b: {
+      c: "bar",
+      d: 1,
+    },
   },
 }
 `;

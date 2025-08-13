@@ -1,13 +1,16 @@
 import type TargetingPredicates from './parsers/TargetingPredicates.ts'
-import { objectEveryAsync, objectKeys, objectMap } from './util.ts'
+import {
+  objectEntries,
+  objectEveryAsync,
+  objectKeys,
+  objectMap,
+  objectSize,
+} from './util.ts'
 import { type DataItemsOut, DataItemsParser } from './parsers/DataItems.ts'
-import type { DataItemOut } from './parsers/DataItem.ts'
+import type { DataItemIn, DataItemOut } from './parsers/DataItem.ts'
 import type { DataItemRule } from './parsers/DataItemRule.ts'
 import type { MaybeArray, MaybePromise, ZodPartialObject } from './types.ts'
-import type {
-  DataItemRulesIn,
-  DataItemRulesOut,
-} from './parsers/DataItemRules.ts'
+import type { DataItemRulesIn } from './parsers/DataItemRules.ts'
 import type * as DT from './types/Data.ts'
 import type * as TT from './types/Targeting.ts'
 import type * as FTTT from './types/FallThroughTargeting.ts'
@@ -23,6 +26,7 @@ import {
 } from 'zod/v4/core'
 import { partial, strictObject } from 'zod/mini'
 import { type PromisedData, promisedData } from './PromisedData.ts'
+import { resolveVariables } from './parsers/DataItemVariableResolver.ts'
 
 export default class Data<
   PayloadParsers extends $ZodShape,
@@ -46,7 +50,7 @@ export default class Data<
   readonly #QueryParser: ZodPartialObject<QueryParsers>
 
   static create(): PromisedData<{}, {}, {}, {}> {
-    return promisedData(new Data({}, {}, {}, {}, {}, {}))
+    return promisedData<{}, {}, {}, {}>(new Data({}, {}, {}, {}, {}, {}))
   }
 
   private constructor(
@@ -179,11 +183,8 @@ export default class Data<
         Object.entries(data).reduce((data, [name, value]) => {
           const dataItem = this.#data[name] ||
             {
-              rules: [] as DataItemRulesOut<
-                PayloadParsers[keyof PayloadParsers],
-                TargetingParsers,
-                FallThroughTargetingParsers
-              >,
+              rules: [],
+              variables: {},
             }
           return {
             ...data,
@@ -195,6 +196,7 @@ export default class Data<
                   ? value.__rules__
                   : [{ payload: value }],
               ],
+              variables: dataItem.variables,
             },
           }
         }, {}),
@@ -229,11 +231,17 @@ export default class Data<
     Name extends keyof PayloadParsers,
   >(
     name: Name,
-    rules: DataItemRulesIn<
-      PayloadParsers[Name],
-      TargetingParsers,
-      FallThroughTargetingParsers
-    >,
+    opts:
+      | DataItemIn<
+        PayloadParsers[Name],
+        TargetingParsers,
+        FallThroughTargetingParsers
+      >
+      | DataItemRulesIn<
+        PayloadParsers[Name],
+        TargetingParsers,
+        FallThroughTargetingParsers
+      >,
   ): Promise<
     Data<
       PayloadParsers,
@@ -244,12 +252,12 @@ export default class Data<
   > {
     const dataItem = this.#data[name] ||
       {
-        rules: [] as DataItemRulesOut<
-          PayloadParsers[Name],
-          TargetingParsers,
-          FallThroughTargetingParsers
-        >,
+        rules: [],
+        variables: {},
       }
+
+    const rules = Array.isArray(opts) ? opts : opts.rules
+    const variables = Array.isArray(opts) ? {} : opts.variables
 
     const data = {
       ...this.#data,
@@ -261,6 +269,10 @@ export default class Data<
         [name]: {
           ...dataItem,
           rules: [...dataItem.rules, ...rules],
+          variables: {
+            ...dataItem.variables,
+            ...variables,
+          },
         },
       })),
     }
@@ -454,9 +466,30 @@ export default class Data<
     PT.Payload<PayloadParsers[Name], FallThroughTargetingParsers> | undefined
   > {
     const predicate = await this.#createRulePredicate(rawQuery)
-    for (const rule of this.#getTargetableRules(name)) {
-      if (await predicate(rule as any)) return this.#mapRule(rule)
+    const targetableItem = this.#getTargetableItem(name)
+    const variables: Record<string, any> = {}
+    let payload:
+      | PT.Payload<PayloadParsers[Name], FallThroughTargetingParsers>
+      | undefined
+    for (const rule of targetableItem.rules) {
+      if (await predicate(rule)) {
+        payload = this.#mapRule(rule)
+        break
+      }
     }
+    if (objectSize(targetableItem.variables)) {
+      for (
+        const [variableName, rules] of objectEntries(targetableItem.variables)
+      ) {
+        for (const rule of rules) {
+          if (await (predicate(rule))) {
+            variables[variableName] = this.#mapRule(rule)
+            break
+          }
+        }
+      }
+    }
+    return resolveVariables(variables, payload)
   }
 
   async getPayloads<Name extends keyof PayloadParsers>(
@@ -468,7 +501,7 @@ export default class Data<
       FallThroughTargetingParsers
     >[] = []
     const predicate = await this.#createRulePredicate(rawQuery)
-    for (const rule of this.#getTargetableRules(name)) {
+    for (const rule of this.#getTargetableItem(name).rules) {
       if (await predicate(rule as any)) {
         const mappedRule = this.#mapRule(rule)
         if (mappedRule) {
@@ -510,8 +543,8 @@ export default class Data<
     ) =>
       !('targeting' in rule) ||
       this.#targetingPredicate(
-        query,
-        rule.targeting!,
+        query as any,
+        rule.targeting! as any,
         objectMap(
           this.#targetingPredicates,
           (target, targetingKey) => ({
@@ -528,7 +561,7 @@ export default class Data<
       )
   }
 
-  #getTargetableRules<Name extends keyof PayloadParsers>(name: Name) {
+  #getTargetableItem<Name extends keyof PayloadParsers>(name: Name) {
     return (
       (
         this.#data as unknown as {
@@ -538,7 +571,7 @@ export default class Data<
             FallThroughTargetingParsers
           >
         }
-      )[name]?.rules || []
+      )[name] ?? { rules: [], variables: {} }
     )
   }
 

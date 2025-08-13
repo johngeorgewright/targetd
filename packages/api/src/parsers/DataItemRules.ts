@@ -1,7 +1,7 @@
 import {
   type DataItemRule,
   type RuleWithFallThrough,
-  type RuleWithPayload,
+  type RuleWithPayloadIn,
   RuleWithPayloadParser,
 } from './DataItemRule.ts'
 import {
@@ -16,11 +16,11 @@ import {
   pipe,
   transform,
   type ZodMiniArray,
-  type ZodMiniOptional,
   type ZodMiniPipe,
   type ZodMiniTransform,
 } from 'zod/mini'
-import type { $InferObjectOutput, $ZodShape, $ZodType } from 'zod/v4/core'
+import type { $ZodShape, $ZodType } from 'zod/v4/core'
+import type { ZodPartialInferObject } from '../types.ts'
 
 /**
  * Parses an item's `rules` field.
@@ -72,7 +72,7 @@ export function DataItemRulesParser<
     })),
     transform(
       (
-        rules: RuleWithPayload<P, T & FTT>[],
+        rules: RuleWithPayloadIn<P, T & FTT>[],
       ): DataItemRule<P, T, FTT, false>[] => {
         const singularTargetedRules = spreadMultiTargetsToSeparateRules(rules)
 
@@ -144,7 +144,7 @@ export type DataItemRulesIn<
   Payload extends $ZodType,
   Targeting extends $ZodShape,
   FallThroughTargeting extends $ZodShape,
-> = RuleWithPayload<Payload, Targeting & FallThroughTargeting>[]
+> = RuleWithPayloadIn<Payload, Targeting & FallThroughTargeting>[]
 
 export type DataItemRulesOut<
   Payload extends $ZodType,
@@ -155,8 +155,8 @@ export type DataItemRulesOut<
 function spreadMultiTargetsToSeparateRules<
   P extends $ZodType,
   T extends $ZodShape,
->(rules: RuleWithPayload<P, T>[]) {
-  return rules.reduce<RuleWithPayload<P, T, false>[]>(
+>(rules: RuleWithPayloadIn<P, T>[]) {
+  return rules.reduce<RuleWithPayloadIn<P, T, false>[]>(
     (rules, rule) => {
       if (Array.isArray(rule.targeting)) {
         for (const targeting of rule.targeting) {
@@ -166,7 +166,7 @@ function spreadMultiTargetsToSeparateRules<
           })
         }
       } else {
-        rules.push(rule as RuleWithPayload<P, T, false>)
+        rules.push(rule as RuleWithPayloadIn<P, T, false>)
       }
       return rules
     },
@@ -205,7 +205,7 @@ function adaptRule<
 >(
   targetingParsers: T,
   fallThroughTargetingParsers: FTT,
-  rule: RuleWithPayload<P, T & FTT, false>,
+  rule: RuleWithPayloadIn<P, T & FTT, false>,
 ) {
   return (
     someKeysIntersect(fallThroughTargetingParsers, rule.targeting || {})
@@ -232,7 +232,7 @@ function adaptRuleIntoFallThroughRule<
     targeting: intersection(
       rule.targeting || {},
       targetingParsers,
-    ) as $InferObjectOutput<{ [K in keyof T]: ZodMiniOptional<T[K]> }, {}>,
+    ) as ZodPartialInferObject<T>,
     fallThrough: [
       {
         payload: rule.payload,
