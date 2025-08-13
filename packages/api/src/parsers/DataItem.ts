@@ -1,4 +1,10 @@
-import { strictObject, type ZodMiniAny, type ZodMiniObject } from 'zod/mini'
+import {
+  _default,
+  strictObject,
+  type ZodMiniAny,
+  type ZodMiniDefault,
+  type ZodMiniObject,
+} from 'zod/mini'
 import type { $strict, $ZodShape, $ZodType } from 'zod/v4/core'
 import {
   type DataItemRulesIn,
@@ -31,7 +37,10 @@ export function DataItemParser<
       targeting,
       fallThroughTargeting,
     ),
-    variables: DataItemVariablesParser(targeting, fallThroughTargeting),
+    variables: _default(
+      DataItemVariablesParser(targeting, fallThroughTargeting),
+      {},
+    ),
   })
 }
 
@@ -46,7 +55,9 @@ export type DataItemParser<
       Targeting,
       FallThroughTargeting
     >
-    variables: DataItemVariablesParser<Targeting, FallThroughTargeting>
+    variables: ZodMiniDefault<
+      DataItemVariablesParser<Targeting, FallThroughTargeting>
+    >
   },
   $strict
 >
