@@ -471,12 +471,14 @@ export default class Data<
     let payload:
       | PT.Payload<PayloadParsers[Name], FallThroughTargetingParsers>
       | undefined
+
     for (const rule of targetableItem.rules) {
       if (await predicate(rule)) {
         payload = this.#mapRule(rule)
         break
       }
     }
+
     if (objectSize(targetableItem.variables)) {
       for (
         const [variableName, rules] of objectEntries(targetableItem.variables)
@@ -489,6 +491,7 @@ export default class Data<
         }
       }
     }
+
     return resolveVariables(variables, payload)
   }
 
