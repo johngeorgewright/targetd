@@ -28,8 +28,7 @@ const { dataExport, inputModule, outputFile } = await yargs()
   })
   .help().argv
 
-console.info(path.resolve(inputModule))
-const input = require(path.resolve(inputModule))
+const input = await import(path.resolve(inputModule))
 const data = input[dataExport]
 if (!isDataLike(data)) {
   throw new Error(

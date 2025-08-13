@@ -21,10 +21,10 @@ import type { $strict, $ZodShape } from 'zod/v4/core'
  * )
  * equal(
  *   z.parse(dataItemsParser, {
- *     a: { rules: [{ targeting: { foo: 'bar' }, payload: 123 }] }
+ *     a: { rules: [{ targeting: { foo: 'bar' }, payload: 123 }], variables: {} }
  *   }),
  *   {
- *     a: { rules: [{ targeting: { foo: 'bar' }, payload: 123 }] }
+ *     a: { rules: [{ targeting: { foo: 'bar' }, payload: 123 }], variables: {} }
  *   }
  * )
  * ```

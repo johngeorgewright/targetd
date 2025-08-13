@@ -2,6 +2,7 @@ import type { $ZodShape } from 'zod/v4/core'
 import type { Data, DT, FTTT, QT, TT } from '@targetd/api'
 import PromiseChain from '@myty/promise-chain'
 import type { DataItemRulesIn } from './parsers/DataItemRules.ts'
+import type { DataItemIn } from './parsers/DataItem.ts'
 
 export type PromisedData<
   PayloadParsers extends $ZodShape,
@@ -88,11 +89,17 @@ interface PromisedDataMethods<
     Name extends keyof PayloadParsers,
   >(
     name: Name,
-    rules: DataItemRulesIn<
-      PayloadParsers[Name],
-      TargetingParsers,
-      FallThroughTargetingParsers
-    >,
+    opts:
+      | DataItemIn<
+        PayloadParsers[Name],
+        TargetingParsers,
+        FallThroughTargetingParsers
+      >
+      | DataItemRulesIn<
+        PayloadParsers[Name],
+        TargetingParsers,
+        FallThroughTargetingParsers
+      >,
   ): PromisedData<
     PayloadParsers,
     TargetingParsers,
