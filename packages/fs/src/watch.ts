@@ -37,14 +37,14 @@ export function watch<D extends DT.Any>(
     debounce(
       async () => {
         await mutex.acquire()
+        let error: Error | null = null
         try {
           data = await load(data.removeAllRules(), dir) as D
-        } catch (error: any) {
-          mutex.release()
-          return onLoad(error, data)
+        } catch ($error: any) {
+          error = $error
+        } finally {
+          releaseAndCallback(error, data)
         }
-        mutex.release()
-        onLoad(null, data)
       },
       300,
     ),
@@ -53,6 +53,11 @@ export function watch<D extends DT.Any>(
   const stop: WatchDisposer = () => unwatchTree(dir)
 
   return stop
+
+  function releaseAndCallback(error: Error | null, data: D) {
+    mutex.release()
+    onLoad(error, data)
+  }
 }
 
 interface WatchDisposer {
