@@ -34,7 +34,7 @@ jobs:
     strategy:
       max-parallel: 1
       matrix:
-        package: ${{ fromJson(needs.packages.outputs.packages) }}
+        package: ${{ fromJSON(needs.packages.outputs.packages) }}
     steps:
       - name: Checkout project
         uses: actions/checkout@v4
