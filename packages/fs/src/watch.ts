@@ -26,7 +26,7 @@ export function watch<D extends DT.Any>(
 ) {
   const options = onLoadParam ? optionsOrOnLoad : {}
   const onLoad = (onLoadParam || optionsOrOnLoad) as OnLoad<D>
-  const mutex = new MutexResource()
+  const mutex = new Mutex()
 
   watchTree(
     dir,
@@ -36,12 +36,14 @@ export function watch<D extends DT.Any>(
     },
     debounce(
       async () => {
-        using _mutexDisposable = await mutex.use()
+        await mutex.acquire()
         try {
           data = await load(data.removeAllRules(), dir) as D
         } catch (error: any) {
+          mutex.release()
           return onLoad(error, data)
         }
+        mutex.release()
         onLoad(null, data)
       },
       300,
@@ -55,11 +57,4 @@ export function watch<D extends DT.Any>(
 
 interface WatchDisposer {
   (): void
-}
-
-class MutexResource extends Mutex {
-  async use(): Promise<Disposable> {
-    await this.acquire()
-    return { [Symbol.dispose]: () => this.release() }
-  }
 }
