@@ -2,6 +2,14 @@
 
 > Adds date range targeting
 
+## Installation
+
+| JS Runtime | Command                                             |
+| ---------- | --------------------------------------------------- |
+| Node.js    | `npx jsr add @targetd/api @targetd/date-range`      |
+| Bun        | `bunx jsr add @targetd/api @targetd/date-range`     |
+| Deno       | `deno add jsr:@targetd/api jsr:@targetd/date-range` |
+
 ## Example
 
 ```typescript

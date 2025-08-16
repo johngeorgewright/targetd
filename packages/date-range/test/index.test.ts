@@ -1,59 +1,66 @@
+import { assertStrictEquals } from 'jsr:@std/assert'
+import { FakeTime } from 'jsr:@std/testing/time'
 import { Data } from '@targetd/api'
-import * as jestDate from 'jest-date-mock'
 import z from 'zod'
-import dateRangeTargeting from '../src'
+import dateRangeTargeting from '@targetd/date-range'
 
-test('date range predicate', async () => {
-  const data = await Data.create({
-    targeting: {
-      dateRange: dateRangeTargeting,
-    },
-    data: {
+Deno.test('date range predicate', async () => {
+  const data = await Data.create()
+    .usePayload({
       foo: z.string(),
-    },
-  }).addRules('foo', [
-    {
-      targeting: {
-        dateRange: {
-          start: '1939-09-01',
-          end: '1945-09-02',
+    })
+    .useTargeting({
+      dateRange: dateRangeTargeting,
+    })
+    .addRules('foo', [
+      {
+        targeting: {
+          dateRange: {
+            start: '1939-09-01',
+            end: '1945-09-02',
+          },
         },
+        payload: 'WWII',
       },
-      payload: 'WWII',
-    },
-    {
-      targeting: {
-        dateRange: {
-          start: '2020-01-01T00:00:00',
+      {
+        targeting: {
+          dateRange: {
+            start: '2020-01-01T00:00:00',
+          },
         },
+        payload: '😷',
       },
-      payload: '😷',
-    },
-    {
-      payload: 'bar',
-    },
-  ])
+      {
+        payload: 'bar',
+      },
+    ])
 
-  jestDate.advanceTo(new Date('1930-01-01'))
-  expect(await data.getPayload('foo', {})).toBe('bar')
+  await assertUsingFakeTime('1930-01-01', 'bar')
+  await assertUsingFakeTime('1940-01-01', 'WWII')
+  await assertUsingFakeTime('2021-01-01', '😷')
+  await assertUsingRange({ start: '2020-01-01' }, '😷')
+  await assertUsingRange({ start: '2019-01-01' }, '😷')
+  await assertUsingRange({ start: '2019-01-01', end: '2019-12-01' }, 'bar')
 
-  jestDate.advanceTo(new Date('1940-01-01'))
-  expect(await data.getPayload('foo', {})).toBe('WWII')
+  async function assertUsingFakeTime(iso: string, expectation: string) {
+    using _fakeTime = setTime(iso)
+    assertStrictEquals(await data.getPayload('foo'), expectation)
+  }
 
-  jestDate.advanceTo(new Date('2021-01-01'))
-  expect(await data.getPayload('foo', {})).toBe('😷')
-
-  expect(
-    await data.getPayload('foo', { dateRange: { start: '2020-01-01' } }),
-  ).toBe('😷')
-
-  expect(
-    await data.getPayload('foo', { dateRange: { start: '2019-01-01' } }),
-  ).toBe('😷')
-
-  expect(
-    await data.getPayload('foo', {
-      dateRange: { start: '2019-01-01', end: '2019-12-01' },
-    }),
-  ).toBe('bar')
+  async function assertUsingRange(
+    dateRange: NonNullable<
+      Required<Parameters<typeof data.getPayload<'foo'>>[1]>
+    >['dateRange'],
+    expectation: string,
+  ) {
+    assertStrictEquals(
+      await data.getPayload('foo', { dateRange }),
+      expectation,
+    )
+  }
 })
+
+function setTime(iso: string) {
+  const fakeTime = new FakeTime(iso)
+  return { [Symbol.dispose]: () => fakeTime.restore() }
+}

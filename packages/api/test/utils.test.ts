@@ -1,22 +1,29 @@
-import { arrayInit, arrayLast, objectEveryAsync, objectMap } from '../src/util'
+import { assertEquals, assertStrictEquals } from 'jsr:@std/assert'
+import {
+  arrayInit,
+  arrayLast,
+  objectEveryAsync,
+  objectMap,
+} from '../src/util.ts'
 
-test('objectMap', () => {
-  expect(
+Deno.test('objectMap', () => {
+  assertEquals(
     objectMap(
       {
         foo: 123,
         bar: 321,
       },
-      (v) => v + 1
-    )
-  ).toEqual({
-    foo: 124,
-    bar: 322,
-  })
+      (v) => v + 1,
+    ),
+    {
+      foo: 124,
+      bar: 322,
+    },
+  )
 })
 
-test('objectEveryAsync', async () => {
-  expect(
+Deno.test('objectEveryAsync', async () => {
+  assertStrictEquals(
     await objectEveryAsync(
       {
         foo: 1,
@@ -24,10 +31,11 @@ test('objectEveryAsync', async () => {
         goo: 3,
         car: 4,
       },
-      (value) => Promise.resolve(value).then((v) => v > 2)
-    )
-  ).toBe(false)
-  expect(
+      (value) => Promise.resolve(value).then((v) => v > 2),
+    ),
+    false,
+  )
+  assertStrictEquals(
     await objectEveryAsync(
       {
         foo: 1,
@@ -35,15 +43,16 @@ test('objectEveryAsync', async () => {
         goo: 3,
         car: 4,
       },
-      (value) => Promise.resolve(value).then((v) => v > 0)
-    )
-  ).toBe(true)
+      (value) => Promise.resolve(value).then((v) => v > 0),
+    ),
+    true,
+  )
 })
 
-test('arrayInit', () => {
-  expect(arrayInit([1, 2, 3, 4, 5])).toEqual([1, 2, 3, 4])
+Deno.test('arrayInit', () => {
+  assertEquals(arrayInit([1, 2, 3, 4, 5]), [1, 2, 3, 4])
 })
 
-test('arrayLast', () => {
-  expect(arrayLast([1, 2, 3, 4, 5])).toBe(5)
+Deno.test('arrayLast', () => {
+  assertStrictEquals(arrayLast([1, 2, 3, 4, 5]), 5)
 })

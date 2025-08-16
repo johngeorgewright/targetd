@@ -1,6 +1,7 @@
-import { Explode, explode } from '../src'
+import { assertEquals } from 'jsr:@std/assert'
+import { type Explode, explode } from '@targetd/explode'
 
-test('Explode', () => {
+Deno.test('Explode', () => {
   function check(
     x: Explode<
       {
@@ -41,9 +42,9 @@ test('Explode', () => {
         c: {
           d: {
             e: {
-              // @ts-expect-error Type '"h"' is not assignable to type '"g"'.
+              // @ts-expect-error Type '"h"' is not assignable to type '"f"'.
               f: 'h',
-              // @ts-expect-error Type '"g"' is not assignable to type '"h"'.
+              // @ts-expect-error Type '"g"' is not assignable to type '"g"'.
               g: 'g',
             },
           },
@@ -53,8 +54,8 @@ test('Explode', () => {
   })
 })
 
-test('explode()', () => {
-  expect(
+Deno.test('explode()', () => {
+  assertEquals(
     explode(
       {
         'foo.bar': 'something',
@@ -63,21 +64,22 @@ test('explode()', () => {
       },
       '.',
     ),
-  ).toEqual({
-    foo: {
-      bar: 'something',
-    },
-    a: {
-      b: {
-        c: {
-          d: {
-            e: {
-              f: 'g',
-              g: 'h',
+    {
+      foo: {
+        bar: 'something',
+      },
+      a: {
+        b: {
+          c: {
+            d: {
+              e: {
+                f: 'g',
+                g: 'h',
+              },
             },
           },
         },
       },
     },
-  })
+  )
 })

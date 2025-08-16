@@ -1,0 +1,47 @@
+export const snapshot = {};
+
+snapshot[`get one data point 1`] = `"Async payload"`;
+
+snapshot[`get one data point 2`] = `"in time"`;
+
+snapshot[`get all 1`] = `
+{
+  bar: 123,
+  foo: "bar",
+}
+`;
+
+snapshot[`get all 2`] = `
+{
+  bar: 123,
+  foo: "😎",
+}
+`;
+
+snapshot[`get all 3`] = `
+{
+  bar: 123,
+  foo: "☂️",
+}
+`;
+
+snapshot[`get all 4`] = `
+{
+  bar: 123,
+  foo: "🌊",
+}
+`;
+
+snapshot[`get all 5`] = `
+{
+  bar: 123,
+  foo: "🏄‍♂️",
+}
+`;
+
+snapshot[`get all 6`] = `
+{
+  bar: 123,
+  foo: "Async payload",
+}
+`;

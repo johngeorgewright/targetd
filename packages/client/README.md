@@ -2,6 +2,14 @@
 
 > A HTTP typed client to query a @targetd/server
 
+## Installation
+
+| JS Runtime | Command                                         |
+| ---------- | ----------------------------------------------- |
+| Node.js    | `npx jsr add @targetd/api @targetd/client`      |
+| Bun        | `bunx jsr add @targetd/api @targetd/client`     |
+| Deno       | `deno add jsr:@targetd/api jsr:@targetd/client` |
+
 ## Example
 
 ```typescript

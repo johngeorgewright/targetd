@@ -1,0 +1,151 @@
+export const snapshot = {};
+
+snapshot[`json schema for simple data object 1`] = `
+{
+  "\$schema": "https://json-schema.org/draft/2020-12/schema",
+  additionalProperties: false,
+  properties: {
+    "\$schema": {
+      type: "string",
+    },
+    foo: {
+      additionalProperties: false,
+      properties: {
+        rules: {
+          items: {
+            additionalProperties: false,
+            properties: {
+              payload: {
+                type: "string",
+              },
+              targeting: {
+                anyOf: [
+                  {
+                    additionalProperties: false,
+                    properties: {
+                      browser: {
+                        items: {
+                          type: "string",
+                        },
+                        type: "array",
+                      },
+                      weather: {
+                        items: {
+                          type: "string",
+                        },
+                        type: "array",
+                      },
+                    },
+                    type: "object",
+                  },
+                  {
+                    items: {
+                      additionalProperties: false,
+                      properties: {
+                        browser: {
+                          items: {
+                            type: "string",
+                          },
+                          type: "array",
+                        },
+                        weather: {
+                          items: {
+                            type: "string",
+                          },
+                          type: "array",
+                        },
+                      },
+                      type: "object",
+                    },
+                    type: "array",
+                  },
+                ],
+              },
+            },
+            required: [
+              "payload",
+            ],
+            type: "object",
+          },
+          type: "array",
+        },
+        variables: {
+          additionalProperties: {
+            items: {
+              additionalProperties: false,
+              properties: {
+                payload: {
+                  anyOf: [
+                    {
+                      pattern: "^\\\\{\\\\{[\\\\s\\\\S]{0,}\\\\}\\\\}\$",
+                      type: "string",
+                    },
+                    {},
+                  ],
+                },
+                targeting: {
+                  anyOf: [
+                    {
+                      additionalProperties: false,
+                      properties: {
+                        browser: {
+                          items: {
+                            type: "string",
+                          },
+                          type: "array",
+                        },
+                        weather: {
+                          items: {
+                            type: "string",
+                          },
+                          type: "array",
+                        },
+                      },
+                      type: "object",
+                    },
+                    {
+                      items: {
+                        additionalProperties: false,
+                        properties: {
+                          browser: {
+                            items: {
+                              type: "string",
+                            },
+                            type: "array",
+                          },
+                          weather: {
+                            items: {
+                              type: "string",
+                            },
+                            type: "array",
+                          },
+                        },
+                        type: "object",
+                      },
+                      type: "array",
+                    },
+                  ],
+                },
+              },
+              required: [
+                "payload",
+              ],
+              type: "object",
+            },
+            type: "array",
+          },
+          propertyNames: {
+            type: "string",
+          },
+          type: "object",
+        },
+      },
+      required: [
+        "rules",
+      ],
+      type: "object",
+    },
+  },
+  type: "object",
+}
+`;

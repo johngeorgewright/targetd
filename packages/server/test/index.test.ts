@@ -1,252 +1,236 @@
-import { Data } from '@targetd/api'
+import { assertSnapshot } from 'jsr:@std/testing/snapshot'
+import { Data, targetEquals, targetIncludes } from '@targetd/api'
 import dateRangeTargeting from '@targetd/date-range'
-import { difference } from 'lodash'
-import express from 'express'
-import { promisify } from 'node:util'
-import { setTimeout } from 'node:timers'
-import request from 'supertest'
+import _ from 'npm:lodash'
+import { setTimeout } from 'node:timers/promises'
+// @ts-types='npm:@types/supertest'
+import request from 'npm:supertest'
 import z from 'zod'
-import { createServer } from '../src'
+import { createServer } from '@targetd/server'
+import { promisify } from 'node:util'
+import type { Server } from 'node:http'
 
-const timeout = promisify(setTimeout)
-let app: express.Application
+Deno.test('get one data point', async () => {
+  await using server = await createDisposableServer()
 
-const schema = Data.create({
-  data: {
-    foo: z.string(),
-    bar: z.number(),
-    timed: z.string(),
-  },
-  targeting: {
-    weather: {
-      predicate: (q) => (t) => typeof q === 'string' && t.includes(q),
-      queryParser: z.string(),
-      targetingParser: z.array(z.string()),
-    },
-    highTide: {
-      predicate: (q) => (t) => q === t,
-      queryParser: z.boolean(),
-      targetingParser: z.boolean(),
-    },
-    asyncThing: {
-      predicate: (q) => timeout(10, (t) => q === t && timeout(10, true)),
-      queryParser: z.boolean(),
-      targetingParser: z.boolean(),
-    },
-    arrayThing: {
-      predicate: (q) => (t) => difference(q, t).length === 0,
-      queryParser: z.string().array(),
-      targetingParser: z.string().array(),
-    },
-    date: dateRangeTargeting,
-  },
-})
-
-let data: typeof schema
-
-beforeEach(async () => {
-  data = await schema.addRules('foo', [
-    {
-      targeting: {
-        highTide: true,
-        weather: ['sunny'],
-      },
-      payload: '🏄‍♂️',
-    },
-    {
-      targeting: {
-        weather: ['sunny'],
-      },
-      payload: '😎',
-    },
-    {
-      targeting: {
-        weather: ['rainy'],
-      },
-      payload: '☂️',
-    },
-    {
-      targeting: {
-        highTide: true,
-      },
-      payload: '🌊',
-    },
-    {
-      targeting: {
-        asyncThing: true,
-      },
-      payload: 'Async payload',
-    },
-    {
-      targeting: {
-        arrayThing: ['a'],
-      },
-      payload: "a t'ing",
-    },
-    {
-      targeting: {
-        arrayThing: ['a', 'b'],
-      },
-      payload: "b t'ing",
-    },
-    {
-      payload: 'bar',
-    },
-  ])
-
-  data = await data.addRules('bar', [
-    {
-      payload: 123,
-    },
-  ])
-
-  data = await data.addRules('timed', [
-    {
-      targeting: {
-        date: { start: '2001-01-01', end: '2010-01-01' },
-      },
-      payload: 'in time',
-    },
-    {
-      payload: 'out of time',
-    },
-  ])
-
-  app = createServer(() => data)
-})
-
-test('get one data point', async () => {
-  let response = await request(app)
+  await request(server)
     .get('/foo')
     .expect('Content-Type', /json/)
+    .expect('"bar"')
     .expect(200)
-  expect(response.body).toBe('bar')
 
-  response = await request(app)
+  await request(server)
     .get('/foo?weather=sunny')
     .expect('Content-Type', /json/)
+    .expect('"😎"')
     .expect(200)
-  expect(response.body).toBe('😎')
 
-  response = await request(app)
+  await request(server)
     .get('/foo?weather=rainy')
     .expect('Content-Type', /json/)
+    .expect('"☂️"')
     .expect(200)
-  expect(response.body).toBe('☂️')
 
-  response = await request(app)
+  await request(server)
     .get('/foo?highTide=true')
     .expect('Content-Type', /json/)
+    .expect('"🌊"')
     .expect(200)
-  expect(response.body).toBe('🌊')
 
-  response = await request(app)
+  await request(server)
     .get('/foo?highTide=true&weather=sunny')
     .expect('Content-Type', /json/)
+    .expect('"🏄‍♂️"')
     .expect(200)
-  expect(response.body).toBe('🏄‍♂️')
 
-  response = await request(app)
+  await request(server)
     .get('/foo?asyncThing=true')
     .expect('Content-Type', /json/)
+    .expect('"Async payload"')
     .expect(200)
-  expect(response.body).toBe('Async payload')
 
-  response = await request(app)
+  await request(server)
     .get('/timed?date[start]=2002-01-01')
     .expect('Content-Type', /json/)
+    .expect('"in time"')
     .expect(200)
-  expect(response.body).toBe('in time')
 
-  response = await request(app)
+  await request(server)
     .get('/timed?date[start]=2012-01-01')
     .expect('Content-Type', /json/)
+    .expect('"out of time"')
     .expect(200)
-  expect(response.body).toBe('out of time')
 
-  response = await request(app)
+  await request(server)
     .get('/foo?arrayThing=a')
     .expect('Content-Type', /json/)
+    .expect('"a t\'ing"')
     .expect(200)
-  expect(response.body).toBe("a t'ing")
 
-  response = await request(app)
+  await request(server)
     .get('/foo?arrayThing=a&arrayThing=b')
     .expect('Content-Type', /json/)
+    .expect('"b t\'ing"')
     .expect(200)
-  expect(response.body).toBe("b t'ing")
+
+  await request(server)
+    .get('/foo?weather=rainy&weather=sunny')
+    .expect(400)
+    .expect(JSON.stringify(
+      {
+        name: '$ZodError',
+        message: JSON.stringify(
+          [
+            {
+              'expected': 'string',
+              'code': 'invalid_type',
+              'path': [
+                'weather',
+              ],
+              'message': 'Invalid input: expected string, received array',
+            },
+          ],
+          null,
+          2,
+        ),
+      },
+    ))
 })
 
-test('get all', async () => {
-  let response = await request(app)
+Deno.test('get all', async (t) => {
+  await using server = await createDisposableServer()
+
+  let response = await request(server)
     .get('/')
     .expect('Content-Type', /json/)
     .expect(200)
-  expect(response.body).toMatchInlineSnapshot(`
-    {
-      "bar": 123,
-      "foo": "bar",
-      "timed": "out of time",
-    }
-  `)
+  await assertSnapshot(t, response.body)
 
-  response = await request(app)
+  response = await request(server)
     .get('/?weather=sunny')
     .expect('Content-Type', /json/)
     .expect(200)
-  expect(response.body).toMatchInlineSnapshot(`
-    {
-      "bar": 123,
-      "foo": "😎",
-      "timed": "out of time",
-    }
-  `)
+  await assertSnapshot(t, response.body)
 
-  response = await request(app)
+  response = await request(server)
     .get('/?weather=rainy')
     .expect('Content-Type', /json/)
     .expect(200)
-  expect(response.body).toMatchInlineSnapshot(`
-    {
-      "bar": 123,
-      "foo": "☂️",
-      "timed": "out of time",
-    }
-  `)
+  await assertSnapshot(t, response.body)
 
-  response = await request(app)
+  response = await request(server)
     .get('/?highTide=true')
     .expect('Content-Type', /json/)
     .expect(200)
-  expect(response.body).toMatchInlineSnapshot(`
-    {
-      "bar": 123,
-      "foo": "🌊",
-      "timed": "out of time",
-    }
-  `)
+  await assertSnapshot(t, response.body)
 
-  response = await request(app)
+  response = await request(server)
     .get('/?highTide=true&weather=sunny')
     .expect('Content-Type', /json/)
     .expect(200)
-  expect(response.body).toMatchInlineSnapshot(`
-    {
-      "bar": 123,
-      "foo": "🏄‍♂️",
-      "timed": "out of time",
-    }
-  `)
+  await assertSnapshot(t, response.body)
 
-  response = await request(app)
+  response = await request(server)
     .get('/?asyncThing=true')
     .expect('Content-Type', /json/)
     .expect(200)
-  expect(response.body).toMatchInlineSnapshot(`
-    {
-      "bar": 123,
-      "foo": "Async payload",
-      "timed": "out of time",
-    }
-  `)
+  await assertSnapshot(t, response.body)
 })
+
+async function createDisposableServer(): Promise<Server & AsyncDisposable> {
+  const app = createServer(await createData())
+  const { promise, reject, resolve } = Promise.withResolvers<void>()
+  const server = app.listen(0, (error) => error ? reject(error) : resolve())
+  await promise
+  server[Symbol.asyncDispose] = promisify(server.close.bind(server))
+  return server
+}
+
+async function createData() {
+  return await Data.create()
+    .usePayload({
+      foo: z.string(),
+      bar: z.number(),
+      timed: z.string(),
+    })
+    .useTargeting({
+      weather: targetIncludes(z.string()),
+      highTide: targetEquals(z.boolean()),
+      asyncThing: {
+        predicate: (q) =>
+          setTimeout(10, (t) => q === t && setTimeout(10, true)),
+        queryParser: z.boolean(),
+        targetingParser: z.boolean(),
+      },
+      arrayThing: {
+        predicate: (q) => (t) => _.difference(q, t).length === 0,
+        queryParser: z.string().array(),
+        targetingParser: z.string().array(),
+      },
+      date: dateRangeTargeting,
+    })
+    .addRules('foo', [
+      {
+        targeting: {
+          highTide: true,
+          weather: ['sunny'],
+        },
+        payload: '🏄‍♂️',
+      },
+      {
+        targeting: {
+          weather: ['sunny'],
+        },
+        payload: '😎',
+      },
+      {
+        targeting: {
+          weather: ['rainy'],
+        },
+        payload: '☂️',
+      },
+      {
+        targeting: {
+          highTide: true,
+        },
+        payload: '🌊',
+      },
+      {
+        targeting: {
+          asyncThing: true,
+        },
+        payload: 'Async payload',
+      },
+      {
+        targeting: {
+          arrayThing: ['a'],
+        },
+        payload: "a t'ing",
+      },
+      {
+        targeting: {
+          arrayThing: ['a', 'b'],
+        },
+        payload: "b t'ing",
+      },
+      {
+        payload: 'bar',
+      },
+    ])
+    .addRules('bar', [
+      {
+        payload: 123,
+      },
+    ])
+    .addRules('timed', [
+      {
+        targeting: {
+          date: { start: '2001-01-01', end: '2010-01-01' },
+        },
+        payload: 'in time',
+      },
+      {
+        payload: 'out of time',
+      },
+    ])
+}

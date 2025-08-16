@@ -1,38 +1,30 @@
-import { Data } from '@targetd/api'
+import { assertStrictEquals } from 'jsr:@std/assert'
+import { assertSnapshot } from 'jsr:@std/testing/snapshot'
+import { Data, targetEquals, targetIncludes } from '@targetd/api'
 import dateRangeTargeting from '@targetd/date-range'
 import { createServer } from '@targetd/server'
-import { Server } from 'node:http'
+import type { AddressInfo } from 'node:net'
 import { setTimeout } from 'node:timers/promises'
-import { z } from 'zod'
-import { Client, ClientWithData } from '../src'
+import z from 'zod'
+import { Client, type ClientWithData } from '@targetd/client'
+import { promisify } from 'node:util'
 
-const schema = Data.create({
-  data: {
+const data = await Data.create()
+  .usePayload({
     foo: z.string(),
     bar: z.number(),
     timed: z.string(),
-  },
-  targeting: {
-    weather: {
-      predicate: (q) => (t) => typeof q === 'string' && t.includes(q),
-      queryParser: z.string(),
-      targetingParser: z.array(z.string()),
-    },
-    highTide: {
-      predicate: (q) => (t) => q === t,
-      queryParser: z.boolean(),
-      targetingParser: z.boolean(),
-    },
+  })
+  .useTargeting({
+    weather: targetIncludes(z.string()),
+    highTide: targetEquals(z.boolean()),
     asyncThing: {
       predicate: (q) => setTimeout(10, (t) => q === t && setTimeout(10, true)),
       queryParser: z.boolean(),
       targetingParser: z.boolean(),
     },
     date: dateRangeTargeting,
-  },
-})
-
-const data = schema
+  })
   .addRules('foo', [
     {
       targeting: {
@@ -69,102 +61,81 @@ const data = schema
       payload: 'bar',
     },
   ])
-  .then((data) =>
-    data.addRules('bar', [
-      {
-        payload: 123,
+  .addRules('bar', [
+    {
+      payload: 123,
+    },
+  ])
+  .addRules('timed', [
+    {
+      targeting: {
+        date: { start: '2001-01-01', end: '2010-01-01' },
       },
-    ]),
-  )
-  .then((data) =>
-    data.addRules('timed', [
-      {
-        targeting: {
-          date: { start: '2001-01-01', end: '2010-01-01' },
-        },
-        payload: 'in time',
-      },
-    ]),
-  )
+      payload: 'in time',
+    },
+  ])
 
-let client: ClientWithData<Awaited<typeof schema>>
-let server: Server
+Deno.test('get one data point', async (t) => {
+  await using service = await startService()
+  const { client } = service
 
-beforeAll(async () => {
-  const d = await data
-  server = createServer(() => d).listen(3_000)
-  client = new Client(`http://localhost:3000`, schema)
-})
-
-afterAll(() => {
-  server.close()
-})
-
-test('get one data point', async () => {
-  expect(await client.getPayload('foo')).toBe('bar')
-  expect(await client.getPayload('foo', { weather: 'sunny' })).toBe('😎')
-  expect(await client.getPayload('foo', { weather: 'rainy' })).toBe('☂️')
-  expect(await client.getPayload('foo', { highTide: true })).toBe('🌊')
-  expect(
+  assertStrictEquals(await client.getPayload('foo'), 'bar')
+  assertStrictEquals(await client.getPayload('foo', { weather: 'sunny' }), '😎')
+  assertStrictEquals(await client.getPayload('foo', { weather: 'rainy' }), '☂️')
+  assertStrictEquals(await client.getPayload('foo', { highTide: true }), '🌊')
+  assertStrictEquals(
     await client.getPayload('foo', { highTide: true, weather: 'sunny' }),
-  ).toBe('🏄‍♂️')
-  expect(
-    await client.getPayload('foo', { asyncThing: true }),
-  ).toMatchInlineSnapshot(`"Async payload"`)
-  expect(
+    '🏄‍♂️',
+  )
+  await assertSnapshot(t, await client.getPayload('foo', { asyncThing: true }))
+  await assertSnapshot(
+    t,
     await client.getPayload('timed', { date: { start: '2002-01-01' } }),
-  ).toMatchInlineSnapshot(`"in time"`)
-  expect(
+  )
+  assertStrictEquals(
     await client.getPayload('timed', { date: { start: '2012-01-01' } }),
-  ).toBe(undefined)
+    undefined,
+  )
 })
 
-test('get all', async () => {
-  expect(await client.getPayloadForEachName()).toMatchInlineSnapshot(`
-    {
-      "bar": 123,
-      "foo": "bar",
-    }
-  `)
+Deno.test('get all', async (t) => {
+  await using service = await startService()
+  const { client } = service
 
-  expect(await client.getPayloadForEachName({ weather: 'sunny' }))
-    .toMatchInlineSnapshot(`
-    {
-      "bar": 123,
-      "foo": "😎",
-    }
-  `)
-
-  expect(await client.getPayloadForEachName({ weather: 'rainy' }))
-    .toMatchInlineSnapshot(`
-    {
-      "bar": 123,
-      "foo": "☂️",
-    }
-  `)
-
-  expect(await client.getPayloadForEachName({ highTide: true }))
-    .toMatchInlineSnapshot(`
-    {
-      "bar": 123,
-      "foo": "🌊",
-    }
-  `)
-
-  expect(
+  await assertSnapshot(t, await client.getPayloadForEachName())
+  await assertSnapshot(
+    t,
+    await client.getPayloadForEachName({ weather: 'sunny' }),
+  )
+  await assertSnapshot(
+    t,
+    await client.getPayloadForEachName({ weather: 'rainy' }),
+  )
+  await assertSnapshot(
+    t,
+    await client.getPayloadForEachName({ highTide: true }),
+  )
+  await assertSnapshot(
+    t,
     await client.getPayloadForEachName({ highTide: true, weather: 'sunny' }),
-  ).toMatchInlineSnapshot(`
-    {
-      "bar": 123,
-      "foo": "🏄‍♂️",
-    }
-  `)
-
-  expect(await client.getPayloadForEachName({ asyncThing: true }))
-    .toMatchInlineSnapshot(`
-    {
-      "bar": 123,
-      "foo": "Async payload",
-    }
-  `)
+  )
+  await assertSnapshot(
+    t,
+    await client.getPayloadForEachName({ asyncThing: true }),
+  )
 })
+
+async function startService(): Promise<
+  AsyncDisposable & { client: ClientWithData<typeof data> }
+> {
+  const app = createServer(data)
+  const { promise, reject, resolve } = Promise.withResolvers<void>()
+  const server = app.listen(0, (error) => error ? reject(error) : resolve())
+  await promise
+  const address = server.address() as AddressInfo
+  const client = new Client(`http://localhost:${address.port}`, data)
+  return {
+    client,
+    [Symbol.asyncDispose]: promisify(server.close.bind(server)),
+  }
+}

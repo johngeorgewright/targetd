@@ -2,6 +2,14 @@
 
 > HTTP server for targetd data
 
+## Installation
+
+| JS Runtime | Command                                         |
+| ---------- | ----------------------------------------------- |
+| Node.js    | `npx jsr add @targetd/api @targetd/server`      |
+| Bun        | `bunx jsr add @targetd/api @targetd/server`     |
+| Deno       | `deno add jsr:@targetd/api jsr:@targetd/server` |
+
 ## Exammple
 
 ```typescript

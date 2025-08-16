@@ -1,26 +1,108 @@
 import {
-  type ZodUnion,
-  type ZodRawShape,
-  type ZodTypeAny,
+  array,
+  optional,
+  partial,
   strictObject,
-  type ZodArray,
-  type ZodObject,
-  type ZodOptional,
-} from 'zod'
-import { type ZodPartialObject } from '../types'
+  union,
+  type ZodMiniArray,
+  type ZodMiniObject,
+  type ZodMiniOptional,
+  type ZodMiniUnion,
+} from 'zod/mini'
+import type { ZodPartialObject } from '../types.ts'
+import type { $strict, $ZodShape, $ZodType, input, output } from 'zod/v4/core'
+import {
+  attachVariableResolver,
+  type RecursiveVariableResolver,
+} from './attachVariableResolver.ts'
 
+/**
+ * Parses a single item rule.
+ *
+ * @example
+ * Payload only rules
+ * ```ts
+ * import { equal, assertThrows } from 'jsr:@std/assert'
+ * import { z } from 'zod/mini'
+ * const dataItemRuleParser = DataItemRuleParser(
+ *   z.number(),
+ *   {},
+ *   {}
+ * )
+ * equal(
+ *   z.parse(dataItemRuleParser, { payload: 123 }),
+ *   { payload: 123 }
+ * )
+ * assertThrows(() => z.parse(dataItemRuleParser, {}))
+ * assertThrows(() => z.parse(dataItemRuleParser, { payload: '123' }))
+ * ```
+ *
+ * With targeting.
+ * ```ts
+ * import { equal } from 'jsr:@std/assert'
+ * import { z } from 'zod/mini'
+ * const dataItemRuleParser = DataItemRuleParser(
+ *   z.number(),
+ *   { foo: z.array(z.string()) },
+ *   {}
+ * )
+ * equal(
+ *   z.parse(dataItemRuleParser, {
+ *     targeting: { foo: ['bar'] },
+ *     payload: 123
+ *   }),
+ *   {
+ *     targeting: { foo: ['bar'] },
+ *     payload: 123
+ *   }
+ * )
+ * ```
+ *
+ * With fall through targeting:
+ * ```ts
+ * import { assertThrows, equal } from 'jsr:@std/assert'
+ * import { z } from 'zod/mini'
+ * const dataItemRuleParser = DataItemRuleParser(
+ *   z.number(),
+ *   {},
+ *   { foo: z.array(z.string()) },
+ * )
+ * equal(
+ *   z.parse(dataItemRuleParser, {
+ *     fallThrough: [{ targeting: { foo: ['bar'] }, payload: 123 }],
+ *   }),
+ *   {
+ *     fallThrough: [{ targeting: { foo: ['bar'] }, payload: 123 }],
+ *   }
+ * )
+ * assertThrows(() => z.parse(dataItemRuleParser, {
+ *   targeting: { foo: ['bar'] },
+ *   fallThrough: [{ payload: 123 }]
+ * }))
+ * ```
+ */
 export function DataItemRuleParser<
-  P extends ZodTypeAny,
-  T extends ZodRawShape,
-  CT extends ZodRawShape,
+  P extends $ZodType,
+  T extends $ZodShape,
+  CT extends $ZodShape,
+  V extends Record<string, any>,
   AllowMultipleTargeting extends boolean = true,
 >(
   Payload: P,
   targeting: T,
   fallThroughTargeting: CT,
   allowMultipleTargeting = true,
-) {
-  const Rule = RuleWithPayloadParser(Payload, targeting, allowMultipleTargeting)
+): DataItemRuleParser<
+  P,
+  T,
+  CT,
+  AllowMultipleTargeting
+> {
+  const Rule = RuleWithPayloadParser(
+    Payload,
+    targeting,
+    allowMultipleTargeting,
+  )
 
   const FallThroughRule = RuleWithFallThroughParser(
     Payload,
@@ -29,7 +111,7 @@ export function DataItemRuleParser<
     allowMultipleTargeting,
   )
 
-  return Rule.or(FallThroughRule) as DataItemRuleParser<
+  return union([Rule, FallThroughRule]) as DataItemRuleParser<
     P,
     T,
     CT,
@@ -38,13 +120,17 @@ export function DataItemRuleParser<
 }
 
 export type DataItemRuleParser<
-  Payload extends ZodTypeAny,
-  Targeting extends ZodRawShape,
-  FallThroughTargeting extends ZodRawShape,
+  Payload extends $ZodType,
+  Targeting extends $ZodShape,
+  FallThroughTargeting extends $ZodShape,
   AllowMultipleTargeting extends boolean = true,
-> = ZodUnion<
+> = ZodMiniUnion<
   [
-    RuleWithPayloadParser<Payload, Targeting, AllowMultipleTargeting>,
+    RuleWithPayloadParser<
+      Payload,
+      Targeting,
+      AllowMultipleTargeting
+    >,
     RuleWithFallThroughParser<
       Payload,
       Targeting,
@@ -54,72 +140,124 @@ export type DataItemRuleParser<
   ]
 >
 
-type SingularRuleTargeting<Targeting extends ZodRawShape> = ZodPartialObject<
+/**
+ * @see https://github.com/colinhacks/zod/issues/4698
+ */
+export type DataItemRule<
+  Payload extends $ZodType,
+  Targeting extends $ZodShape,
+  FallThroughTargeting extends $ZodShape,
+  AllowMultipleTargeting extends boolean = true,
+> =
+  | RuleWithPayload<Payload, Targeting, AllowMultipleTargeting>
+  | RuleWithFallThrough<
+    Payload,
+    Targeting,
+    FallThroughTargeting,
+    AllowMultipleTargeting
+  >
+
+type SingularRuleTargeting<Targeting extends $ZodShape> = ZodPartialObject<
   Targeting,
-  'strict'
+  $strict
 >
 
-function SingularRuleTargeting<Targeting extends ZodRawShape>(
+function SingularRuleTargeting<Targeting extends $ZodShape>(
   targeting: Targeting,
 ): SingularRuleTargeting<Targeting> {
-  return strictObject(targeting).partial()
+  return partial(strictObject(targeting))
 }
 
-type MultipleRuleTargeting<Targeting extends ZodRawShape> = ZodUnion<
+type MultipleRuleTargeting<Targeting extends $ZodShape> = ZodMiniUnion<
   [
-    ZodPartialObject<Targeting, 'strict'>,
-    ZodArray<ZodPartialObject<Targeting, 'strict'>>,
+    ZodPartialObject<Targeting, $strict>,
+    ZodMiniArray<ZodPartialObject<Targeting, $strict>>,
   ]
 >
 
-function MultipleRuleTargeting<Targeting extends ZodRawShape>(
+function MultipleRuleTargeting<Targeting extends $ZodShape>(
   targeting: Targeting,
 ): MultipleRuleTargeting<Targeting> {
-  const t = strictObject(targeting).partial()
-  return t.or(t.array())
+  const t = SingularRuleTargeting(targeting)
+  return union([t, array(t)])
 }
 
 export type RuleWithPayloadParser<
-  Payload extends ZodTypeAny,
-  Targeting extends ZodRawShape,
+  Payload extends $ZodType,
+  Targeting extends $ZodShape,
   AllowMultipleTargeting extends boolean = true,
-> = ZodObject<
+> = ZodMiniObject<
   {
-    targeting: ZodOptional<
-      AllowMultipleTargeting extends true
-        ? MultipleRuleTargeting<Targeting>
+    payload: RecursiveVariableResolver<Payload>
+    targeting: ZodMiniOptional<
+      AllowMultipleTargeting extends true ? MultipleRuleTargeting<Targeting>
         : SingularRuleTargeting<Targeting>
     >
-    payload: Payload
   },
-  'strict'
+  $strict
 >
 
 export function RuleWithPayloadParser<
-  P extends ZodTypeAny,
-  T extends ZodRawShape,
+  P extends $ZodType,
+  T extends $ZodShape,
   AllowMultipleTargeting extends boolean = true,
->(Payload: P, targeting: T, allowMultipleTargeting = true) {
+>(
+  Payload: P,
+  targeting: T,
+  allowMultipleTargeting = true as AllowMultipleTargeting,
+): RuleWithPayloadParser<P, T, AllowMultipleTargeting> {
   return strictObject({
-    targeting: (allowMultipleTargeting
-      ? MultipleRuleTargeting(targeting)
-      : SingularRuleTargeting(targeting)
-    ).optional(),
-    payload: Payload,
+    payload: attachVariableResolver(Payload),
+    targeting: optional(
+      allowMultipleTargeting
+        ? MultipleRuleTargeting(targeting)
+        : SingularRuleTargeting(targeting),
+    ),
   }) as RuleWithPayloadParser<P, T, AllowMultipleTargeting>
 }
 
-export type RuleWithFallThroughParser<
-  Payload extends ZodTypeAny,
-  Targeting extends ZodRawShape,
-  FallThroughTargeting extends ZodRawShape,
+/**
+ * @see https://github.com/colinhacks/zod/issues/4698
+ */
+export interface RuleWithPayloadIn<
+  Payload extends $ZodType,
+  Targeting extends $ZodShape,
   AllowMultipleTargeting extends boolean = true,
-> = ZodObject<
-  {
-    targeting: AllowMultipleTargeting extends true
-      ? MultipleRuleTargeting<Targeting>
+> {
+  payload: input<RecursiveVariableResolver<Payload>>
+  targeting?: input<
+    AllowMultipleTargeting extends true ? MultipleRuleTargeting<Targeting>
       : SingularRuleTargeting<Targeting>
-    fallThrough: ZodArray<
+  >
+}
+
+/**
+ * @see https://github.com/colinhacks/zod/issues/4698
+ */
+export interface RuleWithPayload<
+  Payload extends $ZodType,
+  Targeting extends $ZodShape,
+  AllowMultipleTargeting extends boolean = true,
+> {
+  payload: output<Payload>
+  targeting?: output<
+    AllowMultipleTargeting extends true ? MultipleRuleTargeting<Targeting>
+      : SingularRuleTargeting<Targeting>
+  >
+}
+
+export type RuleWithFallThroughParser<
+  Payload extends $ZodType,
+  Targeting extends $ZodShape,
+  FallThroughTargeting extends $ZodShape,
+  AllowMultipleTargeting extends boolean = true,
+> = ZodMiniObject<
+  {
+    targeting: ZodMiniOptional<
+      AllowMultipleTargeting extends true ? MultipleRuleTargeting<Targeting>
+        : SingularRuleTargeting<Targeting>
+    >
+    fallThrough: ZodMiniArray<
       RuleWithPayloadParser<
         Payload,
         FallThroughTargeting,
@@ -127,25 +265,55 @@ export type RuleWithFallThroughParser<
       >
     >
   },
-  'strict'
+  $strict
 >
 
+/**
+ * @see https://github.com/colinhacks/zod/issues/4698
+ */
+export interface RuleWithFallThrough<
+  Payload extends $ZodType,
+  Targeting extends $ZodShape,
+  FallThroughTargeting extends $ZodShape,
+  AllowMultipleTargeting extends boolean = true,
+> {
+  fallThrough: RuleWithPayload<
+    Payload,
+    FallThroughTargeting,
+    AllowMultipleTargeting
+  >[]
+  targeting?: output<
+    AllowMultipleTargeting extends true ? MultipleRuleTargeting<Targeting>
+      : SingularRuleTargeting<Targeting>
+  >
+}
+
 export function RuleWithFallThroughParser<
-  Payload extends ZodTypeAny,
-  Targeting extends ZodRawShape,
-  FallThroughTargeting extends ZodRawShape,
+  Payload extends $ZodType,
+  Targeting extends $ZodShape,
+  FallThroughTargeting extends $ZodShape,
+  Variables extends Record<string, any>,
   AllowMultipleTargeting extends boolean = true,
 >(
   payload: Payload,
   targeting: Targeting,
   fallThroughTargeting: FallThroughTargeting,
   allowMultipleTargeting = true,
-) {
+): RuleWithFallThroughParser<
+  Payload,
+  Targeting,
+  FallThroughTargeting,
+  AllowMultipleTargeting
+> {
   return strictObject({
-    targeting: allowMultipleTargeting
-      ? MultipleRuleTargeting(targeting)
-      : SingularRuleTargeting(targeting),
-    fallThrough: RuleWithPayloadParser(payload, fallThroughTargeting).array(),
+    targeting: optional(
+      allowMultipleTargeting
+        ? MultipleRuleTargeting(targeting)
+        : SingularRuleTargeting(targeting),
+    ),
+    fallThrough: array(
+      RuleWithPayloadParser(payload, fallThroughTargeting),
+    ),
   }) as RuleWithFallThroughParser<
     Payload,
     Targeting,

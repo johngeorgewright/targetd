@@ -1,26 +1,27 @@
 import { createTargetingDescriptor } from '@targetd/api'
-import { type infer as zInfer, array, object, string } from 'zod'
+import { array, partial, regex, strictObject, string, union } from 'zod/mini'
+import type { output } from 'zod/v4/core'
 
-const ISODateTime = string().regex(
-  /^(-?(?:[1-9][0-9]*)?[0-9]{4})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])(T(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])(\.[0-9]+)?(Z|[+-](?:2[0-3]|[01][0-9]):[0-5][0-9])?)?$/,
-  'Must represent an ISO date',
+const ISODateTime = string().check(
+  regex(
+    /^(-?(?:[1-9][0-9]*)?[0-9]{4})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])(T(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])(\.[0-9]+)?(Z|[+-](?:2[0-3]|[01][0-9]):[0-5][0-9])?)?$/,
+    'Must represent an ISO date',
+  ),
 )
 
-const DateRange = object({
+const DateRange = partial(strictObject({
   end: ISODateTime,
   start: ISODateTime,
-})
-  .partial()
-  .strict()
+}))
 
-type DateRange = zInfer<typeof DateRange>
+type DateRange = output<typeof DateRange>
 
 const dateRangeTargeting = createTargetingDescriptor({
   predicate: (q) => (t) =>
     Array.isArray(t) ? dateRangesPredicate(t, q) : dateRangePredicate(t, q),
   queryParser: DateRange,
   requiresQuery: false,
-  targetingParser: DateRange.or(array(DateRange)),
+  targetingParser: union([DateRange, array(DateRange)]),
 })
 
 export default dateRangeTargeting
@@ -45,7 +46,7 @@ function queryDateRange(t: DateRange, q: DateRange) {
 
 function queryDateRangeAgainstNow(t: DateRange) {
   const now = Date.now()
-  const tooLate = t.end && new Date(t.end).getTime() <= now
-  const tooEarly = t.start && new Date(t.start).getTime() > now
+  const tooLate = !!t.end && new Date(t.end).getTime() <= now
+  const tooEarly = !!t.start && new Date(t.start).getTime() > now
   return !tooLate && !tooEarly
 }

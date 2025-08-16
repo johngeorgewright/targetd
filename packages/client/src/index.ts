@@ -1,11 +1,14 @@
 import type { Data, DT, PT, StaticRecord } from '@targetd/api'
-import type { ZodRawShape } from 'zod'
+import type { $ZodShape } from 'zod/v4/core'
+import { queryToURLSearchParams } from './queryToURLSearchParams.ts'
+import { ZodError } from 'zod'
+import { ResponseError } from './ResponseError.ts'
 
 export class Client<
-  PayloadParsers extends ZodRawShape,
-  TargetingParsers extends ZodRawShape,
-  QueryParsers extends ZodRawShape,
-  FallThroughTargetingParsers extends ZodRawShape,
+  PayloadParsers extends $ZodShape,
+  TargetingParsers extends $ZodShape,
+  QueryParsers extends $ZodShape,
+  FallThroughTargetingParsers extends $ZodShape,
 > {
   #baseURL: string
 
@@ -36,7 +39,9 @@ export class Client<
   async getPayload<Name extends keyof PayloadParsers>(
     name: Name,
     rawQuery: Partial<StaticRecord<QueryParsers>> = {},
-  ): Promise<PT.Payload<PayloadParsers[Name], TargetingParsers> | void> {
+  ): Promise<
+    PT.Payload<PayloadParsers[Name], FallThroughTargetingParsers> | void
+  > {
     const query = this.#data.QueryParser.parse(rawQuery)
     const urlSearchParams = queryToURLSearchParams(query)
     const response = await fetch(
@@ -46,23 +51,42 @@ export class Client<
         ...this.#init,
       },
     )
-    if (response.status === 204) return undefined
-    else {
-      const data = await this.#data.insert({
-        [name]: await response.json(),
-      } as any)
-      return data.getPayload(name)
+
+    switch (true) {
+      case response.status === 204:
+        return undefined
+      case response.status === 400:
+        await response.json()
+          .then(
+            (error) => {
+              if (error.name === '$ZodError') {
+                throw new ZodError(JSON.parse(error.message))
+              }
+            },
+            () => {},
+          )
+      // fallthrough
+      case response.status > 200 || response.status < 200:
+        throw new ResponseError(response)
+      default: {
+        const data = await this.#data.insert({
+          [name]: await response.json(),
+        } as any)
+        return data.getPayload(name)
+      }
     }
   }
 
   async getPayloadForEachName(
     rawQuery: Partial<StaticRecord<QueryParsers>> = {},
   ): Promise<
-    Partial<{
-      [Name in keyof PayloadParsers]:
-        | PT.Payload<PayloadParsers[Name], TargetingParsers>
-        | undefined
-    }>
+    Partial<
+      {
+        [Name in keyof PayloadParsers]:
+          | PT.Payload<PayloadParsers[Name], FallThroughTargetingParsers>
+          | undefined
+      }
+    >
   > {
     const query = this.#data.QueryParser.parse(rawQuery)
     const urlSearchParams = queryToURLSearchParams(query)
@@ -76,34 +100,10 @@ export class Client<
 }
 
 export type ClientWithData<
-  D extends Data<ZodRawShape, ZodRawShape, ZodRawShape, ZodRawShape>,
+  D extends DT.Any,
 > = Client<
   DT.PayloadParsers<D>,
   DT.TargetingParsers<D>,
   DT.QueryParsers<D>,
   DT.FallThroughTargetingParsers<D>
 >
-
-function queryToURLSearchParams(query: Record<string, unknown>) {
-  const urlSearchParams = new URLSearchParams()
-  for (const [key, value] of Object.entries(query))
-    for (const [n, v] of queryValueToParams(key, value))
-      urlSearchParams.append(n, v)
-  return urlSearchParams
-}
-
-function* queryValueToParams(
-  key: string,
-  value: unknown,
-): Generator<[string, string]> {
-  if (Array.isArray(value))
-    for (const item of value) yield* queryValueToParams(key, item)
-  else if (isObject(value))
-    for (const [k, v] of Object.entries(value))
-      yield* queryValueToParams(`${key}[${k}]`, v)
-  else yield [key, String(value)]
-}
-
-function isObject(x: unknown): x is Record<string, unknown> {
-  return typeof x === 'object' && x !== null
-}

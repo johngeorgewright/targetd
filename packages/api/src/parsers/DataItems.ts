@@ -1,22 +1,54 @@
-import { type ZodRawShape, strictObject } from 'zod'
-import { type ZodPartialObject } from '../types'
-import { DataItemParser } from './DataItem'
+import type { ZodPartialObject } from '../types.ts'
+import {
+  type DataItemIn,
+  type DataItemOut,
+  DataItemParser,
+} from './DataItem.ts'
+import { partial, strictObject } from 'zod/mini'
+import type { $strict, $ZodShape } from 'zod/v4/core'
 
+/**
+ * Parses all items in a Data class.
+ *
+ * @example
+ * ```ts
+ * import { equal, assertThrows } from 'jsr:@std/assert'
+ * import { z } from 'zod/mini'
+ * const dataItemsParser = DataItemsParser(
+ *   { a: z.number() },
+ *   { foo: z.string() },
+ *   {},
+ * )
+ * equal(
+ *   z.parse(dataItemsParser, {
+ *     a: { rules: [{ targeting: { foo: 'bar' }, payload: 123 }], variables: {} }
+ *   }),
+ *   {
+ *     a: { rules: [{ targeting: { foo: 'bar' }, payload: 123 }], variables: {} }
+ *   }
+ * )
+ * ```
+ */
 export function DataItemsParser<
-  D extends ZodRawShape,
-  T extends ZodRawShape,
-  CT extends ZodRawShape,
->(payloadParsers: D, targeting: T, fallThroughTargeting: CT) {
+  D extends $ZodShape,
+  T extends $ZodShape,
+  CT extends $ZodShape,
+>(
+  payloadParsers: D,
+  targeting: T,
+  fallThroughTargeting: CT,
+): DataItemsParser<D, T, CT> {
   const dataItems: Record<string, any> = {}
-  for (const [key, Payload] of Object.entries(payloadParsers))
+  for (const [key, Payload] of Object.entries(payloadParsers)) {
     dataItems[key] = DataItemParser(Payload, targeting, fallThroughTargeting)
-  return strictObject(dataItems).partial() as DataItemsParser<D, T, CT>
+  }
+  return partial(strictObject(dataItems)) as DataItemsParser<D, T, CT>
 }
 
 export type DataItemsParser<
-  DataTypes extends ZodRawShape,
-  Targeting extends ZodRawShape,
-  FallThroughTargeting extends ZodRawShape,
+  DataTypes extends $ZodShape,
+  Targeting extends $ZodShape,
+  FallThroughTargeting extends $ZodShape,
 > = ZodPartialObject<
   {
     [Name in keyof DataTypes]: DataItemParser<
@@ -25,5 +57,29 @@ export type DataItemsParser<
       FallThroughTargeting
     >
   },
-  'strict'
+  $strict
 >
+
+export type DataItemsIn<
+  DataTypes extends $ZodShape,
+  Targeting extends $ZodShape,
+  FallThroughTargeting extends $ZodShape,
+> = {
+  [Name in keyof DataTypes]?: DataItemIn<
+    DataTypes[Name],
+    Targeting,
+    FallThroughTargeting
+  >
+}
+
+export type DataItemsOut<
+  DataTypes extends $ZodShape,
+  Targeting extends $ZodShape,
+  FallThroughTargeting extends $ZodShape,
+> = {
+  [Name in keyof DataTypes]?: DataItemOut<
+    DataTypes[Name],
+    Targeting,
+    FallThroughTargeting
+  >
+}

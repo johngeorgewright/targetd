@@ -1,16 +1,18 @@
 import { DataItemParser, DataItemsParser, type DT } from '@targetd/api'
-import { string } from 'zod'
-import zodToJSONSchema from 'zod-to-json-schema'
+import { extend, optional, string, toJSONSchema } from 'zod/mini'
 
 export function dataJSONSchemas<D extends DT.Any>(data: D) {
-  return zodToJSONSchema(
-    DataItemsParser(
-      data.payloadParsers,
-      data.targetingParsers,
-      data.fallThroughTargetingParsers,
-    ).extend({ $schema: string().optional() }),
+  return toJSONSchema(
+    extend(
+      DataItemsParser(
+        data.payloadParsers,
+        data.targetingParsers,
+        data.fallThroughTargetingParsers,
+      ),
+      { $schema: optional(string()) },
+    ),
     {
-      effectStrategy: 'input',
+      io: 'input',
     },
   )
 }
@@ -19,14 +21,17 @@ export function dataJSONSchema<D extends DT.Any>(
   data: D,
   name: keyof DT.PayloadParsers<D>,
 ) {
-  return zodToJSONSchema(
-    DataItemParser(
-      data.payloadParsers[name],
-      data.targetingParsers,
-      data.fallThroughTargetingParsers,
-    ).extend({ $schema: string().optional() }),
+  return toJSONSchema(
+    extend(
+      DataItemParser(
+        data.payloadParsers[name],
+        data.targetingParsers,
+        data.fallThroughTargetingParsers,
+      ),
+      { $schema: optional(string()) },
+    ),
     {
-      effectStrategy: 'input',
+      io: 'input',
     },
   )
 }

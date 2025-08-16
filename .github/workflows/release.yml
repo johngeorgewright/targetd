@@ -5,102 +5,49 @@ on:
     branches: [master]
 
 jobs:
-  build:
-    name: Build
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [18, 20, 21]
-    steps:
-      - name: Checkout project
-        uses: actions/checkout@v4
-
-      - name: NVM
-        id: nvm
-        run: echo "version=$(cat .nvmrc)" >> $GITHUB_OUTPUT
-
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-
-      - name: Restore cache
-        uses: actions/cache@v4
-        id: cache
-        with:
-          path: |
-            .yarn/unplugged
-            .yarn/install-state.gz
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-
-      - name: Yarn
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: yarn install --immutable
-
-      - name: Build
-        run: yarn build
-
-      - name: Test
-        run: yarn test
-
-      - name: Upload dists
-        uses: actions/upload-artifact@v4
-        if: startsWith(matrix.node-version, steps.nvm.outputs.version)
-        with:
-          if-no-files-found: error
-          name: dists
-          path: packages/**/dist
-
-  publish-npm:
-    name: NPM
+  test:
     if: github.actor != 'renovate[bot]'
-    needs: [build]
+    uses: ./.github/workflows/test.yml
+
+  packages:
+    if: github.actor != 'renovate[bot]'
+    name: Package Meta
     runs-on: ubuntu-latest
-    environment: NPM
+    outputs:
+      packages: ${{ steps.packages.outputs.packages }}
     steps:
       - name: Checkout project
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
+
+      - name: Find packages
+        id: packages
+        run: | # shell
+          packages=$(ls packages | jq -R -s -c 'split("\n")[:-1]')
+          echo "packages=${packages}" >> $GITHUB_OUTPUT
+
+  publish:
+    name: Publish
+    needs: [packages, test]
+    runs-on: ubuntu-latest
+    concurrency:
+      group: release
+    strategy:
+      max-parallel: 1
+      matrix:
+        package: ${{ fromJSON(needs.packages.outputs.packages) }}
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v5
         with:
           token: ${{ secrets.PUSH_TOKEN }}
 
-      - name: Install Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: .nvmrc
-
-      - name: Setup Registries
-        run: |
-          yarn config set --home 'npmRegistries["https://registry.npmjs.org"].npmAuthToken' '${{ secrets.NPM_TOKEN }}'
-          yarn config set --home npmPublishRegistry https://registry.npmjs.org
-
-      - name: Restore cache
-        uses: actions/cache@v4
-        id: cache
-        with:
-          path: |
-            .yarn/unplugged
-            .yarn/install-state.gz
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-
-      - name: Yarn
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: yarn install --immutable
-
-      - name: Download dists
-        uses: actions/download-artifact@v4
-        with:
-          name: dists
-          path: ~/dists
-
-      - name: Move dists to project
-        run: |
-          for package in ~/dists/*
-          do 
-            mv "$package/dist" "packages/${package/$HOME\/dists\//}"
-          done
-
-      - name: Release
-        run: yarn release
+      - name: Semantic Release
+        uses: cycjimmy/semantic-release-action@v4
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PUSH_TOKEN }}
+        with:
+          working_directory: ${{ matrix.package }}
+          extra_plugins: |
+            @semantic-release/exec
+            @semantic-release/git
+            semantic-release-monorepo

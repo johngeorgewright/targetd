@@ -1,0 +1,28 @@
+{
+  "name": "@targetd/fs",
+  "version": "5.0.0",
+  "exports": "./src/index.ts",
+  "imports": {
+    "@es-toolkit/es-toolkit": "jsr:@es-toolkit/es-toolkit@^1.39.8",
+    "@johngw/fs": "npm:@johngw/fs@^3.0.1",
+    "ts-toolbelt": "npm:ts-toolbelt@^9.6.0",
+    "watch": "npm:watch@^1.0.2",
+    "yaml": "npm:yaml@^2.8.1",
+    "zod": "npm:zod@^4.0.15"
+  },
+  "fmt": {
+    "semiColons": false,
+    "singleQuote": true
+  },
+  "tasks": {
+    "test": "deno test --allow-all --trace-leaks"
+  },
+  "publish": {
+    "include": [
+      "deno.json",
+      "src/",
+      "LICENSE",
+      "README.md"
+    ]
+  }
+}

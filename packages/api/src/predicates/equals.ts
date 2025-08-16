@@ -1,22 +1,14 @@
-import type TargetingPredicate from '../parsers/TargetingPredicate'
-import type TargetingDescriptor from '../parsers/TargetingDescriptor'
-import { type ZodTypeAny } from 'zod'
+import type TargetingDescriptor from '../parsers/TargetingDescriptor.ts'
+import type { $ZodType } from 'zod/v4/core'
 
 /**
  * The query has to match the targeting exactly.
  */
-export function equalsPredicate<
-  QV extends ZodTypeAny,
-  TV extends ZodTypeAny,
->(): TargetingPredicate<QV, TV> {
-  return (q) => (t) => q === t
-}
-
-export function targetEquals<T extends ZodTypeAny>(
+export function targetEquals<T extends $ZodType>(
   t: T,
 ): TargetingDescriptor<T, T> {
   return {
-    predicate: equalsPredicate(),
+    predicate: (q) => (t) => !q || q === t,
     queryParser: t,
     targetingParser: t,
   }

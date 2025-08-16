@@ -1,11 +1,16 @@
-import type { infer as zInfer, ZodTypeAny, ZodRawShape } from 'zod'
-import type { FTTT } from './FallThroughTargeting'
+import type { $ZodShape, $ZodType, output } from 'zod/v4/core'
+import type * as FTTT from './FallThroughTargeting.ts'
 
-/**
- * Payload type utilities
- */
-export namespace PT {
-  export type Payload<P extends ZodTypeAny, T extends ZodRawShape> =
-    | zInfer<P>
-    | FTTT.Rules<P, T>
+export type Payload<P extends $ZodType, T extends $ZodShape> =
+  | output<P>
+  | FTTT.Rules<P, T>
+
+export type Payloads<
+  PayloadParsers extends $ZodShape,
+  FallThroughTargetingParsers extends $ZodShape,
+> = {
+  [Name in keyof PayloadParsers]?: Payload<
+    PayloadParsers[Name],
+    FallThroughTargetingParsers
+  >
 }

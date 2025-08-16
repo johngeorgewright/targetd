@@ -1,0 +1,24 @@
+{
+  "name": "@targetd/client",
+  "version": "5.0.0",
+  "exports": "./src/index.ts",
+  "imports": {
+    "ts-toolbelt": "npm:ts-toolbelt@9.6.0",
+    "zod": "npm:zod@^4.0.15"
+  },
+  "fmt": {
+    "semiColons": false,
+    "singleQuote": true
+  },
+  "tasks": {
+    "test": "deno test --allow-all --trace-leaks"
+  },
+  "publish": {
+    "include": [
+      "deno.json",
+      "src/",
+      "LICENSE",
+      "README.md"
+    ]
+  }
+}

@@ -1,0 +1,188 @@
+export const snapshot = {};
+
+snapshot[`getPayloads 1`] = `
+[
+  "😎",
+  "☂️",
+  "bar",
+]
+`;
+
+snapshot[`payload runtype validation 1`] = `
+'[
+  {
+    "code": "custom",
+    "path": [
+      "foo",
+      "rules",
+      0,
+      "payload"
+    ],
+    "message": "Should be bar"
+  }
+]'
+`;
+
+snapshot[`getPayloadForEachName 1`] = `
+{
+  bar: "😁",
+  foo: "😎",
+}
+`;
+
+snapshot[`getPayloadForEachName 2`] = `
+{
+  bar: "async payloads!",
+  foo: undefined,
+}
+`;
+
+snapshot[`fallThrough targeting 1`] = `
+{
+  bar: {
+    rules: [
+      {
+        fallThrough: [
+          {
+            payload: "😟",
+            targeting: {
+              weather: [
+                "rainy",
+              ],
+            },
+          },
+          {
+            payload: "😁",
+            targeting: {
+              weather: [
+                "sunny",
+              ],
+            },
+          },
+        ],
+        targeting: {},
+      },
+    ],
+    variables: {},
+  },
+  foo: {
+    rules: [
+      {
+        fallThrough: [
+          {
+            payload: "🏄‍♂️",
+            targeting: {
+              weather: [
+                "sunny",
+              ],
+            },
+          },
+        ],
+        targeting: {
+          surf: [
+            "strong",
+          ],
+        },
+      },
+      {
+        fallThrough: [
+          {
+            payload: "😎",
+            targeting: {
+              weather: [
+                "sunny",
+              ],
+            },
+          },
+          {
+            payload: "☂️",
+            targeting: {
+              weather: [
+                "rainy",
+              ],
+            },
+          },
+        ],
+        targeting: {},
+      },
+    ],
+    variables: {},
+  },
+}
+`;
+
+snapshot[`inserting data 1`] = `
+{
+  bar: {
+    __rules__: [
+      {
+        payload: "😟",
+        targeting: {
+          highTide: false,
+        },
+      },
+      {
+        payload: "😁",
+        targeting: {
+          highTide: true,
+        },
+      },
+    ],
+  },
+  foo: "😎",
+  moo: "glue",
+}
+`;
+
+snapshot[`broken 1`] = `
+{
+  foo: "face",
+}
+`;
+
+snapshot[`broken 2`] = `
+{
+  foo: {
+    __rules__: [
+      {
+        payload: "yay",
+        targeting: {
+          browser: [
+            "chrome",
+          ],
+        },
+      },
+      {
+        payload: "nay",
+        targeting: {
+          browser: [
+            "edge",
+          ],
+        },
+      },
+    ],
+  },
+}
+`;
+
+snapshot[`variables 1`] = `
+{
+  a: {
+    b: {
+      c: "foo",
+      d: 1,
+    },
+  },
+}
+`;
+
+snapshot[`variables 2`] = `
+{
+  a: {
+    b: {
+      c: "bar",
+      d: 1,
+    },
+  },
+}
+`;

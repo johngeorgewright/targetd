@@ -1,0 +1,23 @@
+{
+  "name": "@targetd/date-range",
+  "version": "4.0.0",
+  "exports": "./src/index.ts",
+  "imports": {
+    "zod": "npm:zod@^4.0.15"
+  },
+  "fmt": {
+    "semiColons": false,
+    "singleQuote": true
+  },
+  "tasks": {
+    "test": "deno test --allow-all --trace-leaks"
+  },
+  "publish": {
+    "include": [
+      "deno.json",
+      "src/",
+      "LICENSE",
+      "README.md"
+    ]
+  }
+}

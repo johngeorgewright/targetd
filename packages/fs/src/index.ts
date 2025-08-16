@@ -1,2 +1,2 @@
-export { load } from './load'
-export { watch } from './watch'
+export { load } from './load.ts'
+export * from './watch.ts'
