@@ -46,7 +46,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.PUSH_TOKEN }}
         with:
-          working_directory: ${{ matrix.package }}
+          working_directory: packages/${{ matrix.package }}
           extra_plugins: |
             @semantic-release/exec
             @semantic-release/git
