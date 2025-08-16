@@ -11,5 +11,13 @@
   },
   "tasks": {
     "test": "deno test --allow-all --trace-leaks"
+  },
+  "publish": {
+    "include": [
+      "deno.json",
+      "src/",
+      "LICENSE",
+      "README.md"
+    ]
   }
 }

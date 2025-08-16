@@ -14,5 +14,13 @@
     "fast-deep-equal": "npm:fast-deep-equal@^3.0.0",
     "ts-toolbelt": "npm:ts-toolbelt@^9.0.0",
     "zod": "npm:zod@^4.0.15"
+  },
+  "publish": {
+    "include": [
+      "deno.json",
+      "src/",
+      "LICENSE",
+      "README.md"
+    ]
   }
 }
