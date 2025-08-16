@@ -35,6 +35,7 @@ import { resolveVariables } from './parsers/DataItemVariableResolver.ts'
  * ```ts
  * import { z } from 'zod/mini'
  * import { targetIncludes } from '@targetd/api'
+ * import { assertEquals } from 'jsr:@std/assert'
  *
  * const data = await Data.create()
  *   .usePayload({ foo: z.string() })
@@ -49,8 +50,10 @@ import { resolveVariables } from './parsers/DataItemVariableResolver.ts'
  *     }
  *   ])
  *
- * console.info(await data.getPayloadForEachName({ channel: 'news' }))
- * // { foo: 'bar' }
+ * assertEquals(
+ *   await data.getPayloadForEachName({ channel: 'news' }),
+ *   { foo: 'bar' },
+ * )
  * ```
  */
 export default class Data<
