@@ -28,6 +28,31 @@ import { partial, strictObject } from 'zod/mini'
 import { type PromisedData, promisedData } from './PromisedData.ts'
 import { resolveVariables } from './parsers/DataItemVariableResolver.ts'
 
+/**
+ * In-memory data store.
+ *
+ * @example
+ * ```ts
+ * import { z } from 'zod/mini'
+ * import { targetIncludes } from '@targetd/api'
+ *
+ * const data = await Data.create()
+ *   .usePayload({ foo: z.string() })
+ *   .useTargeting({ channel: targetIncludes(z.string()) })
+ *   .addRules('foo', [
+ *     {
+ *       targeting: { channel: ['news'] },
+ *       payload: 'bar'
+ *     },
+ *     {
+ *       payload: 'foo'
+ *     }
+ *   ])
+ *
+ * console.info(await data.getPayloadForEachName({ channel: 'news' }))
+ * // { foo: 'bar' }
+ * ```
+ */
 export default class Data<
   PayloadParsers extends $ZodShape,
   TargetingParsers extends $ZodShape,
@@ -467,7 +492,6 @@ export default class Data<
   > {
     const predicate = await this.#createRulePredicate(rawQuery)
     const targetableItem = this.#getTargetableItem(name)
-    const variables: Record<string, any> = {}
     let payload:
       | PT.Payload<PayloadParsers[Name], FallThroughTargetingParsers>
       | undefined
@@ -479,6 +503,27 @@ export default class Data<
       }
     }
 
+    return resolveVariables(
+      await this.#getVariables(targetableItem, predicate),
+      payload,
+    )
+  }
+
+  async #getVariables<Name extends keyof PayloadParsers>(
+    targetableItem: DataItemOut<
+      PayloadParsers[Name],
+      TargetingParsers,
+      FallThroughTargetingParsers
+    >,
+    predicate: (
+      rule: DataItemRule<
+        PayloadParsers[Name],
+        TargetingParsers,
+        FallThroughTargetingParsers
+      >,
+    ) => Promise<boolean>,
+  ) {
+    const variables: Record<string, any> = {}
     if (objectSize(targetableItem.variables)) {
       for (
         const [variableName, rules] of objectEntries(targetableItem.variables)
@@ -491,8 +536,7 @@ export default class Data<
         }
       }
     }
-
-    return resolveVariables(variables, payload)
+    return variables
   }
 
   async getPayloads<Name extends keyof PayloadParsers>(
@@ -504,15 +548,17 @@ export default class Data<
       FallThroughTargetingParsers
     >[] = []
     const predicate = await this.#createRulePredicate(rawQuery)
-    for (const rule of this.#getTargetableItem(name).rules) {
+    const targetableItem = this.#getTargetableItem(name)
+    for (const rule of targetableItem.rules) {
       if (await predicate(rule as any)) {
         const mappedRule = this.#mapRule(rule)
-        if (mappedRule) {
+        if (mappedRule !== undefined) {
           payloads.push(mappedRule)
         }
       }
     }
-    return payloads
+    const variables = await this.#getVariables(targetableItem, predicate)
+    return payloads.map((payload) => resolveVariables(variables, payload))
   }
 
   #mapRule<PayloadParser extends $ZodType>(
@@ -544,24 +590,26 @@ export default class Data<
         FallThroughTargetingParsers
       >,
     ) =>
-      !('targeting' in rule) ||
-      this.#targetingPredicate(
-        query as any,
-        rule.targeting! as any,
-        objectMap(
-          this.#targetingPredicates,
-          (target, targetingKey) => ({
-            predicate: () =>
-              target.predicate(
-                // We haven't yet made sure that the QueryParsers
-                // and TargetingParsers have the same keys.
-                (query as any)[targetingKey],
-                query as any,
-              ),
-            requiresQuery: target.requiresQuery,
-          }),
-        ),
-      )
+      (
+        !('targeting' in rule) ||
+        this.#targetingPredicate(
+          query as any,
+          rule.targeting! as any,
+          objectMap(
+            this.#targetingPredicates,
+            (target, targetingKey) => ({
+              predicate: () =>
+                target.predicate(
+                  // We haven't yet made sure that the QueryParsers
+                  // and TargetingParsers have the same keys.
+                  (query as any)[targetingKey],
+                  query as any,
+                ),
+              requiresQuery: target.requiresQuery,
+            }),
+          ),
+        )
+      ) as Promise<boolean>
   }
 
   #getTargetableItem<Name extends keyof PayloadParsers>(name: Name) {
@@ -596,7 +644,7 @@ export default class Data<
         requiresQuery: boolean
       }
     >,
-  ) {
+  ): Promise<boolean> {
     const targetings = Array.isArray(targeting) ? targeting : [targeting]
     for (const targeting of targetings) {
       if (
