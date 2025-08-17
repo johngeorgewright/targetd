@@ -6,5 +6,6 @@
 module.exports = {
   extends: [
     '../../.releaserc.cjs',
+    'semantic-release-monorepo',
   ],
 }
