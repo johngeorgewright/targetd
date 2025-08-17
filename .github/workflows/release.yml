@@ -37,7 +37,7 @@ jobs:
             with open(f'packages/{package}/deno.json', 'r') as deno:
               output[package] = json.load(deno).get('name')
           with open(os.environ['GITHUB_OUTPUT'], 'a') as gho:
-            gho.write(f'{names}={json.dumps(output)}')
+            gho.write(f'names={json.dumps(output)}')
 
   publish:
     name: Publish
