@@ -15,6 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       packages: ${{ steps.packages.outputs.packages }}
+      package-names: ${{ steps.names.outputs.names }}
     steps:
       - name: Checkout project
         uses: actions/checkout@v5
@@ -24,6 +25,19 @@ jobs:
         run: | # shell
           packages=$(ls packages | jq -R -s -c 'split("\n")[:-1]')
           echo "packages=${packages}" >> $GITHUB_OUTPUT
+
+      - name: Find package names
+        id: names
+        shell: python
+        run: | # python
+          import json
+          import os
+          output = {}
+          for package in json.loads('${{ steps.packages.outputs.packages }}'):
+            with open(f'packages/{package}/deno.json', 'r') as deno:
+              output[package] = json.load(deno).get('name')
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as gho:
+            gho.write(f'{names}={json.dumps(output)}')
 
   publish:
     name: Publish
@@ -56,4 +70,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.PUSH_TOKEN }}
         with:
+          tag_format: ${{ needs.packages.outputs.package-names[matrix.package] }}-v${version}
           working_directory: packages/${{ matrix.package }}
