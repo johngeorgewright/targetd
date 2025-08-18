@@ -25,7 +25,7 @@ const config = {
     [
       '@semantic-release/git',
       {
-        message: 'chore(release): ${nextRelease.version} [skip ci]',
+        message: 'chore(release): ${nextRelease.version}',
       },
     ],
     '@semantic-release/github',
