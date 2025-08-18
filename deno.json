@@ -1,4 +1,8 @@
 {
+  "fmt": {
+    "semiColons": false,
+    "singleQuote": true
+  },
   "lint": {
     "rules": {
       "exclude": ["no-explicit-any", "ban-types"]

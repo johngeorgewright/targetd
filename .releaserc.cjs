@@ -1,20 +1,20 @@
 // @ts-check
 
 const bumpVersion =
-  "cat deno.json | jq '.version |= \"${nextRelease.version}\"' > deno.tmp.json && mv deno.tmp.json deno.json";
-const isPublicPackage = '[ $(cat deno.json | jq -r .private) != "true" ]';
-const publish = "deno publish --allow-dirty";
+  'cat deno.json | jq \'.version |= "${nextRelease.version}"\' > deno.tmp.json && mv deno.tmp.json deno.json'
+const isPublicPackage = '[ $(cat deno.json | jq -r .private) != "true" ]'
+const publish = 'deno publish --allow-dirty'
 
 /**
  * @type {import('npm:semantic-release').Options}
  */
 const config = {
-  branches: ["master"],
+  branches: ['master'],
   plugins: [
-    "@semantic-release/commit-analyzer",
-    "@semantic-release/release-notes-generator",
+    '@semantic-release/commit-analyzer',
+    '@semantic-release/release-notes-generator',
     [
-      "@semantic-release/exec",
+      '@semantic-release/exec',
       {
         prepareCmd: `${isPublicPackage} && ${bumpVersion}`,
         verifyReleaseCmd:
@@ -23,13 +23,13 @@ const config = {
       },
     ],
     [
-      "@semantic-release/git",
+      '@semantic-release/git',
       {
-        message: "chore(release): ${nextRelease.version} [skip ci]",
+        message: 'chore(release): ${nextRelease.version} [skip ci]',
       },
     ],
-    "@semantic-release/github",
+    '@semantic-release/github',
   ],
-};
+}
 
-module.exports = config;
+module.exports = config
