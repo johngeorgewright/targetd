@@ -9,7 +9,7 @@ jobs:
     if: github.actor != 'renovate[bot]'
     uses: ./.github/workflows/test.yml
 
-  packages:
+  meta:
     if: github.actor != 'renovate[bot]'
     name: Package Meta
     runs-on: ubuntu-latest
@@ -41,14 +41,14 @@ jobs:
 
   publish:
     name: Publish
-    needs: [packages, test]
+    needs: [meta]
     runs-on: ubuntu-latest
     concurrency:
       group: release
     strategy:
       max-parallel: 1
       matrix:
-        package: ${{ fromJSON(needs.packages.outputs.packages) }}
+        package: ${{ fromJSON(needs.meta.outputs.packages) }}
     steps:
       - uses: actions/checkout@v5
         with:
@@ -62,7 +62,6 @@ jobs:
         with:
           node-version: 24
 
-      # cycjimmy/semantic-release-action doesn't want to install this.
       - working-directory: packages/${{ matrix.package }}
         run: npm i semantic-release-monorepo @semantic-release/exec @semantic-release/git
 
@@ -70,5 +69,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.PUSH_TOKEN }}
         with:
-          tag_format: ${{ needs.packages.outputs.package-names[matrix.package] }}-v${version}
+          tag_format: ${{ fromJSON(needs.meta.outputs.package-names)[matrix.package] }}-v${version}
           working_directory: packages/${{ matrix.package }}
