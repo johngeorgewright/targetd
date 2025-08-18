@@ -41,7 +41,7 @@ jobs:
 
   publish:
     name: Publish
-    needs: [meta]
+    needs: [meta, test]
     runs-on: ubuntu-latest
     concurrency:
       group: release
