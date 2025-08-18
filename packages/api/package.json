@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "@semantic-release/exec": "^7.1.0",
+    "@semantic-release/git": "^10.0.1",
+    "semantic-release-monorepo": "^8.0.2"
+  }
+}
