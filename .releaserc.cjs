@@ -18,7 +18,7 @@ const config = {
       {
         prepareCmd: `${isPublicPackage} && ${bumpVersion}`,
         verifyReleaseCmd:
-          `${isPublicPackage} && ${publish} --set-version "\${nextRelease.version}" --dry-run`,
+          `${isPublicPackage} && ${publish} --set-version "\${nextRelease.version}"`,
         publishCmd: `${isPublicPackage} && ${publish}`,
       },
     ],
