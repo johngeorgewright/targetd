@@ -19,10 +19,10 @@ jobs:
           deno-version-file: .dvmrc
 
       - name: Check
-        run: deno check --frozen packages/**/src
+        run: deno check --frozen
 
       - name: Lint
-        run: deno lint packages/**/src
+        run: deno lint
 
       - name: Test
-        run: deno test --frozen --allow-all packages/**/test
+        run: deno test --frozen --allow-all
