@@ -45,10 +45,6 @@ jobs:
     runs-on: ubuntu-latest
     concurrency:
       group: release
-    strategy:
-      max-parallel: 1
-      matrix:
-        package: ${{ fromJSON(needs.meta.outputs.packages) }}
     permissions:
       id-token: write
     steps:
@@ -64,12 +60,13 @@ jobs:
         with:
           node-version: 24
 
-      - working-directory: packages/${{ matrix.package }}
-        run: npm i semantic-release-monorepo @semantic-release/exec @semantic-release/git
+      - name: Install Semantic Release
+        run: npm i semantic-release semantic-release-monorepo @semantic-release/exec @semantic-release/git
 
-      - uses: cycjimmy/semantic-release-action@v4
-        env:
-          GITHUB_TOKEN: ${{ secrets.PUSH_TOKEN }}
-        with:
-          tag_format: ${{ fromJSON(needs.meta.outputs.package-names)[matrix.package] }}-v${version}
-          working_directory: packages/${{ matrix.package }}
+      - name: Release
+        shell: python
+        run: | # python
+          import json
+          import subprocess
+          for package, package_name in json.loads('${{ needs.meta.outputs.package-names }}').items():
+            subprocess.run(['npx', 'semantic-release', '--tag-format='+ package_name + '-v${version}'], cwd=f'packages/{package}')
