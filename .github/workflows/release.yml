@@ -15,29 +15,27 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       packages: ${{ steps.packages.outputs.packages }}
-      package-names: ${{ steps.names.outputs.names }}
     steps:
       - name: Checkout project
         uses: actions/checkout@v5
 
-      - name: Find packages
-        id: packages
-        run: | # shell
-          packages=$(ls packages | jq -R -s -c 'split("\n")[:-1]')
-          echo "packages=${packages}" >> $GITHUB_OUTPUT
-
       - name: Find package names
-        id: names
+        id: packages
         shell: python
         run: | # python
           import json
           import os
+          packages = []
+          with os.scandir('packages') as it:
+            for entry in it:
+              if entry.is_dir():
+                packages.append(entry.name)
           output = {}
-          for package in json.loads('${{ steps.packages.outputs.packages }}'):
+          for package in packages:
             with open(f'packages/{package}/deno.json', 'r') as deno:
               output[package] = json.load(deno).get('name')
           with open(os.environ['GITHUB_OUTPUT'], 'a') as gho:
-            gho.write(f'names={json.dumps(output)}')
+            gho.write(f'packages={json.dumps(output)}')
 
   publish:
     name: Publish
@@ -60,13 +58,20 @@ jobs:
         with:
           node-version: 24
 
-      - name: Install Semantic Release
-        run: npm i semantic-release semantic-release-monorepo @semantic-release/exec @semantic-release/git
-
       - name: Release
-        shell: python
+        env:
+          GITHUB_TOKEN: ${{ secrets.PUSH_TOKEN }}
         run: | # python
           import json
           import subprocess
-          for package, package_name in json.loads('${{ needs.meta.outputs.package-names }}').items():
-            subprocess.run(['npx', 'semantic-release', '--tag-format='+ package_name + '-v${version}'], cwd=f'packages/{package}')
+          for package, package_name in json.loads('${{ needs.meta.outputs.packages }}').items():
+            subprocess.run(
+              ['npm', 'install', 'semantic-release-monorepo', '@semantic-release/exec', '@semantic-release/git'],
+              check=True,
+              cwd=f'packages/{package}'
+            )
+            subprocess.run(
+              ['npx', 'semantic-release', '--tag-format=' + package_name + '-v${version}'],
+              check=True,
+              cwd=f'packages/{package}'
+            )
