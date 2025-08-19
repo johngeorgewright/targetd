@@ -2,11 +2,5 @@ dist
 *.log
 node_modules
 package.json
+package-lock.json
 *.validator.ts
-.yarn/*
-!.yarn/cache
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/sdks
-!.yarn/versions
