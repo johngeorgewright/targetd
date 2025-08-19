@@ -61,6 +61,7 @@ jobs:
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.PUSH_TOKEN }}
+        shell: python
         run: | # python
           import json
           import subprocess
