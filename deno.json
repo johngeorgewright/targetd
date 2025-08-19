@@ -10,8 +10,6 @@
   },
   "tasks": {
     "check": "deno check --frozen packages/**/src",
-    "check:dev": "deno check packages/**/src",
-    "lint": "deno lint packages/**/src",
     "test": "deno test --frozen --allow-all packages/**/test",
     "test:dev": "deno test --allow-all packages/**/test"
   },
