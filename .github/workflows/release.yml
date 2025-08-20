@@ -21,21 +21,13 @@ jobs:
 
       - name: Find package names
         id: packages
-        shell: python
-        run: | # python
-          import json
-          import os
-          packages = []
-          with os.scandir('packages') as it:
-            for entry in it:
-              if entry.is_dir():
-                packages.append(entry.name)
-          output = {}
-          for package in packages:
-            with open(f'packages/{package}/deno.json', 'r') as deno:
-              output[package] = json.load(deno).get('name')
-          with open(os.environ['GITHUB_OUTPUT'], 'a') as gho:
-            gho.write(f'packages={json.dumps(output)}')
+        run: | # shell
+          output='{}'
+          for package in $(ls packages); do
+            name=$(cat "packages/${package}/deno.json" | jq .name)
+            output=$(echo $output | jq -c ". += {\"${package}\":${name}}")
+          done
+          echo "packages=${output}" >> $GITHUB_OUTPUT
 
   publish:
     name: Publish
@@ -61,18 +53,11 @@ jobs:
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.PUSH_TOKEN }}
-        shell: python
-        run: | # python
-          import json
-          import subprocess
-          for package, package_name in json.loads('${{ needs.meta.outputs.packages }}').items():
-            subprocess.run(
-              ['npm', 'install', 'semantic-release-monorepo', '@semantic-release/exec', '@semantic-release/git'],
-              check=True,
-              cwd=f'packages/{package}'
-            )
-            subprocess.run(
-              ['npx', 'semantic-release', '--tag-format=' + package_name + '-v${version}'],
-              check=True,
-              cwd=f'packages/{package}'
-            )
+        run: | # shell
+          for x in $(echo $packages | jq -r '. | to_entries'); do
+            package=$(echo $x | jq -r .key)
+            package_name=$(echo $x | jq -r .value)
+            echo '{}' > packages/${package}/package.json
+            npm install semantic-release-monorepo @semantic-release/exec @semantic-release/git
+            npx semantic-release
+          done 
