@@ -54,7 +54,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.PUSH_TOKEN }}
         run: | # shell
-          for x in $(echo $packages | jq -r '. | to_entries'); do
+          for x in $(echo '${{ needs.meta.outputs.packages }}' | jq -r '. | to_entries'); do
             package=$(echo $x | jq -r .key)
             package_name=$(echo $x | jq -r .value)
             echo '{}' > packages/${package}/package.json
