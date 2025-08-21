@@ -26,6 +26,7 @@ const config = {
       '@semantic-release/git',
       {
         message: 'chore(release): ${nextRelease.version} [skip ci]',
+        assets: ['deno.json'],
       },
     ],
     '@semantic-release/github',
