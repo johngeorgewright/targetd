@@ -58,6 +58,7 @@ jobs:
             package=$(echo $x | jq -r .key)
             package_name=$(echo $x | jq -r .value)
             echo '{}' > packages/${package}/package.json
+            cd ${{ github.workspace }}/packages/${package}
             npm install semantic-release-monorepo @semantic-release/exec @semantic-release/git
             npx semantic-release
           done 
