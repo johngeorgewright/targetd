@@ -1,6 +1,6 @@
 {
   "name": "@targetd/date-range",
-  "version": "4.0.0",
+  "version": "5.0.1",
   "exports": "./src/index.ts",
   "imports": {
     "@targetd/api": "jsr:@targetd/api@^7.0.0",
