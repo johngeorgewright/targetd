@@ -38,7 +38,7 @@ jobs:
             cd $path
             package_name=$(cat deno.json | jq -r .name)
             echo '{"name":"'"${package_name}"'"}' > package.json
-            npm install semantic-release-monorepo @semantic-release/exec @semantic-release/git
+            npm install --dev semantic-release semantic-release-monorepo @semantic-release/exec @semantic-release/git
             npx semantic-release
             sleep 3
           done 
