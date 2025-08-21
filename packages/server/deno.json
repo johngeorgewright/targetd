@@ -4,7 +4,7 @@
   "exports": "./src/index.ts",
   "imports": {
     "@johngw/error": "npm:@johngw/error@^2.2.2",
-    "@targetd/api": "jsr:@targetd/api",
+    "@targetd/api": "jsr:@targetd/api@^7.0.0",
     "@types/express": "npm:@types/express@^5.0.3",
     "@types/qs": "npm:@types/qs@^6.14.0",
     "cors": "npm:cors@^2.8.5",
@@ -18,6 +18,7 @@
     "singleQuote": true
   },
   "tasks": {
+    "pwd": "echo $(pwd)",
     "test": "deno test --allow-all --trace-leaks"
   },
   "publish": {

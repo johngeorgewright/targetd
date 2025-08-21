@@ -34,7 +34,6 @@
     "npm:semantic-release@*": "24.2.7_marked@15.0.12",
     "npm:supertest@*": "7.1.4",
     "npm:ts-toolbelt@9": "9.6.0",
-    "npm:ts-toolbelt@9.6.0": "9.6.0",
     "npm:ts-toolbelt@^9.6.0": "9.6.0",
     "npm:watch@^1.0.2": "1.0.2",
     "npm:yaml@^2.8.1": "2.8.1",
@@ -3419,20 +3418,20 @@
       },
       "packages/client": {
         "dependencies": [
-          "jsr:@targetd/api@*",
-          "npm:ts-toolbelt@9.6.0",
+          "jsr:@targetd/api@7",
+          "npm:ts-toolbelt@^9.6.0",
           "npm:zod@^4.0.15"
         ]
       },
       "packages/date-range": {
         "dependencies": [
-          "jsr:@targetd/api@*",
+          "jsr:@targetd/api@7",
           "npm:zod@^4.0.15"
         ]
       },
       "packages/explode": {
         "dependencies": [
-          "jsr:@targetd/api@*",
+          "jsr:@targetd/api@7",
           "npm:flat@^6.0.1",
           "npm:ts-toolbelt@9",
           "npm:zod@^4.0.15"
@@ -3441,7 +3440,7 @@
       "packages/fs": {
         "dependencies": [
           "jsr:@es-toolkit/es-toolkit@^1.39.8",
-          "jsr:@targetd/api@*",
+          "jsr:@targetd/api@7",
           "npm:@johngw/fs@^3.0.1",
           "npm:ts-toolbelt@^9.6.0",
           "npm:watch@^1.0.2",
@@ -3451,7 +3450,7 @@
       },
       "packages/json-schema": {
         "dependencies": [
-          "jsr:@targetd/api@*",
+          "jsr:@targetd/api@7",
           "npm:@types/yargs@^17.0.33",
           "npm:yargs@18",
           "npm:zod@^4.0.15"
@@ -3459,7 +3458,7 @@
       },
       "packages/server": {
         "dependencies": [
-          "jsr:@targetd/api@*",
+          "jsr:@targetd/api@7",
           "npm:@johngw/error@^2.2.2",
           "npm:@types/express@^5.0.3",
           "npm:@types/qs@^6.14.0",

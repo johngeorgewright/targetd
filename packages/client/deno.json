@@ -3,8 +3,8 @@
   "version": "6.0.0",
   "exports": "./src/index.ts",
   "imports": {
-    "@targetd/api": "jsr:@targetd/api",
-    "ts-toolbelt": "npm:ts-toolbelt@9.6.0",
+    "@targetd/api": "jsr:@targetd/api@^7.0.0",
+    "ts-toolbelt": "npm:ts-toolbelt@^9.6.0",
     "zod": "npm:zod@^4.0.15"
   },
   "fmt": {
@@ -12,6 +12,7 @@
     "singleQuote": true
   },
   "tasks": {
+    "pwd": "echo $(pwd)",
     "test": "deno test --allow-all --trace-leaks"
   },
   "publish": {
