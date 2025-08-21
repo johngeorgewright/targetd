@@ -40,4 +40,5 @@ jobs:
             echo '{"name":"'"${package_name}"'"}' > package.json
             npm install semantic-release-monorepo @semantic-release/exec @semantic-release/git
             npx semantic-release
+            sleep 3
           done 
