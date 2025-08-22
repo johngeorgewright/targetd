@@ -32,15 +32,14 @@ import { Data } from '@targetd/api'
 import z from 'zod'
 import { deviceTargeting } from './device'
 
-export const data = Data.create({
-  data: {
+export const data = Data.create()
+  .usePayload({
     bar: z.number(),
     foo: z.string(),
-  },
-  targeting: {
+  })
+  .useTargeting({
     device: deviceTargeting,
-  },
-})
+  })
 ```
 
 ```typescript
@@ -49,7 +48,7 @@ import { createServer } from '@targetd/server'
 import { data } from './data'
 
 createServer(
-  data
+  await data
     .addRules('bar', [
       {
         payload: 123,
@@ -78,7 +77,7 @@ import { Client } from '@targetd/client'
 import z from 'zod'
 import { data } from './data'
 
-const client = new Client('http://localhost:3000', data)
+const client = new Client('http://localhost:3000', await data)
 
 expect(await clientData.getPayloadForEachName({ device: 'mobile' })).toEqual({
   bar: 123,

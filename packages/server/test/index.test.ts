@@ -138,7 +138,8 @@ Deno.test('get all', async (t) => {
 })
 
 async function createDisposableServer(): Promise<Server & AsyncDisposable> {
-  const app = createServer(await createData())
+  const data = createData()
+  const app = createServer(() => data)
   const { promise, reject, resolve } = Promise.withResolvers<void>()
   const server = app.listen(0, (error) => error ? reject(error) : resolve())
   await promise
@@ -146,8 +147,8 @@ async function createDisposableServer(): Promise<Server & AsyncDisposable> {
   return server
 }
 
-async function createData() {
-  return await Data.create()
+function createData() {
+  return Data.create()
     .usePayload({
       foo: z.string(),
       bar: z.number(),

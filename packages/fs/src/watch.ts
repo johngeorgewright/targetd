@@ -43,7 +43,8 @@ export function watch<D extends DT.Any>(
         } catch ($error: any) {
           error = $error
         } finally {
-          releaseAndCallback(error, data)
+          mutex.release()
+          onLoad(error, data)
         }
       },
       300,
@@ -53,11 +54,6 @@ export function watch<D extends DT.Any>(
   const stop: WatchDisposer = () => unwatchTree(dir)
 
   return stop
-
-  function releaseAndCallback(error: Error | null, data: D) {
-    mutex.release()
-    onLoad(error, data)
-  }
 }
 
 interface WatchDisposer {

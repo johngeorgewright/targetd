@@ -13,41 +13,40 @@
 ## Example
 
 ```typescript
-import { Data } from '@targetd/api'
-import dateRangeTargeting from '@targetd/date-range'
-import z from 'zod'
+import { Data } from 'jsr:@targetd/api'
+import dateRangeTargeting from 'jsr:@targetd/date-range'
+import { assertStrictEquals } from 'jsr:@std/assert'
+import z from 'npm:zod'
 
-let data = Data.create({
-  data: {
+const data = Data.create()
+  .usePayload({
     foo: z.string(),
-  },
-  targeting: {
+  })
+  .useTargeting({
     dateRange: dateRangeTargeting,
-  },
-})
-
-data = await data.addRules('foo', [
-  {
-    targeting: {
-      dateRange: {
-        start: '1939-09-01',
-        end: '1945-09-02',
+  })
+  .addRules('foo', [
+    {
+      targeting: {
+        dateRange: {
+          start: '1939-09-01',
+          end: '1945-09-02',
+        },
       },
+      payload: 'WWII',
     },
-    payload: 'WWII',
-  },
-  {
-    targeting: {
-      dateRange: {
-        start: '2020-01-01T00:00:00',
+    {
+      targeting: {
+        dateRange: {
+          start: '2020-01-01T00:00:00',
+        },
       },
+      payload: '😷',
     },
-    payload: '😷',
-  },
-  {
-    payload: 'bar',
-  },
-])
+    {
+      payload: 'bar',
+    },
+  ])
 
 test('will use system time when no targeting is specified', async () => {
   jestDate.advanceTo(new Date('1930-01-01'))

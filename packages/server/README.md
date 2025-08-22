@@ -17,12 +17,11 @@ import { Data } from '@targetd/api',
 import { createServer } from '@targetd/server'
 import z from 'zod'
 
-const data = Data.create({
-  data: {
+const data = Data.create
+  .usePayload({
     foo: z.string(),
     b: z.string()
-  }
-})
+  })
 
-createServer(data).listen(8080)
+createServer(() => data).listen(8080)
 ```

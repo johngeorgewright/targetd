@@ -9,3 +9,9 @@
 | Node.js    | `npx jsr add @targetd/api @targetd/json-schema`      |
 | Bun        | `bunx jsr add @targetd/api @targetd/json-schema`     |
 | Deno       | `deno add jsr:@targetd/api jsr:@targetd/json-schema` |
+
+## Example
+
+```
+npx @targetd/json-schema --inputModule src/data.ts --dataExport data --outputFile src/data.schema.json
+```
