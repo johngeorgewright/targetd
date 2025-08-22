@@ -1,6 +1,7 @@
 import type { Data } from '@targetd/api'
 import type { RequestHandler } from 'express'
 import type { $ZodShape } from 'zod/v4/core'
+import type { MaybePromise } from '../types.ts'
 
 export function castQueryArrayProps<
   PayloadParsers extends $ZodShape,
@@ -8,15 +9,17 @@ export function castQueryArrayProps<
   QueryParsers extends $ZodShape,
   FallThroughTargetingParsers extends $ZodShape,
 >(
-  getData: () => Data<
-    PayloadParsers,
-    TargetingParsers,
-    QueryParsers,
-    FallThroughTargetingParsers
+  getData: () => MaybePromise<
+    Data<
+      PayloadParsers,
+      TargetingParsers,
+      QueryParsers,
+      FallThroughTargetingParsers
+    >
   >,
 ): RequestHandler {
-  return (req, res, next) => {
-    const { queryParsers } = getData()
+  return async (req, res, next) => {
+    const { queryParsers } = await getData()
 
     for (const [key, value] of Object.entries(req.query)) {
       if (

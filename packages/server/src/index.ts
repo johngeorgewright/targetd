@@ -5,6 +5,7 @@ import { errorHandler } from './middleware/error.ts'
 import { StatusError } from './StatusError.ts'
 import { castQueryArrayProps } from './middleware/castQueryArrayProps.ts'
 import { castQueryProp } from './middleware/castQueryProp.ts'
+import type { MaybePromise } from './types.ts'
 
 /**
  * @param pathStructure Use a path structure when you want to create a route that uses request params
@@ -13,7 +14,7 @@ export function createServer<
   D extends DT.Any,
   App extends express.Express = express.Express,
 >(
-  data: D | (() => D),
+  data: MaybePromise<D> | (() => MaybePromise<D>),
   {
     app = express() as App,
     pathStructure,
@@ -33,7 +34,7 @@ export function createServer<
       castQueryArrayProps(getData),
       async (req, res) => {
         res.json(
-          await getData().getPayloadForEachName({
+          await (await getData()).getPayloadForEachName({
             ...req.params,
             ...(res.locals.query ?? req.query),
           }),
@@ -49,7 +50,7 @@ export function createServer<
       castQueryArrayProps(getData),
       async (req, res) => {
         const query = res.locals.query ?? req.query
-        const data = getData()
+        const data = await getData()
 
         if (!(req.params.name in data.payloadParsers)) {
           throw new StatusError(404, `Unknown data property ${req.params.name}`)
@@ -67,7 +68,7 @@ export function createServer<
       castQueryArrayProps(getData),
       async (req, res) => {
         res.json(
-          await getData().getPayloadForEachName(
+          await (await getData()).getPayloadForEachName(
             res.locals.query ?? req.query,
           ),
         )
