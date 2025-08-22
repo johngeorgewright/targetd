@@ -2,16 +2,12 @@
 
 > Creates JSON schema from targetd data objects
 
-## Installation
-
-| JS Runtime | Command                                              |
-| ---------- | ---------------------------------------------------- |
-| Node.js    | `npx jsr add @targetd/api @targetd/json-schema`      |
-| Bun        | `bunx jsr add @targetd/api @targetd/json-schema`     |
-| Deno       | `deno add jsr:@targetd/api jsr:@targetd/json-schema` |
-
 ## Example
 
 ```
-npx @targetd/json-schema --inputModule src/data.ts --dataExport data --outputFile src/data.schema.json
+# Node.js
+npx xjsr @targetd/json-schema/cli --inputModule src/data.ts --dataExport data --outputFile src/data.schema.json
+
+# Deno
+deno run jsr:@targetd/json-schema/cli --inputModule src/data.ts --dataExport data --outputFile src/data.schema.json
 ```
