@@ -36,12 +36,12 @@ import * as path from 'node:path'
 import z from 'zod'
 
 watch(
-  Data.create({
-    data: {
+  await Data
+    .create()
+    .usePayload({
       foo: z.string(),
       b: z.string(),
-    },
-  }),
+    }),
   path.join(__dirname, 'rules'),
   async (data) => {
     expect(await data.getPayload('foo', {})).toBe('bar')
