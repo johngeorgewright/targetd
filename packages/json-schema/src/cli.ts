@@ -2,6 +2,7 @@ import type { DT } from '@targetd/api'
 import yargs from 'yargs'
 import * as path from 'node:path'
 import { writeFile } from 'node:fs/promises'
+import { argv } from 'node:process'
 import { dataJSONSchemas } from './index.ts'
 
 const { dataExport, inputModule, outputFile } = await yargs()
@@ -26,7 +27,8 @@ const { dataExport, inputModule, outputFile } = await yargs()
       string: true,
     },
   })
-  .help().argv
+  .help()
+  .parseAsync(argv)
 
 const input = await import(path.resolve(inputModule))
 const data = input[dataExport]
