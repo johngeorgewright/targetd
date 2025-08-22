@@ -1,4 +1,5 @@
 {
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
   "properties": {
     "foo": {
@@ -9,21 +10,109 @@
           "items": {
             "type": "object",
             "properties": {
-              "targeting": {
-                "type": "object",
-                "properties": {},
-                "additionalProperties": false
-              },
               "payload": {
                 "type": "string"
+              },
+              "targeting": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "channel": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "channel": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "additionalProperties": false
+                    }
+                  }
+                ]
               }
             },
-            "required": ["payload"],
+            "required": [
+              "payload"
+            ],
             "additionalProperties": false
+          }
+        },
+        "variables": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "payload": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^\\{\\{[\\s\\S]{0,}\\}\\}$"
+                    },
+                    {}
+                  ]
+                },
+                "targeting": {
+                  "anyOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "channel": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "channel": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "additionalProperties": false
+                      }
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "payload"
+              ],
+              "additionalProperties": false
+            }
           }
         }
       },
-      "required": ["rules"],
+      "required": [
+        "rules"
+      ],
       "additionalProperties": false
     },
     "b": {
@@ -34,27 +123,114 @@
           "items": {
             "type": "object",
             "properties": {
-              "targeting": {
-                "type": "object",
-                "properties": {},
-                "additionalProperties": false
-              },
               "payload": {
                 "type": "string"
+              },
+              "targeting": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "channel": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "channel": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "additionalProperties": false
+                    }
+                  }
+                ]
               }
             },
-            "required": ["payload"],
+            "required": [
+              "payload"
+            ],
             "additionalProperties": false
+          }
+        },
+        "variables": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "payload": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^\\{\\{[\\s\\S]{0,}\\}\\}$"
+                    },
+                    {}
+                  ]
+                },
+                "targeting": {
+                  "anyOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "channel": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "channel": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "additionalProperties": false
+                      }
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "payload"
+              ],
+              "additionalProperties": false
+            }
           }
         }
       },
-      "required": ["rules"],
+      "required": [
+        "rules"
+      ],
       "additionalProperties": false
     },
     "$schema": {
       "type": "string"
     }
   },
-  "additionalProperties": false,
-  "$schema": "http://json-schema.org/draft-07/schema#"
+  "additionalProperties": false
 }

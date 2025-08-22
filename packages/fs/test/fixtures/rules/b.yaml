@@ -1,4 +1,10 @@
 # yaml-language-server: $schema=../schema.json
 b:
+  variables:
+    foo:
+      - payload: foo
   rules:
+    - targeting:
+        channel: [news]
+      payload: '{{foo}}'
     - payload: b is a letter
