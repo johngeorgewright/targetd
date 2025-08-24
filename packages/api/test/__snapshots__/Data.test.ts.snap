@@ -59,6 +59,10 @@ snapshot[`fallThrough targeting 1`] = `
               ],
             },
           },
+          {
+            payload: "😐",
+            targeting: {},
+          },
         ],
         targeting: {},
       },
@@ -134,6 +138,14 @@ snapshot[`inserting data 1`] = `
 }
 `;
 
+snapshot[`inserting data with variables 1`] = `
+{
+  bar: "😁",
+  foo: "😎",
+  moo: "glue",
+}
+`;
+
 snapshot[`broken 1`] = `
 {
   foo: "face",
@@ -183,6 +195,39 @@ snapshot[`variables 2`] = `
       c: "bar",
       d: 1,
     },
+  },
+}
+`;
+
+snapshot[`variable using fallthrough targeting 1`] = `
+{
+  __rules__: [
+    {
+      payload: {
+        a: {
+          b: {
+            c: "{{c}}",
+            d: 1,
+          },
+        },
+      },
+    },
+  ],
+  __variables__: {
+    c: [
+      {
+        payload: 1,
+        targeting: {
+          browser: [
+            "chrome",
+          ],
+        },
+      },
+      {
+        payload: 2,
+        targeting: {},
+      },
+    ],
   },
 }
 `;

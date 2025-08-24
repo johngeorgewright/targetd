@@ -1,13 +1,10 @@
 import fs from '@johngw/fs'
 import type { WithFileNamesResult } from '@johngw/fs/dist/readFiles'
 import type { DT } from '@targetd/api'
-import { array, object, optional, strictObject, string, unknown } from 'zod'
-import type { output } from 'zod/v4/core'
+import { object } from 'zod'
+import { any, type output } from 'zod/mini'
 
-const FileData = object({ $schema: optional(string()) }).catchall(
-  strictObject({ rules: array(unknown()) }),
-)
-
+const FileData = object().catchall(any())
 type FileData = output<typeof FileData>
 
 export async function load<D extends DT.Any>(data: D, dir: string): Promise<D> {
@@ -49,7 +46,7 @@ async function addRules<D extends DT.Any>(
 
   for (const [key, value] of Object.entries(fileData)) {
     if (typeof value === 'object') {
-      result = (await result.addRules(key, value.rules as any[])) as D
+      result = (await result.addRules(key, value)) as D
     }
   }
 

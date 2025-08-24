@@ -74,15 +74,7 @@ snapshot[`json schema for simple data object 1`] = `
             items: {
               additionalProperties: false,
               properties: {
-                payload: {
-                  anyOf: [
-                    {
-                      pattern: "^\\\\{\\\\{[\\\\s\\\\S]{0,}\\\\}\\\\}\$",
-                      type: "string",
-                    },
-                    {},
-                  ],
-                },
+                payload: {},
                 targeting: {
                   anyOf: [
                     {

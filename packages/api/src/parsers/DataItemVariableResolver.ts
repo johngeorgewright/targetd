@@ -11,13 +11,12 @@ import {
 import type { $PartsToTemplateLiteral } from 'zod/v4/core'
 import { objectMap } from '../util.ts'
 
+export const variableStringParser = templateLiteral(['{{', string(), '}}'])
+export type VariableStringParser = ZodMiniTemplateLiteral<`{{${string}}}`>
+
 export function DataItemVariableResolverParser(): DataItemVariableResolverParser {
   return pipe(
-    templateLiteral([
-      '{{',
-      string(),
-      '}}',
-    ]),
+    variableStringParser,
     transform(stringToVariableResolver),
   )
 }
@@ -58,6 +57,10 @@ export function resolveVariables(variables: Record<string, any>, x: unknown) {
     : resolveVariable(variables, x)
 }
 
+export function isVariableString(input: string): input is VariableString {
+  return /^\{\{[^\}]+\}\}$/.test(input)
+}
+
 type VariableString = `{{${string}}}`
 
 function resolveVariable(variables: Record<string, any>, x: unknown) {
@@ -71,14 +74,14 @@ function recursivelyResolveVariables(
   return objectMap(x, (value) => resolveVariables(variables, value))
 }
 
-function isVariableString(input: string): input is VariableString {
-  return /^\{\{[^\}]+\}\}$/.test(input)
-}
-
 function stringToVariableResolver(input: VariableString): VariableResolver {
-  const key = input.slice(2).slice(0, -2)
+  const key = extractVariableName(input)
   const resolver: VariableResolver = (variables: Record<string, any>) =>
     variables[key] ?? input
   resolver.$$resolver$$ = true
   return resolver
+}
+
+function extractVariableName(input: string) {
+  return input.slice(2).slice(0, -2)
 }

@@ -1,6 +1,12 @@
-import { DataItemParser, DataItemsParser, type DT } from '@targetd/api'
+import {
+  DataItemParser,
+  DataItemsParser,
+  type DT,
+  switchRegistry,
+  type ZodSwitch,
+} from '@targetd/api'
 import { extend, optional, string, toJSONSchema } from 'zod/mini'
-import type { JSONSchema } from 'zod/v4/core'
+import type { $ZodType, JSONSchema } from 'zod/v4/core'
 
 export function dataJSONSchemas<D extends DT.Any>(
   data: D,
@@ -11,12 +17,10 @@ export function dataJSONSchemas<D extends DT.Any>(
         data.payloadParsers,
         data.targetingParsers,
         data.fallThroughTargetingParsers,
-      ),
+      ) as any,
       { $schema: optional(string()) },
     ),
-    {
-      io: 'input',
-    },
+    params,
   )
 }
 
@@ -30,11 +34,30 @@ export function dataJSONSchema<D extends DT.Any>(
         data.payloadParsers[name],
         data.targetingParsers,
         data.fallThroughTargetingParsers,
-      ),
+      ) as any,
       { $schema: optional(string()) },
     ),
-    {
-      io: 'input',
-    },
+    params,
   )
+}
+
+const params: NonNullable<Parameters<typeof toJSONSchema>[1]> = {
+  io: 'input',
+  unrepresentable: 'any',
+  override(ctx) {
+    if (isZodSwitch(ctx.zodSchema)) {
+      const union = switchRegistry.get(ctx.zodSchema)
+        ?.union
+      if (union) {
+        ctx.jsonSchema = toJSONSchema(union as any, params)
+      }
+    } else if (ctx.zodSchema._zod.def.type === 'transform') {
+      ctx.jsonSchema = {}
+    }
+  },
+}
+
+function isZodSwitch(parser: $ZodType): parser is ZodSwitch {
+  return parser._zod.def.type === 'custom' &&
+    switchRegistry.has(parser as ZodSwitch)
 }
