@@ -2,6 +2,8 @@ import type TargetingDescriptor from '../parsers/TargetingDescriptor.ts'
 import type * as TT from './Targeting.ts'
 import type { RuleWithPayload } from '../parsers/DataItemRule.ts'
 import type { $ZodShape, $ZodType } from 'zod/v4/core'
+import type { DataItemRulesOut } from '../parsers/DataItemRules.ts'
+import type { ZodMiniAny } from 'zod/mini'
 
 /**
  * Matches any fallthrough targeting descriptor record
@@ -31,4 +33,8 @@ export type ParsersRecord<TDs extends DescriptorRecord> = {
  */
 export type Rules<P extends $ZodType, T extends $ZodShape> = {
   __rules__: RuleWithPayload<P, T>[]
+  __variables__?: Record<
+    string,
+    DataItemRulesOut<ZodMiniAny, T, T>
+  >
 }

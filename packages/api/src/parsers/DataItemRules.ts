@@ -193,8 +193,9 @@ function canRulesCombine(
 
   return (
     deepEqual(aTargeting, bTargeting) &&
-    (bTargetingKeys.length !== objectSize(b.targeting || {}) ||
-      aTargetingKeys.length !== objectSize(a.targeting || {}))
+      (bTargetingKeys.length !== objectSize(b.targeting || {}) ||
+        aTargetingKeys.length !== objectSize(a.targeting || {})) ||
+    !bTargetingKeys.length && !aTargetingKeys.length
   )
 }
 

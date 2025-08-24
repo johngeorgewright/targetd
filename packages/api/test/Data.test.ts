@@ -314,6 +314,9 @@ Deno.test('fallThrough targeting', async (t) => {
         },
         payload: '😁',
       },
+      {
+        payload: '😐',
+      },
     ])
 
   await assertSnapshot(t, data.data)
@@ -371,6 +374,64 @@ Deno.test('inserting data', async (t) => {
   await assertSnapshot(
     t,
     await data.getPayloadForEachName({ weather: 'sunny' }),
+  )
+})
+
+Deno.test('inserting data with variables', async (t) => {
+  const data = await Data.create()
+    .usePayload({
+      moo: z.string(),
+      foo: z.string(),
+      bar: z.string(),
+    })
+    .useTargeting({
+      weather: targetIncludes(z.string()),
+      highTide: targetEquals(z.boolean()),
+    })
+    .insert({
+      bar: {
+        __variables__: {
+          highTide: [
+            {
+              payload: '😟',
+              targeting: {
+                highTide: false,
+              },
+            },
+            {
+              payload: '😁',
+            },
+          ],
+        },
+        __rules__: [
+          {
+            payload: '{{highTide}}',
+            targeting: {},
+          },
+        ],
+      },
+      foo: {
+        __rules__: [
+          {
+            payload: '😎',
+            targeting: {
+              weather: ['sunny'],
+            },
+          },
+          {
+            payload: '☂️',
+            targeting: {
+              weather: ['rainy'],
+            },
+          },
+        ],
+      },
+      moo: 'glue',
+    })
+
+  await assertSnapshot(
+    t,
+    await data.getPayloadForEachName({ weather: 'sunny', highTide: true }),
   )
 })
 
@@ -510,6 +571,58 @@ Deno.test('variables', async (t) => {
     })
 
   assertSnapshot(t, await data.getPayload('foo', { channel: 'bar' }))
+
+  assertSnapshot(t, await data.getPayload('foo'))
+})
+
+Deno.test('variable using fallthrough targeting', async (t) => {
+  const data = await Data.create()
+    .usePayload({
+      foo: z.strictObject({
+        a: z.strictObject({
+          b: z.strictObject({
+            c: z.string(),
+            d: z.number(),
+          }),
+        }),
+      }),
+    })
+    .useTargeting({
+      channel: targetIncludes(z.enum(['foo', 'bar'])),
+    })
+    .useFallThroughTargeting({
+      browser: targetIncludes(z.enum(['chrome', 'edge'])),
+    })
+    .addRules('foo', {
+      variables: {
+        c: [
+          {
+            targeting: {
+              browser: ['chrome'],
+            },
+            payload: 1,
+          },
+          {
+            payload: 2,
+          },
+        ],
+        d: [
+          { payload: 1 },
+        ],
+      },
+      rules: [
+        {
+          payload: {
+            a: {
+              b: {
+                c: '{{c}}',
+                d: '{{d}}',
+              },
+            },
+          },
+        },
+      ],
+    })
 
   assertSnapshot(t, await data.getPayload('foo'))
 })

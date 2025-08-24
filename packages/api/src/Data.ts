@@ -2,6 +2,7 @@ import type TargetingPredicates from './parsers/TargetingPredicates.ts'
 import {
   objectEntries,
   objectEveryAsync,
+  objectFitler,
   objectKeys,
   objectMap,
   objectSize,
@@ -224,7 +225,12 @@ export default class Data<
                   ? value.__rules__
                   : [{ payload: value }],
               ],
-              variables: dataItem.variables,
+              variables: {
+                ...dataItem.variables,
+                ...this.#isFallThroughRulesPayload(value!)
+                  ? value.__variables__
+                  : {},
+              },
             },
           }
         }, {}),
@@ -241,7 +247,7 @@ export default class Data<
     )
   }
 
-  #isFallThroughRulesPayload<Name extends keyof PayloadParsers>(
+  readonly #isFallThroughRulesPayload = <Name extends keyof PayloadParsers>(
     payload: PT.Payload<
       PayloadParsers[Name],
       TargetingParsers | FallThroughTargetingParsers
@@ -249,11 +255,7 @@ export default class Data<
   ): payload is FTTT.Rules<
     PayloadParsers[Name],
     TargetingParsers | FallThroughTargetingParsers
-  > {
-    return (
-      typeof payload === 'object' && payload !== null && '__rules__' in payload
-    )
-  }
+  > => typeof payload === 'object' && payload !== null && '__rules__' in payload
 
   async addRules<
     Name extends keyof PayloadParsers,
@@ -506,10 +508,31 @@ export default class Data<
       }
     }
 
-    return resolveVariables(
-      await this.#getVariables(targetableItem, predicate),
+    const variables = await this.#getVariables(targetableItem, predicate)
+    const resolvableVariables = objectFitler(
+      variables,
+      (value) => !this.#isFallThroughRulesPayload(value),
+    )
+    const nonResolvableVariables = objectFitler(
+      variables,
+      this.#isFallThroughRulesPayload,
+    )
+    const resolvedPayload = resolveVariables(
+      resolvableVariables,
       payload,
     )
+
+    return objectSize(nonResolvableVariables)
+      ? {
+        __variables__: objectMap(
+          nonResolvableVariables,
+          (value) => value.__rules__,
+        ),
+        __rules__: this.#isFallThroughRulesPayload(resolvedPayload)
+          ? resolvedPayload.__rules__
+          : [{ payload: resolvedPayload }],
+      }
+      : resolvedPayload
   }
 
   async #getVariables<Name extends keyof PayloadParsers>(
