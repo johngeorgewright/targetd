@@ -216,7 +216,7 @@ snapshot[`variable using fallthrough targeting 1`] = `
   __variables__: {
     c: [
       {
-        payload: 1,
+        payload: "1",
         targeting: {
           browser: [
             "chrome",
@@ -224,7 +224,7 @@ snapshot[`variable using fallthrough targeting 1`] = `
         },
       },
       {
-        payload: 2,
+        payload: "2",
         targeting: {},
       },
     ],

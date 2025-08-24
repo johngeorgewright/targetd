@@ -15,6 +15,7 @@ import {
   attachVariableResolver,
   type RecursiveVariableResolver,
 } from './attachVariableResolver.ts'
+import type { VariablesRegistry } from './variablesRegistry.ts'
 
 /**
  * Parses a single item rule.
@@ -24,7 +25,9 @@ import {
  * ```ts
  * import { equal, assertThrows } from 'jsr:@std/assert'
  * import { z } from 'zod/mini'
+ * import { variablesFor } from './variablesRegistry.ts'
  * const dataItemRuleParser = DataItemRuleParser(
+ *   variablesFor(z.number()),
  *   z.number(),
  *   {},
  *   {}
@@ -42,6 +45,7 @@ import {
  * import { equal } from 'jsr:@std/assert'
  * import { z } from 'zod/mini'
  * const dataItemRuleParser = DataItemRuleParser(
+ *   variablesFor(z.number()),
  *   z.number(),
  *   { foo: z.array(z.string()) },
  *   {}
@@ -63,6 +67,7 @@ import {
  * import { assertThrows, equal } from 'jsr:@std/assert'
  * import { z } from 'zod/mini'
  * const dataItemRuleParser = DataItemRuleParser(
+ *   variablesFor(z.number()),
  *   z.number(),
  *   {},
  *   { foo: z.array(z.string()) },
@@ -88,6 +93,7 @@ export function DataItemRuleParser<
   V extends Record<string, any>,
   AllowMultipleTargeting extends boolean = true,
 >(
+  variablesRegistry: VariablesRegistry,
   Payload: P,
   targeting: T,
   fallThroughTargeting: CT,
@@ -99,12 +105,14 @@ export function DataItemRuleParser<
   AllowMultipleTargeting
 > {
   const Rule = RuleWithPayloadParser(
+    variablesRegistry,
     Payload,
     targeting,
     allowMultipleTargeting,
   )
 
   const FallThroughRule = RuleWithFallThroughParser(
+    variablesRegistry,
     Payload,
     targeting,
     fallThroughTargeting,
@@ -202,12 +210,13 @@ export function RuleWithPayloadParser<
   T extends $ZodShape,
   AllowMultipleTargeting extends boolean = true,
 >(
+  variablesRegistry: VariablesRegistry,
   Payload: P,
   targeting: T,
   allowMultipleTargeting = true as AllowMultipleTargeting,
 ): RuleWithPayloadParser<P, T, AllowMultipleTargeting> {
   return strictObject({
-    payload: attachVariableResolver(Payload),
+    payload: attachVariableResolver(variablesRegistry, Payload),
     targeting: optional(
       allowMultipleTargeting
         ? MultipleRuleTargeting(targeting)
@@ -295,6 +304,7 @@ export function RuleWithFallThroughParser<
   Variables extends Record<string, any>,
   AllowMultipleTargeting extends boolean = true,
 >(
+  variablesRegistry: VariablesRegistry,
   payload: Payload,
   targeting: Targeting,
   fallThroughTargeting: FallThroughTargeting,
@@ -312,7 +322,7 @@ export function RuleWithFallThroughParser<
         : SingularRuleTargeting(targeting),
     ),
     fallThrough: array(
-      RuleWithPayloadParser(payload, fallThroughTargeting),
+      RuleWithPayloadParser(variablesRegistry, payload, fallThroughTargeting),
     ),
   }) as RuleWithFallThroughParser<
     Payload,

@@ -12,6 +12,7 @@ import {
   DataItemRulesParser,
 } from './DataItemRules.ts'
 import { DataItemVariablesParser } from './DataItemVariablesParser.ts'
+import { variablesFor } from './variablesRegistry.ts'
 
 /**
  * Parses an "item".
@@ -31,14 +32,20 @@ export function DataItemParser<
   targeting: T,
   fallThroughTargeting: FTT,
 ): DataItemParser<P, T, FTT> {
+  const variablesRegistry = variablesFor(Payload)
   return strictObject({
     rules: DataItemRulesParser(
+      variablesRegistry,
       Payload,
       targeting,
       fallThroughTargeting,
     ),
     variables: _default(
-      DataItemVariablesParser(targeting, fallThroughTargeting),
+      DataItemVariablesParser(
+        variablesRegistry,
+        targeting,
+        fallThroughTargeting,
+      ),
       {},
     ),
   })

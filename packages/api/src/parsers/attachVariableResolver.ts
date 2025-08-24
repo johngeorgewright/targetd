@@ -18,20 +18,24 @@ import {
 import type { $ZodObject, $ZodType } from 'zod/v4/core'
 import { any, type ZodObject } from 'zod'
 import { type ZodSwitch, zodSwitch } from './switch.ts'
+import type { VariablesRegistry } from './variablesRegistry.ts'
 
 export function attachVariableResolver<
   Parser extends $ZodType,
 >(
+  variablesRegistry: VariablesRegistry,
   parser: Parser,
 ): RecursiveVariableResolver<Parser> {
   switch (parser._zod.def.type) {
     case 'object':
       return objectVariableResolverParser(
+        variablesRegistry,
         parser as unknown as (ZodObject | ZodMiniObject),
       ) as any
 
     default:
       return variableResolverParser(
+        variablesRegistry,
         parser,
       ) as RecursiveVariableResolver<Parser>
   }
@@ -40,15 +44,25 @@ export function attachVariableResolver<
 function variableResolverParser<
   Parser extends $ZodType,
 >(
+  variablesRegistry: VariablesRegistry,
   parser: Parser,
 ): WithVariableResolver<Parser> {
   return (parser._zod.def.type === 'string'
     ? pipe(
       parser,
-      transform(DataItemVariableResolverTransformer as any),
+      transform((input) =>
+        DataItemVariableResolverTransformer(
+          variablesRegistry,
+          parser,
+          input as string,
+        )
+      ),
     )
     : zodSwitch([
-      [variableStringParser, DataItemVariableResolverParser()],
+      [
+        variableStringParser,
+        DataItemVariableResolverParser(variablesRegistry, parser),
+      ],
       [any(), parser],
     ])) as WithVariableResolver<Parser>
 }
@@ -56,21 +70,29 @@ function variableResolverParser<
 function objectVariableResolverParser<
   Parser extends ZodObject | ZodMiniObject,
 >(
+  variablesRegistry: VariablesRegistry,
   objectParser: Parser,
 ): RecursiveVariableResolver<Parser> {
   const $objectParser = objectParser instanceof ZodMiniObject
     ? objectEntries(objectParser._zod.def.shape).reduce<ZodMiniObject>(
       (acc, [key, parser]) =>
-        extend(acc, { [key]: attachVariableResolver(parser) }),
+        extend(acc, {
+          [key]: attachVariableResolver(variablesRegistry, parser),
+        }),
       objectParser,
     )
     : objectEntries(objectParser._zod.def.shape).reduce<ZodObject>(
       (acc, [key, parser]) =>
-        acc.extend({ [key]: attachVariableResolver(parser) }),
+        acc.extend({
+          [key]: attachVariableResolver(variablesRegistry, parser),
+        }),
       objectParser,
     )
 
-  return variableResolverParser($objectParser) as RecursiveVariableResolver<
+  return variableResolverParser(
+    variablesRegistry,
+    $objectParser,
+  ) as RecursiveVariableResolver<
     Parser
   >
 }
