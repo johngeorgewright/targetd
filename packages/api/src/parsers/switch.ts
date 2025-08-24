@@ -1,12 +1,24 @@
-import { custom, safeParse, superRefine, type ZodMiniCustom } from 'zod/mini'
+import {
+  custom,
+  registry,
+  safeParse,
+  superRefine,
+  type ZodMiniCustom,
+} from 'zod/mini'
 import type { $ZodType } from 'zod/v4/core'
 
 export type $ZodSwitchMap = [condition: $ZodType, parser: $ZodType][]
 
-export type ZodSwitch<SwitchMap extends $ZodSwitchMap> = ZodMiniCustom<
-  SwitchMap[number][1]['_zod']['output'],
-  SwitchMap[number][1]['_zod']['input']
->
+export type ZodSwitch<SwitchMap extends $ZodSwitchMap = $ZodSwitchMap> =
+  ZodMiniCustom<
+    SwitchMap[number][1]['_zod']['output'],
+    SwitchMap[number][1]['_zod']['input']
+  >
+
+export const switchRegistry = registry<
+  { switchMap: $ZodSwitchMap },
+  ZodSwitch
+>()
 
 export function zodSwitch<SwitchMap extends $ZodSwitchMap>(
   switchMap: SwitchMap,
@@ -34,4 +46,5 @@ export function zodSwitch<SwitchMap extends $ZodSwitchMap>(
       }
     }),
   )
+    .register(switchRegistry, { switchMap: switchMap as any })
 }
