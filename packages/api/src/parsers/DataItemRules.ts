@@ -21,6 +21,7 @@ import {
 } from 'zod/mini'
 import type { $ZodShape, $ZodType } from 'zod/v4/core'
 import type { ZodPartialInferObject } from '../types.ts'
+import type { VariablesRegistry } from './variablesRegistry.ts'
 
 /**
  * Parses an item's `rules` field.
@@ -61,12 +62,13 @@ export function DataItemRulesParser<
   T extends $ZodShape,
   FTT extends $ZodShape,
 >(
+  variablesRegistry: VariablesRegistry,
   payloadParser: P,
   targetingParsers: T,
   fallThroughTargetingParsers: FTT,
 ): DataItemRulesParser<P, T, FTT> {
   return pipe(
-    array(RuleWithPayloadParser<P, T & FTT>(payloadParser, {
+    array(RuleWithPayloadParser<P, T & FTT>(variablesRegistry, payloadParser, {
       ...targetingParsers,
       ...fallThroughTargetingParsers,
     })),

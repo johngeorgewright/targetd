@@ -600,10 +600,10 @@ Deno.test('variable using fallthrough targeting', async (t) => {
             targeting: {
               browser: ['chrome'],
             },
-            payload: 1,
+            payload: '1',
           },
           {
-            payload: 2,
+            payload: '2',
           },
         ],
         d: [
