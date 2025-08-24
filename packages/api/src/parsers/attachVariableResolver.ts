@@ -1,18 +1,23 @@
 import {
   extend,
+  type output,
   pipe,
   transform,
-  union,
+  type ZodMiniAny,
   ZodMiniObject,
-  type ZodMiniUnion,
+  type ZodMiniPipe,
+  type ZodMiniTransform,
 } from 'zod/mini'
 import { objectEntries } from '../util.ts'
 import {
   DataItemVariableResolverParser,
   DataItemVariableResolverTransformer,
+  type VariableStringParser,
+  variableStringParser,
 } from './DataItemVariableResolver.ts'
 import type { $ZodObject, $ZodType } from 'zod/v4/core'
-import type { ZodObject } from 'zod'
+import { any, type ZodObject } from 'zod'
+import { type ZodSwitch, zodSwitch } from './switch.ts'
 
 export function attachVariableResolver<
   Parser extends $ZodType,
@@ -23,7 +28,7 @@ export function attachVariableResolver<
     case 'object':
       return objectVariableResolverParser(
         parser as unknown as (ZodObject | ZodMiniObject),
-      ) as RecursiveVariableResolver<Parser>
+      ) as any
 
     default:
       return variableResolverParser(
@@ -37,12 +42,15 @@ function variableResolverParser<
 >(
   parser: Parser,
 ): WithVariableResolver<Parser> {
-  return parser._zod.def.type === 'string'
+  return (parser._zod.def.type === 'string'
     ? pipe(
       parser,
       transform(DataItemVariableResolverTransformer as any),
-    ) as unknown as WithVariableResolver<Parser>
-    : union([DataItemVariableResolverParser(), parser])
+    )
+    : zodSwitch([
+      [variableStringParser, DataItemVariableResolverParser()],
+      [any(), parser],
+    ])) as WithVariableResolver<Parser>
 }
 
 function objectVariableResolverParser<
@@ -69,7 +77,12 @@ function objectVariableResolverParser<
 
 type WithVariableResolver<
   Parser extends $ZodType,
-> = ZodMiniUnion<[DataItemVariableResolverParser, Parser]>
+> = Parser['_zod']['def']['type'] extends 'string'
+  ? ZodMiniPipe<Parser, ZodMiniTransform<unknown, output<Parser>>>
+  : ZodSwitch<[
+    [VariableStringParser, DataItemVariableResolverParser],
+    [ZodMiniAny, Parser],
+  ]>
 
 export type RecursiveVariableResolver<
   Parser extends $ZodType,
