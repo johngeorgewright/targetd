@@ -5,7 +5,7 @@ import {
   switchRegistry,
   type ZodSwitch,
 } from '@targetd/api'
-import { extend, optional, string, toJSONSchema, union } from 'zod/mini'
+import { extend, optional, string, toJSONSchema } from 'zod/mini'
 import type { $ZodType, JSONSchema } from 'zod/v4/core'
 
 export function dataJSONSchemas<D extends DT.Any>(
@@ -46,11 +46,10 @@ const params: NonNullable<Parameters<typeof toJSONSchema>[1]> = {
   unrepresentable: 'any',
   override(ctx) {
     if (isZodSwitch(ctx.zodSchema)) {
-      const switchMap = switchRegistry.get(ctx.zodSchema)
-        ?.switchMap
-      if (switchMap) {
-        const parsers = switchMap.map(([, parser]) => parser)
-        ctx.jsonSchema = toJSONSchema(union(parsers as any), params)
+      const union = switchRegistry.get(ctx.zodSchema)
+        ?.union
+      if (union) {
+        ctx.jsonSchema = toJSONSchema(union as any, params)
       }
     } else if (ctx.zodSchema._zod.def.type === 'transform') {
       ctx.jsonSchema = {}

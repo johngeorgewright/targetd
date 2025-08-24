@@ -3,7 +3,9 @@ import {
   registry,
   safeParse,
   superRefine,
+  union,
   type ZodMiniCustom,
+  type ZodMiniUnion,
 } from 'zod/mini'
 import type { $ZodType } from 'zod/v4/core'
 
@@ -16,7 +18,7 @@ export type ZodSwitch<SwitchMap extends $ZodSwitchMap = $ZodSwitchMap> =
   >
 
 export const switchRegistry = registry<
-  { switchMap: $ZodSwitchMap },
+  { union: ZodMiniUnion },
   ZodSwitch
 >()
 
@@ -46,5 +48,7 @@ export function zodSwitch<SwitchMap extends $ZodSwitchMap>(
       }
     }),
   )
-    .register(switchRegistry, { switchMap: switchMap as any })
+    .register(switchRegistry, {
+      union: union(switchMap.map(([, type]) => type)) as any,
+    })
 }
