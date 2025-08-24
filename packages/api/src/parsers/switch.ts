@@ -7,7 +7,7 @@ import {
   type ZodMiniCustom,
   type ZodMiniUnion,
 } from 'zod/mini'
-import type { $ZodType } from 'zod/v4/core'
+import type { $ZodRegistry, $ZodType } from 'zod/v4/core'
 
 export type $ZodSwitchMap = [condition: $ZodType, parser: $ZodType][]
 
@@ -17,10 +17,9 @@ export type ZodSwitch<SwitchMap extends $ZodSwitchMap = $ZodSwitchMap> =
     SwitchMap[number][1]['_zod']['input']
   >
 
-export const switchRegistry = registry<
-  { union: ZodMiniUnion },
-  ZodSwitch
->()
+export const switchRegistry: $ZodRegistry<{
+  union: ZodMiniUnion
+}, ZodSwitch<$ZodSwitchMap>> = registry()
 
 export function zodSwitch<SwitchMap extends $ZodSwitchMap>(
   switchMap: SwitchMap,
