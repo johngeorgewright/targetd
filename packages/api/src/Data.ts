@@ -508,6 +508,8 @@ export default class Data<
       }
     }
 
+    if (payload === undefined) return
+
     const variables = await this.#getVariables(targetableItem, predicate)
     const resolvableVariables = objectFitler(
       variables,
