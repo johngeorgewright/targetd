@@ -1,7 +1,7 @@
 import { assertRejects, assertStrictEquals } from 'jsr:@std/assert'
 import { assertSnapshot } from 'jsr:@std/testing/snapshot'
 import { setTimeout } from 'node:timers/promises'
-import z from 'zod'
+import z, { type ZodError } from 'zod'
 import {
   createTargetingDescriptor,
   Data,
@@ -575,7 +575,7 @@ Deno.test('variables', async (t) => {
   assertSnapshot(t, await data.getPayload('foo'))
 })
 
-Deno.test('variable using fallthrough targeting', async (t) => {
+Deno.test('variables using fallthrough targeting', async (t) => {
   const data = await Data.create()
     .usePayload({
       foo: z.strictObject({
@@ -612,6 +612,9 @@ Deno.test('variable using fallthrough targeting', async (t) => {
       },
       rules: [
         {
+          targeting: {
+            channel: ['bar'],
+          },
           payload: {
             a: {
               b: {
@@ -624,5 +627,42 @@ Deno.test('variable using fallthrough targeting', async (t) => {
       ],
     })
 
-  assertSnapshot(t, await data.getPayload('foo'))
+  assertSnapshot(t, await data.getPayload('foo', { channel: 'bar' }))
+})
+
+Deno.test('errors when using variables with incorrect types', async (t) => {
+  const data = await Data.create()
+    .usePayload({
+      foo: z.strictObject({
+        a: z.strictObject({
+          b: z.strictObject({
+            c: z.string(),
+          }),
+        }),
+      }),
+    })
+
+  assertSnapshot(
+    t,
+    await data.addRules('foo', {
+      variables: {
+        c: [
+          {
+            payload: 2,
+          },
+        ],
+      },
+      rules: [
+        {
+          payload: {
+            a: {
+              b: {
+                c: '{{c}}',
+              },
+            },
+          },
+        },
+      ],
+    }).catch((error: ZodError) => error.issues),
+  )
 })

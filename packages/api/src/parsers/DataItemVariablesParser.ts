@@ -28,8 +28,10 @@ export function DataItemVariablesParser<
       fallThroughTargeting,
     ),
   ).check((ctx) => {
-    const variables = variablesRegistry.get()
-    for (const [varName, parser] of Object.entries(variables)) {
+    const variables = variablesRegistry.getAll()
+    for (
+      const [varName, { parser }] of Object.entries(variables)
+    ) {
       if (!(varName in ctx.value)) {
         ctx.issues.push({
           code: 'custom',
@@ -39,15 +41,24 @@ export function DataItemVariablesParser<
       } else {
         ctx.value[varName].forEach((rule, index) => {
           if ('payload' in rule) {
-            parseVarPayload(parser, rule.payload, [varName, index, 'payload'])
+            parseVarPayload(varName, parser, rule.payload, [
+              varName,
+              index,
+              'payload',
+            ])
           } else {
             for (const fallthroughRule of rule.fallThrough) {
-              parseVarPayload(parser, fallthroughRule.payload, [
+              parseVarPayload(
                 varName,
-                index,
-                JSON.stringify({ targeting: fallthroughRule.targeting }),
-                'payload',
-              ])
+                parser,
+                fallthroughRule.payload,
+                [
+                  varName,
+                  index,
+                  JSON.stringify({ targeting: fallthroughRule.targeting }),
+                  'payload',
+                ],
+              )
             }
           }
         })
@@ -55,6 +66,7 @@ export function DataItemVariablesParser<
     }
 
     function parseVarPayload(
+      varName: string,
       parser: $ZodType,
       payload: unknown,
       path: (string | number)[],
@@ -65,6 +77,8 @@ export function DataItemVariablesParser<
           ...result.error.issues.map((issue) => ({
             ...issue,
             input: payload as any,
+            message:
+              `The variable {{${varName}}} cannot be used where it currently is in the payload.\n${issue.message}`,
             path,
           })),
         )

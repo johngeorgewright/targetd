@@ -50,11 +50,12 @@ function variableResolverParser<
   return (parser._zod.def.type === 'string'
     ? pipe(
       parser,
-      transform((input) =>
+      transform((input, ctx) =>
         DataItemVariableResolverTransformer(
           variablesRegistry,
           parser,
           input as string,
+          ctx,
         )
       ),
     )

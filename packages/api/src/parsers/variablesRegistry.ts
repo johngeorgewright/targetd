@@ -1,27 +1,29 @@
-import { type $ZodType, registry } from 'zod/v4/core'
+import type { $ZodType, ParsePayload } from 'zod/v4/core'
 
-const variablesRegistry = registry<
-  { variables: Record<string, $ZodType> }
+const variablesRegistry = new WeakMap<
+  $ZodType,
+  VariableRegistryItems
 >()
 
+interface VariableRegistryItem {
+  parser: $ZodType
+  ctx: ParsePayload
+}
+
+type VariableRegistryItems = Record<string, VariableRegistryItem>
+
 export interface VariablesRegistry {
-  get(): Record<string, $ZodType>
-  set(varName: string, parser: $ZodType): void
+  getAll(): VariableRegistryItems
+  set(varName: string, item: VariableRegistryItem): void
 }
 
 export function variablesFor(payloadParser: $ZodType): VariablesRegistry {
   return {
-    get: () =>
-      (variablesRegistry.get(payloadParser)?.variables ?? {}) as Record<
-        string,
-        $ZodType
-      >,
-    set: (varName: string, parser: $ZodType) => {
-      variablesRegistry.add(payloadParser, {
-        variables: {
-          ...variablesRegistry.get(payloadParser)?.variables,
-          [varName]: parser as any,
-        },
+    getAll: () => variablesRegistry.get(payloadParser) ?? {},
+    set: (varName: string, item: VariableRegistryItem) => {
+      variablesRegistry.set(payloadParser, {
+        ...variablesRegistry.get(payloadParser),
+        [varName]: item,
       })
     },
   }

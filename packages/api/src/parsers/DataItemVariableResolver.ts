@@ -8,7 +8,11 @@ import {
   type ZodMiniTemplateLiteral,
   type ZodMiniTransform,
 } from 'zod/mini'
-import type { $PartsToTemplateLiteral, $ZodType } from 'zod/v4/core'
+import type {
+  $PartsToTemplateLiteral,
+  $ZodType,
+  ParsePayload,
+} from 'zod/v4/core'
 import { objectMap } from '../util.ts'
 import type { VariablesRegistry } from './variablesRegistry.ts'
 
@@ -21,7 +25,9 @@ export function DataItemVariableResolverParser(
 ): DataItemVariableResolverParser {
   return pipe(
     variableStringParser,
-    transform((input) => stringToVariableResolver(registry, parser, input)),
+    transform((input, ctx) =>
+      stringToVariableResolver(registry, parser, input, ctx)
+    ),
   )
 }
 
@@ -29,9 +35,10 @@ export function DataItemVariableResolverTransformer<T extends string>(
   registry: VariablesRegistry,
   parser: $ZodType,
   input: T,
+  ctx: ParsePayload,
 ): T extends VariableString ? VariableResolver : T {
   return isVariableString(input)
-    ? stringToVariableResolver(registry, parser, input) as any
+    ? stringToVariableResolver(registry, parser, input, ctx) as any
     : input as any
 }
 
@@ -84,12 +91,16 @@ function stringToVariableResolver(
   registry: VariablesRegistry,
   parser: $ZodType,
   input: VariableString,
+  ctx: ParsePayload,
 ): VariableResolver {
   const key = extractVariableName(input)
   const resolver: VariableResolver = (variables: Record<string, any>) =>
     variables[key] ?? input
   resolver.$$resolver$$ = true
-  registry.set(key, parser)
+  registry.set(key, {
+    ctx,
+    parser,
+  })
   return resolver
 }
 
