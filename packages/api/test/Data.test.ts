@@ -666,3 +666,39 @@ Deno.test('errors when using variables with incorrect types', async (t) => {
     }).catch((error: ZodError) => error.issues),
   )
 })
+
+Deno.test(
+  'make sure fallthrough targeting is not added to the predicate',
+  async () => {
+    const minInnerWindowWidthTargeting = createTargetingDescriptor({
+      queryParser: z.unknown(),
+      targetingParser: z.number(),
+      requiresQuery: false,
+      predicate: () => () => {
+        throw new Error('This should never get called')
+      },
+    })
+    const baseSchema = Data.create()
+      .usePayload({ 'foo': z.string() })
+    const clientSchema = baseSchema
+      .useTargeting({ fft: minInnerWindowWidthTargeting })
+    const serverSchema = baseSchema
+      .useFallThroughTargeting((await clientSchema).targetingParsers)
+      .addRules('foo', {
+        variables: {
+          x: [{
+            targeting: {
+              fft: 129,
+            },
+            payload: 'fft',
+          }, {
+            payload: 'st',
+          }],
+        },
+        rules: [
+          { payload: '{{x}}' },
+        ],
+      })
+    await serverSchema.getPayloadForEachName()
+  },
+)

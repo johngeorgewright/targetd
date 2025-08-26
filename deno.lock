@@ -2,7 +2,6 @@
   "version": "5",
   "specifiers": {
     "jsr:@es-toolkit/es-toolkit@^1.39.8": "1.39.8",
-    "jsr:@myty/promise-chain@~0.4.6": "0.4.6",
     "jsr:@std/assert@*": "1.0.13",
     "jsr:@std/assert@^1.0.13": "1.0.13",
     "jsr:@std/async@^1.0.13": "1.0.13",
@@ -43,9 +42,6 @@
   "jsr": {
     "@es-toolkit/es-toolkit@1.39.8": {
       "integrity": "4c03332b6dea5f1597827e3aec426a88b8b0ba18aa1899102f4c1126fb4a42b4"
-    },
-    "@myty/promise-chain@0.4.6": {
-      "integrity": "60682f6fad3a3ace8155bdef981c3bb39869688bd47627f15d5c090d1a2145ba"
     },
     "@std/assert@1.0.13": {
       "integrity": "ae0d31e41919b12c656c742b22522c32fb26ed0cba32975cb0de2a273cb68b29",
@@ -3410,7 +3406,6 @@
     "members": {
       "packages/api": {
         "dependencies": [
-          "jsr:@myty/promise-chain@~0.4.6",
           "npm:fast-deep-equal@3",
           "npm:ts-toolbelt@9",
           "npm:zod@^4.0.15"

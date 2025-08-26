@@ -1,4 +1,4 @@
-import type { $ZodType, ParsePayload } from 'zod/v4/core'
+import { type $ZodType, clone, type ParsePayload } from 'zod/v4/core'
 
 const variablesRegistry = new WeakMap<
   $ZodType,
@@ -18,11 +18,12 @@ export interface VariablesRegistry {
 }
 
 export function variablesFor(payloadParser: $ZodType): VariablesRegistry {
+  const $payloadParser = clone(payloadParser)
   return {
-    getAll: () => variablesRegistry.get(payloadParser) ?? {},
+    getAll: () => variablesRegistry.get($payloadParser) ?? {},
     set: (varName: string, item: VariableRegistryItem) => {
-      variablesRegistry.set(payloadParser, {
-        ...variablesRegistry.get(payloadParser),
+      variablesRegistry.set($payloadParser, {
+        ...variablesRegistry.get($payloadParser),
         [varName]: item,
       })
     },

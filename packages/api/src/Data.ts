@@ -26,7 +26,7 @@ import {
   type output,
 } from 'zod/v4/core'
 import { partial, strictObject } from 'zod/mini'
-import { type PromisedData, promisedData } from './PromisedData.ts'
+import { PromisedData } from './PromisedData.ts'
 import { resolveVariables } from './parsers/DataItemVariableResolver.ts'
 
 /**
@@ -79,7 +79,7 @@ export default class Data<
   readonly #QueryParser: ZodPartialObject<QueryParsers>
 
   static create(): PromisedData<{}, {}, {}, {}> {
-    return promisedData<{}, {}, {}, {}>(new Data({}, {}, {}, {}, {}, {}))
+    return PromisedData.create<{}, {}, {}, {}>(new Data({}, {}, {}, {}, {}, {}))
   }
 
   private constructor(
