@@ -1,5 +1,6 @@
 import {
   array,
+  object,
   optional,
   partial,
   strictObject,
@@ -172,8 +173,9 @@ type SingularRuleTargeting<Targeting extends $ZodShape> = ZodPartialObject<
 
 function SingularRuleTargeting<Targeting extends $ZodShape>(
   targeting: Targeting,
+  strict: boolean,
 ): SingularRuleTargeting<Targeting> {
-  return partial(strictObject(targeting))
+  return partial((strict ? strictObject : object)(targeting))
 }
 
 type MultipleRuleTargeting<Targeting extends $ZodShape> = ZodMiniUnion<
@@ -185,8 +187,9 @@ type MultipleRuleTargeting<Targeting extends $ZodShape> = ZodMiniUnion<
 
 function MultipleRuleTargeting<Targeting extends $ZodShape>(
   targeting: Targeting,
+  strict: boolean,
 ): MultipleRuleTargeting<Targeting> {
-  const t = SingularRuleTargeting(targeting)
+  const t = SingularRuleTargeting(targeting, strict)
   return union([t, array(t)])
 }
 
@@ -213,14 +216,15 @@ export function RuleWithPayloadParser<
   variablesRegistry: VariablesRegistry,
   Payload: P,
   targeting: T,
+  strictTargeting: boolean,
   allowMultipleTargeting = true as AllowMultipleTargeting,
 ): RuleWithPayloadParser<P, T, AllowMultipleTargeting> {
   return strictObject({
     payload: attachVariableResolver(variablesRegistry, Payload),
     targeting: optional(
       allowMultipleTargeting
-        ? MultipleRuleTargeting(targeting)
-        : SingularRuleTargeting(targeting),
+        ? MultipleRuleTargeting(targeting, strictTargeting)
+        : SingularRuleTargeting(targeting, strictTargeting),
     ),
   }) as RuleWithPayloadParser<P, T, AllowMultipleTargeting>
 }
@@ -308,6 +312,7 @@ export function RuleWithFallThroughParser<
   payload: Payload,
   targeting: Targeting,
   fallThroughTargeting: FallThroughTargeting,
+  strictTargeting: boolean,
   allowMultipleTargeting = true,
 ): RuleWithFallThroughParser<
   Payload,
@@ -318,11 +323,16 @@ export function RuleWithFallThroughParser<
   return strictObject({
     targeting: optional(
       allowMultipleTargeting
-        ? MultipleRuleTargeting(targeting)
-        : SingularRuleTargeting(targeting),
+        ? MultipleRuleTargeting(targeting, strictTargeting)
+        : SingularRuleTargeting(targeting, strictTargeting),
     ),
     fallThrough: array(
-      RuleWithPayloadParser(variablesRegistry, payload, fallThroughTargeting),
+      RuleWithPayloadParser(
+        variablesRegistry,
+        payload,
+        fallThroughTargeting,
+        strictTargeting,
+      ),
     ),
   }) as RuleWithFallThroughParser<
     Payload,

@@ -34,6 +34,7 @@ export function dataJSONSchema<D extends DT.Any>(
         data.payloadParsers[name],
         data.targetingParsers,
         data.fallThroughTargetingParsers,
+        true,
       ) as any,
       { $schema: optional(string()) },
     ),

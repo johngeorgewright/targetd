@@ -4,7 +4,7 @@ import {
   type DataItemOut,
   DataItemParser,
 } from './DataItem.ts'
-import { partial, strictObject } from 'zod/mini'
+import { object, partial, strictObject } from 'zod/mini'
 import type { $strict, $ZodShape } from 'zod/v4/core'
 
 /**
@@ -37,12 +37,20 @@ export function DataItemsParser<
   payloadParsers: D,
   targeting: T,
   fallThroughTargeting: CT,
+  strict = true,
 ): DataItemsParser<D, T, CT> {
   const dataItems: Record<string, any> = {}
   for (const [key, Payload] of Object.entries(payloadParsers)) {
-    dataItems[key] = DataItemParser(Payload, targeting, fallThroughTargeting)
+    dataItems[key] = DataItemParser(
+      Payload,
+      targeting,
+      fallThroughTargeting,
+      strict,
+    )
   }
-  return partial(strictObject(dataItems)) as DataItemsParser<D, T, CT>
+  return partial(
+    (strict ? strictObject : object)(dataItems),
+  ) as DataItemsParser<D, T, CT>
 }
 
 export type DataItemsParser<

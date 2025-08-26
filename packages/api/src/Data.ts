@@ -208,6 +208,7 @@ export default class Data<
         this.#payloadParsers,
         this.#targetingParsers,
         this.#fallThroughTargetingParsers,
+        false,
       ).parseAsync(
         Object.entries(data).reduce((data, [name, value]) => {
           const dataItem = this.#data[name] ||
@@ -507,6 +508,8 @@ export default class Data<
         break
       }
     }
+
+    if (payload === undefined) return
 
     const variables = await this.#getVariables(targetableItem, predicate)
     const resolvableVariables = objectFitler(

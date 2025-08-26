@@ -183,4 +183,15 @@ export class PromisedData<
     const data = await this
     return data.getPayload(name, rawQuery)
   }
+
+  removeAllRules(): Promise<
+    Data<
+      PayloadParsers,
+      TargetingParsers,
+      QueryParsers,
+      FallThroughTargetingParsers
+    >
+  > {
+    return this.#create((data) => data.removeAllRules())
+  }
 }
