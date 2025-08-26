@@ -66,12 +66,13 @@ export function DataItemRulesParser<
   payloadParser: P,
   targetingParsers: T,
   fallThroughTargetingParsers: FTT,
+  strictTargeting: boolean,
 ): DataItemRulesParser<P, T, FTT> {
   return pipe(
     array(RuleWithPayloadParser<P, T & FTT>(variablesRegistry, payloadParser, {
       ...targetingParsers,
       ...fallThroughTargetingParsers,
-    })),
+    }, strictTargeting)),
     transform(
       (
         rules: RuleWithPayloadIn<P, T & FTT>[],

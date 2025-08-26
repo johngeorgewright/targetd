@@ -18,6 +18,7 @@ export function DataItemVariablesParser<
   variablesRegistry: VariablesRegistry,
   targeting: T,
   fallThroughTargeting: FTT,
+  strictTargeting: boolean,
 ): DataItemVariablesParser<T, FTT> {
   return record(
     string(),
@@ -26,6 +27,7 @@ export function DataItemVariablesParser<
       any(),
       targeting,
       fallThroughTargeting,
+      strictTargeting,
     ),
   ).check((ctx) => {
     const variables = variablesRegistry.getAll()

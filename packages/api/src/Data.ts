@@ -208,6 +208,7 @@ export default class Data<
         this.#payloadParsers,
         this.#targetingParsers,
         this.#fallThroughTargetingParsers,
+        false,
       ).parseAsync(
         Object.entries(data).reduce((data, [name, value]) => {
           const dataItem = this.#data[name] ||
