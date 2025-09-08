@@ -112,6 +112,151 @@ snapshot[`fallThrough targeting 1`] = `
     ],
     variables: {},
   },
+  mung: {
+    rules: [
+      {
+        fallThrough: [
+          {
+            payload: "☂️",
+            targeting: {
+              weather: [
+                "rainy",
+              ],
+            },
+          },
+        ],
+        targeting: {
+          surf: [
+            "!strong",
+          ],
+        },
+      },
+      {
+        fallThrough: [
+          {
+            payload: "🏄‍♂️",
+            targeting: {
+              weather: [
+                "sunny",
+              ],
+            },
+          },
+        ],
+        targeting: {
+          surf: [
+            "strong",
+          ],
+        },
+      },
+    ],
+    variables: {},
+  },
+}
+`;
+
+snapshot[`fallThrough targeting 2`] = `
+{
+  bar: {
+    __rules__: [
+      {
+        payload: "😟",
+        targeting: {
+          weather: [
+            "rainy",
+          ],
+        },
+      },
+      {
+        payload: "😁",
+        targeting: {
+          weather: [
+            "sunny",
+          ],
+        },
+      },
+      {
+        payload: "😐",
+        targeting: {},
+      },
+    ],
+  },
+  foo: {
+    __rules__: [
+      {
+        payload: "🏄‍♂️",
+        targeting: {
+          weather: [
+            "sunny",
+          ],
+        },
+      },
+    ],
+  },
+  mung: {
+    __rules__: [
+      {
+        payload: "☂️",
+        targeting: {
+          weather: [
+            "rainy",
+          ],
+        },
+      },
+    ],
+  },
+}
+`;
+
+snapshot[`fallThrough targeting 3`] = `
+{
+  bar: {
+    __rules__: [
+      {
+        payload: "😟",
+        targeting: {
+          weather: [
+            "rainy",
+          ],
+        },
+      },
+      {
+        payload: "😁",
+        targeting: {
+          weather: [
+            "sunny",
+          ],
+        },
+      },
+      {
+        payload: "😐",
+        targeting: {},
+      },
+    ],
+  },
+  foo: {
+    __rules__: [
+      {
+        payload: "🏄‍♂️",
+        targeting: {
+          weather: [
+            "sunny",
+          ],
+        },
+      },
+    ],
+  },
+  mung: {
+    __rules__: [
+      {
+        payload: "🏄‍♂️",
+        targeting: {
+          weather: [
+            "sunny",
+          ],
+        },
+      },
+    ],
+  },
 }
 `;
 

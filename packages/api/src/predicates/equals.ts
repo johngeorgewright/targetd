@@ -6,9 +6,11 @@ import type { $ZodType } from 'zod/v4/core'
  */
 export function targetEquals<T extends $ZodType>(
   t: T,
+  options: { withNegate?: boolean } = {},
 ): TargetingDescriptor<T, T> {
   return {
-    predicate: (q) => (t) => !q || q === t,
+    predicate: (q) => (t) =>
+      !q || q === t || (!!options.withNegate && t !== `!${q}`),
     queryParser: t,
     targetingParser: t,
   }
