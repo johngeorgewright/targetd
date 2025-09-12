@@ -2,6 +2,44 @@ export const snapshot = {};
 
 snapshot[`json schema for simple data object 1`] = `
 {
+  "\$defs": {
+    __schema0: {
+      additionalProperties: false,
+      properties: {
+        browser: {
+          "\$ref": "#/\$defs/__schema2",
+        },
+        weather: {
+          "\$ref": "#/\$defs/__schema1",
+        },
+      },
+      type: "object",
+    },
+    __schema1: {
+      items: {
+        type: "string",
+      },
+      type: "array",
+    },
+    __schema2: {
+      items: {
+        type: "string",
+      },
+      type: "array",
+    },
+    __schema3: {
+      additionalProperties: false,
+      properties: {
+        browser: {
+          "\$ref": "#/\$defs/__schema2",
+        },
+        weather: {
+          "\$ref": "#/\$defs/__schema1",
+        },
+      },
+      type: "object",
+    },
+  },
   "\$schema": "https://json-schema.org/draft/2020-12/schema",
   additionalProperties: false,
   properties: {
@@ -21,41 +59,11 @@ snapshot[`json schema for simple data object 1`] = `
               targeting: {
                 anyOf: [
                   {
-                    additionalProperties: false,
-                    properties: {
-                      browser: {
-                        items: {
-                          type: "string",
-                        },
-                        type: "array",
-                      },
-                      weather: {
-                        items: {
-                          type: "string",
-                        },
-                        type: "array",
-                      },
-                    },
-                    type: "object",
+                    "\$ref": "#/\$defs/__schema0",
                   },
                   {
                     items: {
-                      additionalProperties: false,
-                      properties: {
-                        browser: {
-                          items: {
-                            type: "string",
-                          },
-                          type: "array",
-                        },
-                        weather: {
-                          items: {
-                            type: "string",
-                          },
-                          type: "array",
-                        },
-                      },
-                      type: "object",
+                      "\$ref": "#/\$defs/__schema0",
                     },
                     type: "array",
                   },
@@ -78,41 +86,11 @@ snapshot[`json schema for simple data object 1`] = `
                 targeting: {
                   anyOf: [
                     {
-                      additionalProperties: false,
-                      properties: {
-                        browser: {
-                          items: {
-                            type: "string",
-                          },
-                          type: "array",
-                        },
-                        weather: {
-                          items: {
-                            type: "string",
-                          },
-                          type: "array",
-                        },
-                      },
-                      type: "object",
+                      "\$ref": "#/\$defs/__schema3",
                     },
                     {
                       items: {
-                        additionalProperties: false,
-                        properties: {
-                          browser: {
-                            items: {
-                              type: "string",
-                            },
-                            type: "array",
-                          },
-                          weather: {
-                            items: {
-                              type: "string",
-                            },
-                            type: "array",
-                          },
-                        },
-                        type: "object",
+                        "\$ref": "#/\$defs/__schema3",
                       },
                       type: "array",
                     },

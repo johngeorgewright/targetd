@@ -45,6 +45,7 @@ export function dataJSONSchema<D extends DT.Any>(
 const params: NonNullable<Parameters<typeof toJSONSchema>[1]> = {
   io: 'input',
   unrepresentable: 'any',
+  reused: 'ref',
   override(ctx) {
     if (isZodSwitch(ctx.zodSchema)) {
       const union = switchRegistry.get(ctx.zodSchema)
