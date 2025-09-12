@@ -1,6 +1,6 @@
 {
   "name": "@targetd/json-schema",
-  "version": "4.0.2",
+  "version": "4.1.0",
   "exports": {
     ".": "./src/index.ts",
     "./cli": "./src/cli.ts"
@@ -13,7 +13,10 @@
   },
   "lint": {
     "rules": {
-      "exclude": ["no-import-prefix", "no-unversioned-import"]
+      "exclude": [
+        "no-import-prefix",
+        "no-unversioned-import"
+      ]
     }
   },
   "fmt": {
