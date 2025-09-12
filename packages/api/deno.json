@@ -6,6 +6,11 @@
     "semiColons": false,
     "singleQuote": true
   },
+  "lint": {
+    "rules": {
+      "exclude": ["no-import-prefix", "no-unversioned-import"]
+    }
+  },
   "tasks": {
     "pwd": "echo $(pwd)",
     "test": "deno test --allow-all --trace-leaks"

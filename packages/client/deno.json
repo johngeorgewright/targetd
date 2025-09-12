@@ -7,6 +7,11 @@
     "ts-toolbelt": "npm:ts-toolbelt@^9.6.0",
     "zod": "npm:zod@^4.0.15"
   },
+  "lint": {
+    "rules": {
+      "exclude": ["no-import-prefix", "no-unversioned-import"]
+    }
+  },
   "fmt": {
     "semiColons": false,
     "singleQuote": true
