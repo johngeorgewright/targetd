@@ -277,8 +277,9 @@ Deno.test('fallThrough targeting', async (t) => {
     .usePayload({
       foo: z.string(),
       bar: z.string(),
+      mung: z.string(),
     })
-    .useTargeting({ surf: targetIncludes(z.string()) })
+    .useTargeting({ surf: targetIncludes(z.string(), { withNegate: true }) })
     .useFallThroughTargeting({ weather: z.array(z.string()) })
     .addRules('foo', [
       {
@@ -318,8 +319,26 @@ Deno.test('fallThrough targeting', async (t) => {
         payload: '😐',
       },
     ])
+    .addRules('mung', [
+      {
+        targeting: {
+          surf: ['!strong'],
+          weather: ['rainy'],
+        },
+        payload: '☂️',
+      },
+      {
+        targeting: {
+          surf: ['strong'],
+          weather: ['sunny'],
+        },
+        payload: '🏄‍♂️',
+      },
+    ])
 
   await assertSnapshot(t, data.data)
+  await assertSnapshot(t, await data.getPayloadForEachName({ surf: 'tame' }))
+  await assertSnapshot(t, await data.getPayloadForEachName({ surf: 'strong' }))
 })
 
 Deno.test('inserting data', async (t) => {

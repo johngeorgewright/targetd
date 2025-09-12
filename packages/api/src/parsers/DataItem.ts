@@ -31,6 +31,7 @@ export function DataItemParser<
   Payload: P,
   targeting: T,
   fallThroughTargeting: FTT,
+  strictTargeting: boolean,
 ): DataItemParser<P, T, FTT> {
   const variablesRegistry = variablesFor(Payload)
   return strictObject({
@@ -39,12 +40,14 @@ export function DataItemParser<
       Payload,
       targeting,
       fallThroughTargeting,
+      strictTargeting,
     ),
     variables: _default(
       DataItemVariablesParser(
         variablesRegistry,
         targeting,
         fallThroughTargeting,
+        strictTargeting,
       ),
       {},
     ),
