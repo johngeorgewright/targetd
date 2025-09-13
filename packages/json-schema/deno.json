@@ -30,6 +30,7 @@
   "publish": {
     "include": [
       "deno.json",
+      "package.json",
       "src/",
       "LICENSE",
       "README.md"

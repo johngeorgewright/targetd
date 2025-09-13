@@ -2,7 +2,7 @@ import type { DT } from '@targetd/api'
 import yargs from 'yargs'
 import * as path from 'node:path'
 import { writeFile } from 'node:fs/promises'
-import { argv } from 'node:process'
+import { argv, cwd } from 'node:process'
 import { dataJSONSchemas } from './index.ts'
 
 const { dataExport, inputModule, outputFile } = await yargs()
@@ -30,7 +30,7 @@ const { dataExport, inputModule, outputFile } = await yargs()
   .help()
   .parseAsync(argv)
 
-const input = await import(path.resolve(inputModule))
+const input = await import(path.resolve(cwd(), inputModule))
 const data = input[dataExport]
 if (!isDataLike(data)) {
   throw new Error(
