@@ -30,14 +30,20 @@ const { dataExport, inputModule, outputFile } = await yargs()
   .help()
   .parseAsync(argv)
 
-const input = await import(path.resolve(cwd(), inputModule))
+const input = await import(
+  // We need a forward slash here so that Deno is aware it's an absolute path
+  `/${path.resolve(cwd(), inputModule).replace(/^\//, '')}`
+)
+
 const data = input[dataExport]
 if (!isDataLike(data)) {
   throw new Error(
     `Export "${dataExport}" from "${inputModule}" is not of a \`Data\` type.`,
   )
 }
+
 const jsonSchema = JSON.stringify(dataJSONSchemas(data), null, 2)
+
 if (outputFile) await writeFile(outputFile, jsonSchema)
 else console.info(jsonSchema)
 
