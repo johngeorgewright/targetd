@@ -6,10 +6,10 @@
     "./cli": "./src/cli.ts"
   },
   "imports": {
-    "@targetd/api": "jsr:@targetd/api@^7.0.0",
+    "@targetd/api": "jsr:@targetd/api@^7.3.0",
     "@types/yargs": "npm:@types/yargs@^17.0.33",
     "yargs": "npm:yargs@^18.0.0",
-    "zod": "npm:zod@^4.0.15"
+    "zod": "npm:zod@^4.1.11"
   },
   "lint": {
     "rules": {

@@ -1,7 +1,7 @@
 {
   "version": "5",
   "specifiers": {
-    "jsr:@es-toolkit/es-toolkit@^1.39.8": "1.39.8",
+    "jsr:@es-toolkit/es-toolkit@^1.39.10": "1.39.10",
     "jsr:@std/assert@*": "1.0.13",
     "jsr:@std/assert@^1.0.13": "1.0.13",
     "jsr:@std/async@^1.0.13": "1.0.13",
@@ -14,6 +14,7 @@
     "jsr:@std/internal@^1.0.8": "1.0.8",
     "jsr:@std/path@^1.1.0": "1.1.0",
     "jsr:@std/testing@*": "1.0.13",
+    "jsr:@targetd/api@^7.3.0": "7.3.0",
     "npm:@johngw/error@^2.2.2": "2.2.2",
     "npm:@johngw/fs@^3.0.1": "3.0.1",
     "npm:@types/express@^5.0.3": "5.0.3",
@@ -27,21 +28,22 @@
     "npm:express-query-boolean@2": "2.0.0",
     "npm:express@^5.1.0": "5.1.0",
     "npm:fast-deep-equal@3": "3.1.3",
+    "npm:fast-deep-equal@^3.1.3": "3.1.3",
     "npm:flat@^6.0.1": "6.0.1",
     "npm:lodash@*": "4.17.21",
     "npm:qs@^6.14.0": "6.14.0",
     "npm:semantic-release@*": "24.2.7_marked@15.0.12",
     "npm:supertest@*": "7.1.4",
-    "npm:ts-toolbelt@9": "9.6.0",
     "npm:ts-toolbelt@^9.6.0": "9.6.0",
     "npm:watch@^1.0.2": "1.0.2",
     "npm:yaml@^2.8.1": "2.8.1",
     "npm:yargs@18": "18.0.0",
-    "npm:zod@^4.0.15": "4.0.15"
+    "npm:zod@^4.0.15": "4.1.11",
+    "npm:zod@^4.1.11": "4.1.11"
   },
   "jsr": {
-    "@es-toolkit/es-toolkit@1.39.8": {
-      "integrity": "4c03332b6dea5f1597827e3aec426a88b8b0ba18aa1899102f4c1126fb4a42b4"
+    "@es-toolkit/es-toolkit@1.39.10": {
+      "integrity": "8757072a13aa64b3b349ba2b9d7d22fbe7ea6f138506c6cd2222d767cd79918f"
     },
     "@std/assert@1.0.13": {
       "integrity": "ae0d31e41919b12c656c742b22522c32fb26ed0cba32975cb0de2a273cb68b29",
@@ -83,6 +85,13 @@
         "jsr:@std/fs@^1.0.17",
         "jsr:@std/internal@^1.0.8",
         "jsr:@std/path"
+      ]
+    },
+    "@targetd/api@7.3.0": {
+      "integrity": "23019d5521cea7d1c424d1b27e49a9b8e91a037b092e3e0ba1ef77d3f079dab2",
+      "dependencies": [
+        "npm:fast-deep-equal@3",
+        "npm:zod@^4.0.15"
       ]
     }
   },
@@ -3398,62 +3407,62 @@
     "yoctocolors@2.1.1": {
       "integrity": "sha512-GQHQqAopRhwU8Kt1DDM8NjibDXHC8eoh1erhGAJPEyveY9qqVeXvVikNKrDz69sHowPMorbPUrH/mx8c50eiBQ=="
     },
-    "zod@4.0.15": {
-      "integrity": "sha512-2IVHb9h4Mt6+UXkyMs0XbfICUh1eUrlJJAOupBHUhLRnKkruawyDddYRCs0Eizt900ntIMk9/4RksYl+FgSpcQ=="
+    "zod@4.1.11": {
+      "integrity": "sha512-WPsqwxITS2tzx1bzhIKsEs19ABD5vmCVa4xBo2tq/SrV4RNZtfws1EnCWQXM6yh8bD08a1idvkB5MZSBiZsjwg=="
     }
   },
   "workspace": {
     "members": {
       "packages/api": {
         "dependencies": [
-          "npm:fast-deep-equal@3",
-          "npm:ts-toolbelt@9",
-          "npm:zod@^4.0.15"
+          "npm:fast-deep-equal@^3.1.3",
+          "npm:ts-toolbelt@^9.6.0",
+          "npm:zod@^4.1.11"
         ]
       },
       "packages/client": {
         "dependencies": [
-          "jsr:@targetd/api@7",
+          "jsr:@targetd/api@^7.3.0",
           "npm:ts-toolbelt@^9.6.0",
-          "npm:zod@^4.0.15"
+          "npm:zod@^4.1.11"
         ]
       },
       "packages/date-range": {
         "dependencies": [
-          "jsr:@targetd/api@7",
-          "npm:zod@^4.0.15"
+          "jsr:@targetd/api@^7.3.0",
+          "npm:zod@^4.1.11"
         ]
       },
       "packages/explode": {
         "dependencies": [
-          "jsr:@targetd/api@7",
+          "jsr:@targetd/api@^7.3.0",
           "npm:flat@^6.0.1",
-          "npm:ts-toolbelt@9",
-          "npm:zod@^4.0.15"
+          "npm:ts-toolbelt@^9.6.0",
+          "npm:zod@^4.1.11"
         ]
       },
       "packages/fs": {
         "dependencies": [
-          "jsr:@es-toolkit/es-toolkit@^1.39.8",
-          "jsr:@targetd/api@7",
+          "jsr:@es-toolkit/es-toolkit@^1.39.10",
+          "jsr:@targetd/api@^7.3.0",
           "npm:@johngw/fs@^3.0.1",
           "npm:ts-toolbelt@^9.6.0",
           "npm:watch@^1.0.2",
           "npm:yaml@^2.8.1",
-          "npm:zod@^4.0.15"
+          "npm:zod@^4.1.11"
         ]
       },
       "packages/json-schema": {
         "dependencies": [
-          "jsr:@targetd/api@7",
+          "jsr:@targetd/api@^7.3.0",
           "npm:@types/yargs@^17.0.33",
           "npm:yargs@18",
-          "npm:zod@^4.0.15"
+          "npm:zod@^4.1.11"
         ]
       },
       "packages/server": {
         "dependencies": [
-          "jsr:@targetd/api@7",
+          "jsr:@targetd/api@^7.3.0",
           "npm:@johngw/error@^2.2.2",
           "npm:@types/express@^5.0.3",
           "npm:@types/qs@^6.14.0",
@@ -3461,7 +3470,7 @@
           "npm:express-query-boolean@2",
           "npm:express@^5.1.0",
           "npm:qs@^6.14.0",
-          "npm:zod@^4.0.15"
+          "npm:zod@^4.1.11"
         ]
       }
     }

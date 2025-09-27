@@ -3,13 +3,13 @@
   "version": "6.0.1",
   "exports": "./src/index.ts",
   "imports": {
-    "@es-toolkit/es-toolkit": "jsr:@es-toolkit/es-toolkit@^1.39.8",
+    "@es-toolkit/es-toolkit": "jsr:@es-toolkit/es-toolkit@^1.39.10",
     "@johngw/fs": "npm:@johngw/fs@^3.0.1",
-    "@targetd/api": "jsr:@targetd/api@^7.0.0",
+    "@targetd/api": "jsr:@targetd/api@^7.3.0",
     "ts-toolbelt": "npm:ts-toolbelt@^9.6.0",
     "watch": "npm:watch@^1.0.2",
     "yaml": "npm:yaml@^2.8.1",
-    "zod": "npm:zod@^4.0.15"
+    "zod": "npm:zod@^4.1.11"
   },
   "lint": {
     "rules": {
