@@ -46,7 +46,7 @@ export function watch<D extends DT.Any>(
     options,
     debounce(
       async (_eventType, filename) => {
-        if (!pathIsLoadable(filename)) return
+        if (filename && !pathIsLoadable(filename)) return
         await onChange()
       },
       300,
