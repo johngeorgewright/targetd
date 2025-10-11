@@ -30,3 +30,5 @@ export type ZodPartialInferObject<Shape extends $ZodShape> = $InferObjectOutput<
 >
 
 export type MaybeArray<T> = T | T[]
+
+export type ObjValues<T> = T[keyof T]

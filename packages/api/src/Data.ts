@@ -151,13 +151,7 @@ export default class Data<$ extends DT.Meta> {
     }
   }
 
-  async insert(
-    data: DT.InsertableData<
-      $['PayloadParsers'],
-      $['TargetingParsers'],
-      $['FallThroughTargetingParsers']
-    >,
-  ): Promise<Data<$>> {
+  async insert(data: DT.InsertableData<$>): Promise<Data<$>> {
     const newData = {
       ...this.#data,
       ...(await DataItemsParser(
@@ -207,30 +201,17 @@ export default class Data<$ extends DT.Meta> {
   readonly #isFallThroughRulesPayload = <
     Name extends keyof $['PayloadParsers'],
   >(
-    payload: PT.Payload<
-      $['PayloadParsers'][Name],
-      $['TargetingParsers'] | $['FallThroughTargetingParsers']
-    >,
-  ): payload is FTTT.Rules<
-    $['PayloadParsers'][Name],
-    $['TargetingParsers'] | $['FallThroughTargetingParsers']
-  > => typeof payload === 'object' && payload !== null && '__rules__' in payload
+    payload: PT.Payload<$, $['PayloadParsers'][Name]>,
+  ): payload is FTTT.Rules<$, $['PayloadParsers'][Name]> =>
+    typeof payload === 'object' && payload !== null && '__rules__' in payload
 
   async addRules<
     Name extends keyof $['PayloadParsers'],
   >(
     name: Name,
     opts:
-      | DataItemIn<
-        $['PayloadParsers'][Name],
-        $['TargetingParsers'],
-        $['FallThroughTargetingParsers']
-      >
-      | DataItemRulesIn<
-        $['PayloadParsers'][Name],
-        $['TargetingParsers'],
-        $['FallThroughTargetingParsers']
-      >,
+      | DataItemIn<$, $['PayloadParsers'][Name]>
+      | DataItemRulesIn<$, $['PayloadParsers'][Name]>,
   ): Promise<Data<$>> {
     const dataItem = this.#data[name] ||
       {
@@ -408,13 +389,8 @@ export default class Data<$ extends DT.Meta> {
 
   async getPayloadForEachName(
     rawQuery: QT.Raw<$['QueryParsers']> = {},
-  ): Promise<
-    PT.Payloads<$['PayloadParsers'], $['FallThroughTargetingParsers']>
-  > {
-    const payloads = {} as PT.Payloads<
-      $['PayloadParsers'],
-      $['FallThroughTargetingParsers']
-    >
+  ): Promise<PT.Payloads<$>> {
+    const payloads = {} as PT.Payloads<$>
 
     await Promise.all(
       objectKeys(this.#data).map(async (name) => {
@@ -429,13 +405,13 @@ export default class Data<$ extends DT.Meta> {
     name: Name,
     rawQuery: QT.Raw<$['QueryParsers']> = {},
   ): Promise<
-    | PT.Payload<$['PayloadParsers'][Name], $['FallThroughTargetingParsers']>
+    | PT.Payload<$, $['PayloadParsers'][Name]>
     | undefined
   > {
     const predicate = await this.#createRulePredicate(rawQuery)
     const targetableItem = this.#getTargetableItem(name)
     let payload:
-      | PT.Payload<$['PayloadParsers'][Name], $['FallThroughTargetingParsers']>
+      | PT.Payload<$, $['PayloadParsers'][Name]>
       | undefined
 
     for (const rule of targetableItem.rules) {
@@ -475,11 +451,7 @@ export default class Data<$ extends DT.Meta> {
   }
 
   async #getVariables<Name extends keyof $['PayloadParsers']>(
-    targetableItem: DataItemOut<
-      $['PayloadParsers'][Name],
-      $['TargetingParsers'],
-      $['FallThroughTargetingParsers']
-    >,
+    targetableItem: DataItemOut<$, $['PayloadParsers'][Name]>,
     predicate: (
       rule: DataItemRule<
         $['PayloadParsers'][Name],
@@ -508,12 +480,9 @@ export default class Data<$ extends DT.Meta> {
     name: Name,
     rawQuery: QT.Raw<$['QueryParsers']> = {},
   ): Promise<
-    PT.Payload<$['PayloadParsers'][Name], $['FallThroughTargetingParsers']>[]
+    PT.Payload<$, $['PayloadParsers'][Name]>[]
   > {
-    const payloads: PT.Payload<
-      $['PayloadParsers'][Name],
-      $['FallThroughTargetingParsers']
-    >[] = []
+    const payloads: PT.Payload<$, $['PayloadParsers'][Name]>[] = []
     const predicate = await this.#createRulePredicate(rawQuery)
     const targetableItem = this.#getTargetableItem(name)
     for (const rule of targetableItem.rules) {
@@ -534,14 +503,11 @@ export default class Data<$ extends DT.Meta> {
       $['TargetingParsers'],
       $['FallThroughTargetingParsers']
     >,
-  ): PT.Payload<PayloadParser, $['FallThroughTargetingParsers']> | undefined {
+  ): PT.Payload<$, PayloadParser> | undefined {
     return hasPayload(rule)
       ? rule.payload as output<PayloadParser>
       : 'fallThrough' in rule
-      ? { __rules__: rule.fallThrough } as FTTT.Rules<
-        PayloadParser,
-        $['FallThroughTargetingParsers']
-      >
+      ? { __rules__: rule.fallThrough } as FTTT.Rules<$, PayloadParser>
       : undefined
   }
 
@@ -584,9 +550,8 @@ export default class Data<$ extends DT.Meta> {
       (
         this.#data as unknown as {
           [Name in keyof $['PayloadParsers']]: DataItemOut<
-            $['PayloadParsers'][Name],
-            $['TargetingParsers'],
-            $['FallThroughTargetingParsers']
+            $,
+            $['PayloadParsers'][Name]
           >
         }
       )[name] ?? { rules: [], variables: {} }

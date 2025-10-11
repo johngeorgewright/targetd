@@ -1,16 +1,16 @@
-import type { $ZodShape, $ZodType, output } from 'zod/v4/core'
+import type { $ZodType, output } from 'zod/v4/core'
 import type * as FTTT from './FallThroughTargeting.ts'
+import type * as DT from './Data.ts'
 
-export type Payload<P extends $ZodType, T extends $ZodShape> =
-  | output<P>
-  | FTTT.Rules<P, T>
+export type Payload<
+  $ extends Pick<DT.Meta, 'FallThroughTargetingParsers'>,
+  PayloadParser extends $ZodType,
+> =
+  | output<PayloadParser>
+  | FTTT.Rules<$, PayloadParser>
 
 export type Payloads<
-  PayloadParsers extends $ZodShape,
-  FallThroughTargetingParsers extends $ZodShape,
+  $ extends Pick<DT.Meta, 'PayloadParsers' | 'FallThroughTargetingParsers'>,
 > = {
-  [Name in keyof PayloadParsers]?: Payload<
-    PayloadParsers[Name],
-    FallThroughTargetingParsers
-  >
+  [Name in keyof $['PayloadParsers']]?: Payload<$, $['PayloadParsers'][Name]>
 }

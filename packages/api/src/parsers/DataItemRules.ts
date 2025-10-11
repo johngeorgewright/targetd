@@ -21,7 +21,13 @@ import {
 } from 'zod/mini'
 import type { $ZodShape, $ZodType } from 'zod/v4/core'
 import type { ZodPartialInferObject } from '../types.ts'
+import type * as DT from '../types/Data.ts'
 import type { VariablesRegistry } from './variablesRegistry.ts'
+
+type Meta = Pick<
+  DT.Meta,
+  'TargetingParsers' | 'FallThroughTargetingParsers'
+>
 
 /**
  * Parses an item's `rules` field.
@@ -58,28 +64,45 @@ import type { VariablesRegistry } from './variablesRegistry.ts'
  * ```
  */
 export function DataItemRulesParser<
-  P extends $ZodType,
-  T extends $ZodShape,
-  FTT extends $ZodShape,
+  $ extends Meta,
+  PayloadParser extends $ZodType,
 >(
   variablesRegistry: VariablesRegistry,
-  payloadParser: P,
-  targetingParsers: T,
-  fallThroughTargetingParsers: FTT,
+  payloadParser: PayloadParser,
+  targetingParsers: $['TargetingParsers'],
+  fallThroughTargetingParsers: $['FallThroughTargetingParsers'],
   strictTargeting: boolean,
-): DataItemRulesParser<P, T, FTT> {
+): DataItemRulesParser<$, PayloadParser> {
   return pipe(
-    array(RuleWithPayloadParser<P, T & FTT>(variablesRegistry, payloadParser, {
-      ...targetingParsers,
-      ...fallThroughTargetingParsers,
-    }, strictTargeting)),
+    array(
+      RuleWithPayloadParser<
+        PayloadParser,
+        $['TargetingParsers'] & $['FallThroughTargetingParsers']
+      >(variablesRegistry, payloadParser, {
+        ...targetingParsers,
+        ...fallThroughTargetingParsers,
+      }, strictTargeting),
+    ),
     transform(
       (
-        rules: RuleWithPayloadIn<P, T & FTT>[],
-      ): DataItemRule<P, T, FTT, false>[] => {
+        rules: RuleWithPayloadIn<
+          PayloadParser,
+          $['TargetingParsers'] & $['FallThroughTargetingParsers']
+        >[],
+      ): DataItemRule<
+        PayloadParser,
+        $['TargetingParsers'],
+        $['FallThroughTargetingParsers'],
+        false
+      >[] => {
         const singularTargetedRules = spreadMultiTargetsToSeparateRules(rules)
 
-        let transformedRules: DataItemRule<P, T, FTT, false>[] = []
+        let transformedRules: DataItemRule<
+          PayloadParser,
+          $['TargetingParsers'],
+          $['FallThroughTargetingParsers'],
+          false
+        >[] = []
 
         for (const rule of singularTargetedRules) {
           const prevRule = arrayLast(transformedRules)
@@ -107,7 +130,12 @@ export function DataItemRulesParser<
             const adaptedRule = adaptRuleIntoFallThroughRule(
               targetingParsers,
               fallThroughTargetingParsers,
-              rule as DataItemRule<P, T, FTT, false>,
+              rule as DataItemRule<
+                PayloadParser,
+                $['TargetingParsers'],
+                $['FallThroughTargetingParsers'],
+                false
+              >,
             )
 
             adaptedPrevRule.fallThrough.push(...adaptedRule.fallThrough)
@@ -130,30 +158,41 @@ export function DataItemRulesParser<
 }
 
 export type DataItemRulesParser<
-  Payload extends $ZodType,
-  Targeting extends $ZodShape,
-  FallThroughTargeting extends $ZodShape,
+  $ extends Meta,
+  PayloadParser extends $ZodType,
 > = ZodMiniPipe<
   ZodMiniArray<
-    RuleWithPayloadParser<Payload, Targeting & FallThroughTargeting>
+    RuleWithPayloadParser<
+      PayloadParser,
+      $['TargetingParsers'] & $['FallThroughTargetingParsers']
+    >
   >,
   ZodMiniTransform<
-    DataItemRulesOut<Payload, Targeting, FallThroughTargeting>,
-    DataItemRulesIn<Payload, Targeting, FallThroughTargeting>
+    DataItemRulesOut<$, PayloadParser>,
+    DataItemRulesIn<$, PayloadParser>
   >
 >
 
 export type DataItemRulesIn<
-  Payload extends $ZodType,
-  Targeting extends $ZodShape,
-  FallThroughTargeting extends $ZodShape,
-> = RuleWithPayloadIn<Payload, Targeting & FallThroughTargeting>[]
+  $ extends Meta,
+  PayloadParser extends $ZodType,
+> = RuleWithPayloadIn<
+  PayloadParser,
+  $['TargetingParsers'] & $['FallThroughTargetingParsers']
+>[]
 
 export type DataItemRulesOut<
-  Payload extends $ZodType,
-  Targeting extends $ZodShape,
-  FallThroughTargeting extends $ZodShape,
-> = DataItemRule<Payload, Targeting, FallThroughTargeting, false>[]
+  $ extends Pick<
+    DT.Meta,
+    'TargetingParsers' | 'FallThroughTargetingParsers'
+  >,
+  PayloadParser extends $ZodType,
+> = DataItemRule<
+  PayloadParser,
+  $['TargetingParsers'],
+  $['FallThroughTargetingParsers'],
+  false
+>[]
 
 function spreadMultiTargetsToSeparateRules<
   P extends $ZodType,

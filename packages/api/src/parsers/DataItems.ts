@@ -1,5 +1,5 @@
 import type * as DT from '../types/Data.ts'
-import type { ZodPartialObject } from '../types.ts'
+import type { ObjValues, ZodPartialObject } from '../types.ts'
 import {
   type DataItemIn,
   type DataItemOut,
@@ -7,6 +7,11 @@ import {
 } from './DataItem.ts'
 import { object, partial, strictObject } from 'zod/mini'
 import type { $strict } from 'zod/v4/core'
+
+type Meta = Pick<
+  DT.Meta,
+  'PayloadParsers' | 'TargetingParsers' | 'FallThroughTargetingParsers'
+>
 
 /**
  * Parses all items in a Data class.
@@ -30,7 +35,9 @@ import type { $strict } from 'zod/v4/core'
  * )
  * ```
  */
-export function DataItemsParser<$ extends DT.Meta>(
+export function DataItemsParser<
+  $ extends Meta,
+>(
   payloadParsers: $['PayloadParsers'],
   targeting: $['TargetingParsers'],
   fallThroughTargeting: $['FallThroughTargetingParsers'],
@@ -39,7 +46,7 @@ export function DataItemsParser<$ extends DT.Meta>(
   const dataItems: Record<string, any> = {}
   for (const [key, Payload] of Object.entries(payloadParsers)) {
     dataItems[key] = DataItemParser(
-      Payload,
+      Payload as ObjValues<$['PayloadParsers']>,
       targeting,
       fallThroughTargeting,
       strict,
@@ -50,29 +57,25 @@ export function DataItemsParser<$ extends DT.Meta>(
   ) as DataItemsParser<$>
 }
 
-export type DataItemsParser<$ extends DT.Meta> = ZodPartialObject<
+export type DataItemsParser<
+  $ extends Meta,
+> = ZodPartialObject<
   {
     [Name in keyof $['PayloadParsers']]: DataItemParser<
-      $['PayloadParsers'][Name],
-      $['TargetingParsers'],
-      $['FallThroughTargetingParsers']
+      $,
+      $['PayloadParsers'][Name]
     >
   },
   $strict
 >
 
-export type DataItemsIn<$ extends DT.Meta> = {
-  [Name in keyof $['PayloadParsers']]?: DataItemIn<
-    $['PayloadParsers'][Name],
-    $['TargetingParsers'],
-    $['FallThroughTargetingParsers']
-  >
+export type DataItemsIn<$ extends Meta> = {
+  [Name in keyof $['PayloadParsers']]?: DataItemIn<$, $['PayloadParsers'][Name]>
 }
 
-export type DataItemsOut<$ extends DT.Meta> = {
+export type DataItemsOut<$ extends Meta> = {
   [Name in keyof $['PayloadParsers']]?: DataItemOut<
-    $['PayloadParsers'][Name],
-    $['TargetingParsers'],
-    $['FallThroughTargetingParsers']
+    $,
+    $['PayloadParsers'][Name]
   >
 }

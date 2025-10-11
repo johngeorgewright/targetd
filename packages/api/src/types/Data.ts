@@ -1,6 +1,6 @@
 import type Data from '../Data.ts'
 import type * as FTTT from './FallThroughTargeting.ts'
-import type { $ZodShape, $ZodType, output } from 'zod/v4/core'
+import type { $ZodShape, output } from 'zod/v4/core'
 
 export interface Meta {
   PayloadParsers: $ZodShape
@@ -58,32 +58,25 @@ export type FallThroughTargetingParsers<D extends Any> = D extends Data<infer $>
   ? $['FallThroughTargetingParsers']
   : never
 
-/**
- * Create the fall through Data type from a Data type
- */
-export type FallThrough<D extends Any> = Data<{
-  PayloadParsers: PayloadParsers<D>
-  TargetingParsers: { [K in keyof FallThroughTargetingParsers<D>]: $ZodType }
-  QueryParsers: Omit<QueryParsers<D>, keyof TargetingParsers<D>>
-  FallThroughTargetingParsers: {}
-}>
-
-/**
- * A union of possible payloads for a Data's PayloadParser
- */
-export type Payload<D extends Any, Name extends keyof PayloadParsers<D>> =
-  | output<PayloadParsers<D>[Name]>
-  | FTTT.Rules<PayloadParsers<D>[Name], TargetingParsers<D>>
-
 export type InsertableData<
-  D extends $ZodShape,
-  TP extends $ZodShape,
-  FTP extends $ZodShape,
+  $ extends Pick<
+    Meta,
+    'PayloadParsers' | 'TargetingParsers' | 'FallThroughTargetingParsers'
+  >,
 > = Partial<
   {
-    [Name in keyof D]:
-      | output<D[Name]>
-      | FTTT.Rules<D[Name], TP>
-      | FTTT.Rules<D[Name], FTP>
+    [Name in keyof $['PayloadParsers']]:
+      | output<$['PayloadParsers'][Name]>
+      | FTTT.Rules<
+        $,
+        $['PayloadParsers'][Name]
+      >
+      | FTTT.Rules<
+        $ & {
+          TargetingParsers: {}
+          FallThroughTargetingParsers: $['TargetingParsers']
+        },
+        $['PayloadParsers'][Name]
+      >
   }
 >

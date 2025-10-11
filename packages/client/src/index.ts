@@ -24,7 +24,7 @@ export class Client<$ extends DT.Meta> {
     name: Name,
     rawQuery: Partial<StaticRecord<$['QueryParsers']>> = {},
   ): Promise<
-    | PT.Payload<$['PayloadParsers'][Name], $['FallThroughTargetingParsers']>
+    | PT.Payload<$, $['PayloadParsers'][Name]>
     | void
   > {
     const query = this.#data.QueryParser.parse(rawQuery)
@@ -68,10 +68,7 @@ export class Client<$ extends DT.Meta> {
     Partial<
       {
         [Name in keyof $['PayloadParsers']]:
-          | PT.Payload<
-            $['PayloadParsers'][Name],
-            $['FallThroughTargetingParsers']
-          >
+          | PT.Payload<$, $['PayloadParsers'][Name]>
           | undefined
       }
     >

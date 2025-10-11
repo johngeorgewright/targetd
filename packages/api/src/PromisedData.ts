@@ -39,13 +39,7 @@ export class PromisedData<$ extends DT.Meta> extends Promise<Data<$>> {
     return this.#create((data) => data.usePayload(parsers))
   }
 
-  insert(
-    insertableData: DT.InsertableData<
-      $['PayloadParsers'],
-      $['TargetingParsers'],
-      $['FallThroughTargetingParsers']
-    >,
-  ): PromisedData<$> {
+  insert(insertableData: DT.InsertableData<$>): PromisedData<$> {
     return this.#create((data) => data.insert(insertableData))
   }
 
@@ -54,16 +48,8 @@ export class PromisedData<$ extends DT.Meta> extends Promise<Data<$>> {
   >(
     name: Name,
     opts:
-      | DataItemIn<
-        $['PayloadParsers'][Name],
-        $['TargetingParsers'],
-        $['FallThroughTargetingParsers']
-      >
-      | DataItemRulesIn<
-        $['PayloadParsers'][Name],
-        $['TargetingParsers'],
-        $['FallThroughTargetingParsers']
-      >,
+      | DataItemIn<$, $['PayloadParsers'][Name]>
+      | DataItemRulesIn<$, $['PayloadParsers'][Name]>,
   ): PromisedData<$> {
     return this.#create((data) => data.addRules(name, opts))
   }
@@ -94,7 +80,7 @@ export class PromisedData<$ extends DT.Meta> extends Promise<Data<$>> {
   async getPayloadForEachName(
     rawQuery: QT.Raw<$['QueryParsers']> = {},
   ): Promise<
-    PT.Payloads<$['PayloadParsers'], $['FallThroughTargetingParsers']>
+    PT.Payloads<$>
   > {
     const data = await this
     return data.getPayloadForEachName(rawQuery)
@@ -104,7 +90,7 @@ export class PromisedData<$ extends DT.Meta> extends Promise<Data<$>> {
     name: Name,
     rawQuery: QT.Raw<$['QueryParsers']> = {},
   ): Promise<
-    | PT.Payload<$['PayloadParsers'][Name], $['FallThroughTargetingParsers']>
+    | PT.Payload<$, $['PayloadParsers'][Name]>
     | undefined
   > {
     const data = await this
