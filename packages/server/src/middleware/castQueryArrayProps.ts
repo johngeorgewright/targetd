@@ -1,17 +1,16 @@
-import type { Data, DT } from '@targetd/api'
+import type { DT } from '@targetd/api'
 import type { RequestHandler } from 'express'
 import type { MaybePromise } from '../types.ts'
 import type { ParsedQs } from './castQueryProp.ts'
 
 export function castQueryArrayProps<
-  $ extends DT.Meta,
   P extends Record<string, string>,
   ResBody,
   ReqBody,
   ReqQuery,
   Locals extends { query: ParsedQs },
 >(
-  getData: () => MaybePromise<Data<$>>,
+  getData: () => MaybePromise<DT.Any>,
 ): RequestHandler<P, ResBody, ReqBody, ReqQuery, Locals> {
   return async (_req, res, next) => {
     const { queryParsers } = await getData()
