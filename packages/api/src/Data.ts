@@ -59,16 +59,9 @@ import { resolveVariables } from './parsers/DataItemVariableResolver.ts'
  */
 export default class Data<$ extends DT.Meta> {
   readonly #fallThroughTargetingParsers: $['FallThroughTargetingParsers']
-  readonly #data: DataItemsOut<
-    $['PayloadParsers'],
-    $['TargetingParsers'],
-    $['FallThroughTargetingParsers']
-  >
+  readonly #data: DataItemsOut<$>
   readonly #payloadParsers: $['PayloadParsers']
-  readonly #targetingPredicates: TargetingPredicates<
-    $['TargetingParsers'],
-    $['QueryParsers']
-  >
+  readonly #targetingPredicates: TargetingPredicates<$>
   readonly #targetingParsers: $['TargetingParsers']
   readonly #queryParsers: $['QueryParsers']
   readonly #QueryParser: ZodPartialObject<$['QueryParsers']>
@@ -78,16 +71,9 @@ export default class Data<$ extends DT.Meta> {
   }
 
   private constructor(
-    data: DataItemsOut<
-      $['PayloadParsers'],
-      $['TargetingParsers'],
-      $['FallThroughTargetingParsers']
-    >,
+    data: DataItemsOut<$>,
     payloadParsers: $['PayloadParsers'],
-    targetingPredicates: TargetingPredicates<
-      $['TargetingParsers'],
-      $['QueryParsers']
-    >,
+    targetingPredicates: TargetingPredicates<$>,
     targetingParsers: $['TargetingParsers'],
     queryParsers: $['QueryParsers'],
     fallThroughTargetingParsers: $['FallThroughTargetingParsers'],
@@ -103,11 +89,7 @@ export default class Data<$ extends DT.Meta> {
     this.#QueryParser = partial(strictObject(this.#queryParsers))
   }
 
-  get data(): DataItemsOut<
-    $['PayloadParsers'],
-    $['TargetingParsers'],
-    $['FallThroughTargetingParsers']
-  > {
+  get data(): DataItemsOut<$> {
     return this.#data
   }
 
@@ -115,10 +97,7 @@ export default class Data<$ extends DT.Meta> {
     return this.#payloadParsers
   }
 
-  get targetingPredicates(): TargetingPredicates<
-    $['TargetingParsers'],
-    $['QueryParsers']
-  > {
+  get targetingPredicates(): TargetingPredicates<$> {
     return this.#targetingPredicates
   }
 
@@ -143,7 +122,7 @@ export default class Data<$ extends DT.Meta> {
   ): Promise<
     Data<$ & { PayloadParsers: $['PayloadParsers'] & Parsers }>
   > {
-    type NewPayloadParsers = $['PayloadParsers'] & Parsers
+    type $$ = $ & { PayloadParsers: $['PayloadParsers'] & Parsers }
 
     const payloadParsers = this.#mergePayloadParsers(parsers)
 
@@ -151,13 +130,9 @@ export default class Data<$ extends DT.Meta> {
       payloadParsers,
       this.#targetingParsers,
       this.#fallThroughTargetingParsers,
-    ).parseAsync(this.#data)) as DataItemsOut<
-      NewPayloadParsers,
-      $['TargetingParsers'],
-      $['FallThroughTargetingParsers']
-    >
+    ).parseAsync(this.#data)) as DataItemsOut<$$>
 
-    return new Data<$ & { PayloadParsers: $['PayloadParsers'] & Parsers }>(
+    return new Data<$$>(
       data,
       payloadParsers,
       this.#targetingPredicates,
@@ -315,36 +290,31 @@ export default class Data<$ extends DT.Meta> {
       }
     >
   > {
-    type NewTargetingParsers = $['TargetingParsers'] & TT.ParserRecord<TDs>
+    type $$ = $ & {
+      TargetingParsers: $['TargetingParsers'] & TT.ParserRecord<TDs>
+      QueryParsers: $['QueryParsers'] & QT.ParserRecord<TDs>
+    }
 
-    type NewQueryParsers = $['QueryParsers'] & QT.ParserRecord<TDs>
-
-    const targetingParsers: NewTargetingParsers = this.#mergeTargetingParsers(
-      targeting,
-    )
+    const targetingParsers: $$['TargetingParsers'] = this
+      .#mergeTargetingParsers(
+        targeting,
+      )
 
     const targetingPredicates = this.#mergeTargetingPredicates(
       targeting,
-    ) as TargetingPredicates<NewTargetingParsers, NewQueryParsers>
+    ) as TargetingPredicates<$$>
 
-    const queryParsers: NewQueryParsers = this.#mergeQueryPredicates(targeting)
+    const queryParsers: $$['QueryParsers'] = this.#mergeQueryPredicates(
+      targeting,
+    )
 
     const data = await DataItemsParser(
       this.#payloadParsers,
       targetingParsers,
       this.#fallThroughTargetingParsers,
-    ).parseAsync(this.#data) as DataItemsOut<
-      $['PayloadParsers'],
-      NewTargetingParsers,
-      $['FallThroughTargetingParsers']
-    >
+    ).parseAsync(this.#data) as DataItemsOut<$$>
 
-    return new Data<
-      $ & {
-        TargetingParsers: $['TargetingParsers'] & TT.ParserRecord<TDs>
-        QueryParsers: $['QueryParsers'] & QT.ParserRecord<TDs>
-      }
-    >(
+    return new Data<$$>(
       data,
       this.#payloadParsers,
       targetingPredicates,
@@ -395,9 +365,11 @@ export default class Data<$ extends DT.Meta> {
       }
     >
   > {
-    type NewFallThroughTargetingParsers =
-      & $['FallThroughTargetingParsers']
-      & FTTT.ParsersRecord<TDs>
+    type $$ = $ & {
+      FallThroughTargetingParsers:
+        & $['FallThroughTargetingParsers']
+        & FTTT.ParsersRecord<TDs>
+    }
 
     const fallThroughTargetingParsers = this.#mergeFallThroughTargeting(
       targeting,
@@ -407,19 +379,9 @@ export default class Data<$ extends DT.Meta> {
       this.#payloadParsers,
       this.#targetingParsers,
       fallThroughTargetingParsers,
-    ).parseAsync(this.#data)) as DataItemsOut<
-      $['PayloadParsers'],
-      $['TargetingParsers'],
-      NewFallThroughTargetingParsers
-    >
+    ).parseAsync(this.#data)) as DataItemsOut<$$>
 
-    return new Data<
-      $ & {
-        FallThroughTargetingParsers:
-          & $['FallThroughTargetingParsers']
-          & FTTT.ParsersRecord<TDs>
-      }
-    >(
+    return new Data<$$>(
       data,
       this.#payloadParsers,
       this.#targetingPredicates,
