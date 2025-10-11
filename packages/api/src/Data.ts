@@ -117,9 +117,7 @@ export default class Data<$ extends DT.Meta> {
     return this.#fallThroughTargetingParsers
   }
 
-  async usePayload<Parsers extends $ZodShape>(
-    parsers: Parsers,
-  ): Promise<
+  async usePayload<Parsers extends $ZodShape>(parsers: Parsers): Promise<
     Data<$ & { PayloadParsers: $['PayloadParsers'] & Parsers }>
   > {
     type $$ = $ & { PayloadParsers: $['PayloadParsers'] & Parsers }
