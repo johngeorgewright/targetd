@@ -453,11 +453,7 @@ export default class Data<$ extends DT.Meta> {
   async #getVariables<Name extends keyof $['PayloadParsers']>(
     targetableItem: DataItemOut<$, $['PayloadParsers'][Name]>,
     predicate: (
-      rule: DataItemRule<
-        $['PayloadParsers'][Name],
-        $['TargetingParsers'],
-        $['FallThroughTargetingParsers']
-      >,
+      rule: DataItemRule<$, $['PayloadParsers'][Name]>,
     ) => Promise<boolean>,
   ) {
     const variables: Record<string, any> = {}
@@ -498,11 +494,7 @@ export default class Data<$ extends DT.Meta> {
   }
 
   #mapRule<PayloadParser extends $ZodType>(
-    rule: DataItemRule<
-      PayloadParser,
-      $['TargetingParsers'],
-      $['FallThroughTargetingParsers']
-    >,
+    rule: DataItemRule<$, PayloadParser>,
   ): PT.Payload<$, PayloadParser> | undefined {
     return hasPayload(rule)
       ? rule.payload as output<PayloadParser>
@@ -517,11 +509,7 @@ export default class Data<$ extends DT.Meta> {
     const query = await this.#QueryParser.parseAsync(rawQuery)
 
     return (
-      rule: DataItemRule<
-        $['PayloadParsers'][Name],
-        $['TargetingParsers'],
-        $['FallThroughTargetingParsers']
-      >,
+      rule: DataItemRule<$, $['PayloadParsers'][Name]>,
     ) =>
       (
         !('targeting' in rule) ||
