@@ -19,8 +19,6 @@ import {
 import type { VariablesRegistry } from './variablesRegistry.ts'
 import type * as DT from '../types/Data.ts'
 
-type Meta = Pick<DT.Meta, 'TargetingParsers' | 'FallThroughTargetingParsers'>
-
 /**
  * Parses a single item rule.
  *
@@ -91,7 +89,7 @@ type Meta = Pick<DT.Meta, 'TargetingParsers' | 'FallThroughTargetingParsers'>
  * ```
  */
 export function DataItemRuleParser<
-  $ extends Meta,
+  $ extends DT.Meta,
   PayloadParser extends $ZodType,
   VariableRegistry extends Record<string, any>,
   AllowMultipleTargeting extends boolean = true,
@@ -129,7 +127,7 @@ export function DataItemRuleParser<
 }
 
 export type DataItemRuleParser<
-  $ extends Meta,
+  $ extends DT.Meta,
   PayloadParser extends $ZodType,
   AllowMultipleTargeting extends boolean = true,
 > = ZodMiniUnion<
@@ -143,7 +141,7 @@ export type DataItemRuleParser<
  * @see https://github.com/colinhacks/zod/issues/4698
  */
 export type DataItemRule<
-  $ extends Meta,
+  $ extends DT.Meta,
   PayloadParser extends $ZodType,
   AllowMultipleTargeting extends boolean = true,
 > =
@@ -198,7 +196,7 @@ export type RuleWithPayloadParser<
 >
 
 export function RuleWithPayloadParser<
-  $ extends Meta,
+  $ extends DT.Meta,
   PayloadParser extends $ZodType,
   AllowMultipleTargeting extends boolean = true,
 >(
@@ -222,7 +220,7 @@ export function RuleWithPayloadParser<
  * @see https://github.com/colinhacks/zod/issues/4698
  */
 export interface RuleWithPayloadIn<
-  $ extends Meta,
+  $ extends DT.Meta,
   PayloadParser extends $ZodType,
   AllowMultipleTargeting extends boolean = true,
 > {
@@ -253,7 +251,7 @@ export interface RuleWithPayload<
 }
 
 export type RuleWithFallThroughParser<
-  $ extends Meta,
+  $ extends DT.Meta,
   PayloadParser extends $ZodType,
   AllowMultipleTargeting extends boolean = true,
 > = ZodMiniObject<
@@ -278,7 +276,7 @@ export type RuleWithFallThroughParser<
  * @see https://github.com/colinhacks/zod/issues/4698
  */
 export interface RuleWithFallThrough<
-  $ extends Meta,
+  $ extends DT.Meta,
   PayloadParser extends $ZodType,
   AllowMultipleTargeting extends boolean = true,
 > {
@@ -295,7 +293,7 @@ export interface RuleWithFallThrough<
 }
 
 export function RuleWithFallThroughParser<
-  $ extends Meta,
+  $ extends DT.Meta,
   PayloadParser extends $ZodType,
   Variables extends Record<string, any>,
   AllowMultipleTargeting extends boolean = true,

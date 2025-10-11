@@ -12,9 +12,7 @@ import { DataItemRulesParser } from './DataItemRules.ts'
 import type { VariablesRegistry } from './variablesRegistry.ts'
 import type * as DT from '../types/Data.ts'
 
-type Meta = Pick<DT.Meta, 'TargetingParsers' | 'FallThroughTargetingParsers'>
-
-export function DataItemVariablesParser<$ extends Meta>(
+export function DataItemVariablesParser<$ extends DT.Meta>(
   variablesRegistry: VariablesRegistry,
   targeting: $['TargetingParsers'],
   fallThroughTargeting: $['FallThroughTargetingParsers'],
@@ -89,7 +87,7 @@ export function DataItemVariablesParser<$ extends Meta>(
   })
 }
 
-export type DataItemVariablesParser<$ extends Meta> = ZodMiniRecord<
+export type DataItemVariablesParser<$ extends DT.Meta> = ZodMiniRecord<
   ZodMiniString<string>,
   DataItemRulesParser<$, ZodMiniAny>
 >

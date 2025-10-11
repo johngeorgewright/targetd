@@ -58,12 +58,7 @@ export type FallThroughTargetingParsers<D extends Any> = D extends Data<infer $>
   ? $['FallThroughTargetingParsers']
   : never
 
-export type InsertableData<
-  $ extends Pick<
-    Meta,
-    'PayloadParsers' | 'TargetingParsers' | 'FallThroughTargetingParsers'
-  >,
-> = Partial<
+export type InsertableData<$ extends Meta> = Partial<
   {
     [Name in keyof $['PayloadParsers']]:
       | output<$['PayloadParsers'][Name]>

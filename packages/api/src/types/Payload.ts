@@ -3,14 +3,12 @@ import type * as FTTT from './FallThroughTargeting.ts'
 import type * as DT from './Data.ts'
 
 export type Payload<
-  $ extends Pick<DT.Meta, 'FallThroughTargetingParsers'>,
+  $ extends DT.Meta,
   PayloadParser extends $ZodType,
 > =
   | output<PayloadParser>
   | FTTT.Rules<$, PayloadParser>
 
-export type Payloads<
-  $ extends Pick<DT.Meta, 'PayloadParsers' | 'FallThroughTargetingParsers'>,
-> = {
+export type Payloads<$ extends DT.Meta> = {
   [Name in keyof $['PayloadParsers']]?: Payload<$, $['PayloadParsers'][Name]>
 }

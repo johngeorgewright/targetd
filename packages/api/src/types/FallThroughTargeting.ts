@@ -33,7 +33,7 @@ export type ParsersRecord<TDs extends DescriptorRecord> = {
  * The data shape of a set of fallthrough rules
  */
 export type Rules<
-  $ extends Pick<DT.Meta, 'FallThroughTargetingParsers'>,
+  $ extends DT.Meta,
   PayloadParser extends $ZodType,
 > = {
   __rules__: RuleWithPayload<PayloadParser, $['FallThroughTargetingParsers']>[]

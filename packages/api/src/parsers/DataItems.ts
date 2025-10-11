@@ -8,11 +8,6 @@ import {
 import { object, partial, strictObject } from 'zod/mini'
 import type { $strict } from 'zod/v4/core'
 
-type Meta = Pick<
-  DT.Meta,
-  'PayloadParsers' | 'TargetingParsers' | 'FallThroughTargetingParsers'
->
-
 /**
  * Parses all items in a Data class.
  *
@@ -36,7 +31,7 @@ type Meta = Pick<
  * ```
  */
 export function DataItemsParser<
-  $ extends Meta,
+  $ extends DT.Meta,
 >(
   payloadParsers: $['PayloadParsers'],
   targeting: $['TargetingParsers'],
@@ -58,7 +53,7 @@ export function DataItemsParser<
 }
 
 export type DataItemsParser<
-  $ extends Meta,
+  $ extends DT.Meta,
 > = ZodPartialObject<
   {
     [Name in keyof $['PayloadParsers']]: DataItemParser<
@@ -69,11 +64,11 @@ export type DataItemsParser<
   $strict
 >
 
-export type DataItemsIn<$ extends Meta> = {
+export type DataItemsIn<$ extends DT.Meta> = {
   [Name in keyof $['PayloadParsers']]?: DataItemIn<$, $['PayloadParsers'][Name]>
 }
 
-export type DataItemsOut<$ extends Meta> = {
+export type DataItemsOut<$ extends DT.Meta> = {
   [Name in keyof $['PayloadParsers']]?: DataItemOut<
     $,
     $['PayloadParsers'][Name]

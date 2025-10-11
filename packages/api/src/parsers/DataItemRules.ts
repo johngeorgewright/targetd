@@ -24,11 +24,6 @@ import type { ZodPartialInferObject } from '../types.ts'
 import type * as DT from '../types/Data.ts'
 import type { VariablesRegistry } from './variablesRegistry.ts'
 
-type Meta = Pick<
-  DT.Meta,
-  'TargetingParsers' | 'FallThroughTargetingParsers'
->
-
 /**
  * Parses an item's `rules` field.
  *
@@ -64,7 +59,7 @@ type Meta = Pick<
  * ```
  */
 export function DataItemRulesParser<
-  $ extends Meta,
+  $ extends DT.Meta,
   PayloadParser extends $ZodType,
 >(
   variablesRegistry: VariablesRegistry,
@@ -146,7 +141,7 @@ export function DataItemRulesParser<
 }
 
 export type DataItemRulesParser<
-  $ extends Meta,
+  $ extends DT.Meta,
   PayloadParser extends $ZodType,
 > = ZodMiniPipe<
   ZodMiniArray<RuleWithPayloadParser<$, PayloadParser>>,
@@ -157,20 +152,17 @@ export type DataItemRulesParser<
 >
 
 export type DataItemRulesIn<
-  $ extends Meta,
+  $ extends DT.Meta,
   PayloadParser extends $ZodType,
 > = RuleWithPayloadIn<$, PayloadParser>[]
 
 export type DataItemRulesOut<
-  $ extends Pick<
-    DT.Meta,
-    'TargetingParsers' | 'FallThroughTargetingParsers'
-  >,
+  $ extends DT.Meta,
   PayloadParser extends $ZodType,
 > = DataItemRule<$, PayloadParser, false>[]
 
 function spreadMultiTargetsToSeparateRules<
-  $ extends Meta,
+  $ extends DT.Meta,
   PayloadParser extends $ZodType,
 >(rules: RuleWithPayloadIn<$, PayloadParser>[]) {
   return rules.reduce<RuleWithPayloadIn<$, PayloadParser, false>[]>(
@@ -193,8 +185,8 @@ function spreadMultiTargetsToSeparateRules<
 
 function canRulesCombine(
   targetingParsers: $ZodShape,
-  a: DataItemRule<Meta, $ZodType, false>,
-  b: DataItemRule<Meta, $ZodType, false>,
+  a: DataItemRule<DT.Meta, $ZodType, false>,
+  b: DataItemRule<DT.Meta, $ZodType, false>,
 ) {
   const aTargeting = a.targeting
     ? intersection(a.targeting, targetingParsers)
@@ -217,7 +209,7 @@ function canRulesCombine(
 }
 
 function adaptRule<
-  $ extends Meta,
+  $ extends DT.Meta,
   PayloadParser extends $ZodType,
 >(
   targetingParsers: $['TargetingParsers'],
@@ -236,7 +228,7 @@ function adaptRule<
 }
 
 function adaptRuleIntoFallThroughRule<
-  $ extends Meta,
+  $ extends DT.Meta,
   PayloadParser extends $ZodType,
 >(
   targetingParsers: $['TargetingParsers'],

@@ -15,11 +15,6 @@ import { DataItemVariablesParser } from './DataItemVariablesParser.ts'
 import { variablesFor } from './variablesRegistry.ts'
 import type * as DT from '../types/Data.ts'
 
-type Meta = Pick<
-  DT.Meta,
-  'TargetingParsers' | 'FallThroughTargetingParsers'
->
-
 /**
  * Parses an "item".
  *
@@ -30,7 +25,7 @@ type Meta = Pick<
  * Currently this is just restricted to `rules`.
  */
 export function DataItemParser<
-  $ extends Meta,
+  $ extends DT.Meta,
   PayloadParser extends $ZodType,
 >(
   Payload: PayloadParser,
@@ -60,7 +55,7 @@ export function DataItemParser<
 }
 
 export type DataItemParser<
-  $ extends Meta,
+  $ extends DT.Meta,
   PayloadParser extends $ZodType,
 > = ZodMiniObject<
   {
@@ -74,7 +69,7 @@ export type DataItemParser<
  * The data shape expected for {@link DataItemParser} inputs.
  */
 export interface DataItemIn<
-  $ extends Meta,
+  $ extends DT.Meta,
   PayloadParser extends $ZodType,
 > {
   rules: DataItemRulesIn<$, PayloadParser>
@@ -88,7 +83,7 @@ export interface DataItemIn<
  * The data shape expected for {@link DataItemParser} outputs.
  */
 export interface DataItemOut<
-  $ extends Meta,
+  $ extends DT.Meta,
   PayloadParser extends $ZodType,
 > {
   rules: DataItemRulesOut<$, PayloadParser>
