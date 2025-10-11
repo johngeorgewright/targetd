@@ -57,42 +57,40 @@ import { resolveVariables } from './parsers/DataItemVariableResolver.ts'
  * )
  * ```
  */
-export default class Data<
-  PayloadParsers extends $ZodShape,
-  TargetingParsers extends $ZodShape,
-  QueryParsers extends $ZodShape,
-  FallThroughTargetingParsers extends $ZodShape,
-> {
-  readonly #fallThroughTargetingParsers: FallThroughTargetingParsers
+export default class Data<$ extends DT.Meta> {
+  readonly #fallThroughTargetingParsers: $['FallThroughTargetingParsers']
   readonly #data: DataItemsOut<
-    PayloadParsers,
-    TargetingParsers,
-    FallThroughTargetingParsers
+    $['PayloadParsers'],
+    $['TargetingParsers'],
+    $['FallThroughTargetingParsers']
   >
-  readonly #payloadParsers: PayloadParsers
+  readonly #payloadParsers: $['PayloadParsers']
   readonly #targetingPredicates: TargetingPredicates<
-    TargetingParsers,
-    QueryParsers
+    $['TargetingParsers'],
+    $['QueryParsers']
   >
-  readonly #targetingParsers: TargetingParsers
-  readonly #queryParsers: QueryParsers
-  readonly #QueryParser: ZodPartialObject<QueryParsers>
+  readonly #targetingParsers: $['TargetingParsers']
+  readonly #queryParsers: $['QueryParsers']
+  readonly #QueryParser: ZodPartialObject<$['QueryParsers']>
 
-  static create(): PromisedData<{}, {}, {}, {}> {
-    return PromisedData.create<{}, {}, {}, {}>(new Data({}, {}, {}, {}, {}, {}))
+  static create(): PromisedData<DT.EmptyMeta> {
+    return PromisedData.create(new Data({}, {}, {}, {}, {}, {}))
   }
 
   private constructor(
     data: DataItemsOut<
-      PayloadParsers,
-      TargetingParsers,
-      FallThroughTargetingParsers
+      $['PayloadParsers'],
+      $['TargetingParsers'],
+      $['FallThroughTargetingParsers']
     >,
-    payloadParsers: PayloadParsers,
-    targetingPredicates: TargetingPredicates<TargetingParsers, QueryParsers>,
-    targetingParsers: TargetingParsers,
-    queryParsers: QueryParsers,
-    fallThroughTargetingParsers: FallThroughTargetingParsers,
+    payloadParsers: $['PayloadParsers'],
+    targetingPredicates: TargetingPredicates<
+      $['TargetingParsers'],
+      $['QueryParsers']
+    >,
+    targetingParsers: $['TargetingParsers'],
+    queryParsers: $['QueryParsers'],
+    fallThroughTargetingParsers: $['FallThroughTargetingParsers'],
   ) {
     this.#fallThroughTargetingParsers = Object.freeze(
       fallThroughTargetingParsers,
@@ -106,51 +104,46 @@ export default class Data<
   }
 
   get data(): DataItemsOut<
-    PayloadParsers,
-    TargetingParsers,
-    FallThroughTargetingParsers
+    $['PayloadParsers'],
+    $['TargetingParsers'],
+    $['FallThroughTargetingParsers']
   > {
     return this.#data
   }
 
-  get payloadParsers(): PayloadParsers {
+  get payloadParsers(): $['PayloadParsers'] {
     return this.#payloadParsers
   }
 
   get targetingPredicates(): TargetingPredicates<
-    TargetingParsers,
-    QueryParsers
+    $['TargetingParsers'],
+    $['QueryParsers']
   > {
     return this.#targetingPredicates
   }
 
-  get targetingParsers(): TargetingParsers {
+  get targetingParsers(): $['TargetingParsers'] {
     return this.#targetingParsers
   }
 
-  get queryParsers(): QueryParsers {
+  get queryParsers(): $['QueryParsers'] {
     return this.#queryParsers
   }
 
-  get QueryParser(): ZodPartialObject<QueryParsers, $strict> {
+  get QueryParser(): ZodPartialObject<$['QueryParsers'], $strict> {
     return this.#QueryParser
   }
 
-  get fallThroughTargetingParsers(): FallThroughTargetingParsers {
+  get fallThroughTargetingParsers(): $['FallThroughTargetingParsers'] {
     return this.#fallThroughTargetingParsers
   }
 
   async usePayload<Parsers extends $ZodShape>(
     parsers: Parsers,
   ): Promise<
-    Data<
-      PayloadParsers & Parsers,
-      TargetingParsers,
-      QueryParsers,
-      FallThroughTargetingParsers
-    >
+    Data<$ & { PayloadParsers: $['PayloadParsers'] & Parsers }>
   > {
-    type NewPayloadParsers = PayloadParsers & Parsers
+    type NewPayloadParsers = $['PayloadParsers'] & Parsers
 
     const payloadParsers = this.#mergePayloadParsers(parsers)
 
@@ -160,16 +153,11 @@ export default class Data<
       this.#fallThroughTargetingParsers,
     ).parseAsync(this.#data)) as DataItemsOut<
       NewPayloadParsers,
-      TargetingParsers,
-      FallThroughTargetingParsers
+      $['TargetingParsers'],
+      $['FallThroughTargetingParsers']
     >
 
-    return new Data<
-      NewPayloadParsers,
-      TargetingParsers,
-      QueryParsers,
-      FallThroughTargetingParsers
-    >(
+    return new Data<$ & { PayloadParsers: $['PayloadParsers'] & Parsers }>(
       data,
       payloadParsers,
       this.#targetingPredicates,
@@ -181,7 +169,7 @@ export default class Data<
 
   #mergePayloadParsers<Parsers extends $ZodShape>(
     parsers: Parsers,
-  ): PayloadParsers & Parsers {
+  ): $['PayloadParsers'] & Parsers {
     return {
       ...this.#payloadParsers,
       ...parsers,
@@ -190,18 +178,11 @@ export default class Data<
 
   async insert(
     data: DT.InsertableData<
-      PayloadParsers,
-      TargetingParsers,
-      FallThroughTargetingParsers
+      $['PayloadParsers'],
+      $['TargetingParsers'],
+      $['FallThroughTargetingParsers']
     >,
-  ): Promise<
-    Data<
-      PayloadParsers,
-      TargetingParsers,
-      QueryParsers,
-      FallThroughTargetingParsers
-    >
-  > {
+  ): Promise<Data<$>> {
     const newData = {
       ...this.#data,
       ...(await DataItemsParser(
@@ -248,39 +229,34 @@ export default class Data<
     )
   }
 
-  readonly #isFallThroughRulesPayload = <Name extends keyof PayloadParsers>(
+  readonly #isFallThroughRulesPayload = <
+    Name extends keyof $['PayloadParsers'],
+  >(
     payload: PT.Payload<
-      PayloadParsers[Name],
-      TargetingParsers | FallThroughTargetingParsers
+      $['PayloadParsers'][Name],
+      $['TargetingParsers'] | $['FallThroughTargetingParsers']
     >,
   ): payload is FTTT.Rules<
-    PayloadParsers[Name],
-    TargetingParsers | FallThroughTargetingParsers
+    $['PayloadParsers'][Name],
+    $['TargetingParsers'] | $['FallThroughTargetingParsers']
   > => typeof payload === 'object' && payload !== null && '__rules__' in payload
 
   async addRules<
-    Name extends keyof PayloadParsers,
+    Name extends keyof $['PayloadParsers'],
   >(
     name: Name,
     opts:
       | DataItemIn<
-        PayloadParsers[Name],
-        TargetingParsers,
-        FallThroughTargetingParsers
+        $['PayloadParsers'][Name],
+        $['TargetingParsers'],
+        $['FallThroughTargetingParsers']
       >
       | DataItemRulesIn<
-        PayloadParsers[Name],
-        TargetingParsers,
-        FallThroughTargetingParsers
+        $['PayloadParsers'][Name],
+        $['TargetingParsers'],
+        $['FallThroughTargetingParsers']
       >,
-  ): Promise<
-    Data<
-      PayloadParsers,
-      TargetingParsers,
-      QueryParsers,
-      FallThroughTargetingParsers
-    >
-  > {
+  ): Promise<Data<$>> {
     const dataItem = this.#data[name] ||
       {
         rules: [],
@@ -318,12 +294,7 @@ export default class Data<
     )
   }
 
-  removeAllRules(): Data<
-    PayloadParsers,
-    TargetingParsers,
-    QueryParsers,
-    FallThroughTargetingParsers
-  > {
+  removeAllRules(): Data<$> {
     return new Data(
       {} as any,
       this.#payloadParsers,
@@ -338,15 +309,15 @@ export default class Data<
     targeting: TDs,
   ): Promise<
     Data<
-      PayloadParsers,
-      TargetingParsers & TT.ParserRecord<TDs>,
-      QueryParsers & QT.ParserRecord<TDs>,
-      FallThroughTargetingParsers
+      $ & {
+        TargetingParsers: $['TargetingParsers'] & TT.ParserRecord<TDs>
+        QueryParsers: $['QueryParsers'] & QT.ParserRecord<TDs>
+      }
     >
   > {
-    type NewTargetingParsers = TargetingParsers & TT.ParserRecord<TDs>
+    type NewTargetingParsers = $['TargetingParsers'] & TT.ParserRecord<TDs>
 
-    type NewQueryParsers = QueryParsers & QT.ParserRecord<TDs>
+    type NewQueryParsers = $['QueryParsers'] & QT.ParserRecord<TDs>
 
     const targetingParsers: NewTargetingParsers = this.#mergeTargetingParsers(
       targeting,
@@ -363,16 +334,16 @@ export default class Data<
       targetingParsers,
       this.#fallThroughTargetingParsers,
     ).parseAsync(this.#data) as DataItemsOut<
-      PayloadParsers,
+      $['PayloadParsers'],
       NewTargetingParsers,
-      FallThroughTargetingParsers
+      $['FallThroughTargetingParsers']
     >
 
     return new Data<
-      PayloadParsers,
-      NewTargetingParsers,
-      NewQueryParsers,
-      FallThroughTargetingParsers
+      $ & {
+        TargetingParsers: $['TargetingParsers'] & TT.ParserRecord<TDs>
+        QueryParsers: $['QueryParsers'] & QT.ParserRecord<TDs>
+      }
     >(
       data,
       this.#payloadParsers,
@@ -385,7 +356,7 @@ export default class Data<
 
   #mergeTargetingParsers<TDs extends TT.DescriptorRecord>(
     targeting: TDs,
-  ): TargetingParsers & TT.ParserRecord<TDs> {
+  ): $['TargetingParsers'] & TT.ParserRecord<TDs> {
     return {
       ...this.targetingParsers,
       ...objectMap(targeting, ({ targetingParser }) => targetingParser),
@@ -406,7 +377,7 @@ export default class Data<
 
   #mergeQueryPredicates<TDs extends TT.DescriptorRecord>(
     targeting: TDs,
-  ): QueryParsers & QT.ParserRecord<TDs> {
+  ): $['QueryParsers'] & QT.ParserRecord<TDs> {
     return {
       ...this.#queryParsers,
       ...objectMap(targeting, ({ queryParser }) => queryParser),
@@ -417,14 +388,15 @@ export default class Data<
     targeting: TDs,
   ): Promise<
     Data<
-      PayloadParsers,
-      TargetingParsers,
-      QueryParsers,
-      FallThroughTargetingParsers & FTTT.ParsersRecord<TDs>
+      $ & {
+        FallThroughTargetingParsers:
+          & $['FallThroughTargetingParsers']
+          & FTTT.ParsersRecord<TDs>
+      }
     >
   > {
     type NewFallThroughTargetingParsers =
-      & FallThroughTargetingParsers
+      & $['FallThroughTargetingParsers']
       & FTTT.ParsersRecord<TDs>
 
     const fallThroughTargetingParsers = this.#mergeFallThroughTargeting(
@@ -436,16 +408,17 @@ export default class Data<
       this.#targetingParsers,
       fallThroughTargetingParsers,
     ).parseAsync(this.#data)) as DataItemsOut<
-      PayloadParsers,
-      TargetingParsers,
+      $['PayloadParsers'],
+      $['TargetingParsers'],
       NewFallThroughTargetingParsers
     >
 
     return new Data<
-      PayloadParsers,
-      TargetingParsers,
-      QueryParsers,
-      NewFallThroughTargetingParsers
+      $ & {
+        FallThroughTargetingParsers:
+          & $['FallThroughTargetingParsers']
+          & FTTT.ParsersRecord<TDs>
+      }
     >(
       data,
       this.#payloadParsers,
@@ -458,7 +431,7 @@ export default class Data<
 
   #mergeFallThroughTargeting<TDs extends FTTT.DescriptorRecord>(
     targeting: TDs,
-  ): FallThroughTargetingParsers & FTTT.ParsersRecord<TDs> {
+  ): $['FallThroughTargetingParsers'] & FTTT.ParsersRecord<TDs> {
     return {
       ...this.#fallThroughTargetingParsers,
       ...objectMap(
@@ -472,13 +445,13 @@ export default class Data<
   }
 
   async getPayloadForEachName(
-    rawQuery: QT.Raw<QueryParsers> = {},
+    rawQuery: QT.Raw<$['QueryParsers']> = {},
   ): Promise<
-    PT.Payloads<PayloadParsers, FallThroughTargetingParsers>
+    PT.Payloads<$['PayloadParsers'], $['FallThroughTargetingParsers']>
   > {
     const payloads = {} as PT.Payloads<
-      PayloadParsers,
-      FallThroughTargetingParsers
+      $['PayloadParsers'],
+      $['FallThroughTargetingParsers']
     >
 
     await Promise.all(
@@ -490,16 +463,17 @@ export default class Data<
     return payloads
   }
 
-  async getPayload<Name extends keyof PayloadParsers>(
+  async getPayload<Name extends keyof $['PayloadParsers']>(
     name: Name,
-    rawQuery: QT.Raw<QueryParsers> = {},
+    rawQuery: QT.Raw<$['QueryParsers']> = {},
   ): Promise<
-    PT.Payload<PayloadParsers[Name], FallThroughTargetingParsers> | undefined
+    | PT.Payload<$['PayloadParsers'][Name], $['FallThroughTargetingParsers']>
+    | undefined
   > {
     const predicate = await this.#createRulePredicate(rawQuery)
     const targetableItem = this.#getTargetableItem(name)
     let payload:
-      | PT.Payload<PayloadParsers[Name], FallThroughTargetingParsers>
+      | PT.Payload<$['PayloadParsers'][Name], $['FallThroughTargetingParsers']>
       | undefined
 
     for (const rule of targetableItem.rules) {
@@ -538,17 +512,17 @@ export default class Data<
       : resolvedPayload
   }
 
-  async #getVariables<Name extends keyof PayloadParsers>(
+  async #getVariables<Name extends keyof $['PayloadParsers']>(
     targetableItem: DataItemOut<
-      PayloadParsers[Name],
-      TargetingParsers,
-      FallThroughTargetingParsers
+      $['PayloadParsers'][Name],
+      $['TargetingParsers'],
+      $['FallThroughTargetingParsers']
     >,
     predicate: (
       rule: DataItemRule<
-        PayloadParsers[Name],
-        TargetingParsers,
-        FallThroughTargetingParsers
+        $['PayloadParsers'][Name],
+        $['TargetingParsers'],
+        $['FallThroughTargetingParsers']
       >,
     ) => Promise<boolean>,
   ) {
@@ -568,13 +542,15 @@ export default class Data<
     return variables
   }
 
-  async getPayloads<Name extends keyof PayloadParsers>(
+  async getPayloads<Name extends keyof $['PayloadParsers']>(
     name: Name,
-    rawQuery: QT.Raw<QueryParsers> = {},
-  ): Promise<PT.Payload<PayloadParsers[Name], FallThroughTargetingParsers>[]> {
+    rawQuery: QT.Raw<$['QueryParsers']> = {},
+  ): Promise<
+    PT.Payload<$['PayloadParsers'][Name], $['FallThroughTargetingParsers']>[]
+  > {
     const payloads: PT.Payload<
-      PayloadParsers[Name],
-      FallThroughTargetingParsers
+      $['PayloadParsers'][Name],
+      $['FallThroughTargetingParsers']
     >[] = []
     const predicate = await this.#createRulePredicate(rawQuery)
     const targetableItem = this.#getTargetableItem(name)
@@ -593,30 +569,30 @@ export default class Data<
   #mapRule<PayloadParser extends $ZodType>(
     rule: DataItemRule<
       PayloadParser,
-      TargetingParsers,
-      FallThroughTargetingParsers
+      $['TargetingParsers'],
+      $['FallThroughTargetingParsers']
     >,
-  ): PT.Payload<PayloadParser, FallThroughTargetingParsers> | undefined {
+  ): PT.Payload<PayloadParser, $['FallThroughTargetingParsers']> | undefined {
     return hasPayload(rule)
       ? rule.payload as output<PayloadParser>
       : 'fallThrough' in rule
       ? { __rules__: rule.fallThrough } as FTTT.Rules<
         PayloadParser,
-        FallThroughTargetingParsers
+        $['FallThroughTargetingParsers']
       >
       : undefined
   }
 
-  async #createRulePredicate<Name extends keyof PayloadParsers>(
-    rawQuery: QT.Raw<QueryParsers>,
+  async #createRulePredicate<Name extends keyof $['PayloadParsers']>(
+    rawQuery: QT.Raw<$['QueryParsers']>,
   ) {
     const query = await this.#QueryParser.parseAsync(rawQuery)
 
     return (
       rule: DataItemRule<
-        PayloadParsers[Name],
-        TargetingParsers,
-        FallThroughTargetingParsers
+        $['PayloadParsers'][Name],
+        $['TargetingParsers'],
+        $['FallThroughTargetingParsers']
       >,
     ) =>
       (
@@ -641,14 +617,14 @@ export default class Data<
       ) as Promise<boolean>
   }
 
-  #getTargetableItem<Name extends keyof PayloadParsers>(name: Name) {
+  #getTargetableItem<Name extends keyof $['PayloadParsers']>(name: Name) {
     return (
       (
         this.#data as unknown as {
-          [Name in keyof PayloadParsers]: DataItemOut<
-            PayloadParsers[Name],
-            TargetingParsers,
-            FallThroughTargetingParsers
+          [Name in keyof $['PayloadParsers']]: DataItemOut<
+            $['PayloadParsers'][Name],
+            $['TargetingParsers'],
+            $['FallThroughTargetingParsers']
           >
         }
       )[name] ?? { rules: [], variables: {} }
@@ -657,12 +633,16 @@ export default class Data<
 
   async #targetingPredicate(
     query: $InferObjectOutput<
-      { [K in keyof QueryParsers]: $ZodOptional<QueryParsers[K]> },
+      { [K in keyof $['QueryParsers']]: $ZodOptional<$['QueryParsers'][K]> },
       {}
     >,
     targeting: MaybeArray<
       $InferObjectOutput<
-        { [K in keyof TargetingParsers]: $ZodOptional<TargetingParsers[K]> },
+        {
+          [K in keyof $['TargetingParsers']]: $ZodOptional<
+            $['TargetingParsers'][K]
+          >
+        },
         {}
       >
     >,

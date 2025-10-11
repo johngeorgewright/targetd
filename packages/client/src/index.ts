@@ -1,34 +1,18 @@
 import type { Data, DT, PT, StaticRecord } from '@targetd/api'
-import type { $ZodShape } from 'zod/v4/core'
 import { queryToURLSearchParams } from './queryToURLSearchParams.ts'
 import { ZodError } from 'zod'
 import { ResponseError } from './ResponseError.ts'
 
-export class Client<
-  PayloadParsers extends $ZodShape,
-  TargetingParsers extends $ZodShape,
-  QueryParsers extends $ZodShape,
-  FallThroughTargetingParsers extends $ZodShape,
-> {
+export class Client<$ extends DT.Meta> {
   #baseURL: string
 
-  #data: Data<
-    PayloadParsers,
-    TargetingParsers,
-    QueryParsers,
-    FallThroughTargetingParsers
-  >
+  #data: Data<$>
 
   #init?: RequestInit
 
   constructor(
     baseURL: string,
-    data: Data<
-      PayloadParsers,
-      TargetingParsers,
-      QueryParsers,
-      FallThroughTargetingParsers
-    >,
+    data: Data<$>,
     init?: RequestInit,
   ) {
     this.#baseURL = baseURL
@@ -36,11 +20,12 @@ export class Client<
     this.#init = init
   }
 
-  async getPayload<Name extends keyof PayloadParsers>(
+  async getPayload<Name extends keyof $['PayloadParsers']>(
     name: Name,
-    rawQuery: Partial<StaticRecord<QueryParsers>> = {},
+    rawQuery: Partial<StaticRecord<$['QueryParsers']>> = {},
   ): Promise<
-    PT.Payload<PayloadParsers[Name], FallThroughTargetingParsers> | void
+    | PT.Payload<$['PayloadParsers'][Name], $['FallThroughTargetingParsers']>
+    | void
   > {
     const query = this.#data.QueryParser.parse(rawQuery)
     const urlSearchParams = queryToURLSearchParams(query)
@@ -78,12 +63,15 @@ export class Client<
   }
 
   async getPayloadForEachName(
-    rawQuery: Partial<StaticRecord<QueryParsers>> = {},
+    rawQuery: Partial<StaticRecord<$['QueryParsers']>> = {},
   ): Promise<
     Partial<
       {
-        [Name in keyof PayloadParsers]:
-          | PT.Payload<PayloadParsers[Name], FallThroughTargetingParsers>
+        [Name in keyof $['PayloadParsers']]:
+          | PT.Payload<
+            $['PayloadParsers'][Name],
+            $['FallThroughTargetingParsers']
+          >
           | undefined
       }
     >
@@ -99,11 +87,4 @@ export class Client<
   }
 }
 
-export type ClientWithData<
-  D extends DT.Any,
-> = Client<
-  DT.PayloadParsers<D>,
-  DT.TargetingParsers<D>,
-  DT.QueryParsers<D>,
-  DT.FallThroughTargetingParsers<D>
->
+export type ClientWithData<D extends DT.Any> = Client<DT.$<D>>
