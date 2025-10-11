@@ -1,8 +1,9 @@
 import type TargetingDescriptor from '../parsers/TargetingDescriptor.ts'
 import type * as TT from './Targeting.ts'
 import type { RuleWithPayload } from '../parsers/DataItemRule.ts'
-import type { $ZodShape, $ZodType } from 'zod/v4/core'
+import type { $ZodType } from 'zod/v4/core'
 import type { DataItemRulesOut } from '../parsers/DataItemRules.ts'
+import type * as DT from './Data.ts'
 import type { ZodMiniAny } from 'zod/mini'
 
 /**
@@ -31,10 +32,16 @@ export type ParsersRecord<TDs extends DescriptorRecord> = {
 /**
  * The data shape of a set of fallthrough rules
  */
-export type Rules<P extends $ZodType, T extends $ZodShape> = {
-  __rules__: RuleWithPayload<P, T>[]
+export type Rules<
+  $ extends DT.Meta,
+  PayloadParser extends $ZodType,
+> = {
+  __rules__: RuleWithPayload<PayloadParser, $['FallThroughTargetingParsers']>[]
   __variables__?: Record<
     string,
-    DataItemRulesOut<ZodMiniAny, T, T>
+    DataItemRulesOut<
+      $ & { TargetingParsers: $['FallThroughTargetingParsers'] },
+      ZodMiniAny
+    >
   >
 }

@@ -5,7 +5,7 @@ import {
   type ZodMiniDefault,
   type ZodMiniObject,
 } from 'zod/mini'
-import type { $strict, $ZodShape, $ZodType } from 'zod/v4/core'
+import type { $strict, $ZodType } from 'zod/v4/core'
 import {
   type DataItemRulesIn,
   type DataItemRulesOut,
@@ -13,6 +13,7 @@ import {
 } from './DataItemRules.ts'
 import { DataItemVariablesParser } from './DataItemVariablesParser.ts'
 import { variablesFor } from './variablesRegistry.ts'
+import type * as DT from '../types/Data.ts'
 
 /**
  * Parses an "item".
@@ -24,15 +25,14 @@ import { variablesFor } from './variablesRegistry.ts'
  * Currently this is just restricted to `rules`.
  */
 export function DataItemParser<
-  P extends $ZodType,
-  T extends $ZodShape,
-  FTT extends $ZodShape,
+  $ extends DT.Meta,
+  PayloadParser extends $ZodType,
 >(
-  Payload: P,
-  targeting: T,
-  fallThroughTargeting: FTT,
+  Payload: PayloadParser,
+  targeting: $['TargetingParsers'],
+  fallThroughTargeting: $['FallThroughTargetingParsers'],
   strictTargeting: boolean,
-): DataItemParser<P, T, FTT> {
+): DataItemParser<$, PayloadParser> {
   const variablesRegistry = variablesFor(Payload)
   return strictObject({
     rules: DataItemRulesParser(
@@ -55,19 +55,12 @@ export function DataItemParser<
 }
 
 export type DataItemParser<
-  Payload extends $ZodType,
-  Targeting extends $ZodShape,
-  FallThroughTargeting extends $ZodShape,
+  $ extends DT.Meta,
+  PayloadParser extends $ZodType,
 > = ZodMiniObject<
   {
-    rules: DataItemRulesParser<
-      Payload,
-      Targeting,
-      FallThroughTargeting
-    >
-    variables: ZodMiniDefault<
-      DataItemVariablesParser<Targeting, FallThroughTargeting>
-    >
+    rules: DataItemRulesParser<$, PayloadParser>
+    variables: ZodMiniDefault<DataItemVariablesParser<$>>
   },
   $strict
 >
@@ -76,14 +69,13 @@ export type DataItemParser<
  * The data shape expected for {@link DataItemParser} inputs.
  */
 export interface DataItemIn<
-  Payload extends $ZodType,
-  Targeting extends $ZodShape,
-  FallThroughTargeting extends $ZodShape,
+  $ extends DT.Meta,
+  PayloadParser extends $ZodType,
 > {
-  rules: DataItemRulesIn<Payload, Targeting, FallThroughTargeting>
+  rules: DataItemRulesIn<$, PayloadParser>
   variables?: Record<
     string,
-    DataItemRulesIn<ZodMiniAny, Targeting, FallThroughTargeting>
+    DataItemRulesIn<$, ZodMiniAny>
   >
 }
 
@@ -91,13 +83,12 @@ export interface DataItemIn<
  * The data shape expected for {@link DataItemParser} outputs.
  */
 export interface DataItemOut<
-  Payload extends $ZodType,
-  Targeting extends $ZodShape,
-  FallThroughTargeting extends $ZodShape,
+  $ extends DT.Meta,
+  PayloadParser extends $ZodType,
 > {
-  rules: DataItemRulesOut<Payload, Targeting, FallThroughTargeting>
+  rules: DataItemRulesOut<$, PayloadParser>
   variables: Record<
     string,
-    DataItemRulesOut<ZodMiniAny, Targeting, FallThroughTargeting>
+    DataItemRulesOut<$, ZodMiniAny>
   >
 }

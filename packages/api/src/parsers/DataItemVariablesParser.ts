@@ -1,4 +1,4 @@
-import type { $ZodShape, $ZodType } from 'zod/v4/core'
+import type { $ZodType } from 'zod/v4/core'
 import {
   any,
   record,
@@ -10,16 +10,14 @@ import {
 } from 'zod/mini'
 import { DataItemRulesParser } from './DataItemRules.ts'
 import type { VariablesRegistry } from './variablesRegistry.ts'
+import type * as DT from '../types/Data.ts'
 
-export function DataItemVariablesParser<
-  T extends $ZodShape,
-  FTT extends $ZodShape,
->(
+export function DataItemVariablesParser<$ extends DT.Meta>(
   variablesRegistry: VariablesRegistry,
-  targeting: T,
-  fallThroughTargeting: FTT,
+  targeting: $['TargetingParsers'],
+  fallThroughTargeting: $['FallThroughTargetingParsers'],
   strictTargeting: boolean,
-): DataItemVariablesParser<T, FTT> {
+): DataItemVariablesParser<$> {
   return record(
     string(),
     DataItemRulesParser(
@@ -89,10 +87,7 @@ export function DataItemVariablesParser<
   })
 }
 
-export type DataItemVariablesParser<
-  Targeting extends $ZodShape,
-  FallThroughTargeting extends $ZodShape,
-> = ZodMiniRecord<
+export type DataItemVariablesParser<$ extends DT.Meta> = ZodMiniRecord<
   ZodMiniString<string>,
-  DataItemRulesParser<ZodMiniAny, Targeting, FallThroughTargeting>
+  DataItemRulesParser<$, ZodMiniAny>
 >
