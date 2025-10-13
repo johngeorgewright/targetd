@@ -8,8 +8,10 @@ import type * as QT from './types/Query.ts'
 import type { DataItemRulesIn } from './parsers/DataItemRules.ts'
 import type { MaybePromise } from './types.ts'
 import type { DataItemIn } from './parsers/DataItem.ts'
+import type { IData } from './IData.ts'
 
-export class PromisedData<$ extends DT.Meta> extends Promise<Data<$>> {
+export class PromisedData<$ extends DT.Meta> extends Promise<Data<$>>
+  implements IData<$> {
   constructor(
     executor: (
       resolve: (value: MaybePromise<Data<$>>) => void,
@@ -19,9 +21,9 @@ export class PromisedData<$ extends DT.Meta> extends Promise<Data<$>> {
     super(executor)
   }
 
-  static create(
-    promisedData: MaybePromise<Data<DT.EmptyMeta>>,
-  ): PromisedData<DT.Meta> {
+  static create<$ extends DT.Meta>(
+    promisedData: MaybePromise<Data<$>>,
+  ): PromisedData<$> {
     return new PromisedData((resolve) => resolve(promisedData))
   }
 
@@ -78,7 +80,7 @@ export class PromisedData<$ extends DT.Meta> extends Promise<Data<$>> {
   }
 
   async getPayloadForEachName(
-    rawQuery: QT.Raw<$['QueryParsers']> = {},
+    rawQuery?: QT.Raw<$['QueryParsers']>,
   ): Promise<
     PT.Payloads<$>
   > {
@@ -88,13 +90,21 @@ export class PromisedData<$ extends DT.Meta> extends Promise<Data<$>> {
 
   async getPayload<Name extends keyof $['PayloadParsers']>(
     name: Name,
-    rawQuery: QT.Raw<$['QueryParsers']> = {},
+    rawQuery?: QT.Raw<$['QueryParsers']>,
   ): Promise<
     | PT.Payload<$, $['PayloadParsers'][Name]>
     | undefined
   > {
     const data = await this
     return data.getPayload(name, rawQuery)
+  }
+
+  async getPayloads<Name extends keyof $['PayloadParsers']>(
+    name: Name,
+    rawQuery?: QT.Raw<$['QueryParsers']>,
+  ) {
+    const data = await this
+    return data.getPayloads(name, rawQuery)
   }
 
   removeAllRules(): Promise<Data<$>> {

@@ -28,6 +28,7 @@ import {
 import { partial, strictObject } from 'zod/mini'
 import { PromisedData } from './PromisedData.ts'
 import { resolveVariables } from './parsers/DataItemVariableResolver.ts'
+import type { IData } from './IData.ts'
 
 /**
  * In-memory data store.
@@ -57,7 +58,7 @@ import { resolveVariables } from './parsers/DataItemVariableResolver.ts'
  * )
  * ```
  */
-export default class Data<$ extends DT.Meta> {
+export default class Data<$ extends DT.Meta> implements IData<$> {
   readonly #fallThroughTargetingParsers: $['FallThroughTargetingParsers']
   readonly #data: DataItemsOut<$>
   readonly #payloadParsers: $['PayloadParsers']
@@ -70,6 +71,9 @@ export default class Data<$ extends DT.Meta> {
     return PromisedData.create(new Data({}, {}, {}, {}, {}, {}))
   }
 
+  /**
+   * @see {@link Data.create}
+   */
   private constructor(
     data: DataItemsOut<$>,
     payloadParsers: $['PayloadParsers'],
