@@ -259,9 +259,7 @@ export default class Data<$ extends DT.Meta> {
     )
   }
 
-  async useTargeting<TDs extends TT.DescriptorRecord>(
-    targeting: TDs,
-  ): Promise<
+  async useTargeting<TDs extends TT.DescriptorRecord>(targeting: TDs): Promise<
     Data<
       $ & {
         TargetingParsers: $['TargetingParsers'] & TT.ParserRecord<TDs>
