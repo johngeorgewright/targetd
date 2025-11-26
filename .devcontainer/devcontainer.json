@@ -8,7 +8,8 @@
   "customizations": {
     "vscode": {
       "extensions": [
-        "denoland.vscode-deno"
+        "denoland.vscode-deno",
+        "github.vscode-github-actions"
       ]
     }
   }
