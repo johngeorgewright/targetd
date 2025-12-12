@@ -18,7 +18,7 @@ jobs:
     permissions:
       id-token: write
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           token: ${{ secrets.PUSH_TOKEN }}
 
@@ -26,7 +26,7 @@ jobs:
         with:
           deno-version-file: .dvmrc
 
-      - uses: actions/setup-node@v5
+      - uses: actions/setup-node@v6
         with:
           node-version: 24
 
@@ -43,4 +43,4 @@ jobs:
             npm install --dev semantic-release semantic-release-monorepo @semantic-release/exec @semantic-release/git
             npx semantic-release
             sleep 3
-          done 
+          done
