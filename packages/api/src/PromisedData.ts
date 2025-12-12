@@ -102,7 +102,9 @@ export class PromisedData<$ extends DT.Meta> extends Promise<Data<$>>
   async getPayloads<Name extends keyof $['PayloadParsers']>(
     name: Name,
     rawQuery?: QT.Raw<$['QueryParsers']>,
-  ) {
+  ): Promise<
+    PT.Payload<$, $['PayloadParsers'][Name]>[]
+  > {
     const data = await this
     return data.getPayloads(name, rawQuery)
   }
