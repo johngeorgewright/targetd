@@ -1,7 +1,19 @@
 import type { RequestHandler } from 'express'
 import type { ParsedQs as $ParsedQs } from 'qs'
 
-export function castQueryProp(): RequestHandler {
+export function castQueryProp<
+  P extends Record<string, string>,
+  ResBody,
+  ReqBody,
+  ReqQuery extends $ParsedQs,
+  Locals extends Record<string, any>,
+>(): RequestHandler<
+  P,
+  ResBody,
+  ReqBody,
+  ReqQuery,
+  Locals & { query: ParsedQs }
+> {
   return function (req, res, next) {
     res.locals.query = parseObject(req.query) as any
     next()
@@ -15,7 +27,7 @@ type ParsedQsParam =
   | ParsedQsParam[]
   | ParsedQs
 
-type ParsedQs = { [key: string]: ParsedQsParam }
+export type ParsedQs = { [key: string]: ParsedQsParam }
 
 function isObject(val: unknown): val is $ParsedQs {
   return typeof val === 'object' && !!val
