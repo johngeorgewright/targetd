@@ -15,7 +15,7 @@ jobs:
     uses: ./.github/workflows/test.yml
 
   release-github:
-    name: Release Please
+    name: Github Release
     needs: [release-test]
     runs-on: ubuntu-latest
     outputs:
