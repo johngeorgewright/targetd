@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     container:
-      image: denoland/deno:5.9.2
+      image: denoland/deno:2.6.8
 
     steps:
       - name: Checkout project
