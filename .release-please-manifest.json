@@ -1,0 +1,9 @@
+{
+  "packages/api": "8.0.0",
+  "packages/client": "6.0.1",
+  "packages/date-range": "5.0.1",
+  "packages/explode": "3.0.0",
+  "packages/fs": "6.0.2",
+  "packages/json-schema": "4.2.2",
+  "packages/server": "7.0.2"
+}
