@@ -3,10 +3,10 @@
   "version": "3.0.0",
   "exports": "./src/index.ts",
   "imports": {
-    "@targetd/api": "jsr:@targetd/api@^7.3.0",
+    "@targetd/api": "jsr:@targetd/api@^8.0.0",
     "flat": "npm:flat@^6.0.1",
     "ts-toolbelt": "npm:ts-toolbelt@^9.6.0",
-    "zod": "npm:zod@^4.1.11"
+    "zod": "npm:zod@^4.3.6"
   },
   "lint": {
     "rules": {

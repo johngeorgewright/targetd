@@ -1,46 +1,47 @@
-name: Publish
+name: Release
 
 on:
   push:
     branches: [master]
 
+permissions:
+  contents: write
+  pull-requests: write
+  id-token: write
+
 jobs:
-  test:
+  release-test:
     if: github.actor != 'renovate[bot]'
     uses: ./.github/workflows/test.yml
 
-  publish:
-    name: Publish
-    needs: [test]
+  release-github:
+    name: Release Please
+    needs: [release-test]
     runs-on: ubuntu-latest
-    concurrency:
-      group: release
-    permissions:
-      id-token: write
+    outputs:
+      releases_created: ${{ steps.release.outputs.releases_created }}
+      paths_released: ${{ steps.release.outputs.paths_released }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: googleapis/release-please-action@v4
+        id: release
         with:
           token: ${{ secrets.PUSH_TOKEN }}
 
+  release-jsr:
+    needs: [release-github]
+    if: needs.release-github.outputs.releases_created == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        path_released: ${{ fromJson(needs.release-github.outputs.paths_released) }}
+    name: Publish ${{ matrix.path_released }} to JSR
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v6
       - uses: denoland/setup-deno@v2
         with:
           deno-version-file: .dvmrc
-
-      - uses: actions/setup-node@v6
-        with:
-          node-version: 24
-
-      - name: Release
-        env:
-          GITHUB_TOKEN: ${{ secrets.PUSH_TOKEN }}
-        run: | # shell
-          for path in $(deno task --quiet --recursive pwd); do
-            cd $path
-            if [ ! -f package.json ]; then
-              package_name=$(cat deno.json | jq -r .name)
-              echo '{"name":"'"${package_name}"'"}' > package.json
-            fi
-            npm install --dev semantic-release semantic-release-monorepo @semantic-release/exec @semantic-release/git
-            npx semantic-release
-            sleep 3
-          done
+      - working-directory: ${{ matrix.path_released }}
+        run: if [ "$(cat deno.json | jq -r '.private // false')" != "true" ]; then deno publish; fi
