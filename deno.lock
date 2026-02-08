@@ -34,6 +34,7 @@
     "npm:qs@^6.14.0": "6.14.0",
     "npm:semantic-release@*": "24.2.9_marked@15.0.12",
     "npm:supertest@*": "7.1.4",
+    "npm:ts-toolbelt@9": "9.6.0",
     "npm:ts-toolbelt@^9.6.0": "9.6.0",
     "npm:yaml@^2.8.1": "2.8.1",
     "npm:yargs@18": "18.0.0",
@@ -90,6 +91,7 @@
       "integrity": "23019d5521cea7d1c424d1b27e49a9b8e91a037b092e3e0ba1ef77d3f079dab2",
       "dependencies": [
         "npm:fast-deep-equal@3",
+        "npm:ts-toolbelt@9",
         "npm:zod@^4.0.15"
       ]
     }
