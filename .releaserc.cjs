@@ -16,7 +16,7 @@ const config = {
     [
       '@semantic-release/exec',
       {
-        prepareCmd: `${isPublicPackage} && ${bumpVersion}`,
+        prepareCmd: `${bumpVersion}`,
         verifyReleaseCmd:
           `${isPublicPackage} && ${publish} --set-version "\${nextRelease.version}" --dry-run`,
         publishCmd: `${isPublicPackage} && ${publish}`,
