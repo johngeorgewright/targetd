@@ -1,6 +1,6 @@
 {
   "name": "@targetd/server",
-  "version": "7.0.2",
+  "version": "8.0.0",
   "exports": "./src/index.ts",
   "imports": {
     "@johngw/error": "npm:@johngw/error@^2.2.2",
@@ -15,7 +15,10 @@
   },
   "lint": {
     "rules": {
-      "exclude": ["no-import-prefix", "no-unversioned-import"]
+      "exclude": [
+        "no-import-prefix",
+        "no-unversioned-import"
+      ]
     }
   },
   "fmt": {
