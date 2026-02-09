@@ -13,5 +13,5 @@
       ]
     }
   },
-  "postStartCommand": "deno install"
+  "postStartCommand": "sudo deno upgrade && deno install"
 }
