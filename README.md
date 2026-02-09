@@ -172,7 +172,7 @@ export const service1Data = await data
     weather: targetIncludes(z.string()),
   })
   .useFallthroughTargeting({
-    browser:    targetIncludes(z.string()),
+    browser: targetIncludes(z.string()),
   });
   .addRules("foo", [
     {
