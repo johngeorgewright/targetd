@@ -28,6 +28,35 @@ snapshot[`json schema for simple data object 1`] = `
       type: "array",
     },
     __schema3: {
+      type: "string",
+    },
+    __schema4: {
+      items: {
+        additionalProperties: false,
+        properties: {
+          payload: {},
+          targeting: {
+            anyOf: [
+              {
+                "\$ref": "#/\$defs/__schema5",
+              },
+              {
+                items: {
+                  "\$ref": "#/\$defs/__schema5",
+                },
+                type: "array",
+              },
+            ],
+          },
+        },
+        required: [
+          "payload",
+        ],
+        type: "object",
+      },
+      type: "array",
+    },
+    __schema5: {
       additionalProperties: false,
       properties: {
         browser: {
@@ -79,33 +108,10 @@ snapshot[`json schema for simple data object 1`] = `
         },
         variables: {
           additionalProperties: {
-            items: {
-              additionalProperties: false,
-              properties: {
-                payload: {},
-                targeting: {
-                  anyOf: [
-                    {
-                      "\$ref": "#/\$defs/__schema3",
-                    },
-                    {
-                      items: {
-                        "\$ref": "#/\$defs/__schema3",
-                      },
-                      type: "array",
-                    },
-                  ],
-                },
-              },
-              required: [
-                "payload",
-              ],
-              type: "object",
-            },
-            type: "array",
+            "\$ref": "#/\$defs/__schema4",
           },
           propertyNames: {
-            type: "string",
+            "\$ref": "#/\$defs/__schema3",
           },
           type: "object",
         },

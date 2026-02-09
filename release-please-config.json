@@ -1,0 +1,54 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "packages": {
+    "packages/api": {
+      "release-type": "simple",
+      "package-name": "@targetd/api",
+      "tag-separator": "-v",
+      "include-component-in-tag": true,
+      "extra-files": ["deno.json"]
+    },
+    "packages/client": {
+      "release-type": "simple",
+      "package-name": "@targetd/client",
+      "tag-separator": "-v",
+      "include-component-in-tag": true,
+      "extra-files": ["deno.json"]
+    },
+    "packages/date-range": {
+      "release-type": "simple",
+      "package-name": "@targetd/date-range",
+      "tag-separator": "-v",
+      "include-component-in-tag": true,
+      "extra-files": ["deno.json"]
+    },
+    "packages/explode": {
+      "release-type": "simple",
+      "package-name": "@targetd/explode",
+      "tag-separator": "-v",
+      "include-component-in-tag": true,
+      "extra-files": ["deno.json"]
+    },
+    "packages/fs": {
+      "release-type": "simple",
+      "package-name": "@targetd/fs",
+      "tag-separator": "-v",
+      "include-component-in-tag": true,
+      "extra-files": ["deno.json"]
+    },
+    "packages/json-schema": {
+      "release-type": "simple",
+      "package-name": "@targetd/json-schema",
+      "tag-separator": "-v",
+      "include-component-in-tag": true,
+      "extra-files": ["deno.json"]
+    },
+    "packages/server": {
+      "release-type": "simple",
+      "package-name": "@targetd/server",
+      "tag-separator": "-v",
+      "include-component-in-tag": true,
+      "extra-files": ["deno.json"]
+    }
+  }
+}

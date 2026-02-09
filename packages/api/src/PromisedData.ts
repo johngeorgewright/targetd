@@ -8,148 +8,61 @@ import type * as QT from './types/Query.ts'
 import type { DataItemRulesIn } from './parsers/DataItemRules.ts'
 import type { MaybePromise } from './types.ts'
 import type { DataItemIn } from './parsers/DataItem.ts'
+import type { IData } from './IData.ts'
 
-export class PromisedData<
-  PayloadParsers extends $ZodShape,
-  TargetingParsers extends $ZodShape,
-  QueryParsers extends $ZodShape,
-  FallThroughTargetingParsers extends $ZodShape,
-> extends Promise<
-  Data<
-    PayloadParsers,
-    TargetingParsers,
-    QueryParsers,
-    FallThroughTargetingParsers
-  >
-> {
+export class PromisedData<$ extends DT.Meta> extends Promise<Data<$>>
+  implements IData<$> {
   constructor(
     executor: (
-      resolve: (
-        value: MaybePromise<
-          Data<
-            PayloadParsers,
-            TargetingParsers,
-            QueryParsers,
-            FallThroughTargetingParsers
-          >
-        >,
-      ) => void,
+      resolve: (value: MaybePromise<Data<$>>) => void,
       reject: (reason?: any) => void,
     ) => void,
   ) {
     super(executor)
   }
 
-  static create<
-    PayloadParsers extends $ZodShape,
-    TargetingParsers extends $ZodShape,
-    QueryParsers extends $ZodShape,
-    FallThroughTargetingParsers extends $ZodShape,
-  >(
-    promisedData: MaybePromise<
-      Data<
-        PayloadParsers,
-        TargetingParsers,
-        QueryParsers,
-        FallThroughTargetingParsers
-      >
-    >,
-  ): PromisedData<
-    PayloadParsers,
-    TargetingParsers,
-    QueryParsers,
-    FallThroughTargetingParsers
-  > {
+  static create<$ extends DT.Meta>(
+    promisedData: MaybePromise<Data<$>>,
+  ): PromisedData<$> {
     return new PromisedData((resolve) => resolve(promisedData))
   }
 
-  #create<
-    NewPayloadParsers extends $ZodShape,
-    NewTargetingParsers extends $ZodShape,
-    NewQueryParsers extends $ZodShape,
-    NewFallThroughTargetingParsers extends $ZodShape,
-  >(
-    cb: (
-      data: Data<
-        PayloadParsers,
-        TargetingParsers,
-        QueryParsers,
-        FallThroughTargetingParsers
-      >,
-    ) => MaybePromise<
-      Data<
-        NewPayloadParsers,
-        NewTargetingParsers,
-        NewQueryParsers,
-        NewFallThroughTargetingParsers
-      >
-    >,
-  ): PromisedData<
-    NewPayloadParsers,
-    NewTargetingParsers,
-    NewQueryParsers,
-    NewFallThroughTargetingParsers
-  > {
+  #create<$$ extends DT.Meta>(
+    cb: (data: Data<$>) => MaybePromise<Data<$$>>,
+  ): PromisedData<$$> {
     return new PromisedData((resolve) => resolve(this.then(cb)))
   }
 
   usePayload<Parsers extends $ZodShape>(
     parsers: Parsers,
   ): PromisedData<
-    PayloadParsers & Parsers,
-    TargetingParsers,
-    QueryParsers,
-    FallThroughTargetingParsers
+    $ & { PayloadParsers: $['PayloadParsers'] & Parsers }
   > {
     return this.#create((data) => data.usePayload(parsers))
   }
 
-  insert(
-    insertableData: DT.InsertableData<
-      PayloadParsers,
-      TargetingParsers,
-      FallThroughTargetingParsers
-    >,
-  ): PromisedData<
-    PayloadParsers,
-    TargetingParsers,
-    QueryParsers,
-    FallThroughTargetingParsers
-  > {
+  insert(insertableData: DT.InsertableData<$>): PromisedData<$> {
     return this.#create((data) => data.insert(insertableData))
   }
 
   addRules<
-    Name extends keyof PayloadParsers,
+    Name extends keyof $['PayloadParsers'],
   >(
     name: Name,
     opts:
-      | DataItemIn<
-        PayloadParsers[Name],
-        TargetingParsers,
-        FallThroughTargetingParsers
-      >
-      | DataItemRulesIn<
-        PayloadParsers[Name],
-        TargetingParsers,
-        FallThroughTargetingParsers
-      >,
-  ): PromisedData<
-    PayloadParsers,
-    TargetingParsers,
-    QueryParsers,
-    FallThroughTargetingParsers
-  > {
+      | DataItemIn<$, $['PayloadParsers'][Name]>
+      | DataItemRulesIn<$, $['PayloadParsers'][Name]>,
+  ): PromisedData<$> {
     return this.#create((data) => data.addRules(name, opts))
   }
 
   useTargeting<TDs extends TT.DescriptorRecord>(
     targeting: TDs,
   ): PromisedData<
-    PayloadParsers,
-    TargetingParsers & TT.ParserRecord<TDs>,
-    QueryParsers & QT.ParserRecord<TDs>,
-    FallThroughTargetingParsers
+    $ & {
+      TargetingParsers: $['TargetingParsers'] & TT.ParserRecord<TDs>
+      QueryParsers: $['QueryParsers'] & QT.ParserRecord<TDs>
+    }
   > {
     return this.#create((data) => data.useTargeting(targeting))
   }
@@ -157,41 +70,46 @@ export class PromisedData<
   useFallThroughTargeting<TDs extends FTTT.DescriptorRecord>(
     targeting: TDs,
   ): PromisedData<
-    PayloadParsers,
-    TargetingParsers,
-    QueryParsers,
-    FallThroughTargetingParsers & FTTT.ParsersRecord<TDs>
+    $ & {
+      FallThroughTargetingParsers:
+        & $['FallThroughTargetingParsers']
+        & FTTT.ParsersRecord<TDs>
+    }
   > {
     return this.#create((data) => data.useFallThroughTargeting(targeting))
   }
 
   async getPayloadForEachName(
-    rawQuery: QT.Raw<QueryParsers> = {},
+    rawQuery?: QT.Raw<$['QueryParsers']>,
   ): Promise<
-    PT.Payloads<PayloadParsers, FallThroughTargetingParsers>
+    PT.Payloads<$>
   > {
     const data = await this
     return data.getPayloadForEachName(rawQuery)
   }
 
-  async getPayload<Name extends keyof PayloadParsers>(
+  async getPayload<Name extends keyof $['PayloadParsers']>(
     name: Name,
-    rawQuery: QT.Raw<QueryParsers> = {},
+    rawQuery?: QT.Raw<$['QueryParsers']>,
   ): Promise<
-    PT.Payload<PayloadParsers[Name], FallThroughTargetingParsers> | undefined
+    | PT.Payload<$, $['PayloadParsers'][Name]>
+    | undefined
   > {
     const data = await this
     return data.getPayload(name, rawQuery)
   }
 
-  removeAllRules(): Promise<
-    Data<
-      PayloadParsers,
-      TargetingParsers,
-      QueryParsers,
-      FallThroughTargetingParsers
-    >
+  async getPayloads<Name extends keyof $['PayloadParsers']>(
+    name: Name,
+    rawQuery?: QT.Raw<$['QueryParsers']>,
+  ): Promise<
+    PT.Payload<$, $['PayloadParsers'][Name]>[]
   > {
+    const data = await this
+    return data.getPayloads(name, rawQuery)
+  }
+
+  removeAllRules(): Promise<Data<$>> {
     return this.#create((data) => data.removeAllRules())
   }
 }
