@@ -1,6 +1,6 @@
 {
   "name": "@targetd/client",
-  "version": "6.0.1",
+  "version": "7.0.0",
   "exports": "./src/index.ts",
   "imports": {
     "@targetd/api": "jsr:@targetd/api@^8.0.0",
@@ -9,7 +9,10 @@
   },
   "lint": {
     "rules": {
-      "exclude": ["no-import-prefix", "no-unversioned-import"]
+      "exclude": [
+        "no-import-prefix",
+        "no-unversioned-import"
+      ]
     }
   },
   "fmt": {

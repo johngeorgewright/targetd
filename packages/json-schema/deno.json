@@ -1,6 +1,6 @@
 {
   "name": "@targetd/json-schema",
-  "version": "4.2.2",
+  "version": "5.0.0",
   "exports": {
     ".": "./src/index.ts",
     "./cli": "./src/cli.ts"
