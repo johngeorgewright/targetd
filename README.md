@@ -74,15 +74,15 @@ exported from the `@targetd/api` package. [Zod][zod] is an easy project to
 understand and you'll need to know some of the basics.
 
 ```typescript
-import { Data } from "@targetd/api";
-import z from "zod/v4";
+import { Data } from '@targetd/api'
+import z from 'zod/v4'
 
 let data = await Data.create().usePayload({
   blog: z.strictObject({
     title: z.string(),
     body: z.string(),
   }),
-});
+})
 ```
 
 Now I can safely add some rules. Without the above, however, you'll receive an
@@ -91,13 +91,13 @@ error that you cannot add to the 'blog' data type.
 ```typescript
 data = await data.addRules([
   {
-    name: "blog",
+    name: 'blog',
     payload: {
-      title: "A news thing",
+      title: 'A news thing',
       body: "Here's the body",
     },
   },
-]);
+])
 ```
 
 ### Typing Targeting
@@ -112,12 +112,12 @@ data = await data.useTargeting({
     queryParser: z.string(),
 
     // Restrict stored targeting values as an array of "news" or "weather"
-    targetingParser: z.array(z.enum(["news", "weather"])),
+    targetingParser: z.array(z.enum(['news', 'weather'])),
 
     // The targeting logic
     predicate: (query) => (targeting) => targeting.includes(query),
   },
-});
+})
 ```
 
 Now one can safely target by `category` without receiving an error.
@@ -125,25 +125,25 @@ Now one can safely target by `category` without receiving an error.
 ```typescript
 data = await data.addRules([
   {
-    name: "blog",
+    name: 'blog',
     payload: {
-      title: "A news thing",
+      title: 'A news thing',
       body: "Here's the body",
     },
     targeting: {
-      category: ["news", "weather"],
+      category: ['news', 'weather'],
     },
   },
-]);
+])
 ```
 
 ### Querying Data
 
 ```typescript
 console.info(
-  await data.getPayload("blog", { category: "news" }),
+  await data.getPayload('blog', { category: 'news' }),
   // This will find the **first** rule that matches the query
-);
+)
 // { title: 'A new thing', body: "Here's the body" }
 ```
 
@@ -156,9 +156,9 @@ through" targeting.
 
 ```typescript
 // data.ts
-import { Data } from "@targetd/api";
+import { Data } from '@targetd/api'
 
-export const data = await Data.create().usePayload({ foo: z.string() });
+export const data = await Data.create().usePayload({ foo: z.string() })
 ```
 
 ```typescript
