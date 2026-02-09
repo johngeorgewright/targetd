@@ -26,9 +26,13 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-  release-jsr:
+  release-deno-version:
     needs: [release-github]
     if: needs.release-github.outputs.releases_created == 'true'
+    uses: ./.github/workflows/get-deno-version.yml
+
+  release-jsr:
+    needs: [release-deno-version, release-github]
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -38,7 +42,7 @@ jobs:
       contents: read
       id-token: write
     container:
-      image: denoland/deno:2.6.8
+      image: denoland/deno:${{ needs.release-deno-version.outputs.version }}
     steps:
       - uses: actions/checkout@v6
       - working-directory: ${{ matrix.path_released }}
