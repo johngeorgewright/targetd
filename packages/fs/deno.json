@@ -5,7 +5,7 @@
   "imports": {
     "@es-toolkit/es-toolkit": "jsr:@es-toolkit/es-toolkit@^1.44.0",
     "@johngw/fs": "npm:@johngw/fs@^3.0.1",
-    "@targetd/api": "jsr:@targetd/api@^7.3.0",
+    "@targetd/api": "jsr:@targetd/api@^8.0.0",
     "ts-toolbelt": "npm:ts-toolbelt@^9.6.0",
     "yaml": "npm:yaml@^2.8.2",
     "zod": "npm:zod@^4.3.6"
