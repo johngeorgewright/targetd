@@ -4,49 +4,49 @@
     "packages/api": {
       "release-type": "simple",
       "package-name": "@targetd/api",
-      "tag-separator": "-v",
+      "tag-separator": "-",
       "include-component-in-tag": true,
       "extra-files": ["deno.json"]
     },
     "packages/client": {
       "release-type": "simple",
       "package-name": "@targetd/client",
-      "tag-separator": "-v",
+      "tag-separator": "-",
       "include-component-in-tag": true,
       "extra-files": ["deno.json"]
     },
     "packages/date-range": {
       "release-type": "simple",
       "package-name": "@targetd/date-range",
-      "tag-separator": "-v",
+      "tag-separator": "-",
       "include-component-in-tag": true,
       "extra-files": ["deno.json"]
     },
     "packages/explode": {
       "release-type": "simple",
       "package-name": "@targetd/explode",
-      "tag-separator": "-v",
+      "tag-separator": "-",
       "include-component-in-tag": true,
       "extra-files": ["deno.json"]
     },
     "packages/fs": {
       "release-type": "simple",
       "package-name": "@targetd/fs",
-      "tag-separator": "-v",
+      "tag-separator": "-",
       "include-component-in-tag": true,
       "extra-files": ["deno.json"]
     },
     "packages/json-schema": {
       "release-type": "simple",
       "package-name": "@targetd/json-schema",
-      "tag-separator": "-v",
+      "tag-separator": "-",
       "include-component-in-tag": true,
       "extra-files": ["deno.json"]
     },
     "packages/server": {
       "release-type": "simple",
       "package-name": "@targetd/server",
-      "tag-separator": "-v",
+      "tag-separator": "-",
       "include-component-in-tag": true,
       "extra-files": ["deno.json"]
     }
