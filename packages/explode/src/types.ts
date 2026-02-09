@@ -5,16 +5,18 @@ export type ExplodedPayloads<
   D extends DT.Any,
   PathSeparator extends string,
 > = Explode<
-  Partial<{
-    [Name in keyof DT.PayloadParsers<D>]:
-      | PT.Payload<DT.PayloadParsers<D>[Name], DT.TargetingParsers<D>>
-      | undefined
-  }>,
+  Partial<
+    {
+      [Name in keyof DT.PayloadParsers<D>]:
+        | PT.Payload<DT.PayloadParsers<D>[Name], DT.TargetingParsers<D>>
+        | undefined
+    }
+  >,
   PathSeparator
 >
 
-export type Explode<Rec, Sep extends string> =
-  Rec extends Record<string, unknown> ? $Explode<Rec, Sep> : Rec
+export type Explode<Rec, Sep extends string> = Rec extends
+  Record<string, unknown> ? $Explode<Rec, Sep> : Rec
 
 type $Explode<
   Rec extends Record<string, unknown>,
@@ -25,5 +27,5 @@ type $Explode<
   }[RecordKey<Rec>]
 >
 
-type RecordKey<R extends Record<keyof any, any>> =
-  R extends Record<infer V, any> ? V : never
+type RecordKey<R extends Record<keyof any, any>> = R extends
+  Record<infer V, any> ? V : never
