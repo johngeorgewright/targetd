@@ -1,6 +1,6 @@
 {
   "name": "@targetd/server",
-  "version": "8.0.0",
+  "version": "9.0.0",
   "exports": "./src/index.ts",
   "imports": {
     "@johngw/error": "npm:@johngw/error@^2.2.2",
