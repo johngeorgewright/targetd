@@ -37,10 +37,9 @@ jobs:
     permissions:
       contents: read
       id-token: write
+    container:
+      image: denoland/deno:2.6.8
     steps:
       - uses: actions/checkout@v6
-      - uses: denoland/setup-deno@v2
-        with:
-          deno-version-file: .dvmrc
       - working-directory: ${{ matrix.path_released }}
         run: if [ "$(cat deno.json | jq -r '.private // false')" != "true" ]; then deno publish; fi
