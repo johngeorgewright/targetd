@@ -687,7 +687,7 @@ Deno.test('errors when using variables with incorrect types', async (t) => {
 })
 
 Deno.test(
-  'make sure fallthrough targeting is not added to the predicate',
+  'make sure fallthrough targeting predicates are not called',
   async () => {
     const minInnerWindowWidthTargeting = createTargetingDescriptor({
       queryParser: z.unknown(),
