@@ -1,5 +1,12 @@
 # Changelog
 
+## [8.0.3](https://github.com/johngeorgewright/targetd/compare/@targetd/api-v8.0.2...@targetd/api-v8.0.3) (2026-02-13)
+
+
+### Bug Fixes
+
+* export required references ([7012ea8](https://github.com/johngeorgewright/targetd/commit/7012ea81fbe0022d3ae6f7efab02ef654ba77f3c))
+
 ## [8.0.2](https://github.com/johngeorgewright/targetd/compare/@targetd/api-v8.0.1...@targetd/api-v8.0.2) (2026-02-13)
 
 
