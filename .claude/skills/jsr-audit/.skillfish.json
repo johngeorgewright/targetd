@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "name": "jsr-audit",
+  "owner": "jahanson",
+  "repo": "cc-plugins",
+  "path": "jsr-audit/skills/jsr-audit",
+  "branch": "main",
+  "sha": "e56352b13a59144687892d43558be1838ec2200f",
+  "source": "manual"
+}
