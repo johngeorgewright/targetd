@@ -116,6 +116,10 @@ export function watch<D extends DT.Any>(
   return stop
 }
 
-interface WatchDisposer {
+/**
+ * Function type that stops watching a directory.
+ * Call this function to clean up the file watcher and stop monitoring for changes.
+ */
+export interface WatchDisposer {
   (): void
 }
