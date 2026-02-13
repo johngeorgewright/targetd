@@ -8,6 +8,22 @@ import {
 import { extend, optional, string, toJSONSchema } from 'zod/mini'
 import type { $ZodType, JSONSchema } from 'zod/v4/core'
 
+/**
+ * Generate JSON Schema for all data items in a Data instance.
+ * Useful for API documentation, validation, and generating client types.
+ *
+ * @param data - Data instance to generate schemas for.
+ * @returns JSON Schema representing all data items with their rules and targeting.
+ *
+ * @example
+ * ```ts
+ * import { dataJSONSchemas } from '@targetd/json-schema'
+ *
+ * const schema = dataJSONSchemas(data)
+ * // Write to file for documentation
+ * await Deno.writeTextFile('schema.json', JSON.stringify(schema, null, 2))
+ * ```
+ */
 export function dataJSONSchemas<D extends DT.Any>(
   data: D,
 ): JSONSchema.BaseSchema {
@@ -24,6 +40,21 @@ export function dataJSONSchemas<D extends DT.Any>(
   )
 }
 
+/**
+ * Generate JSON Schema for a specific data item by name.
+ *
+ * @param data - Data instance containing the item.
+ * @param name - Name of the payload to generate schema for.
+ * @returns JSON Schema representing the specific data item with its rules and targeting.
+ *
+ * @example
+ * ```ts
+ * import { dataJSONSchema } from '@targetd/json-schema'
+ *
+ * const greetingSchema = dataJSONSchema(data, 'greeting')
+ * console.log(greetingSchema)
+ * ```
+ */
 export function dataJSONSchema<D extends DT.Any>(
   data: D,
   name: keyof DT.PayloadParsers<D>,

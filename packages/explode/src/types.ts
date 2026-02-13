@@ -1,6 +1,20 @@
 import type { DT, PT } from '@targetd/api'
 import type { O, S, U } from 'ts-toolbelt'
 
+/**
+ * Type utility that transforms flat payload keys into nested object structure.
+ * Used with the explode function to get properly typed nested payloads.
+ *
+ * @example
+ * ```ts
+ * import type { Data } from '@targetd/api'
+ * import type { ExplodedPayloads } from '@targetd/explode'
+ *
+ * type MyData = Data<...>
+ * type NestedPayloads = ExplodedPayloads<MyData, '.'>
+ * // 'user.name' becomes { user: { name: ... } }
+ * ```
+ */
 export type ExplodedPayloads<
   D extends DT.Any,
   PathSeparator extends string,
@@ -15,6 +29,16 @@ export type ExplodedPayloads<
   PathSeparator
 >
 
+/**
+ * Type utility that recursively transforms flat keys into nested object structure.
+ *
+ * @example
+ * ```ts
+ * type Flat = { 'user.name': string, 'user.age': number }
+ * type Nested = Explode<Flat, '.'>
+ * // Result: { user: { name: string, age: number } }
+ * ```
+ */
 export type Explode<Rec, Sep extends string> = Rec extends
   Record<string, unknown> ? $Explode<Rec, Sep> : Rec
 

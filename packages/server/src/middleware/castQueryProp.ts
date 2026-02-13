@@ -1,6 +1,14 @@
 import type { RequestHandler } from 'express'
 import type { ParsedQs as $ParsedQs } from 'qs'
 
+/**
+ * Express middleware that parses and casts query parameter types.
+ * Converts string query values to appropriate types (boolean, number, etc.).
+ *
+ * @returns Express RequestHandler middleware that adds parsed query to res.locals.query.
+ *
+ * @internal
+ */
 export function castQueryProp<
   P extends Record<string, string>,
   ResBody,
@@ -27,6 +35,11 @@ type ParsedQsParam =
   | ParsedQsParam[]
   | ParsedQs
 
+/**
+ * Parsed query string object with type-cast values.
+ *
+ * @internal
+ */
 export type ParsedQs = { [key: string]: ParsedQsParam }
 
 function isObject(val: unknown): val is $ParsedQs {

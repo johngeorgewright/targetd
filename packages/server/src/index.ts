@@ -7,11 +7,27 @@ import { castQueryArrayProps } from './middleware/castQueryArrayProps.ts'
 import { castQueryProp } from './middleware/castQueryProp.ts'
 import type { MaybePromise } from './types.ts'
 
+/**
+ * Configuration options for createServer.
+ */
 export interface CreateServerOptions<
   D extends DT.Any = DT.Any,
   App extends express.Express = express.Express,
 > {
+  /**
+   * Existing Express app to extend. If not provided, a new Express app is created.
+   */
   app?: App
+  /**
+   * Array of query parameter names to use as path segments for REST-friendly URLs.
+   *
+   * @example
+   * ```ts
+   * pathStructure: ['region', 'language']
+   * // Creates route: /:region/:language
+   * // GET /US/en is equivalent to /?region=US&language=en
+   * ```
+   */
   pathStructure?: (keyof DT.QueryParsers<D>)[]
 }
 

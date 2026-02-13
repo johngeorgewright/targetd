@@ -3,6 +3,15 @@ import type { RequestHandler } from 'express'
 import type { MaybePromise } from '../types.ts'
 import type { ParsedQs } from './castQueryProp.ts'
 
+/**
+ * Express middleware that ensures array query parameters are actually arrays.
+ * If a query parser expects an array but receives a single value, wraps it in an array.
+ *
+ * @param getData - Function that returns the Data instance to check query parsers.
+ * @returns Express RequestHandler middleware.
+ *
+ * @internal
+ */
 export function castQueryArrayProps<
   P extends Record<string, string>,
   ResBody,

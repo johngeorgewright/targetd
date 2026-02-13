@@ -143,4 +143,13 @@ export class Client<$ extends DT.Meta> {
   }
 }
 
+/**
+ * Helper type to create a Client from a Data instance type.
+ *
+ * @example
+ * ```ts
+ * const data = await Data.create()...
+ * type MyClient = ClientWithData<typeof data>
+ * ```
+ */
 export type ClientWithData<D extends DT.Any> = Client<DT.$<D>>

@@ -1,6 +1,14 @@
 import type express from 'express'
 import { $ZodError } from 'zod/v4/core'
 
+/**
+ * Express error handler middleware that formats errors as JSON responses.
+ * Handles Zod validation errors (400), StatusError with custom codes, and generic errors.
+ *
+ * @returns Express ErrorRequestHandler middleware.
+ *
+ * @internal
+ */
 export function errorHandler(): express.ErrorRequestHandler {
   return (err, _req, res, next) => {
     if (res.headersSent) return next(err)

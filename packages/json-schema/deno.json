@@ -1,6 +1,7 @@
 {
   "name": "@targetd/json-schema",
   "version": "5.0.0",
+  "description": "Generate JSON Schema from @targetd/api Data instances for API documentation and validation.",
   "exports": {
     ".": "./src/index.ts",
     "./cli": "./src/cli.ts"
