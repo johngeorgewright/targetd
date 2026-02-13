@@ -1,205 +1,344 @@
 # @targetd
 
-A speedy, highly extensible, typed, in-memory data store built in Node.js &
-Typescript.
+A powerful, type-safe targeting and feature flag system for dynamically serving
+different content based on query conditions.
 
-It's perfect for storing any shape of data that can be "targeted" with
-key/values.
+## Overview
 
-## Installation
+`@targetd` is a TypeScript-first monorepo providing a complete solution for
+building context-aware applications with dynamic content delivery. Perfect for
+feature flags, A/B testing, content personalization, and configuration
+management.
 
-| JS Runtime | Command                                       |
-| ---------- | --------------------------------------------- |
-| Node.js    | `npm install zod && npx jsr add @targetd/api` |
-| Bun        | `bun add zod && bunx jsr add @targetd/api`    |
-| Deno       | `deno add npm:zod jsr:@targetd/api`           |
+**Key Features:**
 
-## When to use @targetd
+- 🎯 **Type-safe targeting** - Full TypeScript inference and runtime validation
+  with [Zod](https://zod.dev)
+- ⚡ **High performance** - In-memory data store optimized for speed
+- 🔌 **Modular architecture** - Use only what you need with focused packages
+- 🌐 **HTTP-ready** - Built-in server and client for distributed systems
+- 📁 **File-based rules** - Load rules from JSON/YAML files with hot-reloading
+- 🎨 **Extensible** - Custom targeting descriptors and predicates
 
-- Configuration
-- Small blogs/websites
+## Packages
 
-## When _not_ to use @targetd
+### [@targetd/api](./packages/api)
 
-- With big data
-- For tokenising/searching data
-
-## How it works
-
-All data is stored in a list of "rules". Each rule contains a "name", "payload"
-and an optional "targeting" property that can be "queried".
-
-All payloads, targeting & queries are typed & validated at runtime & compile
-time.
-
-An example rule:
-
-```json
-{
-  "name": "blog",
-  "payload": {
-    "title": "A news thing",
-    "body": "Here's the body"
-  },
-  "targeting": {
-    "category": ["news", "weather"]
-  }
-}
-```
-
-The above example shows a payload which will **only** be found when a query will
-match it's targeting structure.
-
-**BEFORE GOING FURTHER** please note that the `Data` class is entirely immutable
-meaning that you must use the returned value of every function. For exampe:
+Core targeting and data querying API. Define payloads, targeting rules, and
+query logic.
 
 ```typescript
-import { Data } from '@targetd/api'
+import { Data, targetIncludes } from '@targetd/api'
+import { z } from 'zod'
 
-// THE BELOW IS INCORRECT!!! the data object has not had any targeting or rules added
 const data = await Data.create()
-await data.useTargeting(...)
-await data.addRules(...)
+  .usePayload({ greeting: z.string() })
+  .useTargeting({ country: targetIncludes(z.string()) })
+  .addRules('greeting', [
+    { targeting: { country: ['US'] }, payload: 'Hello!' },
+    { targeting: { country: ['ES'] }, payload: '¡Hola!' },
+    { payload: 'Hi!' },
+  ])
 
-// ✅ This is better.
-const data = await Data.create({ ...initialOptions })
-  .useTargeting(...)
-  .addRules(...)
+await data.getPayload('greeting', { country: 'US' }) // 'Hello!'
 ```
 
-### Typing Data (payloads)
+**[View Documentation →](./packages/api)**
 
-All typing and validation is done using the awesome [zod][zod] project and is
-exported from the `@targetd/api` package. [Zod][zod] is an easy project to
-understand and you'll need to know some of the basics.
+### [@targetd/server](./packages/server)
+
+HTTP server for exposing `@targetd/api` data over REST endpoints.
 
 ```typescript
-import { Data } from '@targetd/api'
-import z from 'zod/v4'
+import { createServer } from '@targetd/server'
 
-let data = await Data.create().usePayload({
-  blog: z.strictObject({
-    title: z.string(),
-    body: z.string(),
-  }),
+createServer(data).listen(3000)
+// GET /greeting?country=US → "Hello!"
+```
+
+**[View Documentation →](./packages/server)**
+
+### [@targetd/client](./packages/client)
+
+Type-safe HTTP client for querying `@targetd/server` instances.
+
+```typescript
+import { Client } from '@targetd/client'
+
+const client = new Client('http://localhost:3000', data)
+const greeting = await client.getPayload('greeting', { country: 'US' })
+```
+
+**[View Documentation →](./packages/client)**
+
+### [@targetd/fs](./packages/fs)
+
+Load targeting rules from JSON/YAML files with hot-reloading support.
+
+```typescript
+import { load, watch } from '@targetd/fs'
+
+const data = await load(baseData, './rules')
+watch(baseData, './rules', (error, updatedData) => {
+  // Rules automatically reload on file changes
 })
 ```
 
-Now I can safely add some rules. Without the above, however, you'll receive an
-error that you cannot add to the 'blog' data type.
+**[View Documentation →](./packages/fs)**
+
+### [@targetd/date-range](./packages/date-range)
+
+Built-in targeting descriptor for date range queries.
 
 ```typescript
-data = await data.addRules([
-  {
-    name: 'blog',
-    payload: {
-      title: 'A news thing',
-      body: "Here's the body",
-    },
-  },
-])
-```
+import dateRangeTargeting from '@targetd/date-range'
 
-### Typing Targeting
-
-As mentioned above, all typing and validation is done using the [zod][zod]
-project.
-
-```typescript
-data = await data.useTargeting({
-  category: {
-    // Restrict queries to be string
-    queryParser: z.string(),
-
-    // Restrict stored targeting values as an array of "news" or "weather"
-    targetingParser: z.array(z.enum(['news', 'weather'])),
-
-    // The targeting logic
-    predicate: (query) => (targeting) => targeting.includes(query),
-  },
-})
-```
-
-Now one can safely target by `category` without receiving an error.
-
-```typescript
-data = await data.addRules([
-  {
-    name: 'blog',
-    payload: {
-      title: 'A news thing',
-      body: "Here's the body",
-    },
-    targeting: {
-      category: ['news', 'weather'],
-    },
-  },
-])
-```
-
-### Querying Data
-
-```typescript
-console.info(
-  await data.getPayload('blog', { category: 'news' }),
-  // This will find the **first** rule that matches the query
-)
-// { title: 'A new thing', body: "Here's the body" }
-```
-
-### Fall through payloads
-
-Sometimes you may not be able to successfully target certain payloads in one
-service. When this happens you'll need to allow targeted payloads to "fall
-through" to the next service. To allow this to happen, you can add "fall
-through" targeting.
-
-```typescript
-// data.ts
-import { Data } from '@targetd/api'
-
-export const data = await Data.create().usePayload({ foo: z.string() })
-```
-
-```typescript
-// service-1.ts
-import { targetIncludes } from "@targeted/api";
-import { z } from "zod/v4";
-import { data } from "./data";
-
-export const service1Data = await data
-  .useTargeting({
-    weather: targetIncludes(z.string()),
-  })
-  .useFallthroughTargeting({
-    browser: targetIncludes(z.string()),
-  });
-  .addRules("foo", [
+const data = await Data.create()
+  .useTargeting({ date: dateRangeTargeting })
+  .addRules('campaign', [
     {
-      targeting: {
-        // Targeting "browser" cannot be targeted by this server
-        // and therefore will be passed to service-2
-        browser: ["chrome"],
-        weather: ["sunny"],
-      },
-      payload: "Chrome and sunny",
+      targeting: { date: { start: '2024-12-01', end: '2024-12-31' } },
+      payload: 'Holiday Campaign',
     },
-  ]);
+  ])
 ```
+
+**[View Documentation →](./packages/date-range)**
+
+### [@targetd/explode](./packages/explode)
+
+Transform flat key notation to nested objects.
 
 ```typescript
-// service-2.ts
-import { targetIncludes } from "@targeted/api";
-import { z } from "zod/v4";
-import { data } from "./data";
+import { explode } from '@targetd/explode'
 
-const service2Data = await data
-  .useTargeting({
-    browser: targetIncludes(z.string()),
-  });
-  .insert(
-    data.getPayloadForEachName({ weather: "sunny" }),
-  );
-
-// ...
+explode({ 'user.name': 'John' })
+// { user: { name: 'John' } }
 ```
+
+**[View Documentation →](./packages/explode)**
+
+### [@targetd/json-schema](./packages/json-schema)
+
+Generate JSON Schema from Zod schemas for documentation and validation.
+
+**[View Documentation →](./packages/json-schema)**
+
+## Quick Start
+
+### Installation
+
+```bash
+# Core API
+npm install zod && npx jsr add @targetd/api
+
+# With server and client
+npx jsr add @targetd/api @targetd/server @targetd/client
+
+# With file loading
+npx jsr add @targetd/api @targetd/fs
+```
+
+### Basic Example
+
+**1. Define your data:**
+
+```typescript
+import { Data, targetIncludes } from '@targetd/api'
+import { z } from 'zod'
+
+export const data = await Data.create()
+  .usePayload({
+    banner: z.string(),
+    feature: z.object({
+      enabled: z.boolean(),
+      maxUsers: z.number(),
+    }),
+  })
+  .useTargeting({
+    platform: targetIncludes(z.string()),
+    isPremium: targetIncludes(z.boolean()),
+  })
+  .addRules('banner', [
+    { targeting: { platform: ['mobile'] }, payload: '📱 Mobile Banner' },
+    { targeting: { platform: ['desktop'] }, payload: '🖥 Desktop Banner' },
+    { payload: 'Default Banner' },
+  ])
+  .addRules('feature', [
+    {
+      targeting: { isPremium: [true] },
+      payload: { enabled: true, maxUsers: 1000 },
+    },
+    { payload: { enabled: true, maxUsers: 10 } },
+  ])
+```
+
+**2. Start a server:**
+
+```typescript
+import { createServer } from '@targetd/server'
+import { data } from './data.ts'
+
+createServer(data).listen(3000)
+```
+
+**3. Query from a client:**
+
+```typescript
+import { Client } from '@targetd/client'
+import { data } from './data.ts'
+
+const client = new Client('http://localhost:3000', data)
+
+// Type-safe queries
+const banner = await client.getPayload('banner', { platform: 'mobile' })
+const allPayloads = await client.getPayloadForEachName({ isPremium: true })
+```
+
+## Use Cases
+
+### Feature Flags
+
+```typescript
+const data = await Data.create()
+  .usePayload({ newFeature: z.boolean() })
+  .useTargeting({ userTier: targetEquals(z.string()) })
+  .addRules('newFeature', [
+    { targeting: { userTier: 'beta' }, payload: true },
+    { payload: false },
+  ])
+```
+
+### A/B Testing
+
+```typescript
+const data = await Data.create()
+  .usePayload({ variant: z.string() })
+  .useTargeting({ userId: targetIncludes(z.string()) })
+  .addRules('variant', [
+    { targeting: { userId: experimentGroup }, payload: 'variant-a' },
+    { payload: 'variant-b' },
+  ])
+```
+
+### Content Personalization
+
+```typescript
+const data = await Data.create()
+  .usePayload({ content: z.string() })
+  .useTargeting({
+    region: targetIncludes(z.string()),
+    language: targetIncludes(z.string()),
+  })
+  .addRules('content', [
+    {
+      targeting: { region: ['US'], language: ['en'] },
+      payload: 'US English content',
+    },
+    {
+      targeting: { region: ['US'], language: ['es'] },
+      payload: 'US Spanish content',
+    },
+    { payload: 'Default content' },
+  ])
+```
+
+### Configuration Management
+
+```typescript
+const data = await Data.create()
+  .usePayload({
+    config: z.object({
+      apiUrl: z.string(),
+      timeout: z.number(),
+    }),
+  })
+  .useTargeting({ environment: targetEquals(z.string()) })
+  .addRules('config', [
+    {
+      targeting: { environment: 'production' },
+      payload: { apiUrl: 'https://api.prod.com', timeout: 5000 },
+    },
+    {
+      targeting: { environment: 'staging' },
+      payload: { apiUrl: 'https://api.staging.com', timeout: 10000 },
+    },
+    { payload: { apiUrl: 'http://localhost:3000', timeout: 30000 } },
+  ])
+```
+
+## Core Concepts
+
+### Payloads
+
+Define what data you want to serve using Zod schemas.
+
+### Targeting
+
+Specify conditions that determine which payload to serve using predicates like
+`targetIncludes` and `targetEquals`, or create custom ones.
+
+### Rules
+
+Map targeting conditions to payloads. Rules are evaluated in order—first match
+wins.
+
+### Variables
+
+Reusable values with their own targeting rules that can be referenced in
+payloads using `{{variableName}}` syntax.
+
+### Fall-through Targeting
+
+Pass unresolved targeting conditions between services for evaluation in
+distributed systems.
+
+## Architecture
+
+```
+┌─────────────────┐
+│   @targetd/api  │  Core targeting engine
+└────────┬────────┘
+         │
+    ┌────┴────┐
+    │         │
+┌───▼────┐ ┌─▼──────────┐
+│ server │ │ file loaders│
+└───┬────┘ └────────────┘
+    │
+┌───▼────┐
+│ client │
+└────────┘
+```
+
+## Documentation
+
+- [API Documentation](./packages/api/README.md)
+- [Server Documentation](./packages/server/README.md)
+- [Client Documentation](./packages/client/README.md)
+- [File System Loader Documentation](./packages/fs/README.md)
+- [Date Range Targeting Documentation](./packages/date-range/README.md)
+- [Explode Utility Documentation](./packages/explode/README.md)
+- [JSON Schema Documentation](./packages/json-schema/README.md)
+
+## Contributing
+
+This is a monorepo managed with
+[Deno workspaces](https://deno.land/manual/basics/workspaces).
+
+### Development
+
+```bash
+# Install dependencies
+deno install
+
+# Run tests
+deno task test
+
+# Run tests for specific package
+cd packages/api && deno task test
+```
+
+## License
+
+See individual package LICENSE files for details.
