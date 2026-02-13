@@ -54,6 +54,12 @@ export function DataItemParser<
   })
 }
 
+/**
+ * Zod parser type for a single data item with rules and variables.
+ *
+ * @template $ - Data meta configuration.
+ * @template PayloadParser - Zod parser for the payload type.
+ */
 export type DataItemParser<
   $ extends DT.Meta,
   PayloadParser extends $ZodType,

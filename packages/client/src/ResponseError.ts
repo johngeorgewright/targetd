@@ -14,7 +14,19 @@
  * ```
  */
 export class ResponseError extends Error {
-  constructor(public readonly response: Response) {
+  /**
+   * The HTTP Response object that caused the error.
+   * Contains status, statusText, headers, and other response details.
+   */
+  public readonly response: Response
+
+  /**
+   * Create a ResponseError.
+   *
+   * @param response - The HTTP Response object that represents the error.
+   */
+  constructor(response: Response) {
     super(`The server responded with an error.`)
+    this.response = response
   }
 }

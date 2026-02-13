@@ -15,7 +15,10 @@ export type DescriptorRecord = Record<
 >
 
 /**
- * Gets the fallthrough parser from a targeting descriptor
+ * Extracts the fallthrough parser from a targeting descriptor.
+ * Falls back to the descriptor itself if it's already a parser.
+ *
+ * @template T - Targeting descriptor or parser.
  */
 export type ParserFromDescriptor<
   T extends $ZodType | TargetingDescriptor<any, any, any>,
@@ -23,14 +26,20 @@ export type ParserFromDescriptor<
   : T
 
 /**
- * Turns a record of targeting descriptors in to a record of fallthrough parsers
+ * Maps targeting descriptor names to their fallthrough parser types.
+ *
+ * @template TDs - Record of targeting descriptors.
  */
 export type ParsersRecord<TDs extends DescriptorRecord> = {
   [K in keyof TDs]: ParserFromDescriptor<TDs[K]>
 }
 
 /**
- * The data shape of a set of fallthrough rules
+ * Represents a set of fallthrough targeting rules with optional variables.
+ * Used when a payload depends on additional targeting conditions.
+ *
+ * @template $ - Data meta configuration.
+ * @template PayloadParser - Zod parser for the payload type.
  */
 export type Rules<
   $ extends DT.Meta,

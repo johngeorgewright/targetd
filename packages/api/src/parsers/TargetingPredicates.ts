@@ -3,6 +3,12 @@ import type TargetingPredicate from './TargetingPredicate.ts'
 import type * as DT from '../types/Data.ts'
 import type { $InferObjectOutput, $strict, output } from 'zod/v4/core'
 
+/**
+ * Maps targeting field names to their predicate functions and requirements.
+ * Used internally to configure how each targeting field is evaluated.
+ *
+ * @template $ - Data meta configuration with TargetingParsers and QueryParsers.
+ */
 type TargetingPredicates<
   $ extends Pick<DT.Meta, 'TargetingParsers' | 'QueryParsers'>,
 > = {

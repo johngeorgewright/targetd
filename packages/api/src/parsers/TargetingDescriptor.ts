@@ -2,7 +2,11 @@ import type { $ZodType } from 'zod/v4/core'
 import type TargetingPredicate from './TargetingPredicate.ts'
 
 /**
- * Instructions on a targeting field.
+ * Configuration for a targeting field that defines how to parse and evaluate targeting conditions.
+ *
+ * @template TV - Zod parser for the targeting value type.
+ * @template QV - Zod parser for the query value type.
+ * @template Query - Complete query object type.
  */
 export default interface TargetingDescriptor<
   TV extends $ZodType,
@@ -15,6 +19,9 @@ export default interface TargetingDescriptor<
   targetingParser: TV
 }
 
+/**
+ * Targeting descriptor guard
+ */
 export function isTargetingDescriptor<
   TV extends $ZodType,
   QV extends $ZodType,

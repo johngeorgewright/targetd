@@ -155,8 +155,13 @@ export type DataItemRulesIn<
   $ extends DT.Meta,
   PayloadParser extends $ZodType,
 > = RuleWithPayloadIn<$, PayloadParser>[]
-
-export type DataItemRulesOut<
+/**
+ * Output type for {@link DataItemRulesParser}.
+ * Returns transformed rules with fallthrough structure applied.
+ *
+ * @template $ - Data meta configuration.
+ * @template PayloadParser - Zod parser for the payload type.
+ */ export type DataItemRulesOut<
   $ extends DT.Meta,
   PayloadParser extends $ZodType,
 > = DataItemRule<$, PayloadParser, false>[]

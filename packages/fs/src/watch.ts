@@ -3,6 +3,27 @@ import { debounce, Mutex } from '@es-toolkit/es-toolkit'
 import { watch as fsWatch, type WatchOptions } from 'node:fs'
 import { load, pathIsLoadable } from './load.ts'
 
+/**
+ * Callback function invoked when rules are loaded or reloaded by the watch function.
+ *
+ * @template D - Data instance type being watched.
+ *
+ * @param error - Error object if loading failed, null if successful.
+ * @param data - The Data instance with loaded rules (may be unchanged if error occurred).
+ * @returns Any value (typically void or a cleanup function).
+ *
+ * @example
+ * ```ts
+ * const onLoad: OnLoad<typeof myData> = (error, data) => {
+ *   if (error) {
+ *     console.error('Failed to load rules:', error)
+ *   } else {
+ *     console.log('Rules loaded successfully')
+ *     // Update application state with new data
+ *   }
+ * }
+ * ```
+ */
 export type OnLoad<D extends DT.Any> = (error: Error | null, data: D) => any
 
 /**

@@ -4,6 +4,9 @@ import type { Explode } from './types.ts'
 /**
  * Transform flat key notation to nested objects.
  *
+ * @template T - Record type with flat keys to transform.
+ * @template PathSeparator - String literal type for the path separator.
+ *
  * @param x - Object with flat keys to transform.
  * @param pathSeparator - Character(s) used to separate path segments in keys.
  * @returns Nested object with keys exploded into hierarchy.

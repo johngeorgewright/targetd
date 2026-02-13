@@ -52,6 +52,12 @@ export function DataItemsParser<
   ) as DataItemsParser<$>
 }
 
+/**
+ * Zod parser for all items in a Data instance.
+ * Returns a partial object where each key is a payload name.
+ *
+ * @template $ - Data meta configuration.
+ */
 export type DataItemsParser<
   $ extends DT.Meta,
 > = ZodPartialObject<
@@ -64,10 +70,22 @@ export type DataItemsParser<
   $strict
 >
 
+/**
+ * Input type for {@link DataItemsParser}.
+ * Maps payload names to their item input configurations.
+ *
+ * @template $ - Data meta configuration.
+ */
 export type DataItemsIn<$ extends DT.Meta> = {
   [Name in keyof $['PayloadParsers']]?: DataItemIn<$, $['PayloadParsers'][Name]>
 }
 
+/**
+ * Output type for {@link DataItemsParser}.
+ * Maps payload names to their item output configurations.
+ *
+ * @template $ - Data meta configuration.
+ */
 export type DataItemsOut<$ extends DT.Meta> = {
   [Name in keyof $['PayloadParsers']]?: DataItemOut<
     $,

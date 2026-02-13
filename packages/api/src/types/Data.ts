@@ -2,6 +2,10 @@ import type Data from '../Data.ts'
 import type * as FTTT from './FallThroughTargeting.ts'
 import type { $ZodShape, output } from 'zod/v4/core'
 
+/**
+ * Configuration metadata for a Data instance.
+ * Defines the Zod parsers for payloads, targeting, queries, and fallthrough targeting.
+ */
 export interface Meta {
   PayloadParsers: $ZodShape
   TargetingParsers: $ZodShape
@@ -9,6 +13,9 @@ export interface Meta {
   FallThroughTargetingParsers: $ZodShape
 }
 
+/**
+ * Empty metadata configuration for Data instances with no parsers defined.
+ */
 export interface EmptyMeta {
   PayloadParsers: {}
   TargetingParsers: {}
@@ -28,6 +35,11 @@ export type Any = Data<
   }
 >
 
+/**
+ * Extract the Meta configuration from a Data type.
+ *
+ * @template D - Any Data instance type.
+ */
 export type $<D extends Any> = D extends Data<infer $> ? $ : never
 
 /**
@@ -58,6 +70,12 @@ export type FallThroughTargetingParsers<D extends Any> = D extends Data<infer $>
   ? $['FallThroughTargetingParsers']
   : never
 
+/**
+ * Data shape that can be inserted into a Data instance.
+ * Maps payload names to their values or rule sets.
+ *
+ * @template $ - Data meta configuration.
+ */
 export type InsertableData<$ extends Meta> = Partial<
   {
     [Name in keyof $['PayloadParsers']]:

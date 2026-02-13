@@ -138,6 +138,12 @@ export type DataItemRuleParser<
 >
 
 /**
+ * Represents a single targeting rule which can be either a direct payload rule or a fallthrough rule.
+ *
+ * @template $ - Data meta configuration.
+ * @template PayloadParser - Zod parser for the payload type.
+ * @template AllowMultipleTargeting - Whether multiple targeting values are allowed.
+ *
  * @see https://github.com/colinhacks/zod/issues/4698
  */
 export type DataItemRule<
@@ -179,6 +185,14 @@ function MultipleRuleTargeting<Targeting extends $ZodShape>(
   return union([t, array(t)])
 }
 
+/**
+ * Zod parser type for rules with direct payload values.
+ * Handles optional targeting conditions and payload parsing.
+ *
+ * @template $ - Data meta configuration with TargetingParsers.
+ * @template Payload - Zod parser for the payload type.
+ * @template AllowMultipleTargeting - Whether multiple targeting values are allowed.
+ */
 export type RuleWithPayloadParser<
   $ extends Pick<DT.Meta, 'TargetingParsers'>,
   Payload extends $ZodType,
@@ -195,6 +209,15 @@ export type RuleWithPayloadParser<
   $strict
 >
 
+/**
+ * Creates a Zod parser for rules with direct payload values.
+ * Handles targeting conditions and payload parsing with variable resolution.
+ *
+ * @template $ - Data meta configuration.
+ * @template PayloadParser - Zod parser for the payload type.
+ * @template Variables - Registry of available variables.
+ * @template AllowMultipleTargeting - Whether multiple targeting values are allowed.
+ */
 export function RuleWithPayloadParser<
   $ extends DT.Meta,
   PayloadParser extends $ZodType,
@@ -217,6 +240,13 @@ export function RuleWithPayloadParser<
 }
 
 /**
+ * Input type for rule parsers that accept rules with payloads.
+ * Used before transformation to fallthrough structure.
+ *
+ * @template $ - Data meta configuration.
+ * @template PayloadParser - Zod parser for the payload type.
+ * @template AllowMultipleTargeting - Whether multiple targeting values are allowed.
+ *
  * @see https://github.com/colinhacks/zod/issues/4698
  */
 export interface RuleWithPayloadIn<
@@ -236,6 +266,13 @@ export interface RuleWithPayloadIn<
 }
 
 /**
+ * A targeting rule with a direct payload value.
+ * Represents the simplest form of a rule with optional targeting conditions.
+ *
+ * @template PayloadParser - Zod parser for the payload type.
+ * @template TargetingParsers - Zod shape for targeting fields.
+ * @template AllowMultipleTargeting - Whether multiple targeting values are allowed.
+ *
  * @see https://github.com/colinhacks/zod/issues/4698
  */
 export interface RuleWithPayload<
@@ -273,6 +310,13 @@ export type RuleWithFallThroughParser<
 >
 
 /**
+ * A targeting rule that contains nested fallthrough rules instead of a direct payload.
+ * Used when targeting needs to be split into primary and fallthrough conditions.
+ *
+ * @template $ - Data meta configuration.
+ * @template PayloadParser - Zod parser for the payload type.
+ * @template AllowMultipleTargeting - Whether multiple targeting values are allowed.
+ *
  * @see https://github.com/colinhacks/zod/issues/4698
  */
 export interface RuleWithFallThrough<
