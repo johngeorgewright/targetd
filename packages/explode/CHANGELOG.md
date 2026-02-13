@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.0.1](https://github.com/johngeorgewright/targetd/compare/@targetd/explode-v4.0.0...@targetd/explode-v4.0.1) (2026-02-13)
+
+
+### Bug Fixes
+
+* **docs:** add comprehensive documentation and examples for Data API and targeting descriptors ([86545e9](https://github.com/johngeorgewright/targetd/commit/86545e96052bfeb67e281521b28dd33e9631fa65))
+
 ## [4.0.0](https://github.com/johngeorgewright/targetd/compare/@targetd/explode-v3.0.0...@targetd/explode-vv4.0.0) (2026-02-09)
 
 

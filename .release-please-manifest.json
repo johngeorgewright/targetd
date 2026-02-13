@@ -1,9 +1,9 @@
 {
-  "packages/api": "8.0.0",
-  "packages/client": "7.0.0",
-  "packages/date-range": "6.0.0",
-  "packages/explode": "4.0.0",
-  "packages/fs": "7.0.0",
+  "packages/api": "8.0.1",
+  "packages/client": "7.0.1",
+  "packages/date-range": "6.0.1",
+  "packages/explode": "4.0.1",
+  "packages/fs": "7.0.1",
   "packages/json-schema": "5.0.0",
-  "packages/server": "8.1.0"
+  "packages/server": "8.1.1"
 }
