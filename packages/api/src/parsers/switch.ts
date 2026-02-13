@@ -9,14 +9,28 @@ import {
 } from 'zod/mini'
 import type { $ZodRegistry, $ZodType } from 'zod/v4/core'
 
+/**
+ * A tuple array representing switch case mappings.
+ * Each entry is a [condition, parser] pair where the condition determines which parser to use.
+ */
 export type $ZodSwitchMap = [condition: $ZodType, parser: $ZodType][]
 
+/**
+ * A Zod custom schema type that evaluates conditions and applies the corresponding parser.
+ * The output and input types are derived from the parser schemas in the switch map.
+ *
+ * @template SwitchMap - The switch map defining condition-parser pairs
+ */
 export type ZodSwitch<SwitchMap extends $ZodSwitchMap = $ZodSwitchMap> =
   ZodMiniCustom<
     SwitchMap[number][1]['_zod']['output'],
     SwitchMap[number][1]['_zod']['input']
   >
 
+/**
+ * Registry for switch schemas that stores metadata about the union of all possible parsers.
+ * Used internally by zodSwitch to register schema information.
+ */
 export const switchRegistry: $ZodRegistry<{
   union: ZodMiniUnion
 }, ZodSwitch<$ZodSwitchMap>> = registry()
