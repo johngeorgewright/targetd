@@ -1,7 +1,7 @@
 {
   "name": "@targetd/date-range",
   "description": "Built-in targeting descriptor for date range queries in ISO 8601 format with automatic current time evaluation.",
-  "version": "6.0.1",
+  "version": "6.0.2",
   "exports": "./src/index.ts",
   "imports": {
     "@targetd/api": "jsr:@targetd/api@^8.0.0",

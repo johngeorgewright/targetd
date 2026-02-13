@@ -1,5 +1,12 @@
 # Changelog
 
+## [6.0.2](https://github.com/johngeorgewright/targetd/compare/@targetd/date-range-v6.0.1...@targetd/date-range-v6.0.2) (2026-02-13)
+
+
+### Bug Fixes
+
+* **docs:** add descriptions to package metadata and enhance type documentation across modules ([69dacea](https://github.com/johngeorgewright/targetd/commit/69dacea15345739c1fc612bf9895752de9ee69dd))
+
 ## [6.0.1](https://github.com/johngeorgewright/targetd/compare/@targetd/date-range-v6.0.0...@targetd/date-range-v6.0.1) (2026-02-13)
 
 ### Bug Fixes

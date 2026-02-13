@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.0.1](https://github.com/johngeorgewright/targetd/compare/@targetd/json-schema-v5.0.0...@targetd/json-schema-v5.0.1) (2026-02-13)
+
+
+### Bug Fixes
+
+* **docs:** add descriptions to package metadata and enhance type documentation across modules ([69dacea](https://github.com/johngeorgewright/targetd/commit/69dacea15345739c1fc612bf9895752de9ee69dd))
+
 ## [5.0.0](https://github.com/johngeorgewright/targetd/compare/@targetd/json-schema-v4.2.2...@targetd/json-schema-vv5.0.0) (2026-02-09)
 
 
