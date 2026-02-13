@@ -1,6 +1,6 @@
 {
   "name": "@targetd/fs",
-  "version": "7.0.0",
+  "version": "7.0.1",
   "exports": "./src/index.ts",
   "imports": {
     "@es-toolkit/es-toolkit": "jsr:@es-toolkit/es-toolkit@^1.44.0",

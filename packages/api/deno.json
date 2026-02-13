@@ -1,6 +1,6 @@
 {
   "name": "@targetd/api",
-  "version": "8.0.0",
+  "version": "8.0.1",
   "exports": "./src/index.ts",
   "fmt": {
     "semiColons": false,
