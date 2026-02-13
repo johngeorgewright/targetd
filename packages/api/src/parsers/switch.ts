@@ -21,6 +21,25 @@ export const switchRegistry: $ZodRegistry<{
   union: ZodMiniUnion
 }, ZodSwitch<$ZodSwitchMap>> = registry()
 
+/**
+ * Create a conditional Zod parser that evaluates different schemas based on conditions.
+ * Similar to a switch statement, it tests each condition and applies the corresponding parser.
+ *
+ * @param switchMap - Array of [condition, parser] tuples to evaluate in order.
+ * @returns A Zod schema that conditionally validates based on the switch map.
+ *
+ * @example
+ * ```ts
+ * import { zodSwitch } from '@targetd/api'
+ * import { z } from 'zod'
+ *
+ * const paymentSchema = zodSwitch([
+ *   [z.object({ type: z.literal('card') }), z.object({ cardNumber: z.string(), cvv: z.string() })],
+ *   [z.object({ type: z.literal('paypal') }), z.object({ email: z.string().email() })],
+ *   [z.object({ type: z.literal('bank') }), z.object({ accountNumber: z.string(), routing: z.string() })]
+ * ])
+ * ```
+ */
 export function zodSwitch<SwitchMap extends $ZodSwitchMap>(
   switchMap: SwitchMap,
 ): ZodSwitch<SwitchMap> {

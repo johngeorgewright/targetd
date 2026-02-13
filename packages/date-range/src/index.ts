@@ -47,6 +47,36 @@ const targetingParser: TargetingParser = union([
   array(dateRangeParser),
 ])
 
+/**
+ * Built-in targeting descriptor for date range queries in ISO 8601 format.
+ * Automatically evaluates against the current time when no query is provided.
+ *
+ * @example
+ * ```ts
+ * import { Data } from '@targetd/api'
+ * import dateRangeTargeting from '@targetd/date-range'
+ * import { z } from 'zod'
+ *
+ * const data = await Data.create()
+ *   .usePayload({ campaign: z.string() })
+ *   .useTargeting({ date: dateRangeTargeting })
+ *   .addRules('campaign', [
+ *     {
+ *       targeting: {
+ *         date: { start: '2024-12-01', end: '2024-12-31' }
+ *       },
+ *       payload: 'Holiday Campaign'
+ *     },
+ *     { payload: 'Regular Campaign' }
+ *   ])
+ *
+ * // Automatic current date evaluation
+ * await data.getPayload('campaign')
+ *
+ * // Historical query
+ * await data.getPayload('campaign', { date: { start: '2024-12-15' } })
+ * ```
+ */
 const dateRangeTargeting: TargetingDescriptor<
   TargetingParser,
   typeof dateRangeParser,

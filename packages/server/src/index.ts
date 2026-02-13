@@ -16,7 +16,51 @@ export interface CreateServerOptions<
 }
 
 /**
- * @param pathStructure Use a path structure when you want to create a route that uses request params
+ * Create an Express HTTP server that exposes Data targeting endpoints.
+ * Provides REST API access to @targetd/api Data instances.
+ *
+ * @param data - Data instance or function returning Data (for dynamic data).
+ * @param options - Server configuration options.
+ * @param options.app - Existing Express app to extend (creates new one if not provided).
+ * @param options.pathStructure - Array of query parameter names to use as path segments for REST-friendly URLs.
+ * @returns Express application instance with targeting endpoints.
+ *
+ * @example Basic server:
+ * ```ts
+ * import { Data, targetIncludes } from '@targetd/api'
+ * import { createServer } from '@targetd/server'
+ * import { z } from 'zod'
+ *
+ * const data = await Data.create()
+ *   .usePayload({ greeting: z.string() })
+ *   .useTargeting({ country: targetIncludes(z.string()) })
+ *   .addRules('greeting', [
+ *     { targeting: { country: ['US'] }, payload: 'Hello!' },
+ *     { payload: 'Hi!' }
+ *   ])
+ *
+ * createServer(data).listen(3000)
+ * // GET /greeting?country=US → "Hello!"
+ * // GET / → {"greeting":"Hi!"}
+ * ```
+ *
+ * @example With path structure:
+ * ```ts
+ * createServer(data, {
+ *   pathStructure: ['region', 'language']
+ * }).listen(3000)
+ * // GET /US/en → equivalent to /?region=US&language=en
+ * ```
+ *
+ * @example Dynamic data with hot reloading:
+ * ```ts
+ * let currentData = baseData
+ * watch(baseData, './rules', (error, data) => {
+ *   if (!error) currentData = data
+ * })
+ *
+ * createServer(() => currentData).listen(3000)
+ * ```
  */
 export function createServer<
   D extends DT.Any,

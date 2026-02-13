@@ -67,6 +67,21 @@ export default class Data<$ extends DT.Meta> implements IData<$> {
   readonly #queryParsers: $['QueryParsers']
   readonly #QueryParser: ZodPartialObject<$['QueryParsers']>
 
+  /**
+   * Create a new empty Data instance.
+   *
+   * @returns A PromisedData instance that can be configured with payloads, targeting, and rules.
+   *
+   * @example
+   * ```ts
+   * import { Data } from '@targetd/api'
+   * import { z } from 'zod'
+   *
+   * const data = await Data.create()
+   *   .usePayload({ greeting: z.string() })
+   *   .addRules('greeting', [{ payload: 'Hello!' }])
+   * ```
+   */
   static create(): PromisedData<DT.EmptyMeta> {
     return PromisedData.create(new Data({}, {}, {}, {}, {}, {}))
   }
@@ -93,34 +108,90 @@ export default class Data<$ extends DT.Meta> implements IData<$> {
     this.#QueryParser = partial(strictObject(this.#queryParsers))
   }
 
+  /**
+   * Get all data items including rules and variables.
+   *
+   * @returns The complete data structure with all rules and variables.
+   */
   get data(): DataItemsOut<$> {
     return this.#data
   }
 
+  /**
+   * Get all registered payload parsers (Zod schemas).
+   *
+   * @returns Object mapping payload names to their Zod schemas.
+   */
   get payloadParsers(): $['PayloadParsers'] {
     return this.#payloadParsers
   }
 
+  /**
+   * Get all registered targeting predicates.
+   *
+   * @returns Object mapping targeting keys to their predicate functions and configuration.
+   */
   get targetingPredicates(): TargetingPredicates<$> {
     return this.#targetingPredicates
   }
 
+  /**
+   * Get all registered targeting parsers (Zod schemas for rule targeting).
+   *
+   * @returns Object mapping targeting keys to their Zod schemas.
+   */
   get targetingParsers(): $['TargetingParsers'] {
     return this.#targetingParsers
   }
 
+  /**
+   * Get all registered query parsers (Zod schemas for query parameters).
+   *
+   * @returns Object mapping query parameter names to their Zod schemas.
+   */
   get queryParsers(): $['QueryParsers'] {
     return this.#queryParsers
   }
 
+  /**
+   * Get the combined query parser with all query parameters as optional.
+   *
+   * @returns Zod schema that validates query objects.
+   */
   get QueryParser(): ZodPartialObject<$['QueryParsers'], $strict> {
     return this.#QueryParser
   }
 
+  /**
+   * Get all registered fall-through targeting parsers.
+   *
+   * @returns Object mapping fall-through targeting keys to their Zod schemas.
+   */
   get fallThroughTargetingParsers(): $['FallThroughTargetingParsers'] {
     return this.#fallThroughTargetingParsers
   }
 
+  /**
+   * Define payload types using Zod schemas. This determines what data can be stored in the Data instance.
+   *
+   * @param parsers - Object mapping payload names to Zod schemas.
+   * @returns A new Data instance with the payload parsers registered.
+   *
+   * @example
+   * ```ts
+   * import { Data } from '@targetd/api'
+   * import { z } from 'zod'
+   *
+   * const data = await Data.create()
+   *   .usePayload({
+   *     message: z.string(),
+   *     config: z.object({
+   *       enabled: z.boolean(),
+   *       maxRetries: z.number()
+   *     })
+   *   })
+   * ```
+   */
   async usePayload<Parsers extends $ZodShape>(parsers: Parsers): Promise<
     Data<$ & { PayloadParsers: $['PayloadParsers'] & Parsers }>
   > {
@@ -153,6 +224,23 @@ export default class Data<$ extends DT.Meta> implements IData<$> {
     }
   }
 
+  /**
+   * Insert data from another Data instance or add new rules. Commonly used with fall-through targeting
+   * to pass unresolved rules between services.
+   *
+   * @param data - Object mapping payload names to values or __rules__ structures from another Data instance.
+   * @returns A new Data instance with the inserted data.
+   *
+   * @example
+   * ```ts
+   * const result = await data.getPayload('message', { channel: 'mobile' })
+   * // result may contain { __rules__: [...], __variables__: {...} }
+   *
+   * const updated = await receivingData.insert({
+   *   message: result
+   * })
+   * ```
+   */
   async insert(data: DT.InsertableData<$>): Promise<Data<$>> {
     const newData = {
       ...this.#data,
@@ -207,6 +295,40 @@ export default class Data<$ extends DT.Meta> implements IData<$> {
   ): payload is FTTT.Rules<$, $['PayloadParsers'][Name]> =>
     typeof payload === 'object' && payload !== null && '__rules__' in payload
 
+  /**
+   * Add targeting rules for a specific payload. Rules are evaluated in order—first match wins.
+   *
+   * @param name - The name of the payload to add rules for.
+   * @param opts - Array of rules, or object with `rules` and optional `variables`.
+   * @returns A new Data instance with the rules added.
+   *
+   * @example
+   * ```ts
+   * const data = await Data.create()
+   *   .usePayload({ greeting: z.string() })
+   *   .useTargeting({ country: targetIncludes(z.string()) })
+   *   .addRules('greeting', [
+   *     { targeting: { country: ['US'] }, payload: 'Hello!' },
+   *     { targeting: { country: ['ES'] }, payload: '¡Hola!' },
+   *     { payload: 'Hi!' } // default fallback
+   *   ])
+   * ```
+   *
+   * @example With variables:
+   * ```ts
+   * .addRules('config', {
+   *   variables: {
+   *     featureEnabled: [
+   *       { targeting: { country: ['US'] }, payload: true },
+   *       { payload: false }
+   *     ]
+   *   },
+   *   rules: [
+   *     { payload: { enabled: '{{featureEnabled}}' } }
+   *   ]
+   * })
+   * ```
+   */
   async addRules<
     Name extends keyof $['PayloadParsers'],
   >(
@@ -252,6 +374,17 @@ export default class Data<$ extends DT.Meta> implements IData<$> {
     )
   }
 
+  /**
+   * Remove all rules from the Data instance while keeping payload parsers, targeting, and queries.
+   *
+   * @returns A new Data instance with all rules removed.
+   *
+   * @example
+   * ```ts
+   * const emptyData = data.removeAllRules()
+   * // Parsers and targeting are preserved, but no rules remain
+   * ```
+   */
   removeAllRules(): Data<$> {
     return new Data(
       {} as any,
@@ -263,6 +396,34 @@ export default class Data<$ extends DT.Meta> implements IData<$> {
     )
   }
 
+  /**
+   * Define targeting descriptors that determine how rules are matched against queries.
+   *
+   * @param targeting - Object mapping targeting keys to targeting descriptors with predicate functions and parsers.
+   * @returns A new Data instance with the targeting descriptors registered.
+   *
+   * @example Using built-in predicates:
+   * ```ts
+   * import { targetIncludes, targetEquals } from '@targetd/api'
+   *
+   * const data = await Data.create()
+   *   .useTargeting({
+   *     country: targetIncludes(z.string()),
+   *     isPremium: targetEquals(z.boolean())
+   *   })
+   * ```
+   *
+   * @example Custom targeting descriptor:
+   * ```ts
+   * .useTargeting({
+   *   timeOfDay: {
+   *     predicate: (queryTime) => (targetTime) => queryTime === targetTime,
+   *     queryParser: z.enum(['morning', 'afternoon', 'evening']),
+   *     targetingParser: z.enum(['morning', 'afternoon', 'evening'])
+   *   }
+   * })
+   * ```
+   */
   async useTargeting<TDs extends TT.DescriptorRecord>(targeting: TDs): Promise<
     Data<
       $ & {
@@ -335,6 +496,37 @@ export default class Data<$ extends DT.Meta> implements IData<$> {
     }
   }
 
+  /**
+   * Define fall-through targeting for rules that cannot be fully evaluated in the current service.
+   * These targeting conditions will be passed to another service for evaluation.
+   *
+   * @param targeting - Object mapping targeting keys to Zod parsers or targeting descriptors.
+   * @returns A new Data instance with fall-through targeting registered.
+   *
+   * @example
+   * ```ts
+   * const data = await Data.create()
+   *   .useTargeting({
+   *     channel: targetIncludes(z.string())
+   *   })
+   *   .useFallThroughTargeting({
+   *     region: z.array(z.string())
+   *   })
+   *   .addRules('message', [
+   *     {
+   *       targeting: {
+   *         channel: ['mobile'],
+   *         region: ['EU'] // fall-through
+   *       },
+   *       payload: 'EU mobile message'
+   *     }
+   *   ])
+   *
+   * const result = await data.getPayload('message', { channel: 'mobile' })
+   * // Returns: { __rules__: [...], __variables__: {...} }
+   * // Can be passed to another service with region context
+   * ```
+   */
   async useFallThroughTargeting<TDs extends FTTT.DescriptorRecord>(
     targeting: TDs,
   ): Promise<
@@ -387,6 +579,18 @@ export default class Data<$ extends DT.Meta> implements IData<$> {
     }
   }
 
+  /**
+   * Get payloads for all registered payload names at once.
+   *
+   * @param rawQuery - Optional query object with targeting parameters.
+   * @returns Object mapping all payload names to their matched payloads.
+   *
+   * @example
+   * ```ts
+   * const allPayloads = await data.getPayloadForEachName({ country: 'US' })
+   * // Returns: { greeting: 'Hello!', feature: {...}, ... }
+   * ```
+   */
   async getPayloadForEachName(
     rawQuery: QT.Raw<$['QueryParsers']> = {},
   ): Promise<PT.Payloads<$>> {
@@ -401,6 +605,30 @@ export default class Data<$ extends DT.Meta> implements IData<$> {
     return payloads
   }
 
+  /**
+   * Get the first matching payload for a specific name based on targeting rules.
+   * Rules are evaluated in order—first match wins.
+   *
+   * @param name - The name of the payload to retrieve.
+   * @param rawQuery - Optional query object with targeting parameters.
+   * @returns The matched payload, or undefined if no rule matched.
+   *
+   * @example
+   * ```ts
+   * const greeting = await data.getPayload('greeting', { country: 'US' })
+   * // Returns: 'Hello!'
+   *
+   * const defaultGreeting = await data.getPayload('greeting')
+   * // Returns: 'Hi!' (default fallback)
+   * ```
+   *
+   * @example With fall-through targeting:
+   * ```ts
+   * const result = await data.getPayload('message', { channel: 'mobile' })
+   * // May return: { __rules__: [...], __variables__: {...} }
+   * // if region targeting cannot be resolved
+   * ```
+   */
   async getPayload<Name extends keyof $['PayloadParsers']>(
     name: Name,
     rawQuery: QT.Raw<$['QueryParsers']> = {},
@@ -472,6 +700,21 @@ export default class Data<$ extends DT.Meta> implements IData<$> {
     return variables
   }
 
+  /**
+   * Get all matching payloads for a specific name (not just the first match).
+   * Useful for debugging or when you need to see all rules that match a query.
+   *
+   * @param name - The name of the payload to retrieve.
+   * @param rawQuery - Optional query object with targeting parameters.
+   * @returns Array of all matched payloads.
+   *
+   * @example
+   * ```ts
+   * const allMatches = await data.getPayloads('feature', { country: 'US' })
+   * // Returns: ['Premium US feature', 'US feature']
+   * // (if multiple rules matched)
+   * ```
+   */
   async getPayloads<Name extends keyof $['PayloadParsers']>(
     name: Name,
     rawQuery: QT.Raw<$['QueryParsers']> = {},
