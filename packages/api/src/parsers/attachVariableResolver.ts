@@ -1,7 +1,7 @@
 import {
-  extend,
   type output,
   pipe,
+  safeExtend,
   transform,
   type ZodMiniAny,
   ZodMiniObject,
@@ -77,15 +77,15 @@ function objectVariableResolverParser<
   const $objectParser = objectParser instanceof ZodMiniObject
     ? objectEntries(objectParser._zod.def.shape).reduce<ZodMiniObject>(
       (acc, [key, parser]) =>
-        extend(acc, {
+        safeExtend(acc, {
           [key]: attachVariableResolver(variablesRegistry, parser),
         }),
       objectParser,
     )
     : objectEntries(objectParser._zod.def.shape).reduce<ZodObject>(
       (acc, [key, parser]) =>
-        acc.extend({
-          [key]: attachVariableResolver(variablesRegistry, parser),
+        acc.safeExtend({
+          [key]: attachVariableResolver(variablesRegistry, parser) as any,
         }),
       objectParser,
     )
