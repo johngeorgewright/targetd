@@ -12,8 +12,28 @@ export type { default as TargetingPredicates } from './parsers/TargetingPredicat
 export { targetEquals } from './predicates/equals.ts'
 export { targetIncludes } from './predicates/targetIncludes.ts'
 export type { StaticRecord } from './types.ts'
+
+/**
+ * Type helpers for the {@link Data} class.
+ */
 export type * as DT from './types/Data.ts'
+
+/**
+ * Type helers for fallthrough-targeting
+ */
 export type * as FTTT from './types/FallThroughTargeting.ts'
+
+/**
+ * Type helers for payloads
+ */
 export type * as PT from './types/Payload.ts'
+
+/**
+ * Type helpers for queries
+ */
 export type * as QT from './types/Query.ts'
+
+/**
+ * Type helpers for targeting
+ */
 export type * as TT from './types/Targeting.ts'
