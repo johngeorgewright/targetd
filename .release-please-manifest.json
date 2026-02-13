@@ -5,5 +5,5 @@
   "packages/explode": "4.0.0",
   "packages/fs": "7.0.0",
   "packages/json-schema": "5.0.0",
-  "packages/server": "8.0.0"
+  "packages/server": "8.1.0"
 }
