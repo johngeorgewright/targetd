@@ -7,6 +7,14 @@ import { castQueryArrayProps } from './middleware/castQueryArrayProps.ts'
 import { castQueryProp } from './middleware/castQueryProp.ts'
 import type { MaybePromise } from './types.ts'
 
+export interface CreateServerOptions<
+  D extends DT.Any = DT.Any,
+  App extends express.Express = express.Express,
+> {
+  app?: App
+  pathStructure?: (keyof DT.QueryParsers<D>)[]
+}
+
 /**
  * @param pathStructure Use a path structure when you want to create a route that uses request params
  */
@@ -18,10 +26,7 @@ export function createServer<
   {
     app = express() as App,
     pathStructure,
-  }: {
-    app?: App
-    pathStructure?: (keyof DT.QueryParsers<D>)[]
-  } = {},
+  }: CreateServerOptions<D, App> = {},
 ): App {
   const getData = typeof data === 'function' ? data : () => data
 

@@ -1,5 +1,5 @@
 import { assertSnapshot } from 'jsr:@std/testing/snapshot'
-import { Data, targetEquals, targetIncludes } from '@targetd/api'
+import { Data, type DT, targetEquals, targetIncludes } from '@targetd/api'
 import dateRangeTargeting from '@targetd/date-range'
 import _ from 'npm:lodash'
 import { setTimeout } from 'node:timers/promises'
@@ -10,7 +10,7 @@ import { createServer } from '@targetd/server'
 import { promisify } from 'node:util'
 import type { Server } from 'node:http'
 
-Deno.test('get one data point', async () => {
+Deno.test('get one data point', async (t) => {
   await using server = await createDisposableServer()
 
   await request(server)
@@ -73,28 +73,10 @@ Deno.test('get one data point', async () => {
     .expect('"b t\'ing"')
     .expect(200)
 
-  await request(server)
+  const response = await request(server)
     .get('/foo?weather=rainy&weather=sunny')
     .expect(400)
-    .expect(JSON.stringify(
-      {
-        name: '$ZodError',
-        message: JSON.stringify(
-          [
-            {
-              'expected': 'string',
-              'code': 'invalid_type',
-              'path': [
-                'weather',
-              ],
-              'message': 'Invalid input: expected string, received array',
-            },
-          ],
-          null,
-          2,
-        ),
-      },
-    ))
+  await assertSnapshot(t, response.body)
 })
 
 Deno.test('get all', async (t) => {
@@ -137,9 +119,14 @@ Deno.test('get all', async (t) => {
   await assertSnapshot(t, response.body)
 })
 
-async function createDisposableServer(): Promise<Server & AsyncDisposable> {
-  const data = createData()
-  const app = createServer(() => data)
+async function createDisposableServer(options?: {
+  data?: DT.Any
+  pathStructure?: string[]
+}): Promise<Server & AsyncDisposable> {
+  const data = options?.data ?? createData()
+  const app = createServer(() => data, {
+    pathStructure: options?.pathStructure as any,
+  })
   const { promise, reject, resolve } = Promise.withResolvers<void>()
   const server = app.listen(0, (error) => error ? reject(error) : resolve())
   await promise
@@ -235,3 +222,165 @@ function createData() {
       },
     ])
 }
+
+Deno.test('custom path structure', async () => {
+  const data = await Data.create()
+    .usePayload({
+      content: z.string(),
+      config: z.number(),
+    })
+    .useTargeting({
+      region: targetIncludes(z.string()),
+      device: targetIncludes(z.string()),
+    })
+    .addRules('content', [
+      {
+        targeting: {
+          region: ['US'],
+          device: ['mobile'],
+        },
+        payload: 'US Mobile Content',
+      },
+      {
+        targeting: {
+          region: ['US'],
+          device: ['desktop'],
+        },
+        payload: 'US Desktop Content',
+      },
+      {
+        targeting: {
+          region: ['EU'],
+          device: ['mobile'],
+        },
+        payload: 'EU Mobile Content',
+      },
+      {
+        targeting: {
+          region: ['EU'],
+          device: ['desktop'],
+        },
+        payload: 'EU Desktop Content',
+      },
+      {
+        payload: 'Default Content',
+      },
+    ])
+    .addRules('config', [
+      {
+        targeting: {
+          device: ['mobile'],
+        },
+        payload: 10,
+      },
+      {
+        targeting: {
+          device: ['desktop'],
+        },
+        payload: 50,
+      },
+      {
+        payload: 5,
+      },
+    ])
+
+  await using server = await createDisposableServer({
+    data,
+    pathStructure: ['region', 'device'],
+  })
+
+  // Test path-based routing
+  await request(server)
+    .get('/US/mobile')
+    .expect('Content-Type', /json/)
+    .expect(200)
+    .expect((res) => {
+      if (res.body.content !== 'US Mobile Content') {
+        throw new Error(
+          `Expected "US Mobile Content", got "${res.body.content}"`,
+        )
+      }
+      if (res.body.config !== 10) {
+        throw new Error(`Expected 10, got "${res.body.config}"`)
+      }
+    })
+
+  await request(server)
+    .get('/US/desktop')
+    .expect('Content-Type', /json/)
+    .expect(200)
+    .expect((res) => {
+      if (res.body.content !== 'US Desktop Content') {
+        throw new Error(
+          `Expected "US Desktop Content", got "${res.body.content}"`,
+        )
+      }
+      if (res.body.config !== 50) {
+        throw new Error(`Expected 50, got "${res.body.config}"`)
+      }
+    })
+
+  await request(server)
+    .get('/EU/mobile')
+    .expect('Content-Type', /json/)
+    .expect(200)
+    .expect((res) => {
+      if (res.body.content !== 'EU Mobile Content') {
+        throw new Error(
+          `Expected "EU Mobile Content", got "${res.body.content}"`,
+        )
+      }
+    })
+
+  await request(server)
+    .get('/EU/desktop')
+    .expect('Content-Type', /json/)
+    .expect(200)
+    .expect((res) => {
+      if (res.body.content !== 'EU Desktop Content') {
+        throw new Error(
+          `Expected "EU Desktop Content", got "${res.body.content}"`,
+        )
+      }
+    })
+
+  // Test with no matching rules - should return defaults
+  await request(server)
+    .get('/UNKNOWN/tablet')
+    .expect('Content-Type', /json/)
+    .expect(200)
+    .expect((res) => {
+      if (res.body.content !== 'Default Content') {
+        throw new Error(
+          `Expected "Default Content", got "${res.body.content}"`,
+        )
+      }
+      if (res.body.config !== 5) {
+        throw new Error(`Expected 5, got "${res.body.config}"`)
+      }
+    })
+})
+
+Deno.test('error handling', async (t) => {
+  await using server = await createDisposableServer()
+
+  // Test 404 for non-existent payload name
+  await request(server)
+    .get('/nonexistent')
+    .expect('Content-Type', /json/)
+    .expect(404)
+
+  // Test 400 for invalid query parameter (Zod validation error)
+  let response = await request(server)
+    .get('/foo?weather=rainy&weather=sunny')
+    .expect('Content-Type', /json/)
+    .expect(400)
+  await assertSnapshot(t, response.body)
+
+  // Test 400 for invalid boolean value
+  response = await request(server)
+    .get('/foo?highTide=notaboolean')
+    .expect('Content-Type', /json/)
+    .expect(400)
+  await assertSnapshot(t, response.body)
+})

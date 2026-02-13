@@ -1,5 +1,21 @@
 export const snapshot = {};
 
+snapshot[`get one data point 1`] = `
+{
+  issues: [
+    {
+      code: "invalid_type",
+      expected: "string",
+      message: "Invalid input: expected string, received array",
+      path: [
+        "weather",
+      ],
+    },
+  ],
+  status: "validation error",
+}
+`;
+
 snapshot[`get all 1`] = `
 {
   bar: 123,
@@ -45,5 +61,37 @@ snapshot[`get all 6`] = `
   bar: 123,
   foo: "Async payload",
   timed: "out of time",
+}
+`;
+
+snapshot[`error handling 1`] = `
+{
+  issues: [
+    {
+      code: "invalid_type",
+      expected: "string",
+      message: "Invalid input: expected string, received array",
+      path: [
+        "weather",
+      ],
+    },
+  ],
+  status: "validation error",
+}
+`;
+
+snapshot[`error handling 2`] = `
+{
+  issues: [
+    {
+      code: "invalid_type",
+      expected: "boolean",
+      message: "Invalid input: expected boolean, received string",
+      path: [
+        "highTide",
+      ],
+    },
+  ],
+  status: "validation error",
 }
 `;
