@@ -13,6 +13,8 @@ jobs:
     name: Github Release
     needs: [release-test]
     runs-on: ubuntu-latest
+    concurrency:
+      group: release
     permissions:
       contents: write
       issues: write
