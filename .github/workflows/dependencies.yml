@@ -5,11 +5,26 @@ on:
   workflow_dispatch:
 
 jobs:
+  deno-version:
+    uses: ./.github/workflows/get-deno-version.yml
+
   update-dependencies:
+    needs: [deno-version]
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Setup Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: ${{ needs.deno-version.outputs.version }}
+
       - uses: johngeorgewright/workflows/actions/deno-update@main
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          version-policy: latest
           pr-labels: dependencies
+          version-policy: latest
