@@ -1,0 +1,15 @@
+name: Deno Dependency Updates
+on:
+  schedule:
+    - cron: "0 0 * * 1" # Weekly on Mondays
+  workflow_dispatch:
+
+jobs:
+  update-dependencies:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: johngeorgewright/workflows/actions/deno-update@main
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          version-policy: latest
+          pr-labels: dependencies
