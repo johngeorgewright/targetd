@@ -143,8 +143,6 @@ export type DataItemRuleParser<
  * @template $ - Data meta configuration.
  * @template PayloadParser - Zod parser for the payload type.
  * @template AllowMultipleTargeting - Whether multiple targeting values are allowed.
- *
- * @see https://github.com/colinhacks/zod/issues/4698
  */
 export type DataItemRule<
   $ extends DT.Meta,
