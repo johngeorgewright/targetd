@@ -27,4 +27,5 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           pr-labels: dependencies
+          recursive: "true"
           version-policy: latest
