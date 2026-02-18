@@ -4,7 +4,7 @@
   "version": "6.0.2",
   "exports": "./src/index.ts",
   "imports": {
-    "@targetd/api": "jsr:@targetd/api@^8.0.0",
+    "@targetd/api": "jsr:@targetd/api@^8.0.3",
     "zod": "npm:zod@^4.3.6"
   },
   "lint": {
