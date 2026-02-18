@@ -4,5 +4,6 @@
  * @type {import('lint-staged').Configuration}
  */
 export default {
-  '*': 'deno fmt',
+  '*.{js,mjs,cjs,ts,mts,cts,tsx,jsx,json,jsonc,md,markdown,yml,yaml}':
+    'deno fmt',
 }
