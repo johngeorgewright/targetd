@@ -156,9 +156,10 @@ Re-export types with `export type *` and utilities appropriately.
 
 ## Common Pitfalls
 
-1. **Targeting predicates must handle undefined queries**: When query param is
-   missing, predicate still evaluates. Return appropriate default (often `true`
-   or `false`).
+1. **Targeting predicates may receive undefined queries**: Predicates can see
+   `undefined` when `requiresQuery: false` or when a query key is present but
+   parsed/cast to `undefined` (for example, an empty string). Return an
+   appropriate default (often `true` or `false`) in these cases.
 
 2. **Rules order matters**: First matching rule wins. Always add fallback rules
    (no targeting) last.
