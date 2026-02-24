@@ -68,6 +68,7 @@ const userSegment = createTargetingDescriptor({
     return user.segments.includes(segment)
   },
   queryParser: string(),
+  requiresQuery: false,
   targetingParser: string(),
 })
 
@@ -80,6 +81,7 @@ const platformMatch = {
     )
   },
   queryParser: string(),
+  requiresQuery: false,
   targetingParser: array(string()),
 }
 ```
