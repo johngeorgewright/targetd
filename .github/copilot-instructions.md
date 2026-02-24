@@ -95,7 +95,7 @@ example that evaluates against current time when no query is provided.
 # Run all tests (from root)
 deno task test
 
-# Run tests in watch mode
+# Run tests and potentially install development dependencies
 deno task test:dev
 
 # Type check all packages
