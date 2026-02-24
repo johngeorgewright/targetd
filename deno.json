@@ -19,7 +19,7 @@
     "./packages/*"
   ],
   "imports": {
-    "@commitlint/cli": "npm:@commitlint/cli@^20.4.1",
+    "@commitlint/cli": "npm:@commitlint/cli@^20.4.2",
     "@commitlint/config-conventional": "npm:@commitlint/config-conventional@^20.4.2",
     "lint-staged": "npm:lint-staged@^16.2.7"
   }
