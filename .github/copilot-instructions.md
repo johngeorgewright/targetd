@@ -50,13 +50,13 @@ Create custom ones for domain-specific logic:
 
 ```typescript
 import { createTargetingDescriptor } from '@targetd/api'
-import { z } from 'zod'
+import { array, string } from 'zod/mini'
 
 // Simple equality check with optional query
 const customEquals = createTargetingDescriptor({
   predicate: (query) => (target) => !query || query === target,
-  queryParser: z.string(),
-  targetingParser: z.string(),
+  queryParser: string(),
+  targetingParser: string(),
   requiresQuery: false, // Evaluates even without query parameter
 })
 
@@ -67,8 +67,8 @@ const userSegment = createTargetingDescriptor({
     const user = await fetchUser(userId)
     return user.segments.includes(segment)
   },
-  queryParser: z.string(),
-  targetingParser: z.string(),
+  queryParser: string(),
+  targetingParser: string(),
 })
 
 // Multiple value matching with negation
@@ -79,8 +79,8 @@ const platformMatch = {
       t.startsWith('!') ? t.slice(1) !== query : t === query
     )
   },
-  queryParser: z.string(),
-  targetingParser: z.array(z.string()),
+  queryParser: string(),
+  targetingParser: array(string()),
 }
 ```
 
