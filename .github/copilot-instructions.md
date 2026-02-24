@@ -97,7 +97,7 @@ example that evaluates against current time when no query is provided.
 # Run all tests (from root)
 deno task test
 
-# Run tests in watch mode
+# Run tests and potentially install development dependencies
 deno task test:dev
 
 # Type check all packages
@@ -137,8 +137,12 @@ cd packages/api && deno task test
 **Import Paths**: Use `.ts` extensions in imports, even though it's Deno. Use
 workspace references like `@targetd/api` in package dependencies.
 
-**Zod Schemas**: Import from `zod/mini` for core schemas (faster), `zod/v4/core`
-for types. See [packages/api/src/Data.ts](packages/api/src/Data.ts#L22-L25).
+**Zod Schemas**: For new code and public examples, prefer `import { z } from 'zod'`
+for consistency with the root README and package READMEs. Some internal,
+performance-sensitive modules may instead use `zod/mini` for schemas and
+`zod/v4/core` for types; when editing those files (e.g.
+[packages/api/src/Data.ts](packages/api/src/Data.ts#L22-L25)), follow the
+existing local style.
 
 **Exports**: Each package has `src/index.ts` as the main export in `deno.json`.
 Re-export types with `export type *` and utilities appropriately.
