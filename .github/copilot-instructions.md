@@ -212,21 +212,6 @@ type MyTargeting = TT.InferTargeting<typeof data>
 - Use `zod/v4/core` for types: `import type { output } from 'zod/v4/core'`
 - Mixing imports can break type inference
 
-**Strategy 4: Verify predicate signatures** Predicates must return
-`boolean | Promise<boolean>`. Async predicates need `await` or return promises:
-
-```typescript
-// ✅ Correct
-predicate: ;
-;((q) => (t) => q === t || fetchValue(q, t)) // Returns Promise<boolean>
-predicate: ;
-;((q) => async (t) => await check(q, t)) // Returns Promise<boolean>
-
-// ❌ Wrong
-predicate: ;
-;(async (q) => (t) => check(q, t)) // Outer async breaks signature
-```
-
 **Common error: "Type instantiation is excessively deep"**
 
 - Usually means Zod schema is too complex or circular
