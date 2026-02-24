@@ -235,9 +235,6 @@ follow pattern from
 **Add middleware to server**: See
 [packages/server/src/middleware/](packages/server/src/middleware/) for examples.
 
-**Debug targeting**: Use `data.getMatchingItem()` to see which rule matched and
-access metadata.
-
 **Test async predicates**: Wrap predicates that return promises in `await` or
 use `setTimeout` helper - see
 [Data.test.ts](packages/api/test/Data.test.ts#L16-L20).
