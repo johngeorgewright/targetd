@@ -1,31 +1,24 @@
 name: Deno Dependency Updates
+
 on:
   schedule:
-    - cron: "0 0 * * 1" # Weekly on Mondays
+    - cron: '0 0 * * 1' # Weekly on Mondays
   workflow_dispatch:
 
 jobs:
-  deno-version:
-    uses: ./.github/workflows/get-deno-version.yml
-
   update-dependencies:
-    needs: [deno-version]
     runs-on: ubuntu-latest
     permissions:
       contents: write
       pull-requests: write
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v6
-
-      - name: Setup Deno
-        uses: denoland/setup-deno@v2
+      - uses: actions/checkout@v6
+      - uses: denoland/setup-deno@v2
         with:
-          deno-version: ${{ needs.deno-version.outputs.version }}
-
+          deno-version-file: .dvmrc
       - uses: johngeorgewright/workflows/actions/deno-update@main
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           pr-labels: dependencies
-          recursive: "true"
+          recursive: 'true'
           version-policy: latest
