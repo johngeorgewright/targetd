@@ -29,7 +29,7 @@
     "npm:express@^5.2.1": "5.2.1",
     "npm:fast-deep-equal@^3.1.3": "3.1.3",
     "npm:flat@^6.0.1": "6.0.1",
-    "npm:lint-staged@^16.2.7": "16.2.7",
+    "npm:lint-staged@^16.3.1": "16.3.1",
     "npm:lodash@*": "4.17.21",
     "npm:qs@^6.15.0": "6.15.0",
     "npm:semantic-release@*": "24.2.9_marked@15.0.12",
@@ -812,11 +812,11 @@
         "@colors/colors"
       ]
     },
-    "cli-truncate@5.1.1": {
-      "integrity": "sha512-SroPvNHxUnk+vIW/dOSfNqdy1sPEFkrTk6TUtqLCnBlo3N7TNYYkzzN7uSD6+jVjrdO4+p8nH7JzH6cIvUem6A==",
+    "cli-truncate@5.2.0": {
+      "integrity": "sha512-xRwvIOMGrfOAnM1JYtqQImuaNtDEv9v6oIYAs4LIHwTiKee8uwvIi363igssOC0O5U04i4AlENs79LQLu9tEMw==",
       "dependencies": [
-        "slice-ansi",
-        "string-width@8.1.1"
+        "slice-ansi@8.0.0",
+        "string-width@8.2.0"
       ]
     },
     "cliui@7.0.4": {
@@ -1313,8 +1313,8 @@
     "get-caller-file@2.0.5": {
       "integrity": "sha512-DyFP3BM/3YHTQOCUL/w0OZHR0lpKeGrxotcHWcqNEdnltqFwXVfhEBQ94eIo34AfQpo0rGki4cyIiftY06h2Fg=="
     },
-    "get-east-asian-width@1.4.0": {
-      "integrity": "sha512-QZjmEOC+IT1uk6Rx0sX22V6uHWVwbdbxf1faPqJ1QhLdGgsRGCZoyaQBm/piRdJy/D2um6hM1UP7ZEeQ4EkP+Q=="
+    "get-east-asian-width@1.5.0": {
+      "integrity": "sha512-CQ+bEO+Tva/qlmw24dCejulK5pMzVnUOFOijVogd3KQs07HnRIgp8TGipvCCRT06xeYEbpbgwaCxglFyiuIcmA=="
     },
     "get-intrinsic@1.3.0": {
       "integrity": "sha512-9fSjSaos/fRIVIp+xSJlE6lfwhES7LNtKaCBIamHsjr2na1BiABJPo0mOjjz8GJDURarmCPGqaiVg5mfjb98CQ==",
@@ -1376,6 +1376,7 @@
         "meow@12.1.1",
         "split2@4.2.0"
       ],
+      "deprecated": true,
       "bin": true
     },
     "global-directory@4.0.1": {
@@ -1636,15 +1637,14 @@
     "lines-and-columns@1.2.4": {
       "integrity": "sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg=="
     },
-    "lint-staged@16.2.7": {
-      "integrity": "sha512-lDIj4RnYmK7/kXMya+qJsmkRFkGolciXjrsZ6PC25GdTfWOAWetR0ZbsNXRAj1EHHImRSalc+whZFg56F5DVow==",
+    "lint-staged@16.3.1": {
+      "integrity": "sha512-bqvvquXzFBAlSbluugR4KXAe4XnO/QZcKVszpkBtqLWa2KEiVy8n6Xp38OeUbv/gOJOX4Vo9u5pFt/ADvbm42Q==",
       "dependencies": [
         "commander",
         "listr2",
         "micromatch",
-        "nano-spawn",
-        "pidtree",
         "string-argv",
+        "tinyexec",
         "yaml"
       ],
       "bin": true
@@ -1720,7 +1720,7 @@
       "dependencies": [
         "ansi-escapes",
         "cli-cursor",
-        "slice-ansi",
+        "slice-ansi@7.1.2",
         "strip-ansi@7.1.2",
         "wrap-ansi@9.0.2"
       ]
@@ -1818,9 +1818,6 @@
         "object-assign",
         "thenify-all"
       ]
-    },
-    "nano-spawn@2.0.0": {
-      "integrity": "sha512-tacvGzUY5o2D8CBh2rrwxyNojUsZNU2zjNTzKQrkgGJQTbGAfArVWXSKMBokBeeg6C7OLRGUEyoFlYbfeWQIqw=="
     },
     "negotiator@1.0.0": {
       "integrity": "sha512-8Ofs/AUQh8MaEcrlq5xOX0CQ9ypTF5dl78mjlMNfOK08fzpgTHQRQPBxcPlEtIw0yRpws+Zo/3r+5WRby7u3Gg=="
@@ -2011,10 +2008,6 @@
     },
     "picomatch@4.0.3": {
       "integrity": "sha512-5gTmgEY/sqK6gFXLIsQNH19lWb4ebPDLA4SdLP7dsWkIXHWlG66oPuVvXSGFPppYZz8ZDZq0dYYrbHfBCVUb1Q=="
-    },
-    "pidtree@0.6.0": {
-      "integrity": "sha512-eG2dWTVw5bzqGRztnHExczNxt5VGsE6OwTeCG3fdUf9KBsZzO3R5OIIIzWR+iZA0NtZ+RDVdaoE2dK1cn6jH4g==",
-      "bin": true
     },
     "pify@3.0.0": {
       "integrity": "sha512-C3FsVNH1udSEX48gGX1xfvwTWfsYWj5U+8/uK15BGzIGrKoUpghX8hWZwa/OFnakBiiVNmBvemTJR5mcy7iPcg=="
@@ -2354,6 +2347,13 @@
         "is-fullwidth-code-point@5.1.0"
       ]
     },
+    "slice-ansi@8.0.0": {
+      "integrity": "sha512-stxByr12oeeOyY2BlviTNQlYV5xOj47GirPr4yA1hE9JCtxfQN0+tVbkxwCtYDQWhEKWFHsEK48ORg5jrouCAg==",
+      "dependencies": [
+        "ansi-styles@6.2.3",
+        "is-fullwidth-code-point@5.1.0"
+      ]
+    },
     "source-map@0.6.1": {
       "integrity": "sha512-UjgapumWlbMhkBgzT7Ykc5YXUT46F0iKu8SGXq0bcwP5dz/h0Plj6enJqjz1Zbq2l5WaqYnrVbwWOWMyF3F47g=="
     },
@@ -2418,8 +2418,8 @@
         "strip-ansi@7.1.2"
       ]
     },
-    "string-width@8.1.1": {
-      "integrity": "sha512-KpqHIdDL9KwYk22wEOg/VIqYbrnLeSApsKT/bSj6Ez7pn3CftUiLAv2Lccpq1ALcpLV9UX1Ppn92npZWu2w/aw==",
+    "string-width@8.2.0": {
+      "integrity": "sha512-6hJPQ8N0V0P3SNmP6h2J99RLuzrWz2gvT7VnK5tKvrNqJoyS9W4/Fb8mo31UiPvy00z7DQXkP2hnKBVav76thw==",
       "dependencies": [
         "get-east-asian-width",
         "strip-ansi@7.1.2"
@@ -2765,7 +2765,7 @@
     "dependencies": [
       "npm:@commitlint/cli@^20.4.2",
       "npm:@commitlint/config-conventional@^20.4.2",
-      "npm:lint-staged@^16.2.7"
+      "npm:lint-staged@^16.3.1"
     ],
     "members": {
       "packages/api": {
