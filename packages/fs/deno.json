@@ -4,7 +4,7 @@
   "version": "7.0.2",
   "exports": "./src/index.ts",
   "imports": {
-    "@es-toolkit/es-toolkit": "jsr:@es-toolkit/es-toolkit@^1.44.0",
+    "@es-toolkit/es-toolkit": "jsr:@es-toolkit/es-toolkit@^1.45.1",
     "@johngw/fs": "npm:@johngw/fs@^3.0.1",
     "@targetd/api": "jsr:@targetd/api@^8.0.3",
     "ts-toolbelt": "npm:ts-toolbelt@^9.6.0",

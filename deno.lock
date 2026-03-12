@@ -1,7 +1,7 @@
 {
   "version": "5",
   "specifiers": {
-    "jsr:@es-toolkit/es-toolkit@^1.44.0": "1.44.0",
+    "jsr:@es-toolkit/es-toolkit@^1.45.1": "1.45.1",
     "jsr:@std/assert@*": "1.0.13",
     "jsr:@std/assert@^1.0.13": "1.0.13",
     "jsr:@std/async@^1.0.13": "1.0.13",
@@ -32,7 +32,7 @@
     "npm:lint-staged@^16.3.1": "16.3.1",
     "npm:lodash@*": "4.17.21",
     "npm:qs@^6.15.0": "6.15.0",
-    "npm:semantic-release@*": "24.2.9_marked@15.0.12",
+    "npm:semantic-release@*": "24.2.9_marked@15.0.12_@octokit+core@7.0.4",
     "npm:skillfish@*": "1.0.28",
     "npm:supertest@*": "7.1.4",
     "npm:ts-toolbelt@^9.6.0": "9.6.0",
@@ -41,8 +41,8 @@
     "npm:zod@^4.3.6": "4.3.6"
   },
   "jsr": {
-    "@es-toolkit/es-toolkit@1.44.0": {
-      "integrity": "647a7e777945a3ac81bd1783670f85429c2a661510d9af36becc6963ddfca00d"
+    "@es-toolkit/es-toolkit@1.45.1": {
+      "integrity": "fcfce61ab4ac4db2fd45841ac86f6101b271d4e3a094dc7edbb14fd41289471b"
     },
     "@std/assert@1.0.13": {
       "integrity": "ae0d31e41919b12c656c742b22522c32fb26ed0cba32975cb0de2a273cb68b29",
@@ -388,7 +388,7 @@
     "@sec-ant/readable-stream@0.4.1": {
       "integrity": "sha512-831qok9r2t8AlxLko40y2ebgSDhenenCatLVeW/uBtnHPyhHOvG0C7TvfgecV+wHzIm5KUICgzmVpWS+IMEAeg=="
     },
-    "@semantic-release/commit-analyzer@13.0.1_semantic-release@24.2.9__marked@15.0.12_marked@15.0.12": {
+    "@semantic-release/commit-analyzer@13.0.1_semantic-release@24.2.9__marked@15.0.12__@octokit+core@7.0.4_marked@15.0.12_@octokit+core@7.0.4": {
       "integrity": "sha512-wdnBPHKkr9HhNhXOhZD5a2LNl91+hs8CC2vsAVYxtZH3y0dV3wKn+uZSN61rdJQZ8EGxzWB3inWocBHV9+u/CQ==",
       "dependencies": [
         "conventional-changelog-angular",
@@ -399,27 +399,13 @@
         "import-from-esm",
         "lodash-es",
         "micromatch",
-        "semantic-release@24.2.9_marked@15.0.12"
-      ]
-    },
-    "@semantic-release/commit-analyzer@13.0.1_semantic-release@24.2.9__marked@15.0.12_marked@15.0.12_@octokit+core@7.0.4": {
-      "integrity": "sha512-wdnBPHKkr9HhNhXOhZD5a2LNl91+hs8CC2vsAVYxtZH3y0dV3wKn+uZSN61rdJQZ8EGxzWB3inWocBHV9+u/CQ==",
-      "dependencies": [
-        "conventional-changelog-angular",
-        "conventional-changelog-writer",
-        "conventional-commits-filter",
-        "conventional-commits-parser",
-        "debug",
-        "import-from-esm",
-        "lodash-es",
-        "micromatch",
-        "semantic-release@24.2.9_marked@15.0.12_@octokit+core@7.0.4"
+        "semantic-release"
       ]
     },
     "@semantic-release/error@4.0.0": {
       "integrity": "sha512-mgdxrHTLOjOddRVYIYDo0fR3/v61GNN1YGkfbrjuIKg/uMgCd+Qzo3UAXJ+woLQQpos4pl5Esuw5A7AoNlzjUQ=="
     },
-    "@semantic-release/github@11.0.6_semantic-release@24.2.9__marked@15.0.12_marked@15.0.12_@octokit+core@7.0.4": {
+    "@semantic-release/github@11.0.6_semantic-release@24.2.9__marked@15.0.12__@octokit+core@7.0.4_marked@15.0.12_@octokit+core@7.0.4": {
       "integrity": "sha512-ctDzdSMrT3H+pwKBPdyCPty6Y47X8dSrjd3aPZ5KKIKKWTwZBE9De8GtsH3TyAlw3Uyo2stegMx6rJMXKpJwJA==",
       "dependencies": [
         "@octokit/core",
@@ -436,12 +422,12 @@
         "lodash-es",
         "mime@4.1.0",
         "p-filter",
-        "semantic-release@24.2.9_marked@15.0.12_@octokit+core@7.0.4",
+        "semantic-release",
         "tinyglobby",
         "url-join"
       ]
     },
-    "@semantic-release/npm@12.0.2_semantic-release@24.2.9__marked@15.0.12_marked@15.0.12": {
+    "@semantic-release/npm@12.0.2_semantic-release@24.2.9__marked@15.0.12__@octokit+core@7.0.4_marked@15.0.12_@octokit+core@7.0.4": {
       "integrity": "sha512-+M9/Lb35IgnlUO6OSJ40Ie+hUsZLuph2fqXC/qrKn0fMvUU/jiCjpoL6zEm69vzcmaZJ8yNKtMBEKHWN49WBbQ==",
       "dependencies": [
         "@semantic-release/error",
@@ -455,31 +441,12 @@
         "rc",
         "read-pkg",
         "registry-auth-token",
-        "semantic-release@24.2.9_marked@15.0.12",
+        "semantic-release",
         "semver",
         "tempy"
       ]
     },
-    "@semantic-release/npm@12.0.2_semantic-release@24.2.9__marked@15.0.12_marked@15.0.12_@octokit+core@7.0.4": {
-      "integrity": "sha512-+M9/Lb35IgnlUO6OSJ40Ie+hUsZLuph2fqXC/qrKn0fMvUU/jiCjpoL6zEm69vzcmaZJ8yNKtMBEKHWN49WBbQ==",
-      "dependencies": [
-        "@semantic-release/error",
-        "aggregate-error",
-        "execa@9.6.0",
-        "fs-extra",
-        "lodash-es",
-        "nerf-dart",
-        "normalize-url",
-        "npm",
-        "rc",
-        "read-pkg",
-        "registry-auth-token",
-        "semantic-release@24.2.9_marked@15.0.12_@octokit+core@7.0.4",
-        "semver",
-        "tempy"
-      ]
-    },
-    "@semantic-release/release-notes-generator@14.1.0_semantic-release@24.2.9__marked@15.0.12_marked@15.0.12": {
+    "@semantic-release/release-notes-generator@14.1.0_semantic-release@24.2.9__marked@15.0.12__@octokit+core@7.0.4_marked@15.0.12_@octokit+core@7.0.4": {
       "integrity": "sha512-CcyDRk7xq+ON/20YNR+1I/jP7BYKICr1uKd1HHpROSnnTdGqOTburi4jcRiTYz0cpfhxSloQO3cGhnoot7IEkA==",
       "dependencies": [
         "conventional-changelog-angular",
@@ -492,23 +459,7 @@
         "into-stream",
         "lodash-es",
         "read-package-up",
-        "semantic-release@24.2.9_marked@15.0.12"
-      ]
-    },
-    "@semantic-release/release-notes-generator@14.1.0_semantic-release@24.2.9__marked@15.0.12_marked@15.0.12_@octokit+core@7.0.4": {
-      "integrity": "sha512-CcyDRk7xq+ON/20YNR+1I/jP7BYKICr1uKd1HHpROSnnTdGqOTburi4jcRiTYz0cpfhxSloQO3cGhnoot7IEkA==",
-      "dependencies": [
-        "conventional-changelog-angular",
-        "conventional-changelog-writer",
-        "conventional-commits-filter",
-        "conventional-commits-parser",
-        "debug",
-        "get-stream@7.0.1",
-        "import-from-esm",
-        "into-stream",
-        "lodash-es",
-        "read-package-up",
-        "semantic-release@24.2.9_marked@15.0.12_@octokit+core@7.0.4"
+        "semantic-release"
       ]
     },
     "@sindresorhus/is@4.6.0": {
@@ -2152,49 +2103,14 @@
     "safer-buffer@2.1.2": {
       "integrity": "sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg=="
     },
-    "semantic-release@24.2.9_marked@15.0.12": {
-      "integrity": "sha512-phCkJ6pjDi9ANdhuF5ElS10GGdAKY6R1Pvt9lT3SFhOwM4T7QZE7MLpBDbNruUx/Q3gFD92/UOFringGipRqZA==",
-      "dependencies": [
-        "@semantic-release/commit-analyzer@13.0.1_semantic-release@24.2.9__marked@15.0.12_marked@15.0.12",
-        "@semantic-release/error",
-        "@semantic-release/github",
-        "@semantic-release/npm@12.0.2_semantic-release@24.2.9__marked@15.0.12_marked@15.0.12",
-        "@semantic-release/release-notes-generator@14.1.0_semantic-release@24.2.9__marked@15.0.12_marked@15.0.12",
-        "aggregate-error",
-        "cosmiconfig",
-        "debug",
-        "env-ci",
-        "execa@9.6.0",
-        "figures@6.1.0",
-        "find-versions",
-        "get-stream@6.0.1",
-        "git-log-parser",
-        "hook-std",
-        "hosted-git-info@8.1.0",
-        "import-from-esm",
-        "lodash-es",
-        "marked",
-        "marked-terminal",
-        "micromatch",
-        "p-each-series",
-        "p-reduce",
-        "read-package-up",
-        "resolve-from@5.0.0",
-        "semver",
-        "semver-diff",
-        "signale",
-        "yargs@17.7.2"
-      ],
-      "bin": true
-    },
     "semantic-release@24.2.9_marked@15.0.12_@octokit+core@7.0.4": {
       "integrity": "sha512-phCkJ6pjDi9ANdhuF5ElS10GGdAKY6R1Pvt9lT3SFhOwM4T7QZE7MLpBDbNruUx/Q3gFD92/UOFringGipRqZA==",
       "dependencies": [
-        "@semantic-release/commit-analyzer@13.0.1_semantic-release@24.2.9__marked@15.0.12_marked@15.0.12_@octokit+core@7.0.4",
+        "@semantic-release/commit-analyzer",
         "@semantic-release/error",
         "@semantic-release/github",
-        "@semantic-release/npm@12.0.2_semantic-release@24.2.9__marked@15.0.12_marked@15.0.12_@octokit+core@7.0.4",
-        "@semantic-release/release-notes-generator@14.1.0_semantic-release@24.2.9__marked@15.0.12_marked@15.0.12_@octokit+core@7.0.4",
+        "@semantic-release/npm",
+        "@semantic-release/release-notes-generator",
         "aggregate-error",
         "cosmiconfig",
         "debug",
@@ -2798,7 +2714,7 @@
       },
       "packages/fs": {
         "dependencies": [
-          "jsr:@es-toolkit/es-toolkit@^1.44.0",
+          "jsr:@es-toolkit/es-toolkit@^1.45.1",
           "jsr:@targetd/api@^8.0.3",
           "npm:@johngw/fs@^3.0.1",
           "npm:ts-toolbelt@^9.6.0",
