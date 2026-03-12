@@ -1,6 +1,9 @@
 import type { DT } from '@targetd/api'
 import { debounce, Mutex } from '@es-toolkit/es-toolkit'
-import { watch as fsWatch, type WatchOptions } from 'node:fs'
+import {
+  watch as fsWatch,
+  type WatchOptions as BaseWatchOptions,
+} from 'node:fs'
 import { load, pathIsLoadable } from './load.ts'
 
 /**
@@ -25,6 +28,17 @@ import { load, pathIsLoadable } from './load.ts'
  * ```
  */
 export type OnLoad<D extends DT.Any> = (error: Error | null, data: D) => any
+
+/**
+ * Options for watching a directory for rule file changes.
+ */
+export interface WatchOptions extends BaseWatchOptions {
+  /**
+   * Milliseconds to debounce file change events before reloading rules.
+   * @default 300
+   */
+  debounceMS?: number
+}
 
 /**
  * Watch a directory for rule file changes and automatically reload.
@@ -80,7 +94,9 @@ export function watch<D extends DT.Any>(
   optionsOrOnLoad: WatchOptions | OnLoad<D>,
   onLoadParam?: OnLoad<D>,
 ) {
-  const options = onLoadParam ? optionsOrOnLoad as WatchOptions : {}
+  const { debounceMS = 300, ...fsOptions } = onLoadParam
+    ? optionsOrOnLoad as WatchOptions
+    : {}
   const onLoad = (onLoadParam || optionsOrOnLoad) as OnLoad<D>
   const mutex = new Mutex()
 
@@ -99,13 +115,13 @@ export function watch<D extends DT.Any>(
 
   const watcher = fsWatch(
     dir,
-    options,
+    fsOptions,
     debounce(
       async (_eventType, filename) => {
         if (filename && !pathIsLoadable(filename)) return
         await onChange()
       },
-      300,
+      debounceMS,
     ),
   )
 
