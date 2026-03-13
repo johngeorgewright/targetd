@@ -1,5 +1,18 @@
 # Changelog
 
+## [5.1.0](https://github.com/johngeorgewright/targetd/compare/@targetd/json-schema-v5.0.1...@targetd/json-schema-v5.1.0) (2026-03-13)
+
+
+### Features
+
+* overridable tojson params ([f0cdd0a](https://github.com/johngeorgewright/targetd/commit/f0cdd0ae12a6b55d283bfb9714ba060d670a3c1a))
+
+
+### Bug Fixes
+
+* attempt to fix jsr problems ([b14b47f](https://github.com/johngeorgewright/targetd/commit/b14b47fafa1bfdc2930cff002faad20edbd794b8))
+* json schema additions ([8196c9a](https://github.com/johngeorgewright/targetd/commit/8196c9aa0dc94d35ca827ca62114c93f20497620))
+
 ## [5.0.1](https://github.com/johngeorgewright/targetd/compare/@targetd/json-schema-v5.0.0...@targetd/json-schema-v5.0.1) (2026-02-13)
 
 
