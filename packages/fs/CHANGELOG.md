@@ -1,5 +1,12 @@
 # Changelog
 
+## [7.1.0](https://github.com/johngeorgewright/targetd/compare/@targetd/fs-v7.0.2...@targetd/fs-v7.1.0) (2026-03-13)
+
+
+### Features
+
+* add debounce option to WatchOptions for file change events ([3da84ce](https://github.com/johngeorgewright/targetd/commit/3da84ceff54385de84e9e4a9b432f38d2e0e5854))
+
 ## [7.0.2](https://github.com/johngeorgewright/targetd/compare/@targetd/fs-v7.0.1...@targetd/fs-v7.0.2) (2026-02-13)
 
 
