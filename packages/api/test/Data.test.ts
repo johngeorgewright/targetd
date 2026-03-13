@@ -589,9 +589,9 @@ Deno.test('variables', async (t) => {
       ],
     })
 
-  assertSnapshot(t, await data.getPayload('foo', { channel: 'bar' }))
+  await assertSnapshot(t, await data.getPayload('foo', { channel: 'bar' }))
 
-  assertSnapshot(t, await data.getPayload('foo'))
+  await assertSnapshot(t, await data.getPayload('foo'))
 })
 
 Deno.test('variables using fallthrough targeting', async (t) => {
@@ -646,7 +646,52 @@ Deno.test('variables using fallthrough targeting', async (t) => {
       ],
     })
 
-  assertSnapshot(t, await data.getPayload('foo', { channel: 'bar' }))
+  await assertSnapshot(t, await data.getPayload('foo', { channel: 'bar' }))
+})
+
+Deno.test('variables in records', async (t) => {
+  const data = await Data.create()
+    .usePayload({
+      foo: z.record(z.string(), z.array(z.number())),
+    })
+    .addRules('foo', {
+      variables: {
+        a: [{ payload: [1, 2, 3] }],
+      },
+      rules: [{ payload: { a: '{{a}}' } }],
+    })
+
+  await assertSnapshot(
+    t,
+    data.data,
+  )
+})
+
+Deno.test('variables in arrays', async (t) => {
+  const data = await Data.create()
+    .usePayload({
+      foo: z.array(z.number()),
+      bar: z.array(z.strictObject({
+        b: z.number(),
+        c: z.string(),
+      })),
+    }).addRules('foo', {
+      variables: {
+        a: [{ payload: 1 }],
+      },
+      rules: [{ payload: ['{{a}}'] }],
+    }).addRules('bar', {
+      variables: {
+        b: [{ payload: 2 }],
+        c: [{ payload: '3' }],
+      },
+      rules: [{ payload: [{ b: '{{b}}', c: '{{c}}' }] }],
+    })
+
+  await assertSnapshot(
+    t,
+    data.data,
+  )
 })
 
 Deno.test('errors when using variables with incorrect types', async (t) => {
@@ -661,7 +706,7 @@ Deno.test('errors when using variables with incorrect types', async (t) => {
       }),
     })
 
-  assertSnapshot(
+  await assertSnapshot(
     t,
     await data.addRules('foo', {
       variables: {

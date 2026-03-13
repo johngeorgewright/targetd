@@ -377,6 +377,84 @@ snapshot[`variables using fallthrough targeting 1`] = `
 }
 `;
 
+snapshot[`variables in records 1`] = `
+{
+  foo: {
+    rules: [
+      {
+        payload: {
+          a: [Function: resolver] {
+            "\$\$resolver\$\$": true,
+          },
+        },
+      },
+    ],
+    variables: {
+      a: [
+        {
+          payload: [
+            1,
+            2,
+            3,
+          ],
+        },
+      ],
+    },
+  },
+}
+`;
+
+snapshot[`variables in arrays 1`] = `
+{
+  bar: {
+    rules: [
+      {
+        payload: [
+          {
+            b: [Function: resolver] {
+              "\$\$resolver\$\$": true,
+            },
+            c: [Function: resolver] {
+              "\$\$resolver\$\$": true,
+            },
+          },
+        ],
+      },
+    ],
+    variables: {
+      b: [
+        {
+          payload: 2,
+        },
+      ],
+      c: [
+        {
+          payload: "3",
+        },
+      ],
+    },
+  },
+  foo: {
+    rules: [
+      {
+        payload: [
+          [Function: resolver] {
+            "\$\$resolver\$\$": true,
+          },
+        ],
+      },
+    ],
+    variables: {
+      a: [
+        {
+          payload: 1,
+        },
+      ],
+    },
+  },
+}
+`;
+
 snapshot[`errors when using variables with incorrect types 1`] = `
 [
   {
