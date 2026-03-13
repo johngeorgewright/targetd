@@ -172,6 +172,51 @@ snapshot[`json schema for simple data object 1`] = `
                         ],
                       },
                       b: {
+                        "\$defs": {
+                          __schema0: {
+                            anyOf: [
+                              {
+                                pattern: "^\\\\{\\\\{[\\\\s\\\\S]{0,}\\\\}\\\\}\$",
+                                type: "string",
+                              },
+                              {
+                                anyOf: [
+                                  {
+                                    pattern: "^\\\\{\\\\{[\\\\s\\\\S]{0,}\\\\}\\\\}\$",
+                                    type: "string",
+                                  },
+                                  {
+                                    anyOf: [
+                                      {
+                                        pattern: "^\\\\{\\\\{[\\\\s\\\\S]{0,}\\\\}\\\\}\$",
+                                        type: "string",
+                                      },
+                                      {
+                                        anyOf: [
+                                          {
+                                            pattern: "^\\\\{\\\\{[\\\\s\\\\S]{0,}\\\\}\\\\}\$",
+                                            type: "string",
+                                          },
+                                          {
+                                            anyOf: [
+                                              {
+                                                pattern: "^\\\\{\\\\{[\\\\s\\\\S]{0,}\\\\}\\\\}\$",
+                                                type: "string",
+                                              },
+                                              {
+                                                type: "string",
+                                              },
+                                            ],
+                                          },
+                                        ],
+                                      },
+                                    ],
+                                  },
+                                ],
+                              },
+                            ],
+                          },
+                        },
                         anyOf: [
                           {
                             pattern: "^\\\\{\\\\{[\\\\s\\\\S]{0,}\\\\}\\\\}\$",
@@ -179,7 +224,7 @@ snapshot[`json schema for simple data object 1`] = `
                           },
                           {
                             items: {
-                              type: "string",
+                              "\$ref": "#/\$defs/__schema0",
                             },
                             type: "array",
                           },

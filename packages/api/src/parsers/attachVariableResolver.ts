@@ -1,8 +1,6 @@
 import {
-  array,
   type output,
   pipe,
-  record,
   safeExtend,
   transform,
   type ZodMiniAny,
@@ -17,7 +15,13 @@ import {
   type VariableStringParser,
   variableStringParser,
 } from './DataItemVariableResolver.ts'
-import type { $ZodArray, $ZodObject, $ZodRecord, $ZodType } from 'zod/v4/core'
+import {
+  type $ZodArray,
+  type $ZodObject,
+  type $ZodRecord,
+  type $ZodType,
+  clone,
+} from 'zod/v4/core'
 import { any, type ZodObject } from 'zod'
 import { type ZodSwitch, zodSwitch } from './switch.ts'
 import type { VariablesRegistry } from './variablesRegistry.ts'
@@ -86,10 +90,11 @@ function arrayVariableResolverParser(
   variablesRegistry: VariablesRegistry,
   arrayParser: $ZodArray,
 ): RecursiveVariableResolver<$ZodArray> {
-  const $arrayParser = array(
-    attachVariableResolver(variablesRegistry, arrayParser._zod.def.element),
+  const $arrayParser = clone(arrayParser)
+  $arrayParser._zod.def.element = attachVariableResolver(
+    variablesRegistry,
+    $arrayParser._zod.def.element,
   )
-
   return variableResolverParser(
     variablesRegistry,
     $arrayParser,
@@ -100,11 +105,11 @@ function recordVariableResolverParser(
   variablesRegistry: VariablesRegistry,
   recordParser: $ZodRecord,
 ): RecursiveVariableResolver<$ZodRecord> {
-  const $recordParser = record(
-    recordParser._zod.def.keyType as any,
-    attachVariableResolver(variablesRegistry, recordParser._zod.def.valueType),
+  const $recordParser = clone(recordParser)
+  $recordParser._zod.def.valueType = attachVariableResolver(
+    variablesRegistry,
+    $recordParser._zod.def.valueType,
   )
-
   return variableResolverParser(
     variablesRegistry,
     $recordParser,
