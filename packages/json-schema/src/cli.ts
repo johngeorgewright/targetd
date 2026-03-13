@@ -1,6 +1,7 @@
 import type { DT } from '@targetd/api'
 import yargs from 'yargs'
 import * as path from 'node:path'
+import { pathToFileURL } from 'node:url'
 import { writeFile } from 'node:fs/promises'
 import { argv, cwd } from 'node:process'
 import { dataJSONSchemas } from './index.ts'
@@ -31,8 +32,7 @@ const { dataExport, inputModule, outputFile } = await yargs()
   .parseAsync(argv)
 
 const input = await import(
-  // We need a forward slash here so that Deno is aware it's an absolute path
-  `/${path.resolve(cwd(), inputModule).replace(/^\//, '')}`
+  pathToFileURL(path.resolve(cwd(), inputModule)).href
 )
 
 const data = input[dataExport]

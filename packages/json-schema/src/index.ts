@@ -1,3 +1,4 @@
+import { omit } from '@es-toolkit/es-toolkit'
 import {
   DataItemParser,
   DataItemsParser,
@@ -26,6 +27,7 @@ import type { $ZodType, JSONSchema } from 'zod/v4/core'
  */
 export function dataJSONSchemas<D extends DT.Any>(
   data: D,
+  params?: ToJSONSchemaParams,
 ): JSONSchema.BaseSchema {
   return toJSONSchema(
     extend(
@@ -36,7 +38,7 @@ export function dataJSONSchemas<D extends DT.Any>(
       ) as any,
       { $schema: optional(string()) },
     ),
-    params,
+    toJSONSchemaParams(params),
   )
 }
 
@@ -58,6 +60,7 @@ export function dataJSONSchemas<D extends DT.Any>(
 export function dataJSONSchema<D extends DT.Any>(
   data: D,
   name: keyof DT.PayloadParsers<D>,
+  params?: ToJSONSchemaParams,
 ): JSONSchema.BaseSchema {
   return toJSONSchema(
     extend(
@@ -69,25 +72,45 @@ export function dataJSONSchema<D extends DT.Any>(
       ) as any,
       { $schema: optional(string()) },
     ),
-    params,
+    toJSONSchemaParams(params),
   )
 }
 
-const params: NonNullable<Parameters<typeof toJSONSchema>[1]> = {
-  io: 'input',
-  unrepresentable: 'any',
-  reused: 'ref',
-  override(ctx) {
-    if (isZodSwitch(ctx.zodSchema)) {
-      const union = switchRegistry.get(ctx.zodSchema)
-        ?.union
-      if (union) {
-        ctx.jsonSchema = toJSONSchema(union as any, params)
+type _ToJSONSchemaParams = NonNullable<Parameters<typeof toJSONSchema>[1]>
+
+export type ToJSONSchemaParams = _ToJSONSchemaParams & {
+  override?: (
+    ...args: Parameters<Required<_ToJSONSchemaParams>['override']>
+  ) => void | boolean
+}
+
+function toJSONSchemaParams(params?: ToJSONSchemaParams): _ToJSONSchemaParams {
+  return {
+    io: 'input',
+    reused: 'ref',
+    unrepresentable: 'any',
+    override(ctx) {
+      if (params?.override?.(ctx)) return
+      if (isZodSwitch(ctx.zodSchema)) {
+        const union = switchRegistry.get(ctx.zodSchema)
+          ?.union
+        if (union) {
+          const schema = toJSONSchema(
+            union as any,
+            toJSONSchemaParams(params),
+          )
+          // Mutate the jsonSchema in place - ctx.jsonSchema is a reference
+          // to the actual schema object, so we must modify it directly
+          for (const key in ctx.jsonSchema) {
+            delete (ctx.jsonSchema as Record<string, unknown>)[key]
+          }
+          Object.assign(ctx.jsonSchema, schema)
+          delete (ctx.jsonSchema as Record<string, unknown>).$schema
+        }
       }
-    } else if (ctx.zodSchema._zod.def.type === 'transform') {
-      ctx.jsonSchema = {}
-    }
-  },
+    },
+    ...(params && omit(params, ['override'])),
+  }
 }
 
 function isZodSwitch(parser: $ZodType): parser is ZodSwitch {

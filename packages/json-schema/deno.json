@@ -7,6 +7,7 @@
     "./cli": "./src/cli.ts"
   },
   "imports": {
+    "@es-toolkit/es-toolkit": "jsr:@es-toolkit/es-toolkit@^1.45.1",
     "@targetd/api": "jsr:@targetd/api@^8.0.3",
     "@types/yargs": "npm:@types/yargs@^17.0.35",
     "yargs": "npm:yargs@^18.0.0",
@@ -31,7 +32,6 @@
   "publish": {
     "include": [
       "deno.json",
-      "package.json",
       "src/",
       "LICENSE",
       "README.md"
