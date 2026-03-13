@@ -34,7 +34,15 @@ snapshot[`json schema for simple data object 1`] = `
       items: {
         additionalProperties: false,
         properties: {
-          payload: {},
+          payload: {
+            anyOf: [
+              {
+                pattern: "^\\\\{\\\\{[\\\\s\\\\S]{0,}\\\\}\\\\}\$",
+                type: "string",
+              },
+              {},
+            ],
+          },
           targeting: {
             anyOf: [
               {
@@ -68,12 +76,159 @@ snapshot[`json schema for simple data object 1`] = `
       },
       type: "object",
     },
+    __schema6: {
+      additionalProperties: false,
+      properties: {
+        browser: {
+          "\$ref": "#/\$defs/__schema2",
+        },
+        weather: {
+          "\$ref": "#/\$defs/__schema1",
+        },
+      },
+      type: "object",
+    },
+    __schema7: {
+      type: "string",
+    },
+    __schema8: {
+      items: {
+        additionalProperties: false,
+        properties: {
+          payload: {
+            anyOf: [
+              {
+                pattern: "^\\\\{\\\\{[\\\\s\\\\S]{0,}\\\\}\\\\}\$",
+                type: "string",
+              },
+              {},
+            ],
+          },
+          targeting: {
+            anyOf: [
+              {
+                "\$ref": "#/\$defs/__schema9",
+              },
+              {
+                items: {
+                  "\$ref": "#/\$defs/__schema9",
+                },
+                type: "array",
+              },
+            ],
+          },
+        },
+        required: [
+          "payload",
+        ],
+        type: "object",
+      },
+      type: "array",
+    },
+    __schema9: {
+      additionalProperties: false,
+      properties: {
+        browser: {
+          "\$ref": "#/\$defs/__schema2",
+        },
+        weather: {
+          "\$ref": "#/\$defs/__schema1",
+        },
+      },
+      type: "object",
+    },
   },
   "\$schema": "https://json-schema.org/draft/2020-12/schema",
   additionalProperties: false,
   properties: {
     "\$schema": {
       type: "string",
+    },
+    bar: {
+      additionalProperties: false,
+      properties: {
+        rules: {
+          items: {
+            additionalProperties: false,
+            properties: {
+              payload: {
+                anyOf: [
+                  {
+                    pattern: "^\\\\{\\\\{[\\\\s\\\\S]{0,}\\\\}\\\\}\$",
+                    type: "string",
+                  },
+                  {
+                    additionalProperties: false,
+                    properties: {
+                      a: {
+                        anyOf: [
+                          {
+                            pattern: "^\\\\{\\\\{[\\\\s\\\\S]{0,}\\\\}\\\\}\$",
+                            type: "string",
+                          },
+                          {
+                            type: "number",
+                          },
+                        ],
+                      },
+                      b: {
+                        anyOf: [
+                          {
+                            pattern: "^\\\\{\\\\{[\\\\s\\\\S]{0,}\\\\}\\\\}\$",
+                            type: "string",
+                          },
+                          {
+                            items: {
+                              type: "string",
+                            },
+                            type: "array",
+                          },
+                        ],
+                      },
+                    },
+                    required: [
+                      "a",
+                      "b",
+                    ],
+                    type: "object",
+                  },
+                ],
+              },
+              targeting: {
+                anyOf: [
+                  {
+                    "\$ref": "#/\$defs/__schema6",
+                  },
+                  {
+                    items: {
+                      "\$ref": "#/\$defs/__schema6",
+                    },
+                    type: "array",
+                  },
+                ],
+              },
+            },
+            required: [
+              "payload",
+            ],
+            type: "object",
+          },
+          type: "array",
+        },
+        variables: {
+          additionalProperties: {
+            "\$ref": "#/\$defs/__schema8",
+          },
+          propertyNames: {
+            "\$ref": "#/\$defs/__schema7",
+          },
+          type: "object",
+        },
+      },
+      required: [
+        "rules",
+      ],
+      type: "object",
     },
     foo: {
       additionalProperties: false,

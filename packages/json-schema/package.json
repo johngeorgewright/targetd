@@ -1,4 +1,0 @@
-{
-  "name": "@targetd/json-schema",
-  "bin": "./src/cli.js"
-}

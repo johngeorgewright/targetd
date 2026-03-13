@@ -1404,6 +1404,7 @@
       },
       "packages/json-schema": {
         "dependencies": [
+          "jsr:@es-toolkit/es-toolkit@^1.45.1",
           "jsr:@targetd/api@^8.0.3",
           "npm:@types/yargs@^17.0.35",
           "npm:yargs@18",
