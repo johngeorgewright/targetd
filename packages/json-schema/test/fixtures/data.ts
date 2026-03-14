@@ -9,7 +9,8 @@ export const data = await Data.create()
         a: z.number(),
         b: z.array(z.string()),
       }),
-      car: z.record(z.string(), z.number()),
+      record: z.record(z.string(), z.number()),
+      array: z.array(z.number()),
     },
   )
   .useTargeting({
@@ -58,7 +59,7 @@ export const data = await Data.create()
       },
     },
   ])
-  .addRules('car', [
+  .addRules('record', [
     {
       payload: {
         a: 123,
