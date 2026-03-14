@@ -18,6 +18,7 @@ import type { VariablesRegistry } from './variablesRegistry.ts'
 
 export const variableStringParser = () =>
   templateLiteral(['{{', string(), '}}'])
+
 export type VariableStringParser = ZodMiniTemplateLiteral<`{{${string}}}`>
 
 export function DataItemVariableResolverParser(
