@@ -1,5 +1,12 @@
 # Changelog
 
+## [8.1.1](https://github.com/johngeorgewright/targetd/compare/@targetd/api-v8.1.0...@targetd/api-v8.1.1) (2026-03-14)
+
+
+### Bug Fixes
+
+* variable error path ([7a3bd41](https://github.com/johngeorgewright/targetd/commit/7a3bd4121a8749c95f59491a0fb5afc19ab19ad4))
+
 ## [8.1.0](https://github.com/johngeorgewright/targetd/compare/@targetd/api-v8.0.3...@targetd/api-v8.1.0) (2026-03-14)
 
 
