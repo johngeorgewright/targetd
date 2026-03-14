@@ -653,7 +653,7 @@ Deno.test('variables using fallthrough targeting', async (t) => {
   await assertSnapshot(t, await data.getPayload('foo', { channel: 'bar' }))
 })
 
-Deno.test('variables in records', async (t) => {
+Deno.test('variables in records', async () => {
   const data = await Data.create()
     .usePayload({
       foo: z.record(z.string(), z.array(z.number())),
