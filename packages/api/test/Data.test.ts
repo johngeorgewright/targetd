@@ -665,10 +665,8 @@ Deno.test('variables in records', async (t) => {
       rules: [{ payload: { a: '{{a}}' } }],
     })
 
-  await assertSnapshot(
-    t,
-    data.data,
-  )
+  const payload = await data.getPayload('foo')
+  assertEquals(payload, { a: [1, 2, 3] })
 })
 
 Deno.test('variables in arrays', async (t) => {

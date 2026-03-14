@@ -377,33 +377,6 @@ snapshot[`variables using fallthrough targeting 1`] = `
 }
 `;
 
-snapshot[`variables in records 1`] = `
-{
-  foo: {
-    rules: [
-      {
-        payload: {
-          a: [Function: resolver] {
-            "\$\$resolver\$\$": true,
-          },
-        },
-      },
-    ],
-    variables: {
-      a: [
-        {
-          payload: [
-            1,
-            2,
-            3,
-          ],
-        },
-      ],
-    },
-  },
-}
-`;
-
 snapshot[`variables in arrays 1`] = `
 {
   bar: {
