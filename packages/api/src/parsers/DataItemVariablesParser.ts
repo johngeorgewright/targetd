@@ -79,7 +79,7 @@ export function DataItemVariablesParser<$ extends DT.Meta>(
             input: payload as any,
             message:
               `The variable {{${varName}}} cannot be used where it currently is in the payload.\n${issue.message}`,
-            path,
+            path: [...path, ...issue.path],
           })),
         )
       }
