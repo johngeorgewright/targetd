@@ -16,7 +16,8 @@ import type {
 import { objectMap } from '../util.ts'
 import type { VariablesRegistry } from './variablesRegistry.ts'
 
-export const variableStringParser = templateLiteral(['{{', string(), '}}'])
+export const variableStringParser = () =>
+  templateLiteral(['{{', string(), '}}'])
 export type VariableStringParser = ZodMiniTemplateLiteral<`{{${string}}}`>
 
 export function DataItemVariableResolverParser(
@@ -24,7 +25,7 @@ export function DataItemVariableResolverParser(
   parser: $ZodType,
 ): DataItemVariableResolverParser {
   return pipe(
-    variableStringParser,
+    variableStringParser(),
     transform((input, ctx) =>
       stringToVariableResolver(registry, parser, input, ctx)
     ),
@@ -65,8 +66,10 @@ export function isVariableResolver(x: unknown): x is VariableResolver {
 }
 
 export function resolveVariables(variables: Record<string, any>, x: unknown) {
-  return typeof x === 'object' && x !== null && !Array.isArray(x)
-    ? recursivelyResolveVariables(variables, x as Record<string, unknown>)
+  return Array.isArray(x)
+    ? recursivelyResolveArrayVariables(variables, x)
+    : typeof x === 'object' && x !== null
+    ? recursivelyResolveObjectVariables(variables, x as Record<string, unknown>)
     : resolveVariable(variables, x)
 }
 
@@ -80,7 +83,14 @@ function resolveVariable(variables: Record<string, any>, x: unknown) {
   return isVariableResolver(x) ? x(variables) : x
 }
 
-function recursivelyResolveVariables(
+function recursivelyResolveArrayVariables(
+  variables: Record<string, any>,
+  x: unknown[],
+): unknown[] {
+  return x.map((value) => resolveVariables(variables, value))
+}
+
+function recursivelyResolveObjectVariables(
   variables: Record<string, any>,
   x: Record<string, unknown>,
 ): Record<string, unknown> {

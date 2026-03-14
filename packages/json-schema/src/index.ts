@@ -3,11 +3,10 @@ import {
   DataItemParser,
   DataItemsParser,
   type DT,
-  switchRegistry,
-  type ZodSwitch,
+  isZodSwitch,
 } from '@targetd/api'
 import { extend, optional, string, toJSONSchema } from 'zod/mini'
-import type { $ZodType, JSONSchema } from 'zod/v4/core'
+import type { JSONSchema } from 'zod/v4/core'
 
 /**
  * Generate JSON Schema for all data items in a Data instance.
@@ -76,44 +75,26 @@ export function dataJSONSchema<D extends DT.Any>(
   )
 }
 
-type _ToJSONSchemaParams = NonNullable<Parameters<typeof toJSONSchema>[1]>
+export type ToJSONSchemaParams = NonNullable<Parameters<typeof toJSONSchema>[1]>
 
-export type ToJSONSchemaParams = _ToJSONSchemaParams & {
-  override?: (
-    ...args: Parameters<Required<_ToJSONSchemaParams>['override']>
-  ) => void | boolean
-}
-
-function toJSONSchemaParams(params?: ToJSONSchemaParams): _ToJSONSchemaParams {
+function toJSONSchemaParams(params?: ToJSONSchemaParams): ToJSONSchemaParams {
   return {
     io: 'input',
     reused: 'ref',
     unrepresentable: 'any',
     override(ctx) {
-      if (params?.override?.(ctx)) return
       if (isZodSwitch(ctx.zodSchema)) {
-        const union = switchRegistry.get(ctx.zodSchema)
-          ?.union
-        if (union) {
-          const schema = toJSONSchema(
-            union as any,
-            toJSONSchemaParams(params),
-          )
-          // Mutate the jsonSchema in place - ctx.jsonSchema is a reference
-          // to the actual schema object, so we must modify it directly
-          for (const key in ctx.jsonSchema) {
-            delete (ctx.jsonSchema as Record<string, unknown>)[key]
-          }
-          Object.assign(ctx.jsonSchema, schema)
-          delete (ctx.jsonSchema as Record<string, unknown>).$schema
-        }
+        Object.assign(
+          ctx.jsonSchema,
+          toJSONSchema(ctx.zodSchema._zod.def.union, {
+            ...toJSONSchemaParams(),
+            reused: 'inline',
+          }),
+        )
+        delete ctx.jsonSchema.$schema
       }
+      params?.override?.(ctx)
     },
     ...(params && omit(params, ['override'])),
   }
-}
-
-function isZodSwitch(parser: $ZodType): parser is ZodSwitch {
-  return parser._zod.def.type === 'custom' &&
-    switchRegistry.has(parser as ZodSwitch)
 }

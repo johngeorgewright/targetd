@@ -1,39 +1,85 @@
+import { safeParse, union, type ZodMiniUnion } from 'zod/mini'
 import {
-  custom,
-  registry,
-  safeParse,
-  superRefine,
-  union,
-  type ZodMiniCustom,
-  type ZodMiniUnion,
-} from 'zod/mini'
-import type { $ZodRegistry, $ZodType } from 'zod/v4/core'
+  $constructor,
+  type $ZodCustomDef,
+  type $ZodCustomInternals,
+  $ZodType,
+  type $ZodType as $ZodTypeType,
+  NEVER,
+} from 'zod/v4/core'
 
 /**
  * A tuple array representing switch case mappings.
  * Each entry is a [condition, parser] pair where the condition determines which parser to use.
  */
-export type $ZodSwitchMap = [condition: $ZodType, parser: $ZodType][]
+export type $ZodSwitchMap = [condition: $ZodTypeType, parser: $ZodTypeType][]
 
 /**
- * A Zod custom schema type that evaluates conditions and applies the corresponding parser.
- * The output and input types are derived from the parser schemas in the switch map.
+ * Definition for a ZodSwitch schema.
+ * Extends the base custom def with a switchMap and precomputed union.
+ */
+export interface ZodSwitchDef extends $ZodCustomDef {
+  switchMap: $ZodSwitchMap
+  union: ZodMiniUnion
+}
+
+/**
+ * Internal state for a ZodSwitch schema.
+ */
+export interface ZodSwitchInternals<O = unknown, I = unknown>
+  extends $ZodCustomInternals<O, I> {
+  def: ZodSwitchDef
+}
+
+/**
+ * A Zod schema that evaluates conditions and applies the corresponding parser.
+ * The union metadata is stored directly on the instance (no external registry).
  *
  * @template SwitchMap - The switch map defining condition-parser pairs
  */
-export type ZodSwitch<SwitchMap extends $ZodSwitchMap = $ZodSwitchMap> =
-  ZodMiniCustom<
+export interface ZodSwitch<SwitchMap extends $ZodSwitchMap = $ZodSwitchMap>
+  extends $ZodType {
+  _zod: ZodSwitchInternals<
     SwitchMap[number][1]['_zod']['output'],
     SwitchMap[number][1]['_zod']['input']
   >
+}
+
+export const ZodSwitch: $constructor<ZodSwitch> = $constructor(
+  'ZodSwitch',
+  (inst, def) => {
+    $ZodType.init(inst, def)
+    inst._zod.parse = (payload) => {
+      const input = payload.value
+      payload.value = NEVER
+      for (const [condition, parser] of def.switchMap) {
+        const conditionResult = safeParse(condition, input)
+        if (conditionResult.success) {
+          const parseResult = safeParse(parser, conditionResult.data)
+          if (parseResult.success) {
+            payload.value = parseResult.data
+          } else {
+            for (const issue of parseResult.error.issues) {
+              payload.issues.push({
+                ...issue,
+                input: input as any,
+              })
+            }
+          }
+          break
+        }
+      }
+      return payload
+    }
+  },
+)
 
 /**
- * Registry for switch schemas that stores metadata about the union of all possible parsers.
- * Used internally by zodSwitch to register schema information.
+ * Check if a Zod schema is a ZodSwitch instance.
  */
-export const switchRegistry: $ZodRegistry<{
-  union: ZodMiniUnion
-}, ZodSwitch<$ZodSwitchMap>> = registry()
+export function isZodSwitch(parser: $ZodTypeType): parser is ZodSwitch {
+  return parser instanceof ZodSwitch
+}
 
 /**
  * Create a conditional Zod parser that evaluates different schemas based on conditions.
@@ -57,30 +103,12 @@ export const switchRegistry: $ZodRegistry<{
 export function zodSwitch<SwitchMap extends $ZodSwitchMap>(
   switchMap: SwitchMap,
 ): ZodSwitch<SwitchMap> {
-  return custom<
-    SwitchMap[number][1]['_zod']['output'],
-    SwitchMap[number][1]['_zod']['input']
-  >().check(
-    superRefine((input, payload) => {
-      for (const [condition, parser] of switchMap) {
-        const conditionResult = safeParse(condition, input)
-        if (conditionResult.success) {
-          const parseResult = safeParse(parser, conditionResult.data)
-          if (parseResult.success) payload.value = parseResult.data
-          else {
-            for (const issue of parseResult.error.issues) {
-              payload.addIssue({
-                ...issue,
-                input: input as any,
-              })
-            }
-          }
-          break
-        }
-      }
-    }),
-  )
-    .register(switchRegistry, {
-      union: union(switchMap.map(([, type]) => type)) as any,
-    })
+  return new ZodSwitch({
+    type: 'custom',
+    check: 'custom',
+    fn: () => true,
+    abort: true,
+    switchMap,
+    union: union(switchMap.map(([, type]) => type)) as ZodMiniUnion,
+  }) as ZodSwitch<SwitchMap>
 }
