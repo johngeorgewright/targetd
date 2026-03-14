@@ -1,5 +1,19 @@
 # Changelog
 
+## [5.2.0](https://github.com/johngeorgewright/targetd/compare/@targetd/json-schema-v5.1.0...@targetd/json-schema-v5.2.0) (2026-03-14)
+
+
+### Features
+
+* variables in nested records and arrays ([8e4e4d2](https://github.com/johngeorgewright/targetd/commit/8e4e4d288d42d5c79b5ccb08ea14f6d603776630))
+
+
+### Bug Fixes
+
+* attach variables to existing schemas ([a606e6b](https://github.com/johngeorgewright/targetd/commit/a606e6bba16fdc569bc15da35c114f8a61fbcb61))
+* export ToJSONSchemaParams ([36601e9](https://github.com/johngeorgewright/targetd/commit/36601e9fca505cac0296690cbff313d38f4e9995))
+* mutations of recursive variable resolvers ([59e2214](https://github.com/johngeorgewright/targetd/commit/59e22143c59d8e0bf7f5a5727e7e7fc7cd8fe1e8))
+
 ## [5.1.0](https://github.com/johngeorgewright/targetd/compare/@targetd/json-schema-v5.0.1...@targetd/json-schema-v5.1.0) (2026-03-13)
 
 
