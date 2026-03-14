@@ -15,6 +15,67 @@ snapshot[`json schema for simple data object 1`] = `
       },
       type: "object",
     },
+    __schema10: {
+      additionalProperties: false,
+      properties: {
+        browser: {
+          "\$ref": "#/\$defs/__schema2",
+        },
+        weather: {
+          "\$ref": "#/\$defs/__schema1",
+        },
+      },
+      type: "object",
+    },
+    __schema11: {
+      type: "string",
+    },
+    __schema12: {
+      items: {
+        additionalProperties: false,
+        properties: {
+          payload: {
+            anyOf: [
+              {
+                pattern: "^\\\\{\\\\{[\\\\s\\\\S]{0,}\\\\}\\\\}\$",
+                type: "string",
+              },
+              {},
+            ],
+          },
+          targeting: {
+            anyOf: [
+              {
+                "\$ref": "#/\$defs/__schema13",
+              },
+              {
+                items: {
+                  "\$ref": "#/\$defs/__schema13",
+                },
+                type: "array",
+              },
+            ],
+          },
+        },
+        required: [
+          "payload",
+        ],
+        type: "object",
+      },
+      type: "array",
+    },
+    __schema13: {
+      additionalProperties: false,
+      properties: {
+        browser: {
+          "\$ref": "#/\$defs/__schema2",
+        },
+        weather: {
+          "\$ref": "#/\$defs/__schema1",
+        },
+      },
+      type: "object",
+    },
     __schema1: {
       items: {
         type: "string",
@@ -172,51 +233,6 @@ snapshot[`json schema for simple data object 1`] = `
                         ],
                       },
                       b: {
-                        "\$defs": {
-                          __schema0: {
-                            anyOf: [
-                              {
-                                pattern: "^\\\\{\\\\{[\\\\s\\\\S]{0,}\\\\}\\\\}\$",
-                                type: "string",
-                              },
-                              {
-                                anyOf: [
-                                  {
-                                    pattern: "^\\\\{\\\\{[\\\\s\\\\S]{0,}\\\\}\\\\}\$",
-                                    type: "string",
-                                  },
-                                  {
-                                    anyOf: [
-                                      {
-                                        pattern: "^\\\\{\\\\{[\\\\s\\\\S]{0,}\\\\}\\\\}\$",
-                                        type: "string",
-                                      },
-                                      {
-                                        anyOf: [
-                                          {
-                                            pattern: "^\\\\{\\\\{[\\\\s\\\\S]{0,}\\\\}\\\\}\$",
-                                            type: "string",
-                                          },
-                                          {
-                                            anyOf: [
-                                              {
-                                                pattern: "^\\\\{\\\\{[\\\\s\\\\S]{0,}\\\\}\\\\}\$",
-                                                type: "string",
-                                              },
-                                              {
-                                                type: "string",
-                                              },
-                                            ],
-                                          },
-                                        ],
-                                      },
-                                    ],
-                                  },
-                                ],
-                              },
-                            ],
-                          },
-                        },
                         anyOf: [
                           {
                             pattern: "^\\\\{\\\\{[\\\\s\\\\S]{0,}\\\\}\\\\}\$",
@@ -224,7 +240,7 @@ snapshot[`json schema for simple data object 1`] = `
                           },
                           {
                             items: {
-                              "\$ref": "#/\$defs/__schema0",
+                              type: "string",
                             },
                             type: "array",
                           },
@@ -266,6 +282,74 @@ snapshot[`json schema for simple data object 1`] = `
           },
           propertyNames: {
             "\$ref": "#/\$defs/__schema7",
+          },
+          type: "object",
+        },
+      },
+      required: [
+        "rules",
+      ],
+      type: "object",
+    },
+    car: {
+      additionalProperties: false,
+      properties: {
+        rules: {
+          items: {
+            additionalProperties: false,
+            properties: {
+              payload: {
+                anyOf: [
+                  {
+                    pattern: "^\\\\{\\\\{[\\\\s\\\\S]{0,}\\\\}\\\\}\$",
+                    type: "string",
+                  },
+                  {
+                    additionalProperties: {
+                      anyOf: [
+                        {
+                          pattern: "^\\\\{\\\\{[\\\\s\\\\S]{0,}\\\\}\\\\}\$",
+                          type: "string",
+                        },
+                        {
+                          type: "number",
+                        },
+                      ],
+                    },
+                    propertyNames: {
+                      type: "string",
+                    },
+                    type: "object",
+                  },
+                ],
+              },
+              targeting: {
+                anyOf: [
+                  {
+                    "\$ref": "#/\$defs/__schema10",
+                  },
+                  {
+                    items: {
+                      "\$ref": "#/\$defs/__schema10",
+                    },
+                    type: "array",
+                  },
+                ],
+              },
+            },
+            required: [
+              "payload",
+            ],
+            type: "object",
+          },
+          type: "array",
+        },
+        variables: {
+          additionalProperties: {
+            "\$ref": "#/\$defs/__schema12",
+          },
+          propertyNames: {
+            "\$ref": "#/\$defs/__schema11",
           },
           type: "object",
         },

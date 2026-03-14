@@ -1,5 +1,5 @@
 import { Data, targetIncludes } from '@targetd/api'
-import z from 'zod'
+import { z } from 'zod/mini'
 
 export const data = await Data.create()
   .usePayload(
@@ -9,6 +9,7 @@ export const data = await Data.create()
         a: z.number(),
         b: z.array(z.string()),
       }),
+      car: z.record(z.string(), z.number()),
     },
   )
   .useTargeting({
@@ -54,6 +55,13 @@ export const data = await Data.create()
       payload: {
         a: 123,
         b: ['a', 'b'],
+      },
+    },
+  ])
+  .addRules('car', [
+    {
+      payload: {
+        a: 123,
       },
     },
   ])
