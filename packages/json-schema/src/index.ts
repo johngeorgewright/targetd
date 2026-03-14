@@ -75,7 +75,7 @@ export function dataJSONSchema<D extends DT.Any>(
   )
 }
 
-type ToJSONSchemaParams = NonNullable<Parameters<typeof toJSONSchema>[1]>
+export type ToJSONSchemaParams = NonNullable<Parameters<typeof toJSONSchema>[1]>
 
 function toJSONSchemaParams(params?: ToJSONSchemaParams): ToJSONSchemaParams {
   return {
