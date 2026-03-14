@@ -1,4 +1,8 @@
-import { assertRejects, assertStrictEquals } from 'jsr:@std/assert'
+import {
+  assertEquals,
+  assertRejects,
+  assertStrictEquals,
+} from 'jsr:@std/assert'
 import { assertSnapshot } from 'jsr:@std/testing/snapshot'
 import { setTimeout } from 'node:timers/promises'
 import z, { type ZodError } from 'zod'
@@ -691,6 +695,16 @@ Deno.test('variables in arrays', async (t) => {
   await assertSnapshot(
     t,
     data.data,
+  )
+
+  assertEquals(
+    await data.getPayload('foo'),
+    [1],
+  )
+
+  assertEquals(
+    await data.getPayload('bar'),
+    [{ b: 2, c: '3' }],
   )
 })
 
