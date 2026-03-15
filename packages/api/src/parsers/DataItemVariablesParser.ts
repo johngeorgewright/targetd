@@ -76,9 +76,9 @@ export function DataItemVariablesParser<$ extends DT.Meta>(
         ctx.issues.push(
           ...result.error.issues.map((issue) => ({
             ...issue,
-            input: payload as any,
-            message:
-              `The variable {{${varName}}} cannot be used where it currently is in the payload.\n${issue.message}`,
+            input: issue.input ?? payload as any,
+            // message:
+            //   `The variable {{${varName}}} cannot be used where it currently is in the payload.\n${issue.message}`,
             path: [...path, ...issue.path],
           })),
         )

@@ -55,7 +55,7 @@ export const ZodSwitch: $constructor<ZodSwitch> = $constructor(
       for (const [condition, parser] of def.switchMap) {
         const conditionResult = safeParse(condition, input)
         if (conditionResult.success) {
-          const parseResult = safeParse(parser, conditionResult.data)
+          const parseResult = safeParse(parser, input)
           if (parseResult.success) {
             payload.value = parseResult.data
           } else {
