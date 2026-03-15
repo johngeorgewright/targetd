@@ -25,6 +25,7 @@ jobs:
 
   release-jsr:
     needs: [release-github]
+    if: needs.release-github.outputs.releases_created == 'true'
     runs-on: ubuntu-latest
     strategy:
       matrix:
