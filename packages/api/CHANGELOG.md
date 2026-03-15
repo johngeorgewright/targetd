@@ -1,5 +1,14 @@
 # Changelog
 
+## [8.1.1](https://github.com/johngeorgewright/targetd/compare/@targetd/api-v8.1.0...@targetd/api-v8.1.1) (2026-03-15)
+
+
+### Bug Fixes
+
+* correct switch parsing ([fb194fb](https://github.com/johngeorgewright/targetd/commit/fb194fb68d6bd4f66509a5ed78c43a4670789907))
+* customise message ([67f0a64](https://github.com/johngeorgewright/targetd/commit/67f0a64af846ca1e1c098f05ec039ac7c12ed963))
+* variable error path ([7a3bd41](https://github.com/johngeorgewright/targetd/commit/7a3bd4121a8749c95f59491a0fb5afc19ab19ad4))
+
 ## [8.1.0](https://github.com/johngeorgewright/targetd/compare/@targetd/api-v8.0.3...@targetd/api-v8.1.0) (2026-03-14)
 
 
