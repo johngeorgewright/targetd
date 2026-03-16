@@ -10,11 +10,10 @@
       "type": "node",
       "cwd": "${workspaceFolder}",
       "env": {},
-      "runtimeExecutable": "/Users/john.wright/.deno/bin/deno",
+      "runtimeExecutable": "/Users/john.wright/.bun/bin/bun",
       "runtimeArgs": [
-        "test",
         "--inspect-wait",
-        "--allow-all"
+        "test"
       ],
       "attachSimplePort": 9229
     }

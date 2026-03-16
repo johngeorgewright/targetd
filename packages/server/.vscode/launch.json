@@ -11,11 +11,10 @@
       "program": "${workspaceFolder}/test/index.test.ts",
       "cwd": "${workspaceFolder}",
       "env": {},
-      "runtimeExecutable": "/Users/john.wright/.deno/bin/deno",
+      "runtimeExecutable": "/Users/john.wright/.bun/bin/bun",
       "runtimeArgs": [
         "run",
-        "--inspect-brk",
-        "--allow-all"
+        "--inspect-brk"
       ],
       "attachSimplePort": 9229
     }
