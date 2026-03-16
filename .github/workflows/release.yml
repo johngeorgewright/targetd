@@ -39,5 +39,6 @@ jobs:
       - uses: denoland/setup-deno@v2
         with:
           deno-version-file: .dvmrc
+      - uses: ./.github/actions/test
       - working-directory: ${{ matrix.path_released }}
         run: if [ "$(cat deno.json | jq -r '.private // false')" != "true" ]; then deno publish; fi

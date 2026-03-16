@@ -15,6 +15,4 @@ jobs:
       image: denoland/deno:${{ needs.get-deno-version.outputs.version }}
     steps:
       - uses: actions/checkout@v6
-      - run: deno check --frozen
-      - run: deno lint
-      - run: deno task test
+      - uses: ./.github/actions/test

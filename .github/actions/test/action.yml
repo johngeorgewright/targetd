@@ -1,0 +1,13 @@
+name: Test
+
+description: Run checks and tests
+
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      run: deno check --frozen
+    - shell: bash
+      run: deno lint
+    - shell: bash
+      run: deno task test
