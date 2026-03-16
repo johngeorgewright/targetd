@@ -39,7 +39,10 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - id: package
-        run: echo "private=$(cat package.json | jq -r '.private // false')" >> $GITHUB_OUTPUT
+        working-directory: ${{ matrix.path_released }}
+        run: | # shell
+          private=$(bun -e "console.log(require('./package.json').private ?? false)")
+          echo "private=$private" >> "$GITHUB_OUTPUT"
       - if: steps.package.outputs.private != 'true'
         uses: ./.github/actions/test
       - if: steps.package.outputs.private != 'true'
