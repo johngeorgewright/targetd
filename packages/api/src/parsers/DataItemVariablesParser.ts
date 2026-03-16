@@ -20,18 +20,10 @@ export function DataItemVariablesParser<$ extends DT.Meta>(
 ): DataItemVariablesParser<$> {
   return record(
     string(),
-    DataItemRulesParser(
-      variablesRegistry,
-      any(),
-      targeting,
-      fallThroughTargeting,
-      strictTargeting,
-    ),
+    DataItemRulesParser(variablesRegistry, any(), targeting, fallThroughTargeting, strictTargeting),
   ).check((ctx) => {
     const variables = variablesRegistry.getAll()
-    for (
-      const [varName, { parser }] of Object.entries(variables)
-    ) {
+    for (const [varName, { parser }] of Object.entries(variables)) {
       if (!(varName in ctx.value)) {
         ctx.issues.push({
           code: 'custom',
@@ -39,26 +31,17 @@ export function DataItemVariablesParser<$ extends DT.Meta>(
           message: `Variable ${varName} has not been set`,
         })
       } else {
-        ctx.value[varName].forEach((rule, index) => {
+        ctx.value[varName]!.forEach((rule, index) => {
           if ('payload' in rule) {
-            parseVarPayload(varName, parser, rule.payload, [
-              varName,
-              index,
-              'payload',
-            ])
+            parseVarPayload(varName, parser, rule.payload, [varName, index, 'payload'])
           } else {
             for (const fallthroughRule of rule.fallThrough) {
-              parseVarPayload(
+              parseVarPayload(varName, parser, fallthroughRule.payload, [
                 varName,
-                parser,
-                fallthroughRule.payload,
-                [
-                  varName,
-                  index,
-                  JSON.stringify({ targeting: fallthroughRule.targeting }),
-                  'payload',
-                ],
-              )
+                index,
+                JSON.stringify({ targeting: fallthroughRule.targeting }),
+                'payload',
+              ])
             }
           }
         })
@@ -76,9 +59,8 @@ export function DataItemVariablesParser<$ extends DT.Meta>(
         ctx.issues.push(
           ...result.error.issues.map((issue) => ({
             ...issue,
-            input: issue.input ?? payload as any,
-            message:
-              `The variable {{${varName}}} cannot be used where it currently is in the payload.\n${issue.message}`,
+            input: issue.input ?? (payload as any),
+            message: `The variable {{${varName}}} cannot be used where it currently is in the payload.\n${issue.message}`,
             path: [...path, ...issue.path],
           })),
         )

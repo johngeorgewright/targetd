@@ -39,11 +39,7 @@ export class Client<$ extends DT.Meta> {
    * })
    * ```
    */
-  constructor(
-    baseURL: string,
-    data: Data<$>,
-    init?: RequestInit,
-  ) {
+  constructor(baseURL: string, data: Data<$>, init?: RequestInit) {
     this.#baseURL = baseURL
     this.#data = data.removeAllRules()
     this.#init = init
@@ -70,35 +66,28 @@ export class Client<$ extends DT.Meta> {
   async getPayload<Name extends keyof $['PayloadParsers']>(
     name: Name,
     rawQuery: Partial<StaticRecord<$['QueryParsers']>> = {},
-  ): Promise<
-    | PT.Payload<$, $['PayloadParsers'][Name]>
-    | void
-  > {
+  ): Promise<PT.Payload<$, $['PayloadParsers'][Name]> | void> {
     const query = this.#data.QueryParser.parse(rawQuery)
     const urlSearchParams = queryToURLSearchParams(query)
-    const response = await fetch(
-      `${this.#baseURL}/${String(name)}?${urlSearchParams}`,
-      {
-        method: 'GET',
-        ...this.#init,
-      },
-    )
+    const response = await fetch(`${this.#baseURL}/${String(name)}?${urlSearchParams}`, {
+      method: 'GET',
+      ...this.#init,
+    })
 
     switch (true) {
       case response.status === 204:
         return undefined
+      // @ts-expect-error Fallthrough case in switch.ts(7029)
       case response.status === 400:
-        await response.json()
-          .then(
-            (error) => {
-              if (error.name === '$ZodError') {
-                throw new ZodError(JSON.parse(error.message))
-              }
-            },
-            () => {},
-          )
-      // fallthrough
-      case response.status > 200 || response.status < 200:
+        await response.json().then(
+          (error: any) => {
+            if (error.name === '$ZodError') {
+              throw new ZodError(JSON.parse(error.message))
+            }
+          },
+          () => {},
+        )
+      case response.status >= 200 || response.status < 300:
         throw new ResponseError(response)
       default: {
         const data = await this.#data.insert({
@@ -121,16 +110,10 @@ export class Client<$ extends DT.Meta> {
    * // Returns: { greeting: 'Hello!', feature: {...}, ... }
    * ```
    */
-  async getPayloadForEachName(
-    rawQuery: Partial<StaticRecord<$['QueryParsers']>> = {},
-  ): Promise<
-    Partial<
-      {
-        [Name in keyof $['PayloadParsers']]:
-          | PT.Payload<$, $['PayloadParsers'][Name]>
-          | undefined
-      }
-    >
+  async getPayloadForEachName(rawQuery: Partial<StaticRecord<$['QueryParsers']>> = {}): Promise<
+    Partial<{
+      [Name in keyof $['PayloadParsers']]: PT.Payload<$, $['PayloadParsers'][Name]> | undefined
+    }>
   > {
     const query = this.#data.QueryParser.parse(rawQuery)
     const urlSearchParams = queryToURLSearchParams(query)

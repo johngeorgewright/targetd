@@ -8,7 +8,7 @@
   "type": "module",
   "scripts": {
     "test": "bun test packages/**/test",
-    "check": "tsc --noEmit",
+    "check": "bun --workspaces check",
     "lint": "oxlint",
     "fmt": "oxfmt",
     "commitlint": "commitlint"

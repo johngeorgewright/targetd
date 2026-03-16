@@ -10,6 +10,7 @@
   "type": "module",
   "exports": "./src/index.ts",
   "scripts": {
+    "check": "tsc",
     "test": "bun test"
   },
   "dependencies": {

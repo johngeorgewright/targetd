@@ -10,6 +10,7 @@
   "type": "module",
   "exports": "./src/index.ts",
   "scripts": {
+    "check": "tsc",
     "test": "bun test"
   },
   "dependencies": {
@@ -23,6 +24,7 @@
     "@targetd/api": "workspace:*",
     "@targetd/date-range": "workspace:*",
     "@types/bun": "catalog:",
+    "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
     "@types/qs": "^6.15.0",
     "@types/supertest": "latest",
