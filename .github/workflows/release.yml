@@ -44,4 +44,8 @@ jobs:
         uses: ./.github/actions/test
       - if: steps.package.outputs.private != 'true'
         working-directory: ${{ matrix.path_released }}
-        run: bunx jsr publish
+        run: | # shell
+          bun pm pack --filename=$(pwd)/temp.tgz
+          tar -xOf temp.tgz package/package.json > package.json
+          rm -rf package temp.tgz
+          bunx jsr publish

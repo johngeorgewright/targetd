@@ -1,4 +1,5 @@
 {
+  "$schema": "https://jsr.io/schema/config-file.v1.json",
   "name": "@targetd/api",
   "version": "8.1.1",
   "exports": "./src/index.ts",
