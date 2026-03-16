@@ -87,7 +87,7 @@ export class Client<$ extends DT.Meta> {
           },
           () => {},
         )
-      case response.status >= 200 || response.status < 300:
+      case response.status < 200 || response.status > 299:
         throw new ResponseError(response)
       default: {
         const data = await this.#data.insert({
