@@ -1,11 +1,10 @@
 {
-  "name": "@targetd/client",
-  "description": "Type-safe HTTP client for querying @targetd/server instances. Mirrors the Data API with full TypeScript inference.",
-  "version": "7.0.2",
+  "name": "@targetd/date-range",
+  "description": "Built-in targeting descriptor for date range queries in ISO 8601 format with automatic current time evaluation.",
+  "version": "6.0.2",
   "exports": "./src/index.ts",
   "imports": {
-    "@targetd/api": "jsr:@targetd/api@^8.0.3",
-    "ts-toolbelt": "npm:ts-toolbelt@^9.6.0",
+    "@targetd/api": "jsr:@targetd/api@^8.0.3", // x-release-please-version
     "zod": "npm:zod@^4.3.6"
   },
   "lint": {
@@ -26,7 +25,7 @@
   },
   "publish": {
     "include": [
-      "deno.json",
+      "deno.jsonc",
       "src/",
       "LICENSE",
       "README.md"

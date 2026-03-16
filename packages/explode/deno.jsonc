@@ -1,0 +1,36 @@
+{
+  "name": "@targetd/explode",
+  "description": "Transform flat key notation to nested objects with full TypeScript type inference.",
+  "version": "4.0.2",
+  "exports": "./src/index.ts",
+  "imports": {
+    "@targetd/api": "jsr:@targetd/api@^8.0.3", // x-release-please-version
+    "flat": "npm:flat@^6.0.1",
+    "ts-toolbelt": "npm:ts-toolbelt@^9.6.0",
+    "zod": "npm:zod@^4.3.6"
+  },
+  "lint": {
+    "rules": {
+      "exclude": [
+        "no-import-prefix",
+        "no-unversioned-import"
+      ]
+    }
+  },
+  "fmt": {
+    "semiColons": false,
+    "singleQuote": true
+  },
+  "tasks": {
+    "pwd": "echo $(pwd)",
+    "test": "deno test --allow-all --trace-leaks"
+  },
+  "publish": {
+    "include": [
+      "deno.jsonc",
+      "src/",
+      "LICENSE",
+      "README.md"
+    ]
+  }
+}

@@ -7,49 +7,75 @@
       "package-name": "@targetd/api",
       "tag-separator": "-",
       "include-component-in-tag": true,
-      "extra-files": ["deno.json"]
+      "extra-files": [
+        "deno.json",
+        {
+          "type": "generic",
+          "path": "packages/client/deno.jsonc"
+        },
+        {
+          "type": "generic",
+          "path": "packages/date-range/deno.jsonc"
+        },
+        {
+          "type": "generic",
+          "path": "packages/explode/deno.jsonc"
+        },
+        {
+          "type": "generic",
+          "path": "packages/fs/deno.jsonc"
+        },
+        {
+          "type": "generic",
+          "path": "packages/json-schema/deno.jsonc"
+        },
+        {
+          "type": "generic",
+          "path": "packages/server/deno.jsonc"
+        }
+      ]
     },
     "packages/client": {
       "release-type": "simple",
       "package-name": "@targetd/client",
       "tag-separator": "-",
       "include-component-in-tag": true,
-      "extra-files": ["deno.json"]
+      "extra-files": ["deno.jsonc"]
     },
     "packages/date-range": {
       "release-type": "simple",
       "package-name": "@targetd/date-range",
       "tag-separator": "-",
       "include-component-in-tag": true,
-      "extra-files": ["deno.json"]
+      "extra-files": ["deno.jsonc"]
     },
     "packages/explode": {
       "release-type": "simple",
       "package-name": "@targetd/explode",
       "tag-separator": "-",
       "include-component-in-tag": true,
-      "extra-files": ["deno.json"]
+      "extra-files": ["deno.jsonc"]
     },
     "packages/fs": {
       "release-type": "simple",
       "package-name": "@targetd/fs",
       "tag-separator": "-",
       "include-component-in-tag": true,
-      "extra-files": ["deno.json"]
+      "extra-files": ["deno.jsonc"]
     },
     "packages/json-schema": {
       "release-type": "simple",
       "package-name": "@targetd/json-schema",
       "tag-separator": "-",
       "include-component-in-tag": true,
-      "extra-files": ["deno.json"]
+      "extra-files": ["deno.jsonc"]
     },
     "packages/server": {
       "release-type": "simple",
       "package-name": "@targetd/server",
       "tag-separator": "-",
       "include-component-in-tag": true,
-      "extra-files": ["deno.json"]
+      "extra-files": ["deno.jsonc"]
     }
   }
 }
