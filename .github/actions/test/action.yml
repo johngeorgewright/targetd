@@ -6,8 +6,10 @@ runs:
   using: composite
   steps:
     - shell: bash
-      run: deno check --frozen
+      run: bun install
     - shell: bash
-      run: deno lint
+      run: bun run check
     - shell: bash
-      run: deno task test
+      run: bun run lint
+    - shell: bash
+      run: bun test

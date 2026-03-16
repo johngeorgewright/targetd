@@ -31,14 +31,17 @@ jobs:
       matrix:
         path_released: ${{ fromJson(needs.release-github.outputs.paths_released) }}
     name: Publish ${{ matrix.path_released }} to JSR
+    container:
+      image: oven/bun:1
     permissions:
       contents: read
       id-token: write
     steps:
       - uses: actions/checkout@v6
-      - uses: denoland/setup-deno@v2
-        with:
-          deno-version-file: .dvmrc
-      - uses: ./.github/actions/test
-      - working-directory: ${{ matrix.path_released }}
-        run: if [ "$(cat deno.json | jq -r '.private // false')" != "true" ]; then deno publish; fi
+      - id: package
+        run: echo "private=$(cat package.json | jq -r '.private // false')" >> $GITHUB_OUTPUT
+      - if: steps.package.outputs.private != 'true'
+        uses: ./.github/actions/test
+      - if: steps.package.outputs.private != 'true'
+        working-directory: ${{ matrix.path_released }}
+        run: bunx jsr publish

@@ -1,97 +1,97 @@
-export const snapshot = {};
+// Bun Snapshot v1, https://bun.sh/docs/test/snapshots
 
-snapshot[`get one data point 1`] = `
+exports[`get one data point 1`] = `
 {
-  issues: [
+  "issues": [
     {
-      code: "invalid_type",
-      expected: "string",
-      message: "Invalid input: expected string, received array",
-      path: [
+      "code": "invalid_type",
+      "expected": "string",
+      "message": "Invalid input: expected string, received array",
+      "path": [
         "weather",
       ],
     },
   ],
-  status: "validation error",
+  "status": "validation error",
 }
 `;
 
-snapshot[`get all 1`] = `
+exports[`get all 1`] = `
 {
-  bar: 123,
-  foo: "bar",
-  timed: "out of time",
+  "bar": 123,
+  "foo": "bar",
+  "timed": "out of time",
 }
 `;
 
-snapshot[`get all 2`] = `
+exports[`get all 2`] = `
 {
-  bar: 123,
-  foo: "😎",
-  timed: "out of time",
+  "bar": 123,
+  "foo": "😎",
+  "timed": "out of time",
 }
 `;
 
-snapshot[`get all 3`] = `
+exports[`get all 3`] = `
 {
-  bar: 123,
-  foo: "☂️",
-  timed: "out of time",
+  "bar": 123,
+  "foo": "☂️",
+  "timed": "out of time",
 }
 `;
 
-snapshot[`get all 4`] = `
+exports[`get all 4`] = `
 {
-  bar: 123,
-  foo: "🌊",
-  timed: "out of time",
+  "bar": 123,
+  "foo": "🌊",
+  "timed": "out of time",
 }
 `;
 
-snapshot[`get all 5`] = `
+exports[`get all 5`] = `
 {
-  bar: 123,
-  foo: "🏄‍♂️",
-  timed: "out of time",
+  "bar": 123,
+  "foo": "🏄‍♂️",
+  "timed": "out of time",
 }
 `;
 
-snapshot[`get all 6`] = `
+exports[`get all 6`] = `
 {
-  bar: 123,
-  foo: "Async payload",
-  timed: "out of time",
+  "bar": 123,
+  "foo": "Async payload",
+  "timed": "out of time",
 }
 `;
 
-snapshot[`error handling 1`] = `
+exports[`error handling 1`] = `
 {
-  issues: [
+  "issues": [
     {
-      code: "invalid_type",
-      expected: "string",
-      message: "Invalid input: expected string, received array",
-      path: [
+      "code": "invalid_type",
+      "expected": "string",
+      "message": "Invalid input: expected string, received array",
+      "path": [
         "weather",
       ],
     },
   ],
-  status: "validation error",
+  "status": "validation error",
 }
 `;
 
-snapshot[`error handling 2`] = `
+exports[`error handling 2`] = `
 {
-  issues: [
+  "issues": [
     {
-      code: "invalid_type",
-      expected: "boolean",
-      message: "Invalid input: expected boolean, received string",
-      path: [
+      "code": "invalid_type",
+      "expected": "boolean",
+      "message": "Invalid input: expected boolean, received string",
+      "path": [
         "highTide",
       ],
     },
   ],
-  status: "validation error",
+  "status": "validation error",
 }
 `;

@@ -1,0 +1,8 @@
+{
+  "name": "@targetd/api",
+  "version": "8.1.1",
+  "exports": "./src/index.ts",
+  "publish": {
+    "include": ["src/", "LICENSE", "README.md"]
+  }
+}

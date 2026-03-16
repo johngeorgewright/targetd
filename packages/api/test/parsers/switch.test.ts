@@ -14,10 +14,10 @@ import {
   union,
 } from 'zod/mini'
 import { zodSwitch } from '../../src/parsers/switch.ts'
-import { assertEquals, assertIsError } from 'jsr:@std/assert'
+import { test, expect } from 'bun:test'
 import { $ZodError } from 'zod/v4/core'
 
-Deno.test('zodSwitch', () => {
+test('zodSwitch', () => {
   const variableParser = templateLiteral(['{{', string(), '}}'])
   const numberParser = number()
 
@@ -26,24 +26,16 @@ Deno.test('zodSwitch', () => {
     [any(), numberParser],
   ])
 
-  assertEquals(
-    parse(parser, '{{mung}}'),
-    '{{mung}}',
-  )
+  expect(parse(parser, '{{mung}}')).toEqual('{{mung}}')
 
-  assertEquals(
-    parse(parser, 1_000),
-    1_000,
-  )
+  expect(parse(parser, 1_000)).toEqual(1_000)
 
-  assertIsError(
-    safeParse(parser, 'mung').error,
-    $ZodError,
-    '"expected": "number"',
-  )
+  const result = safeParse(parser, 'mung')
+  expect(result.error).toBeInstanceOf($ZodError)
+  expect(result.error?.message).toContain('"expected": "number"')
 })
 
-Deno.test('zodSwitch 2', () => {
+test('zodSwitch 2', () => {
   const min1 = () => number().check(minimum(1))
 
   const BaseAdListItem = strictObject({
@@ -69,16 +61,15 @@ Deno.test('zodSwitch 2', () => {
     [any(), RecurringAdListItem],
   ])
 
-  assertEquals(
+  expect(
     parse(AdListItem, {
       position: 'left',
       index: 1,
       range: 4,
     }),
-    {
-      position: 'left',
-      index: 1,
-      range: 4,
-    },
-  )
+  ).toEqual({
+    position: 'left',
+    index: 1,
+    range: 4,
+  })
 })

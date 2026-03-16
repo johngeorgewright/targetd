@@ -1,0 +1,27 @@
+{
+  "name": "@targetd/date-range",
+  "version": "6.0.2",
+  "description": "Built-in targeting descriptor for date range queries in ISO 8601 format with automatic current time evaluation.",
+  "files": [
+    "src/",
+    "LICENSE",
+    "README.md"
+  ],
+  "type": "module",
+  "exports": "./src/index.ts",
+  "scripts": {
+    "test": "bun test"
+  },
+  "devDependencies": {
+    "@targetd/api": "workspace:*",
+    "@types/bun": "catalog:",
+    "@types/sinon": "catalog:",
+    "sinon": "catalog:",
+    "typescript": "catalog:",
+    "zod": "catalog:"
+  },
+  "peerDependencies": {
+    "@targetd/api": "workspace:*",
+    "zod": "catalog:"
+  }
+}

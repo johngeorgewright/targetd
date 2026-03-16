@@ -1,0 +1,27 @@
+{
+  "name": "@targetd/api",
+  "version": "8.1.1",
+  "description": "Type-safe targeting and feature flag system with dynamic content delivery based on query conditions. Perfect for A/B testing, feature flags, and content personalization.",
+  "files": [
+    "src/",
+    "LICENSE",
+    "README.md"
+  ],
+  "type": "module",
+  "exports": "./src/index.ts",
+  "scripts": {
+    "test": "bun test"
+  },
+  "dependencies": {
+    "fast-deep-equal": "^3.1.3",
+    "ts-toolbelt": "catalog:"
+  },
+  "devDependencies": {
+    "@types/bun": "catalog:",
+    "typescript": "catalog:",
+    "zod": "catalog:"
+  },
+  "peerDependencies": {
+    "zod": "catalog:"
+  }
+}

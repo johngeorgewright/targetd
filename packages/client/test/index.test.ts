@@ -1,5 +1,4 @@
-import { assertStrictEquals } from 'jsr:@std/assert'
-import { assertSnapshot } from 'jsr:@std/testing/snapshot'
+import { test, expect } from 'bun:test'
 import { Data, targetEquals, targetIncludes } from '@targetd/api'
 import dateRangeTargeting from '@targetd/date-range'
 import { createServer } from '@targetd/server'
@@ -75,62 +74,36 @@ const data = await Data.create()
     },
   ])
 
-Deno.test('get one data point', async (t) => {
+test('get one data point', async () => {
   await using service = await startService()
   const { client } = service
 
-  assertStrictEquals(await client.getPayload('foo'), 'bar')
-  assertStrictEquals(await client.getPayload('foo', { weather: 'sunny' }), '😎')
-  assertStrictEquals(await client.getPayload('foo', { weather: 'rainy' }), '☂️')
-  assertStrictEquals(await client.getPayload('foo', { highTide: true }), '🌊')
-  assertStrictEquals(
-    await client.getPayload('foo', { highTide: true, weather: 'sunny' }),
-    '🏄‍♂️',
-  )
-  await assertSnapshot(t, await client.getPayload('foo', { asyncThing: true }))
-  await assertSnapshot(
-    t,
-    await client.getPayload('timed', { date: { start: '2002-01-01' } }),
-  )
-  assertStrictEquals(
-    await client.getPayload('timed', { date: { start: '2012-01-01' } }),
-    undefined,
-  )
+  expect(await client.getPayload('foo')).toBe('bar')
+  expect(await client.getPayload('foo', { weather: 'sunny' })).toBe('😎')
+  expect(await client.getPayload('foo', { weather: 'rainy' })).toBe('☂️')
+  expect(await client.getPayload('foo', { highTide: true })).toBe('🌊')
+  expect(await client.getPayload('foo', { highTide: true, weather: 'sunny' })).toBe('🏄‍♂️')
+  expect(await client.getPayload('foo', { asyncThing: true })).toMatchSnapshot()
+  expect(await client.getPayload('timed', { date: { start: '2002-01-01' } })).toMatchSnapshot()
+  expect(await client.getPayload('timed', { date: { start: '2012-01-01' } })).toBe(undefined)
 })
 
-Deno.test('get all', async (t) => {
+test('get all', async () => {
   await using service = await startService()
   const { client } = service
 
-  await assertSnapshot(t, await client.getPayloadForEachName())
-  await assertSnapshot(
-    t,
-    await client.getPayloadForEachName({ weather: 'sunny' }),
-  )
-  await assertSnapshot(
-    t,
-    await client.getPayloadForEachName({ weather: 'rainy' }),
-  )
-  await assertSnapshot(
-    t,
-    await client.getPayloadForEachName({ highTide: true }),
-  )
-  await assertSnapshot(
-    t,
-    await client.getPayloadForEachName({ highTide: true, weather: 'sunny' }),
-  )
-  await assertSnapshot(
-    t,
-    await client.getPayloadForEachName({ asyncThing: true }),
-  )
+  expect(await client.getPayloadForEachName()).toMatchSnapshot()
+  expect(await client.getPayloadForEachName({ weather: 'sunny' })).toMatchSnapshot()
+  expect(await client.getPayloadForEachName({ weather: 'rainy' })).toMatchSnapshot()
+  expect(await client.getPayloadForEachName({ highTide: true })).toMatchSnapshot()
+  expect(await client.getPayloadForEachName({ highTide: true, weather: 'sunny' })).toMatchSnapshot()
+  expect(await client.getPayloadForEachName({ asyncThing: true })).toMatchSnapshot()
 })
 
-async function startService(): Promise<
-  AsyncDisposable & { client: ClientWithData<typeof data> }
-> {
+async function startService(): Promise<AsyncDisposable & { client: ClientWithData<typeof data> }> {
   const app = createServer(data)
   const { promise, reject, resolve } = Promise.withResolvers<void>()
-  const server = app.listen(0, (error) => error ? reject(error) : resolve())
+  const server = app.listen(0, (error) => (error ? reject(error) : resolve()))
   await promise
   const address = server.address() as AddressInfo
   const client = new Client(`http://localhost:${address.port}`, data)

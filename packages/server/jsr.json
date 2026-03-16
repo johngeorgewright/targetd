@@ -1,0 +1,8 @@
+{
+  "name": "@targetd/server",
+  "version": "8.1.2",
+  "exports": "./src/index.ts",
+  "publish": {
+    "include": ["src/", "LICENSE", "README.md"]
+  }
+}

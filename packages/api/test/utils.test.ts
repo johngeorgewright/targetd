@@ -1,13 +1,8 @@
-import { assertEquals, assertStrictEquals } from 'jsr:@std/assert'
-import {
-  arrayInit,
-  arrayLast,
-  objectEveryAsync,
-  objectMap,
-} from '../src/util.ts'
+import { test, expect } from 'bun:test'
+import { arrayInit, arrayLast, objectEveryAsync, objectMap } from '../src/util.ts'
 
-Deno.test('objectMap', () => {
-  assertEquals(
+test('objectMap', () => {
+  expect(
     objectMap(
       {
         foo: 123,
@@ -15,15 +10,14 @@ Deno.test('objectMap', () => {
       },
       (v) => v + 1,
     ),
-    {
-      foo: 124,
-      bar: 322,
-    },
-  )
+  ).toEqual({
+    foo: 124,
+    bar: 322,
+  })
 })
 
-Deno.test('objectEveryAsync', async () => {
-  assertStrictEquals(
+test('objectEveryAsync', async () => {
+  expect(
     await objectEveryAsync(
       {
         foo: 1,
@@ -33,9 +27,8 @@ Deno.test('objectEveryAsync', async () => {
       },
       (value) => Promise.resolve(value).then((v) => v > 2),
     ),
-    false,
-  )
-  assertStrictEquals(
+  ).toBe(false)
+  expect(
     await objectEveryAsync(
       {
         foo: 1,
@@ -45,14 +38,13 @@ Deno.test('objectEveryAsync', async () => {
       },
       (value) => Promise.resolve(value).then((v) => v > 0),
     ),
-    true,
-  )
+  ).toBe(true)
 })
 
-Deno.test('arrayInit', () => {
-  assertEquals(arrayInit([1, 2, 3, 4, 5]), [1, 2, 3, 4])
+test('arrayInit', () => {
+  expect(arrayInit([1, 2, 3, 4, 5])).toEqual([1, 2, 3, 4])
 })
 
-Deno.test('arrayLast', () => {
-  assertStrictEquals(arrayLast([1, 2, 3, 4, 5]), 5)
+test('arrayLast', () => {
+  expect(arrayLast([1, 2, 3, 4, 5])).toBe(5)
 })

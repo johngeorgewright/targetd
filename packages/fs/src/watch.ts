@@ -1,9 +1,6 @@
 import type { DT } from '@targetd/api'
-import { debounce, Mutex } from '@es-toolkit/es-toolkit'
-import {
-  watch as fsWatch,
-  type WatchOptions as BaseWatchOptions,
-} from 'node:fs'
+import { debounce, Mutex } from 'es-toolkit'
+import { watch as fsWatch, type WatchOptions as BaseWatchOptions } from 'node:fs'
 import { load, pathIsLoadable } from './load.ts'
 
 /**
@@ -82,11 +79,7 @@ export function watch<D extends DT.Any>(
   onLoad: OnLoad<D>,
 ): WatchDisposer
 
-export function watch<D extends DT.Any>(
-  data: D,
-  dir: string,
-  onLoad: OnLoad<D>,
-): WatchDisposer
+export function watch<D extends DT.Any>(data: D, dir: string, onLoad: OnLoad<D>): WatchDisposer
 
 export function watch<D extends DT.Any>(
   data: D,
@@ -94,9 +87,7 @@ export function watch<D extends DT.Any>(
   optionsOrOnLoad: WatchOptions | OnLoad<D>,
   onLoadParam?: OnLoad<D>,
 ) {
-  const { debounceMS = 300, ...fsOptions } = onLoadParam
-    ? optionsOrOnLoad as WatchOptions
-    : {}
+  const { debounceMS = 300, ...fsOptions } = onLoadParam ? (optionsOrOnLoad as WatchOptions) : {}
   const onLoad = (onLoadParam || optionsOrOnLoad) as OnLoad<D>
   const mutex = new Mutex()
 
@@ -104,7 +95,7 @@ export function watch<D extends DT.Any>(
     await mutex.acquire()
     let error: Error | null = null
     try {
-      data = await load(data.removeAllRules(), dir) as D
+      data = (await load(data.removeAllRules(), dir)) as D
     } catch ($error: any) {
       error = $error
     } finally {
@@ -116,13 +107,10 @@ export function watch<D extends DT.Any>(
   const watcher = fsWatch(
     dir,
     fsOptions,
-    debounce(
-      async (_eventType, filename) => {
-        if (filename && !pathIsLoadable(filename)) return
-        await onChange()
-      },
-      debounceMS,
-    ),
+    debounce(async (_eventType, filename) => {
+      if (filename && !pathIsLoadable(filename)) return
+      await onChange()
+    }, debounceMS),
   )
 
   const stop: WatchDisposer = () => watcher.close()

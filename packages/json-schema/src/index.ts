@@ -1,10 +1,5 @@
-import { omit } from '@es-toolkit/es-toolkit'
-import {
-  DataItemParser,
-  DataItemsParser,
-  type DT,
-  isZodSwitch,
-} from '@targetd/api'
+import { omit } from 'es-toolkit'
+import { DataItemParser, DataItemsParser, type DT, isZodSwitch } from '@targetd/api'
 import { extend, optional, string, toJSONSchema } from 'zod/mini'
 import type { JSONSchema } from 'zod/v4/core'
 
