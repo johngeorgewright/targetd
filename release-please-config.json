@@ -15,32 +15,32 @@
         },
         {
           "type": "json",
-          "path": "packages/client/deno.json",
+          "path": "../client/deno.json",
           "jsonpath": "$.imports['@targetd/api']"
         },
         {
           "type": "json",
-          "path": "packages/date-range/deno.json",
+          "path": "../date-range/deno.json",
           "jsonpath": "$.imports['@targetd/api']"
         },
         {
           "type": "json",
-          "path": "packages/explode/deno.json",
+          "path": "../explode/deno.json",
           "jsonpath": "$.imports['@targetd/api']"
         },
         {
           "type": "json",
-          "path": "packages/fs/deno.json",
+          "path": "../fs/deno.json",
           "jsonpath": "$.imports['@targetd/api']"
         },
         {
           "type": "json",
-          "path": "packages/json-schema/deno.json",
+          "path": "../json-schema/deno.json",
           "jsonpath": "$.imports['@targetd/api']"
         },
         {
           "type": "json",
-          "path": "packages/server/deno.json",
+          "path": "../server/deno.json",
           "jsonpath": "$.imports['@targetd/api']"
         }
       ]
