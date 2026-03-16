@@ -6,7 +6,7 @@ runs:
   using: composite
   steps:
     - shell: bash
-      run: bun install
+      run: bun install --frozen-lockfile
     - shell: bash
       run: bun run check
     - shell: bash
