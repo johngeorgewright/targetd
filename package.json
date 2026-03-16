@@ -11,12 +11,14 @@
     "check": "bun --workspaces check",
     "lint": "oxlint",
     "fmt": "oxfmt",
-    "commitlint": "commitlint"
+    "commitlint": "commitlint",
+    "prepare": "husky"
   },
   "devDependencies": {
     "@commitlint/cli": "^20.4.3",
     "@commitlint/config-conventional": "^20.4.3",
     "@types/bun": "catalog:",
+    "husky": "^9.1.7",
     "lint-staged": "^16.3.1",
     "oxlint": "^1.56.0",
     "typescript": "catalog:"
