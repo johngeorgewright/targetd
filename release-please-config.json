@@ -10,28 +10,34 @@
       "extra-files": [
         "deno.json",
         {
-          "type": "generic",
-          "path": "packages/client/deno.jsonc"
+          "type": "json",
+          "path": "packages/client/deno.jsonc",
+          "jsonpath": "$.imports['@targetd/api']"
         },
         {
-          "type": "generic",
-          "path": "packages/date-range/deno.jsonc"
+          "type": "json",
+          "path": "packages/date-range/deno.jsonc",
+          "jsonpath": "$.imports['@targetd/api']"
         },
         {
-          "type": "generic",
-          "path": "packages/explode/deno.jsonc"
+          "type": "json",
+          "path": "packages/explode/deno.jsonc",
+          "jsonpath": "$.imports['@targetd/api']"
         },
         {
-          "type": "generic",
-          "path": "packages/fs/deno.jsonc"
+          "type": "json",
+          "path": "packages/fs/deno.jsonc",
+          "jsonpath": "$.imports['@targetd/api']"
         },
         {
-          "type": "generic",
-          "path": "packages/json-schema/deno.jsonc"
+          "type": "json",
+          "path": "packages/json-schema/deno.jsonc",
+          "jsonpath": "$.imports['@targetd/api']"
         },
         {
-          "type": "generic",
-          "path": "packages/server/deno.jsonc"
+          "type": "json",
+          "path": "packages/server/deno.jsonc",
+          "jsonpath": "$.imports['@targetd/api']"
         }
       ]
     },
