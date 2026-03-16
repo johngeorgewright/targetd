@@ -25,7 +25,7 @@
   },
   "publish": {
     "include": [
-      "deno.jsonc",
+      "deno.json",
       "src/",
       "LICENSE",
       "README.md"
