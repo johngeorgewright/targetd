@@ -8,35 +8,39 @@
       "tag-separator": "-",
       "include-component-in-tag": true,
       "extra-files": [
-        "deno.json",
         {
           "type": "json",
-          "path": "packages/client/deno.jsonc",
+          "path": "deno.json",
+          "jsonpath": "$.version"
+        },
+        {
+          "type": "json",
+          "path": "packages/client/deno.json",
           "jsonpath": "$.imports['@targetd/api']"
         },
         {
           "type": "json",
-          "path": "packages/date-range/deno.jsonc",
+          "path": "packages/date-range/deno.json",
           "jsonpath": "$.imports['@targetd/api']"
         },
         {
           "type": "json",
-          "path": "packages/explode/deno.jsonc",
+          "path": "packages/explode/deno.json",
           "jsonpath": "$.imports['@targetd/api']"
         },
         {
           "type": "json",
-          "path": "packages/fs/deno.jsonc",
+          "path": "packages/fs/deno.json",
           "jsonpath": "$.imports['@targetd/api']"
         },
         {
           "type": "json",
-          "path": "packages/json-schema/deno.jsonc",
+          "path": "packages/json-schema/deno.json",
           "jsonpath": "$.imports['@targetd/api']"
         },
         {
           "type": "json",
-          "path": "packages/server/deno.jsonc",
+          "path": "packages/server/deno.json",
           "jsonpath": "$.imports['@targetd/api']"
         }
       ]
@@ -46,42 +50,78 @@
       "package-name": "@targetd/client",
       "tag-separator": "-",
       "include-component-in-tag": true,
-      "extra-files": ["deno.jsonc"]
+      "extra-files": [
+        {
+          "type": "json",
+          "path": "deno.json",
+          "jsonpath": "$.version"
+        }
+      ]
     },
     "packages/date-range": {
       "release-type": "simple",
       "package-name": "@targetd/date-range",
       "tag-separator": "-",
       "include-component-in-tag": true,
-      "extra-files": ["deno.jsonc"]
+      "extra-files": [
+        {
+          "type": "json",
+          "path": "deno.json",
+          "jsonpath": "$.version"
+        }
+      ]
     },
     "packages/explode": {
       "release-type": "simple",
       "package-name": "@targetd/explode",
       "tag-separator": "-",
       "include-component-in-tag": true,
-      "extra-files": ["deno.jsonc"]
+      "extra-files": [
+        {
+          "type": "json",
+          "path": "deno.json",
+          "jsonpath": "$.version"
+        }
+      ]
     },
     "packages/fs": {
       "release-type": "simple",
       "package-name": "@targetd/fs",
       "tag-separator": "-",
       "include-component-in-tag": true,
-      "extra-files": ["deno.jsonc"]
+      "extra-files": [
+        {
+          "type": "json",
+          "path": "deno.json",
+          "jsonpath": "$.version"
+        }
+      ]
     },
     "packages/json-schema": {
       "release-type": "simple",
       "package-name": "@targetd/json-schema",
       "tag-separator": "-",
       "include-component-in-tag": true,
-      "extra-files": ["deno.jsonc"]
+      "extra-files": [
+        {
+          "type": "json",
+          "path": "deno.json",
+          "jsonpath": "$.version"
+        }
+      ]
     },
     "packages/server": {
       "release-type": "simple",
       "package-name": "@targetd/server",
       "tag-separator": "-",
       "include-component-in-tag": true,
-      "extra-files": ["deno.jsonc"]
+      "extra-files": [
+        {
+          "type": "json",
+          "path": "deno.json",
+          "jsonpath": "$.version"
+        }
+      ]
     }
   }
 }
