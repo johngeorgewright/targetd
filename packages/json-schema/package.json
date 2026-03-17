@@ -9,8 +9,8 @@
   ],
   "type": "module",
   "exports": {
-    ".": "./src/index.ts",
-    "./cli": "./src/cli.ts"
+    ".": "./dist/index.js",
+    "./cli": "./dist/cli.js"
   },
   "scripts": {
     "check": "tsc --noEmit",

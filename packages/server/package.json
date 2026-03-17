@@ -8,7 +8,7 @@
     "README.md"
   ],
   "type": "module",
-  "exports": "./src/index.ts",
+  "exports": "./dist/index.js",
   "scripts": {
     "check": "tsc --noEmit",
     "test": "bun test"
