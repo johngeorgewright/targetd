@@ -6,5 +6,5 @@ runs:
   steps:
     - shell: bash
       run: | # shell
-        bun install ----frozen-lockfile
+        bun install --frozen-lockfile
         bun run build
