@@ -1,5 +1,5 @@
 import { test, expect } from 'bun:test'
-import { arrayInit, arrayLast, objectEveryAsync, objectMap } from '../src/util.ts'
+import { arrayInit, arrayLast, objectEveryAsync, objectMap } from '../src/util.js'
 
 test('objectMap', () => {
   expect(

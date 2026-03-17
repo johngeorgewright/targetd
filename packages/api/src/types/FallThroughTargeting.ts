@@ -1,18 +1,15 @@
-import type TargetingDescriptor from '../parsers/TargetingDescriptor.ts'
-import type * as TT from './Targeting.ts'
-import type { RuleWithPayload } from '../parsers/DataItemRule.ts'
+import type TargetingDescriptor from '../parsers/TargetingDescriptor.js'
+import type * as TT from './Targeting.js'
+import type { RuleWithPayload } from '../parsers/DataItemRule.js'
 import type { $ZodType } from 'zod/v4/core'
-import type { DataItemRulesOut } from '../parsers/DataItemRules.ts'
-import type * as DT from './Data.ts'
+import type { DataItemRulesOut } from '../parsers/DataItemRules.js'
+import type * as DT from './Data.js'
 import type { ZodMiniAny } from 'zod/mini'
 
 /**
  * Matches any fallthrough targeting descriptor record
  */
-export type DescriptorRecord = Record<
-  string,
-  $ZodType | TargetingDescriptor<any, any, any>
->
+export type DescriptorRecord = Record<string, $ZodType | TargetingDescriptor<any, any, any>>
 
 /**
  * Extracts the fallthrough parser from a targeting descriptor.
@@ -20,10 +17,8 @@ export type DescriptorRecord = Record<
  *
  * @template T - Targeting descriptor or parser.
  */
-export type ParserFromDescriptor<
-  T extends $ZodType | TargetingDescriptor<any, any, any>,
-> = T extends TargetingDescriptor<any, any, any> ? TT.ParserFromDescriptor<T>
-  : T
+export type ParserFromDescriptor<T extends $ZodType | TargetingDescriptor<any, any, any>> =
+  T extends TargetingDescriptor<any, any, any> ? TT.ParserFromDescriptor<T> : T
 
 /**
  * Maps targeting descriptor names to their fallthrough parser types.
@@ -41,16 +36,10 @@ export type ParsersRecord<TDs extends DescriptorRecord> = {
  * @template $ - Data meta configuration.
  * @template PayloadParser - Zod parser for the payload type.
  */
-export type Rules<
-  $ extends DT.Meta,
-  PayloadParser extends $ZodType,
-> = {
+export type Rules<$ extends DT.Meta, PayloadParser extends $ZodType> = {
   __rules__: RuleWithPayload<PayloadParser, $['FallThroughTargetingParsers']>[]
   __variables__?: Record<
     string,
-    DataItemRulesOut<
-      $ & { TargetingParsers: $['FallThroughTargetingParsers'] },
-      ZodMiniAny
-    >
+    DataItemRulesOut<$ & { TargetingParsers: $['FallThroughTargetingParsers'] }, ZodMiniAny>
   >
 }

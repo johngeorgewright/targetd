@@ -1,5 +1,5 @@
 import { unflatten } from 'flat'
-import type { Explode } from './types.ts'
+import type { Explode } from './types.js'
 
 /**
  * Transform flat key notation to nested objects.
@@ -22,9 +22,9 @@ import type { Explode } from './types.ts'
  * // Returns: { config: { api: { url: 'https://api.com' } } }
  * ```
  */
-export function explode<
-  T extends Record<string, unknown>,
-  PathSeparator extends string,
->(x: T, pathSeparator: PathSeparator): Explode<T, PathSeparator> {
+export function explode<T extends Record<string, unknown>, PathSeparator extends string>(
+  x: T,
+  pathSeparator: PathSeparator,
+): Explode<T, PathSeparator> {
   return unflatten(x, { delimiter: pathSeparator })
 }

@@ -10,7 +10,7 @@
   "type": "module",
   "exports": "./src/index.ts",
   "scripts": {
-    "check": "tsc",
+    "check": "tsc --noEmit",
     "test": "bun test"
   },
   "dependencies": {
@@ -27,9 +27,9 @@
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
     "@types/qs": "^6.15.0",
-    "@types/supertest": "latest",
-    "lodash": "latest",
-    "supertest": "latest",
+    "@types/supertest": "^7.2.0",
+    "es-toolkit": "catalog:",
+    "supertest": "^7.2.2",
     "typescript": "catalog:",
     "zod": "catalog:"
   },

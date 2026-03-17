@@ -1,21 +1,21 @@
 # @targetd/client
 
 A type-safe HTTP client for querying
-[@targetd/server](https://jsr.io/@targetd/server) instances with full TypeScript
+[@targetd/server](../server) instances with full TypeScript
 inference.
 
 ## Installation
 
 | JS Runtime | Command                                         |
 | ---------- | ----------------------------------------------- |
-| Node.js    | `npx jsr add @targetd/api @targetd/client`      |
-| Bun        | `bunx jsr add @targetd/api @targetd/client`     |
-| Deno       | `deno add jsr:@targetd/api jsr:@targetd/client` |
+| Node.js    | `npm install @targetd/api @targetd/client`      |
+| Bun        | `bun add @targetd/api @targetd/client`          |
+| Deno       | `deno add npm:@targetd/api npm:@targetd/client` |
 
 ## Overview
 
 `@targetd/client` provides a strongly-typed HTTP client that mirrors the
-[@targetd/api](https://jsr.io/@targetd/api) Data interface. It allows you to
+[@targetd/api](../api) Data interface. It allows you to
 query remote targeting servers while maintaining full type safety and IDE
 autocomplete.
 
@@ -51,7 +51,7 @@ export const data = await Data.create()
 
 ### 2. Set Up the Server
 
-Use [@targetd/server](https://jsr.io/@targetd/server) to create an HTTP
+Use [@targetd/server](../server) to create an HTTP
 endpoint:
 
 ```typescript
@@ -256,10 +256,8 @@ try {
 
 ## Related Packages
 
-- [@targetd/api](https://jsr.io/@targetd/api) - Core targeting and data querying
-  API
-- [@targetd/server](https://jsr.io/@targetd/server) - HTTP server for serving
-  targeted data
+- [@targetd/api](../api) - Core targeting and data querying API
+- [@targetd/server](../server) - HTTP server for serving targeted data
 
 ## License
 

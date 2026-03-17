@@ -1,7 +1,7 @@
 import type { Data, DT, PT, StaticRecord } from '@targetd/api'
-import { queryToURLSearchParams } from './queryToURLSearchParams.ts'
+import { queryToURLSearchParams } from './queryToURLSearchParams.js'
 import { ZodError } from 'zod'
-import { ResponseError } from './ResponseError.ts'
+import { ResponseError } from './ResponseError.js'
 
 /**
  * Type-safe HTTP client for querying @targetd/server instances.
@@ -10,7 +10,7 @@ import { ResponseError } from './ResponseError.ts'
  * @example
  * ```ts
  * import { Client } from '@targetd/client'
- * import { data } from './data.ts' // Your Data instance definition
+ * import { data } from './data.js' // Your Data instance definition
  *
  * const client = new Client('http://localhost:3000', data)
  *

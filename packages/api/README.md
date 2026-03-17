@@ -7,9 +7,9 @@ different content based on query conditions.
 
 | JS Runtime | Command                     |
 | ---------- | --------------------------- |
-| Node.js    | `npx jsr add @targetd/api`  |
-| Bun        | `bunx jsr add @targetd/api` |
-| Deno       | `deno add jsr:@targetd/api` |
+| Node.js    | `npm install @targetd/api`  |
+| Bun        | `bun add @targetd/api`      |
+| Deno       | `deno add npm:@targetd/api` |
 
 ## Overview
 
@@ -68,14 +68,13 @@ Define the types of data your store will manage using [Zod](https://zod.dev/)
 schemas:
 
 ```typescript
-const data = await Data.create()
-  .usePayload({
-    message: z.string(),
-    config: z.object({
-      enabled: z.boolean(),
-      maxRetries: z.number(),
-    }),
-  })
+const data = await Data.create().usePayload({
+  message: z.string(),
+  config: z.object({
+    enabled: z.boolean(),
+    maxRetries: z.number(),
+  }),
+})
 ```
 
 ### 2. Targeting
@@ -86,6 +85,7 @@ built-in predicates or create custom ones:
 #### Built-in Predicates
 
 - **`targetIncludes`**: Check if a value is in an array
+
   ```typescript
   .useTargeting({
     channels: targetIncludes(z.string())
@@ -180,9 +180,9 @@ the first matching rule wins:
 .addRules('feature', [
   {
     // Most specific rule first
-    targeting: { 
+    targeting: {
       country: ['US'],
-      isPremium: true 
+      isPremium: true
     },
     payload: 'Premium US feature'
   },

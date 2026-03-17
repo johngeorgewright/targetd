@@ -1,7 +1,7 @@
 import type { DT } from '@targetd/api'
 import type { RequestHandler } from 'express'
-import type { MaybePromise } from '../types.ts'
-import type { ParsedQs } from './castQueryProp.ts'
+import type { MaybePromise } from '../types.js'
+import type { ParsedQs } from './castQueryProp.js'
 
 /**
  * Express middleware that ensures array query parameters are actually arrays.
@@ -18,9 +18,7 @@ export function castQueryArrayProps<
   ReqBody,
   ReqQuery,
   Locals extends { query: ParsedQs },
->(
-  getData: () => MaybePromise<DT.Any>,
-): RequestHandler<P, ResBody, ReqBody, ReqQuery, Locals> {
+>(getData: () => MaybePromise<DT.Any>): RequestHandler<P, ResBody, ReqBody, ReqQuery, Locals> {
   return async (_req, res, next) => {
     const { queryParsers } = await getData()
 

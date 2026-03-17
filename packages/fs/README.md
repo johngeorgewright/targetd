@@ -1,15 +1,15 @@
 # @targetd/fs
 
-Load and watch [@targetd/api](https://jsr.io/@targetd/api) rules from JSON and
+Load and watch [@targetd/api](../api) rules from JSON and
 YAML files.
 
 ## Installation
 
 | JS Runtime | Command                                     |
 | ---------- | ------------------------------------------- |
-| Node.js    | `npx jsr add @targetd/api @targetd/fs`      |
-| Bun        | `bunx jsr add @targetd/api @targetd/fs`     |
-| Deno       | `deno add jsr:@targetd/api jsr:@targetd/fs` |
+| Node.js    | `npm install @targetd/api @targetd/fs`      |
+| Bun        | `bun add @targetd/api @targetd/fs`          |
+| Deno       | `deno add npm:@targetd/api npm:@targetd/fs` |
 
 ## Overview
 
@@ -118,19 +118,15 @@ const data = await Data.create()
   })
 
 // Watch directory and reload on changes
-const stopWatching = watch(
-  data,
-  './rules',
-  (error, updatedData) => {
-    if (error) {
-      console.error('Failed to load rules:', error)
-      return
-    }
+const stopWatching = watch(data, './rules', (error, updatedData) => {
+  if (error) {
+    console.error('Failed to load rules:', error)
+    return
+  }
 
-    console.log('Rules reloaded!')
-    // Use updatedData which contains the latest rules
-  },
-)
+  console.log('Rules reloaded!')
+  // Use updatedData which contains the latest rules
+})
 
 // Later: stop watching
 stopWatching()
@@ -200,10 +196,7 @@ const data = await Data.create()
   })
 
 // Load rules from filesystem
-const appData = await load(
-  data,
-  path.join(import.meta.dirname, 'config'),
-)
+const appData = await load(data, path.join(import.meta.dirname, 'config'))
 
 // Query data
 const config = await appData.getPayloadForEachName({
@@ -217,14 +210,10 @@ console.log(config)
 ```json
 {
   "app.title": {
-    "rules": [
-      { "payload": "My Application" }
-    ]
+    "rules": [{ "payload": "My Application" }]
   },
   "app.version": {
-    "rules": [
-      { "payload": "1.0.0" }
-    ]
+    "rules": [{ "payload": "1.0.0" }]
   }
 }
 ```
@@ -261,19 +250,15 @@ const data = await Data.create()
   })
 
 // Watch for changes during development
-const stopWatching = watch(
-  data,
-  './rules',
-  (error, updatedData) => {
-    if (error) {
-      console.error('Error loading rules:', error)
-      return
-    }
+const stopWatching = watch(data, './rules', (error, updatedData) => {
+  if (error) {
+    console.error('Error loading rules:', error)
+    return
+  }
 
-    currentData = updatedData
-    console.log('✓ Rules reloaded')
-  },
-)
+  currentData = updatedData
+  console.log('✓ Rules reloaded')
+})
 
 // Your application uses currentData
 async function getFeature(environment: string) {
@@ -399,12 +384,9 @@ watch(data, './rules', (error, data) => {
 
 ## Related Packages
 
-- [@targetd/api](https://jsr.io/@targetd/api) - Core targeting and data querying
-  API
-- [@targetd/server](https://jsr.io/@targetd/server) - HTTP server for serving
-  targeted data
-- [@targetd/client](https://jsr.io/@targetd/client) - Type-safe HTTP client for
-  querying servers
+- [@targetd/api](../api) - Core targeting and data querying API
+- [@targetd/server](../server) - HTTP server for serving targeted data
+- [@targetd/client](../client) - Type-safe HTTP client for querying servers
 
 ## License
 

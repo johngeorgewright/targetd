@@ -1,14 +1,14 @@
 import type { $ZodShape } from 'zod/v4/core'
-import type Data from './Data.ts'
-import type * as DT from './types/Data.ts'
-import type * as PT from './types/Payload.ts'
-import type * as TT from './types/Targeting.ts'
-import type * as FTTT from './types/FallThroughTargeting.ts'
-import type * as QT from './types/Query.ts'
-import type { DataItemRulesIn } from './parsers/DataItemRules.ts'
-import type { MaybePromise } from './types.ts'
-import type { DataItemIn } from './parsers/DataItem.ts'
-import type { IData } from './IData.ts'
+import type Data from './Data.js'
+import type * as DT from './types/Data.js'
+import type * as PT from './types/Payload.js'
+import type * as TT from './types/Targeting.js'
+import type * as FTTT from './types/FallThroughTargeting.js'
+import type * as QT from './types/Query.js'
+import type { DataItemRulesIn } from './parsers/DataItemRules.js'
+import type { MaybePromise } from './types.js'
+import type { DataItemIn } from './parsers/DataItem.js'
+import type { IData } from './IData.js'
 
 /**
  * A Promise-based wrapper for Data that implements the IData interface.
@@ -21,8 +21,7 @@ import type { IData } from './IData.ts'
  * @extends {Promise<Data<$>>}
  * @implements {IData<$>}
  */
-export class PromisedData<$ extends DT.Meta> extends Promise<Data<$>>
-  implements IData<$> {
+export class PromisedData<$ extends DT.Meta> extends Promise<Data<$>> implements IData<$> {
   /**
    * Creates a new PromisedData instance.
    *
@@ -44,9 +43,7 @@ export class PromisedData<$ extends DT.Meta> extends Promise<Data<$>>
    * @param promisedData - A Data instance or a Promise that resolves to a Data instance
    * @returns A new PromisedData instance
    */
-  static create<$ extends DT.Meta>(
-    promisedData: MaybePromise<Data<$>>,
-  ): PromisedData<$> {
+  static create<$ extends DT.Meta>(promisedData: MaybePromise<Data<$>>): PromisedData<$> {
     return new PromisedData((resolve) => resolve(promisedData))
   }
 
@@ -57,9 +54,7 @@ export class PromisedData<$ extends DT.Meta> extends Promise<Data<$>>
    * @param cb - Callback function that transforms the Data instance
    * @returns A new PromisedData instance with the transformed Data
    */
-  #create<$$ extends DT.Meta>(
-    cb: (data: Data<$>) => MaybePromise<Data<$$>>,
-  ): PromisedData<$$> {
+  #create<$$ extends DT.Meta>(cb: (data: Data<$>) => MaybePromise<Data<$$>>): PromisedData<$$> {
     return new PromisedData((resolve) => resolve(this.then(cb)))
   }
 
@@ -72,9 +67,7 @@ export class PromisedData<$ extends DT.Meta> extends Promise<Data<$>>
    */
   usePayload<Parsers extends $ZodShape>(
     parsers: Parsers,
-  ): PromisedData<
-    $ & { PayloadParsers: $['PayloadParsers'] & Parsers }
-  > {
+  ): PromisedData<$ & { PayloadParsers: $['PayloadParsers'] & Parsers }> {
     return this.#create((data) => data.usePayload(parsers))
   }
 
@@ -96,13 +89,9 @@ export class PromisedData<$ extends DT.Meta> extends Promise<Data<$>>
    * @param opts - The data item or rules configuration to add
    * @returns A new PromisedData instance with the added rules
    */
-  addRules<
-    Name extends keyof $['PayloadParsers'],
-  >(
+  addRules<Name extends keyof $['PayloadParsers']>(
     name: Name,
-    opts:
-      | DataItemIn<$, $['PayloadParsers'][Name]>
-      | DataItemRulesIn<$, $['PayloadParsers'][Name]>,
+    opts: DataItemIn<$, $['PayloadParsers'][Name]> | DataItemRulesIn<$, $['PayloadParsers'][Name]>,
   ): PromisedData<$> {
     return this.#create((data) => data.addRules(name, opts))
   }
@@ -137,9 +126,7 @@ export class PromisedData<$ extends DT.Meta> extends Promise<Data<$>>
     targeting: TDs,
   ): PromisedData<
     $ & {
-      FallThroughTargetingParsers:
-        & $['FallThroughTargetingParsers']
-        & FTTT.ParsersRecord<TDs>
+      FallThroughTargetingParsers: $['FallThroughTargetingParsers'] & FTTT.ParsersRecord<TDs>
     }
   > {
     return this.#create((data) => data.useFallThroughTargeting(targeting))
@@ -151,11 +138,7 @@ export class PromisedData<$ extends DT.Meta> extends Promise<Data<$>>
    * @param rawQuery - Optional raw query object for filtering
    * @returns A Promise that resolves to an object containing payloads for each name
    */
-  async getPayloadForEachName(
-    rawQuery?: QT.Raw<$['QueryParsers']>,
-  ): Promise<
-    PT.Payloads<$>
-  > {
+  async getPayloadForEachName(rawQuery?: QT.Raw<$['QueryParsers']>): Promise<PT.Payloads<$>> {
     const data = await this
     return data.getPayloadForEachName(rawQuery)
   }
@@ -171,10 +154,7 @@ export class PromisedData<$ extends DT.Meta> extends Promise<Data<$>>
   async getPayload<Name extends keyof $['PayloadParsers']>(
     name: Name,
     rawQuery?: QT.Raw<$['QueryParsers']>,
-  ): Promise<
-    | PT.Payload<$, $['PayloadParsers'][Name]>
-    | undefined
-  > {
+  ): Promise<PT.Payload<$, $['PayloadParsers'][Name]> | undefined> {
     const data = await this
     return data.getPayload(name, rawQuery)
   }
@@ -190,9 +170,7 @@ export class PromisedData<$ extends DT.Meta> extends Promise<Data<$>>
   async getPayloads<Name extends keyof $['PayloadParsers']>(
     name: Name,
     rawQuery?: QT.Raw<$['QueryParsers']>,
-  ): Promise<
-    PT.Payload<$, $['PayloadParsers'][Name]>[]
-  > {
+  ): Promise<PT.Payload<$, $['PayloadParsers'][Name]>[]> {
     const data = await this
     return data.getPayloads(name, rawQuery)
   }

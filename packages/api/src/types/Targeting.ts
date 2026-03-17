@@ -1,12 +1,9 @@
-import type TargetingDescriptor from '../parsers/TargetingDescriptor.ts'
+import type TargetingDescriptor from '../parsers/TargetingDescriptor.js'
 
 /**
  * Matches a record of targeting descriptors
  */
-export type DescriptorRecord = Record<
-  string,
-  TargetingDescriptor<any, any, any>
->
+export type DescriptorRecord = Record<string, TargetingDescriptor<any, any, any>>
 
 /**
  * Maps targeting descriptor names to their targeting parser types.
@@ -22,6 +19,5 @@ export type ParserRecord<TDs extends DescriptorRecord> = {
  *
  * @template TD - Targeting descriptor.
  */
-export type ParserFromDescriptor<
-  TD extends TargetingDescriptor<any, any, any>,
-> = TD extends TargetingDescriptor<infer TV, any, any> ? TV : never
+export type ParserFromDescriptor<TD extends TargetingDescriptor<any, any, any>> =
+  TD extends TargetingDescriptor<infer TV, any, any> ? TV : never

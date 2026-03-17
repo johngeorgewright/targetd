@@ -8,9 +8,9 @@ import {
   type ZodMiniRecord,
   type ZodMiniString,
 } from 'zod/mini'
-import { DataItemRulesParser } from './DataItemRules.ts'
-import type { VariablesRegistry } from './variablesRegistry.ts'
-import type * as DT from '../types/Data.ts'
+import { DataItemRulesParser } from './DataItemRules.js'
+import type { VariablesRegistry } from './variablesRegistry.js'
+import type * as DT from '../types/Data.js'
 
 export function DataItemVariablesParser<$ extends DT.Meta>(
   variablesRegistry: VariablesRegistry,

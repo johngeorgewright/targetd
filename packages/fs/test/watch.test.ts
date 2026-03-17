@@ -3,7 +3,7 @@ import { setTimeout } from 'node:timers/promises'
 import * as path from 'node:path'
 import { cp, mkdtemp, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
-import { data } from './fixtures/data.ts'
+import { data } from './fixtures/data.js'
 import { watch } from '@targetd/fs'
 
 test('watch', async () => {

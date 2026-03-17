@@ -9,7 +9,7 @@ jobs:
     name: Github Release
     runs-on: ubuntu-latest
     concurrency:
-      group: release
+      group: release-github
     permissions:
       contents: write
       issues: write
@@ -23,14 +23,25 @@ jobs:
         with:
           token: ${{ secrets.PUSH_TOKEN }}
 
-  release-jsr:
+  release-test:
     needs: [release-github]
     if: needs.release-github.outputs.releases_created == 'true'
+    runs-on: ubuntu-latest
+    container:
+      image: oven/bun:1
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/test
+
+  release-npm:
+    needs: [release-github, release-test]
     runs-on: ubuntu-latest
     strategy:
       matrix:
         path_released: ${{ fromJson(needs.release-github.outputs.paths_released) }}
-    name: Publish ${{ matrix.path_released }} to JSR
+    name: Publish ${{ matrix.path_released }} to NPM
+    environment: npm
+    concurrency: release-npm
     container:
       image: oven/bun:1
     permissions:
@@ -38,17 +49,5 @@ jobs:
       id-token: write
     steps:
       - uses: actions/checkout@v6
-      - id: package
-        working-directory: ${{ matrix.path_released }}
-        run: | # shell
-          private=$(bun -e "console.log(require('./package.json').private ?? false)")
-          echo "private=$private" >> "$GITHUB_OUTPUT"
-      - if: steps.package.outputs.private != 'true'
-        uses: ./.github/actions/test
-      - if: steps.package.outputs.private != 'true'
-        working-directory: ${{ matrix.path_released }}
-        run: | # shell
-          bun pm pack --filename=$(pwd)/temp.tgz
-          tar -xOf temp.tgz package/package.json > package.json
-          rm -rf package temp.tgz
-          bunx jsr publish
+      - working-directory: ${{ matrix.path_released }}
+        run: npm publish

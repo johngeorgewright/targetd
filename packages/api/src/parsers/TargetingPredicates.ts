@@ -1,6 +1,6 @@
 import type { Keys } from 'ts-toolbelt/out/Any/Keys'
-import type TargetingPredicate from './TargetingPredicate.ts'
-import type * as DT from '../types/Data.ts'
+import type TargetingPredicate from './TargetingPredicate.js'
+import type * as DT from '../types/Data.js'
 import type { $InferObjectOutput, $strict, output } from 'zod/v4/core'
 
 /**
@@ -9,9 +9,7 @@ import type { $InferObjectOutput, $strict, output } from 'zod/v4/core'
  *
  * @template $ - Data meta configuration with TargetingParsers and QueryParsers.
  */
-type TargetingPredicates<
-  $ extends Pick<DT.Meta, 'TargetingParsers' | 'QueryParsers'>,
-> = {
+type TargetingPredicates<$ extends Pick<DT.Meta, 'TargetingParsers' | 'QueryParsers'>> = {
   [Name in Keys<$['TargetingParsers']>]: {
     predicate: TargetingPredicate<
       $['QueryParsers'][Name],

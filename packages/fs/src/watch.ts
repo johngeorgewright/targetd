@@ -1,7 +1,7 @@
 import type { DT } from '@targetd/api'
 import { debounce, Mutex } from 'es-toolkit'
 import { watch as fsWatch, type WatchOptions as BaseWatchOptions } from 'node:fs'
-import { load, pathIsLoadable } from './load.ts'
+import { load, pathIsLoadable } from './load.js'
 
 /**
  * Callback function invoked when rules are loaded or reloaded by the watch function.

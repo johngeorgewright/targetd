@@ -1,16 +1,16 @@
 # @targetd/date-range
 
 A time-based targeting descriptor for
-[@targetd/api](https://jsr.io/@targetd/api) that enables content delivery based
+[@targetd/api](../api) that enables content delivery based
 on date ranges.
 
 ## Installation
 
 | JS Runtime | Command                                             |
 | ---------- | --------------------------------------------------- |
-| Node.js    | `npx jsr add @targetd/api @targetd/date-range`      |
-| Bun        | `bunx jsr add @targetd/api @targetd/date-range`     |
-| Deno       | `deno add jsr:@targetd/api jsr:@targetd/date-range` |
+| Node.js    | `npm install @targetd/api @targetd/date-range`      |
+| Bun        | `bun add @targetd/api @targetd/date-range`          |
+| Deno       | `deno add npm:@targetd/api npm:@targetd/date-range` |
 
 ## Overview
 
@@ -289,12 +289,9 @@ target: { start: '2024-07-01', end: '2024-07-31' }
 
 ## Related Packages
 
-- [@targetd/api](https://jsr.io/@targetd/api) - Core targeting and data querying
-  API
-- [@targetd/server](https://jsr.io/@targetd/server) - HTTP server for serving
-  targeted data
-- [@targetd/client](https://jsr.io/@targetd/client) - Type-safe HTTP client for
-  querying servers
+- [@targetd/api](../api) - Core targeting and data querying API
+- [@targetd/server](../server) - HTTP server for serving targeted data
+- [@targetd/client](../client) - Type-safe HTTP client for querying servers
 
 ## License
 

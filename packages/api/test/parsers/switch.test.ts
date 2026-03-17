@@ -13,7 +13,7 @@ import {
   templateLiteral,
   union,
 } from 'zod/mini'
-import { zodSwitch } from '../../src/parsers/switch.ts'
+import { zodSwitch } from '../../src/parsers/switch.js'
 import { test, expect } from 'bun:test'
 import { $ZodError } from 'zod/v4/core'
 

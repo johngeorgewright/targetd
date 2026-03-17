@@ -130,13 +130,13 @@ Generate JSON Schema from Zod schemas for documentation and validation.
 
 ```bash
 # Core API
-npm install zod && npx jsr add @targetd/api
+npm install @targetd/api zod
 
 # With server and client
-npx jsr add @targetd/api @targetd/server @targetd/client
+npm install @targetd/api @targetd/server @targetd/client zod
 
 # With file loading
-npx jsr add @targetd/api @targetd/fs
+npm install @targetd/api @targetd/fs zod
 ```
 
 ### Basic Example
@@ -203,10 +203,7 @@ const allPayloads = await client.getPayloadForEachName({ isPremium: true })
 const data = await Data.create()
   .usePayload({ newFeature: z.boolean() })
   .useTargeting({ userTier: targetEquals(z.string()) })
-  .addRules('newFeature', [
-    { targeting: { userTier: 'beta' }, payload: true },
-    { payload: false },
-  ])
+  .addRules('newFeature', [{ targeting: { userTier: 'beta' }, payload: true }, { payload: false }])
 ```
 
 ### A/B Testing

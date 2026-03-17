@@ -8,7 +8,7 @@ runs:
     - shell: bash
       run: bun install --frozen-lockfile
     - shell: bash
-      run: bun run check
+      run: bun run build
     - shell: bash
       run: bun run lint
     - shell: bash

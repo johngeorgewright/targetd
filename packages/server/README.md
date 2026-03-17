@@ -1,20 +1,20 @@
 # @targetd/server
 
-HTTP server for serving [@targetd/api](https://jsr.io/@targetd/api) targeting
+HTTP server for serving [@targetd/api](../api) targeting
 data over REST endpoints.
 
 ## Installation
 
 | JS Runtime | Command                                         |
 | ---------- | ----------------------------------------------- |
-| Node.js    | `npx jsr add @targetd/api @targetd/server`      |
-| Bun        | `bunx jsr add @targetd/api @targetd/server`     |
-| Deno       | `deno add jsr:@targetd/api jsr:@targetd/server` |
+| Node.js    | `npm install @targetd/api @targetd/server`      |
+| Bun        | `bun add @targetd/api @targetd/server`          |
+| Deno       | `deno add npm:@targetd/api npm:@targetd/server` |
 
 ## Overview
 
 `@targetd/server` creates an Express-based HTTP server that exposes your
-[@targetd/api](https://jsr.io/@targetd/api) Data instance via REST endpoints.
+[@targetd/api](../api) Data instance via REST endpoints.
 Clients can query targeted payloads using query parameters.
 
 Key features:
@@ -23,7 +23,7 @@ Key features:
 - **Query parameters**: Pass targeting queries via URL parameters
 - **CORS enabled**: Ready for cross-origin requests
 - **Type-safe**: Works seamlessly with
-  [@targetd/client](https://jsr.io/@targetd/client)
+  [@targetd/client](../client)
 - **Express-based**: Built on Express for easy integration and middleware
   support
 
@@ -227,10 +227,9 @@ import { Data } from '@targetd/api'
 import { watch } from '@targetd/fs'
 import { createServer } from '@targetd/server'
 
-let currentData = await Data.create()
-  .usePayload({
-    content: z.string(),
-  })
+let currentData = await Data.create().usePayload({
+  content: z.string(),
+})
 
 // Watch for file changes
 watch(baseData, './rules', (error, updatedData) => {
@@ -330,7 +329,7 @@ Now you have both your custom routes and targetd endpoints on the same server.
 
 ### Date Range Targeting
 
-Combine with [@targetd/date-range](https://jsr.io/@targetd/date-range) for
+Combine with [@targetd/date-range](../date-range) for
 time-based content:
 
 ```typescript
@@ -480,10 +479,12 @@ import { createServer } from '@targetd/server'
 const app = express()
 
 // Custom CORS
-app.use(cors({
-  origin: 'https://example.com',
-  credentials: true,
-}))
+app.use(
+  cors({
+    origin: 'https://example.com',
+    credentials: true,
+  }),
+)
 
 createServer(data, { app })
 ```
@@ -491,7 +492,7 @@ createServer(data, { app })
 ## Working with @targetd/client
 
 The server is designed to work seamlessly with
-[@targetd/client](https://jsr.io/@targetd/client):
+[@targetd/client](../client):
 
 **Server:**
 
@@ -502,10 +503,7 @@ import { createServer } from '@targetd/server'
 export const data = await Data.create()
   .usePayload({ greeting: z.string() })
   .useTargeting({ country: targetIncludes(z.string()) })
-  .addRules('greeting', [
-    { targeting: { country: ['US'] }, payload: 'Hello!' },
-    { payload: 'Hi!' },
-  ])
+  .addRules('greeting', [{ targeting: { country: ['US'] }, payload: 'Hello!' }, { payload: 'Hi!' }])
 
 createServer(data).listen(3000)
 ```
@@ -531,10 +529,7 @@ import { Data } from '@targetd/api'
 import { load } from '@targetd/fs'
 import { createServer } from '@targetd/server'
 
-const data = await load(
-  baseData,
-  process.env.RULES_DIR || './rules',
-)
+const data = await load(baseData, process.env.RULES_DIR || './rules')
 
 const port = process.env.PORT || 3000
 
@@ -568,13 +563,10 @@ CMD ["node", "server.js"]
 
 ## Related Packages
 
-- [@targetd/api](https://jsr.io/@targetd/api) - Core targeting and data querying
-  API
-- [@targetd/client](https://jsr.io/@targetd/client) - Type-safe HTTP client for
-  querying servers
-- [@targetd/fs](https://jsr.io/@targetd/fs) - Load rules from JSON/YAML files
-- [@targetd/date-range](https://jsr.io/@targetd/date-range) - Date range
-  targeting descriptor
+- [@targetd/api](../api) - Core targeting and data querying API
+- [@targetd/client](../client) - Type-safe HTTP client for querying servers
+- [@targetd/fs](../fs) - Load rules from JSON/YAML files
+- [@targetd/date-range](../date-range) - Date range targeting descriptor
 
 ## License
 

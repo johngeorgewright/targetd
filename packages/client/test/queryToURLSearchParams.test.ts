@@ -1,5 +1,5 @@
 import { test, expect } from 'bun:test'
-import { queryToURLSearchParams } from '../src/queryToURLSearchParams.ts'
+import { queryToURLSearchParams } from '../src/queryToURLSearchParams.js'
 
 test('numbers', () => {
   expect(queryToURLSearchParams({ number: 1 }).toString()).toBe('number=1')

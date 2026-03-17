@@ -2,9 +2,9 @@
 
 ## Project Overview
 
-This is a **Deno-first monorepo** for a type-safe targeting and feature flag
+This is a **Bun-first monorepo** for a type-safe targeting and feature flag
 system. The architecture enables dynamic content delivery based on query
-conditions, with packages distributed via JSR (JavaScript Registry).
+conditions, with packages distributed via npm.
 
 **Core concept**: Store flat key-value rules with targeting conditions, query at
 runtime to get the matching payload. Think feature flags meets content
@@ -76,9 +76,7 @@ const userSegment = createTargetingDescriptor({
 const platformMatch = {
   predicate: (query) => (targets) => {
     if (!query) return true
-    return targets.some((t) =>
-      t.startsWith('!') ? t.slice(1) !== query : t === query
-    )
+    return targets.some((t) => (t.startsWith('!') ? t.slice(1) !== query : t === query))
   },
   queryParser: string(),
   requiresQuery: false,
@@ -157,8 +155,8 @@ Re-export types with `export type *` and utilities appropriately.
 - **Automated via Release Please** on pushes to `master`
 - Each package has independent versioning
 - Tags follow pattern: `@targetd/[package]-v[version]`
-- Published to **JSR** (not npm), accessible via `jsr:@targetd/[package]`
-- GitHub Actions workflow: test → release-please → publish to JSR
+- Published to **npm**, accessible via `npm install @targetd/[package]`
+- GitHub Actions workflow: test → release-please → publish to npm
 
 ## Common Pitfalls
 

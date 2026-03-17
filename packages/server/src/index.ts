@@ -1,11 +1,11 @@
 import type { DT } from '@targetd/api'
 import cors from 'cors'
 import express from 'express'
-import { errorHandler } from './middleware/error.ts'
-import { StatusError } from './StatusError.ts'
-import { castQueryArrayProps } from './middleware/castQueryArrayProps.ts'
-import { castQueryProp } from './middleware/castQueryProp.ts'
-import type { MaybePromise } from './types.ts'
+import { errorHandler } from './middleware/error.js'
+import { StatusError } from './StatusError.js'
+import { castQueryArrayProps } from './middleware/castQueryArrayProps.js'
+import { castQueryProp } from './middleware/castQueryProp.js'
+import type { MaybePromise } from './types.js'
 
 /**
  * Configuration options for createServer.

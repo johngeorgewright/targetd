@@ -1,5 +1,5 @@
 import type { $ZodType } from 'zod/v4/core'
-import type TargetingDescriptor from './parsers/TargetingDescriptor.ts'
+import type TargetingDescriptor from './parsers/TargetingDescriptor.js'
 
 /**
  * Create a targeting descriptor with default options.
@@ -25,8 +25,6 @@ export default function createTargetingDescriptor<
   TV extends $ZodType,
   QV extends $ZodType,
   Query extends Record<string, any> = {},
->(
-  targetingDescriptor: TargetingDescriptor<TV, QV, Query>,
-): TargetingDescriptor<TV, QV, Query> {
+>(targetingDescriptor: TargetingDescriptor<TV, QV, Query>): TargetingDescriptor<TV, QV, Query> {
   return { requiresQuery: true, ...targetingDescriptor }
 }

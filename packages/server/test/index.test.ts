@@ -1,7 +1,7 @@
 import { test, expect } from 'bun:test'
 import { Data, type DT, targetEquals, targetIncludes } from '@targetd/api'
 import dateRangeTargeting from '@targetd/date-range'
-import _ from 'lodash'
+import { difference } from 'es-toolkit'
 import { setTimeout } from 'node:timers/promises'
 import request from 'supertest'
 import z from 'zod'
@@ -131,7 +131,7 @@ function createData() {
         targetingParser: z.boolean(),
       },
       arrayThing: {
-        predicate: (q) => (t) => _.difference(q, t).length === 0,
+        predicate: (q) => (t) => difference(q, t).length === 0,
         queryParser: z.string().array(),
         targetingParser: z.string().array(),
       },
