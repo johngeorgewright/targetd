@@ -3,7 +3,7 @@
   "version": "4.0.2",
   "description": "Transform flat key notation to nested objects with full TypeScript type inference.",
   "files": [
-    "src/",
+    "dist/",
     "LICENSE",
     "README.md"
   ],

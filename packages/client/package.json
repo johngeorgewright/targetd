@@ -3,7 +3,7 @@
   "version": "7.0.2",
   "description": "Type-safe HTTP client for querying @targetd/server instances. Mirrors the Data API with full TypeScript inference.",
   "files": [
-    "src/",
+    "dist/",
     "LICENSE",
     "README.md"
   ],

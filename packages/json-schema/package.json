@@ -3,7 +3,7 @@
   "version": "5.2.0",
   "description": "Generate JSON Schema from @targetd/api Data instances for API documentation and validation.",
   "files": [
-    "src/",
+    "dist/",
     "LICENSE",
     "README.md"
   ],

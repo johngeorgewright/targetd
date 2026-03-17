@@ -3,7 +3,7 @@
   "version": "7.1.0",
   "description": "Load targeting rules from JSON/YAML files with hot-reloading support for @targetd/api Data instances.",
   "files": [
-    "src/",
+    "dist/",
     "LICENSE",
     "README.md"
   ],

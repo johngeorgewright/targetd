@@ -3,7 +3,7 @@
   "version": "8.1.2",
   "description": "Express-based HTTP server for exposing @targetd/api Data instances via REST endpoints with built-in CORS and error handling.",
   "files": [
-    "src/",
+    "dist/",
     "LICENSE",
     "README.md"
   ],

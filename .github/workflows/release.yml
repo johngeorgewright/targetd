@@ -41,7 +41,8 @@ jobs:
         path_released: ${{ fromJson(needs.release-github.outputs.paths_released) }}
     name: Publish ${{ matrix.path_released }} to NPM
     environment: npm
-    concurrency: release-npm
+    concurrency:
+      group: release-npm-${{ matrix.path_released }}
     container:
       image: oven/bun:1
     permissions:
@@ -50,4 +51,31 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - working-directory: ${{ matrix.path_released }}
-        run: npm publish
+        run: |
+          bun pm pack --filename=$(pwd)/package.tgz
+          npm publish $(pwd)/package.tgz
+
+  release-jsr:
+    needs: [release-github, release-test]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        path_released: ${{ fromJson(needs.release-github.outputs.paths_released) }}
+    name: Publish ${{ matrix.path_released }} to JSR
+    environment: jsr
+    concurrency:
+      group: release-jsr-${{ matrix.path_released }}
+    container:
+      image: oven/bun:1
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v6
+      - working-directory: ${{ matrix.path_released }}
+        run: | # shell
+          PACK="$(pwd)/package.tgz"
+          bun pm pack --filename=$PACK
+          tar -xOf $PACK package/package.json > package.json
+          rm -rf package $PACK
+          bunx jsr publish

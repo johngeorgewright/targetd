@@ -3,7 +3,7 @@
   "version": "6.0.2",
   "description": "Built-in targeting descriptor for date range queries in ISO 8601 format with automatic current time evaluation.",
   "files": [
-    "src/",
+    "dist/",
     "LICENSE",
     "README.md"
   ],

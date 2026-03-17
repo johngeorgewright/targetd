@@ -3,7 +3,7 @@
   "version": "8.1.1",
   "description": "Type-safe targeting and feature flag system with dynamic content delivery based on query conditions. Perfect for A/B testing, feature flags, and content personalization.",
   "files": [
-    "src/",
+    "dist/",
     "LICENSE",
     "README.md"
   ],
