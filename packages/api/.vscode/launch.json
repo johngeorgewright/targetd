@@ -7,15 +7,10 @@
     {
       "request": "launch",
       "name": "API Debug",
-      "type": "node",
+      "type": "bun",
       "cwd": "${workspaceFolder}",
       "env": {},
-      "runtimeExecutable": "/Users/john.wright/.bun/bin/bun",
-      "runtimeArgs": [
-        "--inspect-wait",
-        "test"
-      ],
-      "attachSimplePort": 9229
+      "program": "${workspaceFolder}/test/Data.test.ts"
     }
   ]
 }
