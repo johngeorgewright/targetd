@@ -87,6 +87,7 @@ export class Client<$ extends DT.Meta> {
           },
           () => {},
         )
+      // fallthrough
       case response.status < 200 || response.status > 299:
         throw new ResponseError(response)
       default: {
