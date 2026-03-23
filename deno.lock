@@ -12,6 +12,7 @@
     "jsr:@std/internal@^1.0.9": "1.0.10",
     "jsr:@std/path@^1.1.1": "1.1.2",
     "jsr:@std/testing@*": "1.0.15",
+    "jsr:@targetd/api@^8.0.3": "8.1.1",
     "npm:@commitlint/cli@^20.4.3": "20.4.4_@types+node@25.5.0_typescript@5.9.3",
     "npm:@commitlint/config-conventional@^20.4.3": "20.4.4",
     "npm:@johngw/error@^2.2.2": "2.2.2",
@@ -76,6 +77,13 @@
         "jsr:@std/fs@^1.0.19",
         "jsr:@std/internal@^1.0.10",
         "jsr:@std/path"
+      ]
+    },
+    "@targetd/api@8.1.1": {
+      "integrity": "a7b45c35a323c3b26465ed033a60d808c2fb6ade208b8370c8307cc1833486db",
+      "dependencies": [
+        "npm:fast-deep-equal",
+        "npm:zod"
       ]
     }
   },
