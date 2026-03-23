@@ -8,7 +8,7 @@
     "@johngw/fs": "npm:@johngw/fs@^3.0.1",
     "@targetd/api": "jsr:@targetd/api@^8.0.3",
     "ts-toolbelt": "npm:ts-toolbelt@^9.6.0",
-    "yaml": "npm:yaml@^2.8.2",
+    "yaml": "npm:yaml@^2.8.3",
     "zod": "npm:zod@^4.3.6"
   },
   "lint": {
