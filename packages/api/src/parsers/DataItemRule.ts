@@ -213,7 +213,6 @@ export type RuleWithPayloadParser<
  *
  * @template $ - Data meta configuration.
  * @template PayloadParser - Zod parser for the payload type.
- * @template Variables - Registry of available variables.
  * @template AllowMultipleTargeting - Whether multiple targeting values are allowed.
  */
 export function RuleWithPayloadParser<
