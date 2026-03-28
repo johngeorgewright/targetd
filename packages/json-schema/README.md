@@ -6,8 +6,8 @@
 
 ```
 # Node.js
-npx xjsr @targetd/json-schema/cli --inputModule src/data.ts --dataExport data --outputFile src/data.schema.json
+npx @targetd/json-schema --inputModule src/data.ts --dataExport data --outputFile src/data.schema.json
 
 # Deno
-deno run jsr:@targetd/json-schema/cli --inputModule src/data.ts --dataExport data --outputFile src/data.schema.json
+deno run npm:@targetd/json-schema/cli --inputModule src/data.ts --dataExport data --outputFile src/data.schema.json
 ```

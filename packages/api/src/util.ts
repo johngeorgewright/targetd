@@ -1,5 +1,5 @@
 import type { L } from 'ts-toolbelt'
-import type { MaybePromise } from './types.ts'
+import type { MaybePromise } from './types.js'
 
 export function objectMap<O extends Record<string, unknown>, R>(
   obj: O,
@@ -11,9 +11,7 @@ export function objectMap<O extends Record<string, unknown>, R>(
   )
 }
 
-export function objectKeys<O extends Record<string, unknown>>(
-  obj: O,
-): (keyof O)[] {
+export function objectKeys<O extends Record<string, unknown>>(obj: O): (keyof O)[] {
   return Object.keys(obj)
 }
 
@@ -70,10 +68,7 @@ export function objectSome<T extends Record<string, unknown>>(
   return false
 }
 
-export function someKeysIntersect(
-  aObj: Record<string, unknown>,
-  bObj: Record<string, unknown>,
-) {
+export function someKeysIntersect(aObj: Record<string, unknown>, bObj: Record<string, unknown>) {
   return objectSome(aObj, (_, key) => key in bObj)
 }
 

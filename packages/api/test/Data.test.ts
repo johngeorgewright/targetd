@@ -1,27 +1,16 @@
-import {
-  assertEquals,
-  assertRejects,
-  assertStrictEquals,
-} from 'jsr:@std/assert'
-import { assertSnapshot } from 'jsr:@std/testing/snapshot'
+import { test, expect } from 'bun:test'
 import { setTimeout } from 'node:timers/promises'
 import z, { type ZodError } from 'zod'
-import {
-  createTargetingDescriptor,
-  Data,
-  targetEquals,
-  targetIncludes,
-} from '@targetd/api'
+import { createTargetingDescriptor, Data, targetEquals, targetIncludes } from '@targetd/api'
 
-Deno.test('getPayload', async () => {
+test('getPayload', async () => {
   const data = await Data.create()
-    .usePayload({ 'foo': z.string() })
+    .usePayload({ foo: z.string() })
     .useTargeting({
       weather: targetIncludes(z.string()),
       highTide: targetEquals(z.boolean()),
       asyncThing: {
-        predicate: (q) =>
-          setTimeout(10, (t: boolean) => q === t && setTimeout(10, true)),
+        predicate: (q) => setTimeout(10, (t: boolean) => q === t && setTimeout(10, true)),
         queryParser: z.boolean(),
         targetingParser: z.boolean(),
       },
@@ -63,28 +52,22 @@ Deno.test('getPayload', async () => {
       },
     ])
 
-  assertStrictEquals(await data.getPayload('foo'), 'bar')
-  assertStrictEquals(await data.getPayload('foo', { weather: 'sunny' }), '😎')
-  assertStrictEquals(await data.getPayload('foo', { weather: 'rainy' }), '☂️')
-  assertStrictEquals(await data.getPayload('foo', { highTide: true }), '🌊')
-  assertStrictEquals(
-    await data.getPayload('foo', { highTide: true, weather: 'sunny' }),
-    '🏄‍♂️',
-  )
-  assertStrictEquals(
-    await data.getPayload('foo', { asyncThing: true }),
-    'Async payload',
-  )
+  expect(await data.getPayload('foo')).toBe('bar')
+  expect(await data.getPayload('foo', { weather: 'sunny' })).toBe('😎')
+  expect(await data.getPayload('foo', { weather: 'rainy' })).toBe('☂️')
+  expect(await data.getPayload('foo', { highTide: true })).toBe('🌊')
+  expect(await data.getPayload('foo', { highTide: true, weather: 'sunny' })).toBe('🏄‍♂️')
+  expect(await data.getPayload('foo', { asyncThing: true })).toBe('Async payload')
 
   // @ts-expect-error Mung data type does not exist
   await data.getPayload('mung')
 
-  await assertRejects(() =>
+  await expect(
     // @ts-expect-error 'nonExistantKey' is not a queriable value
-    data.getPayload('foo', { nonExistantKey: 'some value' })
-  )
+    data.getPayload('foo', { nonExistantKey: 'some value' }),
+  ).rejects.toThrow()
 
-  await assertRejects(() =>
+  await expect(
     data.addRules('foo', [
       {
         targeting: {
@@ -93,11 +76,11 @@ Deno.test('getPayload', async () => {
         },
         payload: 'error',
       },
-    ])
-  )
+    ]),
+  ).rejects.toThrow()
 })
 
-Deno.test('targeting with multiple conditions', async () => {
+test('targeting with multiple conditions', async () => {
   const data = await Data.create()
     .usePayload({ foo: z.string() })
     .useTargeting({
@@ -121,18 +104,12 @@ Deno.test('targeting with multiple conditions', async () => {
       },
     ])
 
-  assertStrictEquals(
-    await data.getPayload('foo', { weather: 'sunny' }),
-    'The time is now',
-  )
-  assertStrictEquals(
-    await data.getPayload('foo', { highTide: true }),
-    'The time is now',
-  )
-  assertStrictEquals(await data.getPayload('foo'), 'bar')
+  expect(await data.getPayload('foo', { weather: 'sunny' })).toBe('The time is now')
+  expect(await data.getPayload('foo', { highTide: true })).toBe('The time is now')
+  expect(await data.getPayload('foo')).toBe('bar')
 })
 
-Deno.test('targeting without requiring a query', async () => {
+test('targeting without requiring a query', async () => {
   const data = await Data.create()
     .usePayload({
       foo: z.string(),
@@ -157,10 +134,10 @@ Deno.test('targeting without requiring a query', async () => {
       },
     ])
 
-  assertStrictEquals(await data.getPayload('foo'), 'The time is now')
+  expect(await data.getPayload('foo')).toBe('The time is now')
 })
 
-Deno.test('getPayloads', async (t) => {
+test('getPayloads', async () => {
   const data = await Data.create()
     .usePayload({
       foo: z.string(),
@@ -193,10 +170,10 @@ Deno.test('getPayloads', async (t) => {
       },
     ])
 
-  await assertSnapshot(t, await data.getPayloads('foo', { weather: 'sunny' }))
+  expect(await data.getPayloads('foo', { weather: 'sunny' })).toMatchSnapshot()
 })
 
-Deno.test('payload runtype validation', async (t) => {
+test('payload runtype validation', async () => {
   try {
     await Data.create()
       .usePayload({
@@ -208,14 +185,14 @@ Deno.test('payload runtype validation', async (t) => {
         },
       ])
   } catch (error: any) {
-    await assertSnapshot(t, error.message)
+    expect(error.message).toMatchSnapshot()
     return
   }
 
   throw new Error('Didnt error correctly')
 })
 
-Deno.test('getPayloadForEachName', async (t) => {
+test('getPayloadForEachName', async () => {
   const data = await Data.create()
     .usePayload({
       foo: z.string(),
@@ -225,8 +202,7 @@ Deno.test('getPayloadForEachName', async (t) => {
       weather: targetIncludes(z.string()),
       highTide: targetIncludes(z.boolean()),
       asyncThing: {
-        predicate: (q) =>
-          setTimeout(10, (t: boolean) => q === t && setTimeout(10, true)),
+        predicate: (q) => setTimeout(10, (t: boolean) => q === t && setTimeout(10, true)),
         queryParser: z.boolean(),
         targetingParser: z.boolean(),
       },
@@ -266,17 +242,11 @@ Deno.test('getPayloadForEachName', async (t) => {
       },
     ])
 
-  await assertSnapshot(
-    t,
-    await data.getPayloadForEachName({ weather: 'sunny' }),
-  )
-  await assertSnapshot(
-    t,
-    await data.getPayloadForEachName({ asyncThing: true }),
-  )
+  expect(await data.getPayloadForEachName({ weather: 'sunny' })).toMatchSnapshot()
+  expect(await data.getPayloadForEachName({ asyncThing: true })).toMatchSnapshot()
 })
 
-Deno.test('fallThrough targeting', async (t) => {
+test('fallThrough targeting', async () => {
   const data = await Data.create()
     .usePayload({
       foo: z.string(),
@@ -340,12 +310,12 @@ Deno.test('fallThrough targeting', async (t) => {
       },
     ])
 
-  await assertSnapshot(t, data.data)
-  await assertSnapshot(t, await data.getPayloadForEachName({ surf: 'tame' }))
-  await assertSnapshot(t, await data.getPayloadForEachName({ surf: 'strong' }))
+  expect(data.data).toMatchSnapshot()
+  expect(await data.getPayloadForEachName({ surf: 'tame' })).toMatchSnapshot()
+  expect(await data.getPayloadForEachName({ surf: 'strong' })).toMatchSnapshot()
 })
 
-Deno.test('inserting data', async (t) => {
+test('inserting data', async () => {
   const data = await Data.create()
     .usePayload({
       moo: z.string(),
@@ -394,13 +364,10 @@ Deno.test('inserting data', async (t) => {
       moo: 'glue',
     })
 
-  await assertSnapshot(
-    t,
-    await data.getPayloadForEachName({ weather: 'sunny' }),
-  )
+  expect(await data.getPayloadForEachName({ weather: 'sunny' })).toMatchSnapshot()
 })
 
-Deno.test('inserting data with variables', async (t) => {
+test('inserting data with variables', async () => {
   const data = await Data.create()
     .usePayload({
       moo: z.string(),
@@ -452,20 +419,17 @@ Deno.test('inserting data with variables', async (t) => {
       moo: 'glue',
     })
 
-  await assertSnapshot(
-    t,
-    await data.getPayloadForEachName({ weather: 'sunny', highTide: true }),
-  )
+  expect(await data.getPayloadForEachName({ weather: 'sunny', highTide: true })).toMatchSnapshot()
 })
 
-Deno.test('targeting predicate with full query object', async () => {
+test('targeting predicate with full query object', async () => {
   const mungTargeting = createTargetingDescriptor({
     queryParser: z.string(),
     targetingParser: z.string().array(),
-    predicate: (queryValue, { bar }: { bar?: boolean }) => (targeting) =>
-      bar === true &&
-      queryValue !== undefined &&
-      targeting.includes(queryValue),
+    predicate:
+      (queryValue, { bar }: { bar?: boolean }) =>
+      (targeting) =>
+        bar === true && queryValue !== undefined && targeting.includes(queryValue),
   })
 
   const data = await Data.create()
@@ -492,15 +456,12 @@ Deno.test('targeting predicate with full query object', async () => {
       },
     ])
 
-  assertStrictEquals(await data.getPayload('foo'), undefined)
-  assertStrictEquals(await data.getPayload('foo', { mung: 'mung' }), undefined)
-  assertStrictEquals(
-    await data.getPayload('foo', { bar: true, mung: 'mung' }),
-    'yay',
-  )
+  expect(await data.getPayload('foo')).toBe(undefined)
+  expect(await data.getPayload('foo', { mung: 'mung' })).toBe(undefined)
+  expect(await data.getPayload('foo', { bar: true, mung: 'mung' })).toBe('yay')
 })
 
-Deno.test('broken', async (t) => {
+test('broken', async () => {
   const browserTargeting = targetIncludes(z.enum(['chrome', 'edge']))
 
   const channelTargeting = targetIncludes(z.enum(['foo', 'bar']))
@@ -540,11 +501,11 @@ Deno.test('broken', async (t) => {
       },
     ])
 
-  await assertSnapshot(t, await data.getPayloadForEachName({ channel: 'foo' }))
-  await assertSnapshot(t, await data.getPayloadForEachName({ channel: 'bar' }))
+  expect(await data.getPayloadForEachName({ channel: 'foo' })).toMatchSnapshot()
+  expect(await data.getPayloadForEachName({ channel: 'bar' })).toMatchSnapshot()
 })
 
-Deno.test('variables', async (t) => {
+test('variables', async () => {
   const data = await Data.create()
     .usePayload({
       foo: z.strictObject({
@@ -575,9 +536,7 @@ Deno.test('variables', async (t) => {
             payload: 'bar',
           },
         ],
-        d: [
-          { payload: 1 },
-        ],
+        d: [{ payload: 1 }],
       },
       rules: [
         {
@@ -593,12 +552,12 @@ Deno.test('variables', async (t) => {
       ],
     })
 
-  await assertSnapshot(t, await data.getPayload('foo', { channel: 'bar' }))
+  expect(await data.getPayload('foo', { channel: 'bar' })).toMatchSnapshot()
 
-  await assertSnapshot(t, await data.getPayload('foo'))
+  expect(await data.getPayload('foo')).toMatchSnapshot()
 })
 
-Deno.test('variables using fallthrough targeting', async (t) => {
+test('variables using fallthrough targeting', async () => {
   const data = await Data.create()
     .usePayload({
       foo: z.strictObject({
@@ -629,9 +588,7 @@ Deno.test('variables using fallthrough targeting', async (t) => {
             payload: '2',
           },
         ],
-        d: [
-          { payload: 1 },
-        ],
+        d: [{ payload: 1 }],
       },
       rules: [
         {
@@ -650,10 +607,10 @@ Deno.test('variables using fallthrough targeting', async (t) => {
       ],
     })
 
-  await assertSnapshot(t, await data.getPayload('foo', { channel: 'bar' }))
+  expect(await data.getPayload('foo', { channel: 'bar' })).toMatchSnapshot()
 })
 
-Deno.test('variables in records', async () => {
+test('variables in records', async () => {
   const data = await Data.create()
     .usePayload({
       foo: z.record(z.string(), z.array(z.number())),
@@ -666,23 +623,27 @@ Deno.test('variables in records', async () => {
     })
 
   const payload = await data.getPayload('foo')
-  assertEquals(payload, { a: [1, 2, 3] })
+  expect(payload).toEqual({ a: [1, 2, 3] })
 })
 
-Deno.test('variables in arrays', async (t) => {
+test('variables in arrays', async () => {
   const data = await Data.create()
     .usePayload({
       foo: z.array(z.number()),
-      bar: z.array(z.strictObject({
-        b: z.number(),
-        c: z.string(),
-      })),
-    }).addRules('foo', {
+      bar: z.array(
+        z.strictObject({
+          b: z.number(),
+          c: z.string(),
+        }),
+      ),
+    })
+    .addRules('foo', {
       variables: {
         a: [{ payload: 1 }],
       },
       rules: [{ payload: ['{{a}}'] }],
-    }).addRules('bar', {
+    })
+    .addRules('bar', {
       variables: {
         b: [{ payload: 2 }],
         c: [{ payload: '3' }],
@@ -690,91 +651,78 @@ Deno.test('variables in arrays', async (t) => {
       rules: [{ payload: [{ b: '{{b}}', c: '{{c}}' }] }],
     })
 
-  await assertSnapshot(
-    t,
-    data.data,
-  )
+  expect(data.data).toMatchSnapshot()
 
-  assertEquals(
-    await data.getPayload('foo'),
-    [1],
-  )
+  expect(await data.getPayload('foo')).toEqual([1])
 
-  assertEquals(
-    await data.getPayload('bar'),
-    [{ b: 2, c: '3' }],
-  )
+  expect(await data.getPayload('bar')).toEqual([{ b: 2, c: '3' }])
 })
 
-Deno.test('errors when using variables with incorrect types', async (t) => {
-  const data = await Data.create()
-    .usePayload({
-      foo: z.strictObject({
-        a: z.strictObject({
-          b: z.strictObject({
-            c: z.string(),
-          }),
+test('errors when using variables with incorrect types', async () => {
+  const data = await Data.create().usePayload({
+    foo: z.strictObject({
+      a: z.strictObject({
+        b: z.strictObject({
+          c: z.string(),
         }),
       }),
-    })
+    }),
+  })
 
-  await assertSnapshot(
-    t,
-    await data.addRules('foo', {
-      variables: {
-        c: [
+  expect(
+    await data
+      .addRules('foo', {
+        variables: {
+          c: [
+            {
+              payload: 2,
+            },
+          ],
+        },
+        rules: [
           {
-            payload: 2,
-          },
-        ],
-      },
-      rules: [
-        {
-          payload: {
-            a: {
-              b: {
-                c: '{{c}}',
+            payload: {
+              a: {
+                b: {
+                  c: '{{c}}',
+                },
               },
             },
           },
-        },
-      ],
-    }).catch((error: ZodError) => error.issues),
-  )
+        ],
+      })
+      .catch((error: ZodError) => error.issues),
+  ).toMatchSnapshot()
 })
 
-Deno.test(
-  'make sure fallthrough targeting predicates are not called',
-  async () => {
-    const minInnerWindowWidthTargeting = createTargetingDescriptor({
-      queryParser: z.unknown(),
-      targetingParser: z.number(),
-      requiresQuery: false,
-      predicate: () => () => {
-        throw new Error('This should never get called')
-      },
-    })
-    const baseSchema = Data.create()
-      .usePayload({ 'foo': z.string() })
-    const clientSchema = baseSchema
-      .useTargeting({ fft: minInnerWindowWidthTargeting })
-    const serverSchema = baseSchema
-      .useFallThroughTargeting((await clientSchema).targetingParsers)
-      .addRules('foo', {
-        variables: {
-          x: [{
+test('make sure fallthrough targeting predicates are not called', async () => {
+  const minInnerWindowWidthTargeting = createTargetingDescriptor({
+    queryParser: z.unknown(),
+    targetingParser: z.number(),
+    requiresQuery: false,
+    predicate: () => () => {
+      throw new Error('This should never get called')
+    },
+  })
+  const baseSchema = Data.create().usePayload({ foo: z.string() })
+  const clientSchema = baseSchema.useTargeting({ fft: minInnerWindowWidthTargeting })
+  const serverSchema = baseSchema
+    .useFallThroughTargeting((await clientSchema).targetingParsers)
+    .addRules('foo', {
+      variables: {
+        x: [
+          {
             targeting: {
               fft: 129,
             },
             payload: 'fft',
-          }, {
+          },
+          {
             payload: 'st',
-          }],
-        },
-        rules: [
-          { payload: '{{x}}' },
+          },
         ],
-      })
-    await serverSchema.getPayloadForEachName()
-  },
-)
+      },
+      rules: [{ payload: '{{x}}' }],
+    })
+  await serverSchema.getPayloadForEachName()
+})

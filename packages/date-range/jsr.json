@@ -1,0 +1,9 @@
+{
+  "$schema": "https://jsr.io/schema/config-file.v1.json",
+  "name": "@targetd/date-range",
+  "version": "6.0.2",
+  "exports": "./src/index.ts",
+  "publish": {
+    "include": ["src/", "LICENSE", "README.md"]
+  }
+}

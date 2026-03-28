@@ -5,9 +5,8 @@ description: Run checks and tests
 runs:
   using: composite
   steps:
+    - uses: ./.github/actions/install-build
     - shell: bash
-      run: deno check --frozen
+      run: bun run lint
     - shell: bash
-      run: deno lint
-    - shell: bash
-      run: deno task test
+      run: bun test

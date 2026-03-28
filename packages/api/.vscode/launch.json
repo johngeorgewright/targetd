@@ -7,16 +7,10 @@
     {
       "request": "launch",
       "name": "API Debug",
-      "type": "node",
+      "type": "bun",
       "cwd": "${workspaceFolder}",
       "env": {},
-      "runtimeExecutable": "/Users/john.wright/.deno/bin/deno",
-      "runtimeArgs": [
-        "test",
-        "--inspect-wait",
-        "--allow-all"
-      ],
-      "attachSimplePort": 9229
+      "program": "${workspaceFolder}/test/Data.test.ts"
     }
   ]
 }

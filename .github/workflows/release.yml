@@ -9,7 +9,7 @@ jobs:
     name: Github Release
     runs-on: ubuntu-latest
     concurrency:
-      group: release
+      group: release-github
     permissions:
       contents: write
       issues: write
@@ -23,22 +23,61 @@ jobs:
         with:
           token: ${{ secrets.PUSH_TOKEN }}
 
-  release-jsr:
+  release-test:
     needs: [release-github]
     if: needs.release-github.outputs.releases_created == 'true'
+    runs-on: ubuntu-latest
+    container:
+      image: oven/bun:1
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/test
+
+  release-npm:
+    needs: [release-github, release-test]
     runs-on: ubuntu-latest
     strategy:
       matrix:
         path_released: ${{ fromJson(needs.release-github.outputs.paths_released) }}
-    name: Publish ${{ matrix.path_released }} to JSR
+    name: Publish ${{ matrix.path_released }} to NPM
+    environment: npm
+    concurrency:
+      group: release-npm-${{ matrix.path_released }}
+    container:
+      image: oven/bun:1
     permissions:
       contents: read
       id-token: write
     steps:
       - uses: actions/checkout@v6
-      - uses: denoland/setup-deno@v2
-        with:
-          deno-version-file: .dvmrc
-      - uses: ./.github/actions/test
+      - uses: ./.github/actions/install-build
       - working-directory: ${{ matrix.path_released }}
-        run: if [ "$(cat deno.json | jq -r '.private // false')" != "true" ]; then deno publish; fi
+        run: |
+          bun pm pack --filename=$(pwd)/package.tgz
+          npm publish $(pwd)/package.tgz
+
+  release-jsr:
+    needs: [release-github, release-test]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        path_released: ${{ fromJson(needs.release-github.outputs.paths_released) }}
+    name: Publish ${{ matrix.path_released }} to JSR
+    environment: jsr
+    concurrency:
+      group: release-jsr-${{ matrix.path_released }}
+    container:
+      image: oven/bun:1
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/install-build
+      - working-directory: ${{ matrix.path_released }}
+        run: | # shell
+          PACK="$(pwd)/package.tgz"
+          bun pm pack --filename=$PACK
+          tar -xOf $PACK package/package.json > package.json
+          rm -rf package $PACK
+          bunx jsr publish

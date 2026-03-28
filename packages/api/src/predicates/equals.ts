@@ -1,4 +1,4 @@
-import type TargetingDescriptor from '../parsers/TargetingDescriptor.ts'
+import type TargetingDescriptor from '../parsers/TargetingDescriptor.js'
 import type { $ZodType } from 'zod/v4/core'
 
 /**
@@ -38,8 +38,7 @@ export function targetEquals<T extends $ZodType>(
   options: { withNegate?: boolean } = {},
 ): TargetingDescriptor<T, T> {
   return {
-    predicate: (q) => (t) =>
-      !q || q === t || (!!options.withNegate && t !== `!${q}`),
+    predicate: (q) => (t) => !q || q === t || (!!options.withNegate && t !== `!${q}`),
     queryParser: t,
     targetingParser: t,
   }

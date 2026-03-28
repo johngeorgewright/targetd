@@ -1,0 +1,40 @@
+{
+  "name": "@targetd/server",
+  "version": "8.1.2",
+  "description": "Express-based HTTP server for exposing @targetd/api Data instances via REST endpoints with built-in CORS and error handling.",
+  "files": [
+    "dist/",
+    "LICENSE",
+    "README.md"
+  ],
+  "type": "module",
+  "exports": "./dist/index.js",
+  "scripts": {
+    "check": "tsc --noEmit",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "@johngw/error": "^2.2.2",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "express-query-boolean": "^2.0.0",
+    "qs": "^6.15.0"
+  },
+  "devDependencies": {
+    "@targetd/api": "workspace:*",
+    "@targetd/date-range": "workspace:*",
+    "@types/bun": "catalog:",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/qs": "^6.15.0",
+    "@types/supertest": "^7.2.0",
+    "es-toolkit": "catalog:",
+    "supertest": "^7.2.2",
+    "typescript": "catalog:",
+    "zod": "catalog:"
+  },
+  "peerDependencies": {
+    "@targetd/api": "workspace:*",
+    "zod": "catalog:"
+  }
+}

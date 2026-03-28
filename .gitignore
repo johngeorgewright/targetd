@@ -1,6 +1,5 @@
 dist
 *.log
 node_modules
-package.json
-package-lock.json
+tsconfig.tsbuildinfo
 *.validator.ts

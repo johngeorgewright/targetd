@@ -7,17 +7,10 @@
     {
       "request": "launch",
       "name": "Test",
-      "type": "node",
+      "type": "bun",
       "program": "${workspaceFolder}/test/index.test.ts",
       "cwd": "${workspaceFolder}",
-      "env": {},
-      "runtimeExecutable": "/Users/john.wright/.deno/bin/deno",
-      "runtimeArgs": [
-        "run",
-        "--inspect-brk",
-        "--allow-all"
-      ],
-      "attachSimplePort": 9229
+      "env": {}
     }
   ]
 }

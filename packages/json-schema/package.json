@@ -1,0 +1,34 @@
+{
+  "name": "@targetd/json-schema",
+  "version": "5.2.0",
+  "description": "Generate JSON Schema from @targetd/api Data instances for API documentation and validation.",
+  "files": [
+    "dist/",
+    "LICENSE",
+    "README.md"
+  ],
+  "type": "module",
+  "exports": {
+    ".": "./dist/index.js",
+    "./cli": "./dist/cli.js"
+  },
+  "scripts": {
+    "check": "tsc --noEmit",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "es-toolkit": "catalog:",
+    "yargs": "^18.0.0"
+  },
+  "devDependencies": {
+    "@targetd/api": "workspace:*",
+    "@types/bun": "catalog:",
+    "@types/yargs": "^17.0.35",
+    "typescript": "catalog:",
+    "zod": "catalog:"
+  },
+  "peerDependencies": {
+    "@targetd/api": "workspace:*",
+    "zod": "catalog:"
+  }
+}

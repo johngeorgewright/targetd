@@ -1,6 +1,6 @@
 import type { $ZodType, output } from 'zod/v4/core'
-import type * as FTTT from './FallThroughTargeting.ts'
-import type * as DT from './Data.ts'
+import type * as FTTT from './FallThroughTargeting.js'
+import type * as DT from './Data.js'
 
 /**
  * A payload value that can be either a direct value or a set of fallthrough rules.
@@ -8,10 +8,7 @@ import type * as DT from './Data.ts'
  * @template $ - Data meta configuration.
  * @template PayloadParser - Zod parser for the payload type.
  */
-export type Payload<
-  $ extends DT.Meta,
-  PayloadParser extends $ZodType,
-> =
+export type Payload<$ extends DT.Meta, PayloadParser extends $ZodType> =
   | output<PayloadParser>
   | FTTT.Rules<$, PayloadParser>
 

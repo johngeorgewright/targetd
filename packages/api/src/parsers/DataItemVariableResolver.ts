@@ -8,16 +8,11 @@ import {
   type ZodMiniTemplateLiteral,
   type ZodMiniTransform,
 } from 'zod/mini'
-import type {
-  $PartsToTemplateLiteral,
-  $ZodType,
-  ParsePayload,
-} from 'zod/v4/core'
-import { objectMap } from '../util.ts'
-import type { VariablesRegistry } from './variablesRegistry.ts'
+import type { $PartsToTemplateLiteral, $ZodType, ParsePayload } from 'zod/v4/core'
+import { objectMap } from '../util.js'
+import type { VariablesRegistry } from './variablesRegistry.js'
 
-export const variableStringParser = () =>
-  templateLiteral(['{{', string(), '}}'])
+export const variableStringParser = () => templateLiteral(['{{', string(), '}}'])
 
 export type VariableStringParser = ZodMiniTemplateLiteral<`{{${string}}}`>
 
@@ -27,9 +22,7 @@ export function DataItemVariableResolverParser(
 ): DataItemVariableResolverParser {
   return pipe(
     variableStringParser(),
-    transform((input, ctx) =>
-      stringToVariableResolver(registry, parser, input, ctx)
-    ),
+    transform((input, ctx) => stringToVariableResolver(registry, parser, input, ctx)),
   )
 }
 
@@ -40,20 +33,13 @@ export function DataItemVariableResolverTransformer<T extends string>(
   ctx: ParsePayload,
 ): T extends VariableString ? VariableResolver : T {
   return isVariableString(input)
-    ? stringToVariableResolver(registry, parser, input, ctx) as any
-    : input as any
+    ? (stringToVariableResolver(registry, parser, input, ctx) as any)
+    : (input as any)
 }
 
 export type DataItemVariableResolverParser = ZodMiniPipe<
-  ZodMiniTemplateLiteral<
-    $PartsToTemplateLiteral<
-      ['{{', ZodMiniString<string>, '}}']
-    >
-  >,
-  ZodMiniTransform<
-    VariableResolver,
-    `{{${string}}}`
-  >
+  ZodMiniTemplateLiteral<$PartsToTemplateLiteral<['{{', ZodMiniString<string>, '}}']>>,
+  ZodMiniTransform<VariableResolver, `{{${string}}}`>
 >
 
 export interface VariableResolver {
@@ -62,20 +48,19 @@ export interface VariableResolver {
 }
 
 export function isVariableResolver(x: unknown): x is VariableResolver {
-  return typeof x === 'function' && '$$resolver$$' in x &&
-    x.$$resolver$$ === true
+  return typeof x === 'function' && '$$resolver$$' in x && x.$$resolver$$ === true
 }
 
 export function resolveVariables(variables: Record<string, any>, x: unknown) {
   return Array.isArray(x)
     ? recursivelyResolveArrayVariables(variables, x)
     : typeof x === 'object' && x !== null
-    ? recursivelyResolveObjectVariables(variables, x as Record<string, unknown>)
-    : resolveVariable(variables, x)
+      ? recursivelyResolveObjectVariables(variables, x as Record<string, unknown>)
+      : resolveVariable(variables, x)
 }
 
 export function isVariableString(input: string): input is VariableString {
-  return /^\{\{[^\}]+\}\}$/.test(input)
+  return /^\{\{[^}]+\}\}$/.test(input)
 }
 
 type VariableString = `{{${string}}}`
@@ -84,10 +69,7 @@ function resolveVariable(variables: Record<string, any>, x: unknown) {
   return isVariableResolver(x) ? x(variables) : x
 }
 
-function recursivelyResolveArrayVariables(
-  variables: Record<string, any>,
-  x: unknown[],
-): unknown[] {
+function recursivelyResolveArrayVariables(variables: Record<string, any>, x: unknown[]): unknown[] {
   return x.map((value) => resolveVariables(variables, value))
 }
 
@@ -105,8 +87,7 @@ function stringToVariableResolver(
   ctx: ParsePayload,
 ): VariableResolver {
   const key = extractVariableName(input)
-  const resolver: VariableResolver = (variables: Record<string, any>) =>
-    variables[key] ?? input
+  const resolver: VariableResolver = (variables: Record<string, any>) => variables[key] ?? input
   resolver.$$resolver$$ = true
   registry.set(key, {
     ctx,

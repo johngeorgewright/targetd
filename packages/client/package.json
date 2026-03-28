@@ -1,0 +1,31 @@
+{
+  "name": "@targetd/client",
+  "version": "7.0.2",
+  "description": "Type-safe HTTP client for querying @targetd/server instances. Mirrors the Data API with full TypeScript inference.",
+  "files": [
+    "dist/",
+    "LICENSE",
+    "README.md"
+  ],
+  "type": "module",
+  "exports": "./dist/index.js",
+  "scripts": {
+    "check": "tsc --noEmit",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "ts-toolbelt": "catalog:"
+  },
+  "devDependencies": {
+    "@targetd/api": "workspace:*",
+    "@targetd/date-range": "workspace:*",
+    "@targetd/server": "workspace:*",
+    "@types/bun": "catalog:",
+    "typescript": "catalog:",
+    "zod": "catalog:"
+  },
+  "peerDependencies": {
+    "@targetd/api": "workspace:*",
+    "zod": "catalog:"
+  }
+}

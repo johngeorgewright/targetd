@@ -1,5 +1,5 @@
 import type { $ZodType, output } from 'zod/v4/core'
-import type { MaybePromise } from '../types.ts'
+import type { MaybePromise } from '../types.js'
 
 /**
  * Function that determines if a targeting rule matches a query.

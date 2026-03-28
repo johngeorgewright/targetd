@@ -1,10 +1,20 @@
-import { assertStrictEquals } from 'jsr:@std/assert'
-import { FakeTime } from 'jsr:@std/testing/time'
+import { test, expect, beforeEach, afterEach } from 'bun:test'
 import { Data } from '@targetd/api'
 import z from 'zod'
 import dateRangeTargeting from '@targetd/date-range'
+import { type SinonFakeTimers, useFakeTimers } from 'sinon'
 
-Deno.test('date range predicate', async () => {
+let clock: SinonFakeTimers
+
+beforeEach(() => {
+  clock = useFakeTimers()
+})
+
+afterEach(() => {
+  clock.restore()
+})
+
+test('date range predicate', async () => {
   const data = await Data.create()
     .usePayload({
       foo: z.string(),
@@ -43,24 +53,14 @@ Deno.test('date range predicate', async () => {
   await assertUsingRange({ start: '2019-01-01', end: '2019-12-01' }, 'bar')
 
   async function assertUsingFakeTime(iso: string, expectation: string) {
-    using _fakeTime = setTime(iso)
-    assertStrictEquals(await data.getPayload('foo'), expectation)
+    clock.setSystemTime(new Date(iso))
+    expect(await data.getPayload('foo'), iso).toBe(expectation)
   }
 
   async function assertUsingRange(
-    dateRange: NonNullable<
-      Required<Parameters<typeof data.getPayload<'foo'>>[1]>
-    >['dateRange'],
+    dateRange: NonNullable<Required<Parameters<typeof data.getPayload<'foo'>>[1]>>['dateRange'],
     expectation: string,
   ) {
-    assertStrictEquals(
-      await data.getPayload('foo', { dateRange }),
-      expectation,
-    )
+    expect(await data.getPayload('foo', { dateRange })).toBe(expectation)
   }
 })
-
-function setTime(iso: string) {
-  const fakeTime = new FakeTime(iso)
-  return { [Symbol.dispose]: () => fakeTime.restore() }
-}

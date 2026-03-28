@@ -4,7 +4,7 @@ import * as path from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { writeFile } from 'node:fs/promises'
 import { argv, cwd } from 'node:process'
-import { dataJSONSchemas } from './index.ts'
+import { dataJSONSchemas } from './index.js'
 
 const { dataExport, inputModule, outputFile } = await yargs()
   .usage('targetd-json-schema [args]')
@@ -31,15 +31,11 @@ const { dataExport, inputModule, outputFile } = await yargs()
   .help()
   .parseAsync(argv)
 
-const input = await import(
-  pathToFileURL(path.resolve(cwd(), inputModule)).href
-)
+const input = await import(pathToFileURL(path.resolve(cwd(), inputModule)).href)
 
 const data = input[dataExport]
 if (!isDataLike(data)) {
-  throw new Error(
-    `Export "${dataExport}" from "${inputModule}" is not of a \`Data\` type.`,
-  )
+  throw new Error(`Export "${dataExport}" from "${inputModule}" is not of a \`Data\` type.`)
 }
 
 const jsonSchema = JSON.stringify(dataJSONSchemas(data), null, 2)

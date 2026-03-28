@@ -7,14 +7,14 @@ structures.
 
 | JS Runtime | Command                                          |
 | ---------- | ------------------------------------------------ |
-| Node.js    | `npx jsr add @targetd/api @targetd/explode`      |
-| Bun        | `bunx jsr add @targetd/api @targetd/explode`     |
-| Deno       | `deno add jsr:@targetd/api jsr:@targetd/explode` |
+| Node.js    | `npm install @targetd/api @targetd/explode`      |
+| Bun        | `bun add @targetd/api @targetd/explode`          |
+| Deno       | `deno add npm:@targetd/api npm:@targetd/explode` |
 
 ## Overview
 
 `@targetd/explode` provides a utility to convert flat key-value structures into
-nested objects. Since [@targetd/api](https://jsr.io/@targetd/api) stores data as
+nested objects. Since [@targetd/api](../api) stores data as
 flat key-value pairs, this package helps you organize related payloads using
 namespaced keys (e.g., `'feature.mobile.enabled'`) and then transform them into
 a hierarchical structure.
@@ -141,10 +141,7 @@ const data = await Data.create()
   .addRules('feature.desktop.enabled', [{ payload: true }])
   .addRules('feature.desktop.maxItems', [{ payload: 50 }])
 
-const features = explode(
-  await data.getPayloadForEachName({ platform: 'ios' }),
-  '.',
-)
+const features = explode(await data.getPayloadForEachName({ platform: 'ios' }), '.')
 // {
 //   feature: {
 //     mobile: {
@@ -204,7 +201,7 @@ const nested2 = explode({ 'namespace:key:subkey': 'data' }, ':')
 // { namespace: { key: { subkey: 'data' } } }
 
 // Using underscore
-const nested3 = explode({ 'section_subsection_field': true }, '_')
+const nested3 = explode({ section_subsection_field: true }, '_')
 // { section: { subsection: { field: true } } }
 ```
 
@@ -220,7 +217,7 @@ import type { Explode } from '@targetd/explode'
 type Flat = {
   'foo.bar': string
   'foo.baz': number
-  'qux': boolean
+  qux: boolean
 }
 
 type Nested = Explode<Flat, '.'>
@@ -236,7 +233,7 @@ type Nested = Explode<Flat, '.'>
 const flat: Flat = {
   'foo.bar': 'hello',
   'foo.baz': 42,
-  'qux': true,
+  qux: true,
 }
 
 const nested = explode(flat, '.')
@@ -295,12 +292,9 @@ const theme = explode(await data.getPayloadForEachName(), '.')
 
 ## Related Packages
 
-- [@targetd/api](https://jsr.io/@targetd/api) - Core targeting and data querying
-  API
-- [@targetd/client](https://jsr.io/@targetd/client) - Type-safe HTTP client for
-  querying servers
-- [@targetd/server](https://jsr.io/@targetd/server) - HTTP server for serving
-  targeted data
+- [@targetd/api](../api) - Core targeting and data querying API
+- [@targetd/client](../client) - Type-safe HTTP client for querying servers
+- [@targetd/server](../server) - HTTP server for serving targeted data
 
 ## License
 

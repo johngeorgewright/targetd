@@ -1,5 +1,5 @@
 import type { $ZodType } from 'zod/v4/core'
-import type TargetingPredicate from './TargetingPredicate.ts'
+import type TargetingPredicate from './TargetingPredicate.js'
 
 /**
  * Configuration for a targeting field that defines how to parse and evaluate targeting conditions.
@@ -22,10 +22,9 @@ export default interface TargetingDescriptor<
 /**
  * Targeting descriptor guard
  */
-export function isTargetingDescriptor<
-  TV extends $ZodType,
-  QV extends $ZodType,
->(x: unknown): x is TargetingDescriptor<TV, QV, any> {
+export function isTargetingDescriptor<TV extends $ZodType, QV extends $ZodType>(
+  x: unknown,
+): x is TargetingDescriptor<TV, QV, any> {
   return (
     typeof x === 'object' &&
     x !== null &&

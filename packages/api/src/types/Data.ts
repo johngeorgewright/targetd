@@ -1,5 +1,5 @@
-import type Data from '../Data.ts'
-import type * as FTTT from './FallThroughTargeting.ts'
+import type Data from '../Data.js'
+import type * as FTTT from './FallThroughTargeting.js'
 import type { $ZodShape, output } from 'zod/v4/core'
 
 /**
@@ -26,14 +26,12 @@ export interface EmptyMeta {
 /**
  * Match any Data
  */
-export type Any = Data<
-  {
-    PayloadParsers: any
-    TargetingParsers: any
-    QueryParsers: any
-    FallThroughTargetingParsers: any
-  }
->
+export type Any = Data<{
+  PayloadParsers: any
+  TargetingParsers: any
+  QueryParsers: any
+  FallThroughTargetingParsers: any
+}>
 
 /**
  * Extract the Meta configuration from a Data type.
@@ -60,9 +58,7 @@ export type QueryParsers<D extends Any> = $<D>['QueryParsers']
 /**
  * Get the FallThroughTargetingParsers from a Data type
  */
-export type FallThroughTargetingParsers<D extends Any> = $<
-  D
->['FallThroughTargetingParsers']
+export type FallThroughTargetingParsers<D extends Any> = $<D>['FallThroughTargetingParsers']
 
 /**
  * Data shape that can be inserted into a Data instance.
@@ -70,20 +66,15 @@ export type FallThroughTargetingParsers<D extends Any> = $<
  *
  * @template $ - Data meta configuration.
  */
-export type InsertableData<$ extends Meta> = Partial<
-  {
-    [Name in keyof $['PayloadParsers']]:
-      | output<$['PayloadParsers'][Name]>
-      | FTTT.Rules<
-        $,
-        $['PayloadParsers'][Name]
-      >
-      | FTTT.Rules<
+export type InsertableData<$ extends Meta> = Partial<{
+  [Name in keyof $['PayloadParsers']]:
+    | output<$['PayloadParsers'][Name]>
+    | FTTT.Rules<$, $['PayloadParsers'][Name]>
+    | FTTT.Rules<
         $ & {
           TargetingParsers: {}
           FallThroughTargetingParsers: $['TargetingParsers']
         },
         $['PayloadParsers'][Name]
       >
-  }
->
+}>

@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "allowJs": false,
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "importHelpers": true,
+    "lib": ["ESNext"],
+    "module": "Preserve",
+    "moduleDetection": "force",
+    "moduleResolution": "bundler",
+    "noEmit": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": false,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "outDir": "dist",
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "strict": true,
+    "target": "ESNext"
+  },
+  "include": [],
+  "references": [
+    { "path": "packages/api/tsconfig.json" },
+    { "path": "packages/client/tsconfig.json" },
+    { "path": "packages/date-range/tsconfig.json" },
+    { "path": "packages/explode/tsconfig.json" },
+    { "path": "packages/fs/tsconfig.json" },
+    { "path": "packages/json-schema/tsconfig.json" },
+    { "path": "packages/server/tsconfig.json" }
+  ]
+}

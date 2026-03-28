@@ -1,10 +1,6 @@
-import type * as DT from '../types/Data.ts'
-import type { ObjValues, ZodPartialObject } from '../types.ts'
-import {
-  type DataItemIn,
-  type DataItemOut,
-  DataItemParser,
-} from './DataItem.ts'
+import type * as DT from '../types/Data.js'
+import type { ObjValues, ZodPartialObject } from '../types.js'
+import { type DataItemIn, type DataItemOut, DataItemParser } from './DataItem.js'
 import { object, partial, strictObject } from 'zod/mini'
 import type { $strict } from 'zod/v4/core'
 
@@ -30,9 +26,7 @@ import type { $strict } from 'zod/v4/core'
  * )
  * ```
  */
-export function DataItemsParser<
-  $ extends DT.Meta,
->(
+export function DataItemsParser<$ extends DT.Meta>(
   payloadParsers: $['PayloadParsers'],
   targeting: $['TargetingParsers'],
   fallThroughTargeting: $['FallThroughTargetingParsers'],
@@ -47,9 +41,7 @@ export function DataItemsParser<
       strict,
     )
   }
-  return partial(
-    (strict ? strictObject : object)(dataItems),
-  ) as DataItemsParser<$>
+  return partial((strict ? strictObject : object)(dataItems)) as DataItemsParser<$>
 }
 
 /**
@@ -58,14 +50,9 @@ export function DataItemsParser<
  *
  * @template $ - Data meta configuration.
  */
-export type DataItemsParser<
-  $ extends DT.Meta,
-> = ZodPartialObject<
+export type DataItemsParser<$ extends DT.Meta> = ZodPartialObject<
   {
-    [Name in keyof $['PayloadParsers']]: DataItemParser<
-      $,
-      $['PayloadParsers'][Name]
-    >
+    [Name in keyof $['PayloadParsers']]: DataItemParser<$, $['PayloadParsers'][Name]>
   },
   $strict
 >
@@ -87,8 +74,5 @@ export type DataItemsIn<$ extends DT.Meta> = {
  * @template $ - Data meta configuration.
  */
 export type DataItemsOut<$ extends DT.Meta> = {
-  [Name in keyof $['PayloadParsers']]?: DataItemOut<
-    $,
-    $['PayloadParsers'][Name]
-  >
+  [Name in keyof $['PayloadParsers']]?: DataItemOut<$, $['PayloadParsers'][Name]>
 }

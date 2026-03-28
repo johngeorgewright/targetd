@@ -1,6 +1,6 @@
-export const snapshot = {};
+// Bun Snapshot v1, https://bun.sh/docs/test/snapshots
 
-snapshot[`getPayloads 1`] = `
+exports[`getPayloads 1`] = `
 [
   "😎",
   "☂️",
@@ -8,8 +8,8 @@ snapshot[`getPayloads 1`] = `
 ]
 `;
 
-snapshot[`payload runtype validation 1`] = `
-'[
+exports[`payload runtype validation 1`] = `
+"[
   {
     "code": "custom",
     "path": [
@@ -20,184 +20,184 @@ snapshot[`payload runtype validation 1`] = `
     ],
     "message": "Should be bar"
   }
-]'
+]"
 `;
 
-snapshot[`getPayloadForEachName 1`] = `
+exports[`getPayloadForEachName 1`] = `
 {
-  bar: "😁",
-  foo: "😎",
+  "bar": "😁",
+  "foo": "😎",
 }
 `;
 
-snapshot[`getPayloadForEachName 2`] = `
+exports[`getPayloadForEachName 2`] = `
 {
-  bar: "async payloads!",
-  foo: undefined,
+  "bar": "async payloads!",
+  "foo": undefined,
 }
 `;
 
-snapshot[`fallThrough targeting 1`] = `
+exports[`fallThrough targeting 1`] = `
 {
-  bar: {
-    rules: [
+  "bar": {
+    "rules": [
       {
-        fallThrough: [
+        "fallThrough": [
           {
-            payload: "😟",
-            targeting: {
-              weather: [
+            "payload": "😟",
+            "targeting": {
+              "weather": [
                 "rainy",
               ],
             },
           },
           {
-            payload: "😁",
-            targeting: {
-              weather: [
+            "payload": "😁",
+            "targeting": {
+              "weather": [
                 "sunny",
               ],
             },
           },
           {
-            payload: "😐",
-            targeting: {},
+            "payload": "😐",
+            "targeting": {},
           },
         ],
-        targeting: {},
+        "targeting": {},
       },
     ],
-    variables: {},
+    "variables": {},
   },
-  foo: {
-    rules: [
+  "foo": {
+    "rules": [
       {
-        fallThrough: [
+        "fallThrough": [
           {
-            payload: "🏄‍♂️",
-            targeting: {
-              weather: [
+            "payload": "🏄‍♂️",
+            "targeting": {
+              "weather": [
                 "sunny",
               ],
             },
           },
         ],
-        targeting: {
-          surf: [
+        "targeting": {
+          "surf": [
             "strong",
           ],
         },
       },
       {
-        fallThrough: [
+        "fallThrough": [
           {
-            payload: "😎",
-            targeting: {
-              weather: [
+            "payload": "😎",
+            "targeting": {
+              "weather": [
                 "sunny",
               ],
             },
           },
           {
-            payload: "☂️",
-            targeting: {
-              weather: [
+            "payload": "☂️",
+            "targeting": {
+              "weather": [
                 "rainy",
               ],
             },
           },
         ],
-        targeting: {},
+        "targeting": {},
       },
     ],
-    variables: {},
+    "variables": {},
   },
-  mung: {
-    rules: [
+  "mung": {
+    "rules": [
       {
-        fallThrough: [
+        "fallThrough": [
           {
-            payload: "☂️",
-            targeting: {
-              weather: [
+            "payload": "☂️",
+            "targeting": {
+              "weather": [
                 "rainy",
               ],
             },
           },
         ],
-        targeting: {
-          surf: [
+        "targeting": {
+          "surf": [
             "!strong",
           ],
         },
       },
       {
-        fallThrough: [
+        "fallThrough": [
           {
-            payload: "🏄‍♂️",
-            targeting: {
-              weather: [
+            "payload": "🏄‍♂️",
+            "targeting": {
+              "weather": [
                 "sunny",
               ],
             },
           },
         ],
-        targeting: {
-          surf: [
+        "targeting": {
+          "surf": [
             "strong",
           ],
         },
       },
     ],
-    variables: {},
+    "variables": {},
   },
 }
 `;
 
-snapshot[`fallThrough targeting 2`] = `
+exports[`fallThrough targeting 2`] = `
 {
-  bar: {
-    __rules__: [
+  "bar": {
+    "__rules__": [
       {
-        payload: "😟",
-        targeting: {
-          weather: [
+        "payload": "😟",
+        "targeting": {
+          "weather": [
             "rainy",
           ],
         },
       },
       {
-        payload: "😁",
-        targeting: {
-          weather: [
+        "payload": "😁",
+        "targeting": {
+          "weather": [
             "sunny",
           ],
         },
       },
       {
-        payload: "😐",
-        targeting: {},
+        "payload": "😐",
+        "targeting": {},
       },
     ],
   },
-  foo: {
-    __rules__: [
+  "foo": {
+    "__rules__": [
       {
-        payload: "🏄‍♂️",
-        targeting: {
-          weather: [
+        "payload": "🏄‍♂️",
+        "targeting": {
+          "weather": [
             "sunny",
           ],
         },
       },
     ],
   },
-  mung: {
-    __rules__: [
+  "mung": {
+    "__rules__": [
       {
-        payload: "☂️",
-        targeting: {
-          weather: [
+        "payload": "☂️",
+        "targeting": {
+          "weather": [
             "rainy",
           ],
         },
@@ -207,112 +207,112 @@ snapshot[`fallThrough targeting 2`] = `
 }
 `;
 
-snapshot[`fallThrough targeting 3`] = `
+exports[`fallThrough targeting 3`] = `
 {
-  bar: {
-    __rules__: [
+  "bar": {
+    "__rules__": [
       {
-        payload: "😟",
-        targeting: {
-          weather: [
+        "payload": "😟",
+        "targeting": {
+          "weather": [
             "rainy",
           ],
         },
       },
       {
-        payload: "😁",
-        targeting: {
-          weather: [
+        "payload": "😁",
+        "targeting": {
+          "weather": [
             "sunny",
           ],
         },
       },
       {
-        payload: "😐",
-        targeting: {},
+        "payload": "😐",
+        "targeting": {},
       },
     ],
   },
-  foo: {
-    __rules__: [
+  "foo": {
+    "__rules__": [
       {
-        payload: "🏄‍♂️",
-        targeting: {
-          weather: [
-            "sunny",
-          ],
-        },
-      },
-    ],
-  },
-  mung: {
-    __rules__: [
-      {
-        payload: "🏄‍♂️",
-        targeting: {
-          weather: [
+        "payload": "🏄‍♂️",
+        "targeting": {
+          "weather": [
             "sunny",
           ],
         },
       },
     ],
   },
-}
-`;
-
-snapshot[`inserting data 1`] = `
-{
-  bar: {
-    __rules__: [
+  "mung": {
+    "__rules__": [
       {
-        payload: "😟",
-        targeting: {
-          highTide: false,
-        },
-      },
-      {
-        payload: "😁",
-        targeting: {
-          highTide: true,
+        "payload": "🏄‍♂️",
+        "targeting": {
+          "weather": [
+            "sunny",
+          ],
         },
       },
     ],
   },
-  foo: "😎",
-  moo: "glue",
 }
 `;
 
-snapshot[`inserting data with variables 1`] = `
+exports[`inserting data 1`] = `
 {
-  bar: "😁",
-  foo: "😎",
-  moo: "glue",
-}
-`;
-
-snapshot[`broken 1`] = `
-{
-  foo: "face",
-}
-`;
-
-snapshot[`broken 2`] = `
-{
-  foo: {
-    __rules__: [
+  "bar": {
+    "__rules__": [
       {
-        payload: "yay",
-        targeting: {
-          browser: [
+        "payload": "😟",
+        "targeting": {
+          "highTide": false,
+        },
+      },
+      {
+        "payload": "😁",
+        "targeting": {
+          "highTide": true,
+        },
+      },
+    ],
+  },
+  "foo": "😎",
+  "moo": "glue",
+}
+`;
+
+exports[`inserting data with variables 1`] = `
+{
+  "bar": "😁",
+  "foo": "😎",
+  "moo": "glue",
+}
+`;
+
+exports[`broken 1`] = `
+{
+  "foo": "face",
+}
+`;
+
+exports[`broken 2`] = `
+{
+  "foo": {
+    "__rules__": [
+      {
+        "payload": "yay",
+        "targeting": {
+          "browser": [
             "chrome",
           ],
         },
       },
       {
-        payload: "nay",
-        targeting: {
-          browser: [
+        "payload": "nay",
+        "targeting": {
+          "browser": [
             "edge",
           ],
         },
@@ -322,105 +322,99 @@ snapshot[`broken 2`] = `
 }
 `;
 
-snapshot[`variables 1`] = `
+exports[`variables 1`] = `
 {
-  a: {
-    b: {
-      c: "foo",
-      d: 1,
+  "a": {
+    "b": {
+      "c": "foo",
+      "d": 1,
     },
   },
 }
 `;
 
-snapshot[`variables 2`] = `
+exports[`variables 2`] = `
 {
-  a: {
-    b: {
-      c: "bar",
-      d: 1,
+  "a": {
+    "b": {
+      "c": "bar",
+      "d": 1,
     },
   },
 }
 `;
 
-snapshot[`variables using fallthrough targeting 1`] = `
+exports[`variables using fallthrough targeting 1`] = `
 {
-  __rules__: [
+  "__rules__": [
     {
-      payload: {
-        a: {
-          b: {
-            c: "{{c}}",
-            d: 1,
+      "payload": {
+        "a": {
+          "b": {
+            "c": "{{c}}",
+            "d": 1,
           },
         },
       },
     },
   ],
-  __variables__: {
-    c: [
+  "__variables__": {
+    "c": [
       {
-        payload: "1",
-        targeting: {
-          browser: [
+        "payload": "1",
+        "targeting": {
+          "browser": [
             "chrome",
           ],
         },
       },
       {
-        payload: "2",
-        targeting: {},
+        "payload": "2",
+        "targeting": {},
       },
     ],
   },
 }
 `;
 
-snapshot[`variables in arrays 1`] = `
+exports[`variables in arrays 1`] = `
 {
-  bar: {
-    rules: [
+  "bar": {
+    "rules": [
       {
-        payload: [
+        "payload": [
           {
-            b: [Function: resolver] {
-              "\$\$resolver\$\$": true,
-            },
-            c: [Function: resolver] {
-              "\$\$resolver\$\$": true,
-            },
+            "b": [Function],
+            "c": [Function],
           },
         ],
       },
     ],
-    variables: {
-      b: [
+    "variables": {
+      "b": [
         {
-          payload: 2,
+          "payload": 2,
         },
       ],
-      c: [
+      "c": [
         {
-          payload: "3",
+          "payload": "3",
         },
       ],
     },
   },
-  foo: {
-    rules: [
+  "foo": {
+    "rules": [
       {
-        payload: [
-          [Function: resolver] {
-            "\$\$resolver\$\$": true,
-          },
+        "payload": [
+          [Function],
         ],
       },
     ],
-    variables: {
-      a: [
+    "variables": {
+      "a": [
         {
-          payload: 1,
+          "payload": 1,
         },
       ],
     },
@@ -428,14 +422,16 @@ snapshot[`variables in arrays 1`] = `
 }
 `;
 
-snapshot[`errors when using variables with incorrect types 1`] = `
+exports[`errors when using variables with incorrect types 1`] = `
 [
   {
-    code: "invalid_type",
-    expected: "string",
-    message: "The variable {{c}} cannot be used where it currently is in the payload.
-Invalid input: expected string, received number",
-    path: [
+    "code": "invalid_type",
+    "expected": "string",
+    "message": 
+"The variable {{c}} cannot be used where it currently is in the payload.
+Invalid input: expected string, received number"
+,
+    "path": [
       "foo",
       "variables",
       "c",

@@ -1,4 +1,4 @@
-import type TargetingDescriptor from '../parsers/TargetingDescriptor.ts'
+import type TargetingDescriptor from '../parsers/TargetingDescriptor.js'
 import type { $ZodArray, $ZodType, output } from 'zod/v4/core'
 import { array } from 'zod/mini'
 
@@ -42,8 +42,7 @@ export function targetIncludes<T extends $ZodType>(
   options: { withNegate?: boolean } = {},
 ): TargetingDescriptor<$ZodArray<T>, T> {
   return {
-    predicate: (q) => (t) =>
-      !q || t.includes(q) || (!!options.withNegate && checkNegate(q, t)),
+    predicate: (q) => (t) => !q || t.includes(q) || (!!options.withNegate && checkNegate(q, t)),
     queryParser: t,
     targetingParser: array(t),
   }

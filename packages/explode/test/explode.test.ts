@@ -1,7 +1,7 @@
-import { assertEquals } from 'jsr:@std/assert'
+import { test, expect } from 'bun:test'
 import { type Explode, explode } from '@targetd/explode'
 
-Deno.test('Explode', () => {
+test('Explode', () => {
   function check(
     x: Explode<
       {
@@ -54,8 +54,8 @@ Deno.test('Explode', () => {
   })
 })
 
-Deno.test('explode()', () => {
-  assertEquals(
+test('explode()', () => {
+  expect(
     explode(
       {
         'foo.bar': 'something',
@@ -64,22 +64,21 @@ Deno.test('explode()', () => {
       },
       '.',
     ),
-    {
-      foo: {
-        bar: 'something',
-      },
-      a: {
-        b: {
-          c: {
-            d: {
-              e: {
-                f: 'g',
-                g: 'h',
-              },
+  ).toEqual({
+    foo: {
+      bar: 'something',
+    },
+    a: {
+      b: {
+        c: {
+          d: {
+            e: {
+              f: 'g',
+              g: 'h',
             },
           },
         },
       },
     },
-  )
+  })
 })

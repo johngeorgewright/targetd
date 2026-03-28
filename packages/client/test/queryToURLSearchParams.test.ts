@@ -1,47 +1,34 @@
-import { assertStrictEquals } from 'jsr:@std/assert'
-import { queryToURLSearchParams } from '../src/queryToURLSearchParams.ts'
+import { test, expect } from 'bun:test'
+import { queryToURLSearchParams } from '../src/queryToURLSearchParams.js'
 
-Deno.test('numbers', () => {
-  assertStrictEquals(
-    queryToURLSearchParams({ number: 1 }).toString(),
-    'number=1',
-  )
+test('numbers', () => {
+  expect(queryToURLSearchParams({ number: 1 }).toString()).toBe('number=1')
 })
 
-Deno.test('strings', () => {
-  assertStrictEquals(
-    queryToURLSearchParams({ string: 'foo' }).toString(),
-    'string=foo',
-  )
+test('strings', () => {
+  expect(queryToURLSearchParams({ string: 'foo' }).toString()).toBe('string=foo')
 })
 
-Deno.test('booleans', () => {
-  assertStrictEquals(
-    queryToURLSearchParams({ bool: true }).toString(),
-    'bool=true',
-  )
+test('booleans', () => {
+  expect(queryToURLSearchParams({ bool: true }).toString()).toBe('bool=true')
 })
 
-Deno.test('arrays', () => {
-  assertStrictEquals(
-    queryToURLSearchParams({ array: [1, 2, true, 'foo'] }).toString(),
+test('arrays', () => {
+  expect(queryToURLSearchParams({ array: [1, 2, true, 'foo'] }).toString()).toBe(
     'array=1&array=2&array=true&array=foo',
   )
 })
 
-Deno.test('objects', () => {
-  assertStrictEquals(
-    queryToURLSearchParams({ a: { b: { c: 'foo' }, d: 'bar' }, e: 'ber' })
-      .toString(),
+test('objects', () => {
+  expect(queryToURLSearchParams({ a: { b: { c: 'foo' }, d: 'bar' }, e: 'ber' }).toString()).toBe(
     encodeURI('a[b][c]=foo&a[d]=bar&e=ber'),
   )
 })
 
-Deno.test('arrays and objects', () => {
-  assertStrictEquals(
+test('arrays and objects', () => {
+  expect(
     queryToURLSearchParams({
       a: [{ b: ['foo', 'bar'] }, { b: ['boo', 'far'] }],
     }).toString(),
-    encodeURI('a[b]=foo&a[b]=bar&a[b]=boo&a[b]=far'),
-  )
+  ).toBe(encodeURI('a[b]=foo&a[b]=bar&a[b]=boo&a[b]=far'))
 })

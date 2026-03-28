@@ -1,0 +1,32 @@
+{
+  "name": "@targetd/fs",
+  "version": "7.1.0",
+  "description": "Load targeting rules from JSON/YAML files with hot-reloading support for @targetd/api Data instances.",
+  "files": [
+    "dist/",
+    "LICENSE",
+    "README.md"
+  ],
+  "type": "module",
+  "exports": "./dist/index.js",
+  "scripts": {
+    "check": "tsc --noEmit",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "@johngw/fs": "^3.0.1",
+    "es-toolkit": "catalog:",
+    "ts-toolbelt": "catalog:",
+    "yaml": "^2.8.2"
+  },
+  "devDependencies": {
+    "@targetd/api": "workspace:*",
+    "@types/bun": "catalog:",
+    "typescript": "catalog:",
+    "zod": "catalog:"
+  },
+  "peerDependencies": {
+    "@targetd/api": "workspace:*",
+    "zod": "catalog:"
+  }
+}

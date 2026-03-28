@@ -10,34 +10,14 @@
     { "name": "📦 @targetd/server", "path": "packages/server" },
     { "name": "🤖 github", "path": ".github" }
   ],
-  "settings": {
-    "deno.enable": true,
-    "deno.lint": true,
-    "eslint.enable": false,
-    "editor.defaultFormatter": "denoland.vscode-deno",
-    "[typescript]": {
-      "editor.defaultFormatter": "denoland.vscode-deno"
-    },
-    "[typescriptreact]": {
-      "editor.defaultFormatter": "denoland.vscode-deno"
-    },
-    "[json]": {
-      "editor.defaultFormatter": "denoland.vscode-deno"
-    },
-    "[javascript]": {
-      "editor.defaultFormatter": "denoland.vscode-deno"
-    },
-    "[jsonc]": {
-      "editor.defaultFormatter": "denoland.vscode-deno"
-    },
-    "[yaml]": {
-      "editor.defaultFormatter": "denoland.vscode-deno"
-    },
-    "[html]": {
-      "editor.defaultFormatter": "denoland.vscode-deno"
-    }
-  },
   "extensions": {
-    "recommendations": ["denoland.vscode-deno"]
+    "recommendations": ["oxc.oxc-vscode"]
+  },
+  "settings": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll.oxc": "always"
+    },
+    "editor.defaultFormatter": "oxc.oxc-vscode",
+    "oxc.enable": true
   }
 }

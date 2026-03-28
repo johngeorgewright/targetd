@@ -1,10 +1,7 @@
-import { assertSnapshot } from 'jsr:@std/testing/snapshot'
+import { test, expect } from 'bun:test'
 import { dataJSONSchemas } from '@targetd/json-schema'
-import { data } from './fixtures/data.ts'
+import { data } from './fixtures/data.js'
 
-Deno.test('json schema for simple data object', async (t) => {
-  await assertSnapshot(
-    t,
-    dataJSONSchemas(data),
-  )
+test('json schema for simple data object', async () => {
+  expect(dataJSONSchemas(data)).toMatchSnapshot()
 })
