@@ -12,8 +12,9 @@
     "jsr:@std/internal@^1.0.9": "1.0.10",
     "jsr:@std/path@^1.1.1": "1.1.2",
     "jsr:@std/testing@*": "1.0.15",
-    "npm:@commitlint/cli@^20.4.3": "20.4.4_@types+node@25.5.0_typescript@5.9.3",
-    "npm:@commitlint/config-conventional@^20.4.3": "20.4.4",
+    "jsr:@targetd/api@^8.0.3": "8.1.1",
+    "npm:@commitlint/cli@^20.5.0": "20.5.0_@types+node@25.5.0_typescript@6.0.2",
+    "npm:@commitlint/config-conventional@^20.5.0": "20.5.0",
     "npm:@johngw/error@^2.2.2": "2.2.2",
     "npm:@johngw/fs@^3.0.1": "3.0.1",
     "npm:@types/express@^5.0.6": "5.0.6",
@@ -25,7 +26,7 @@
     "npm:express@^5.2.1": "5.2.1",
     "npm:fast-deep-equal@^3.1.3": "3.1.3",
     "npm:flat@^6.0.1": "6.0.1",
-    "npm:lint-staged@^16.3.1": "16.3.3",
+    "npm:lint-staged@^16.4.0": "16.4.0",
     "npm:lodash@*": "4.17.23",
     "npm:qs@^6.15.0": "6.15.0",
     "npm:release-please@*": "17.3.0",
@@ -77,6 +78,13 @@
         "jsr:@std/internal@^1.0.10",
         "jsr:@std/path"
       ]
+    },
+    "@targetd/api@8.1.1": {
+      "integrity": "a7b45c35a323c3b26465ed033a60d808c2fb6ade208b8370c8307cc1833486db",
+      "dependencies": [
+        "npm:fast-deep-equal",
+        "npm:zod"
+      ]
     }
   },
   "npm": {
@@ -91,8 +99,8 @@
     "@babel/helper-validator-identifier@7.28.5": {
       "integrity": "sha512-qSs4ifwzKJSV39ucNjsvc6WVHs6b7S03sOh2OcHF9UHfVPqWWALUsNUVzhSBiItjRZoLHx7nIarVjqKVusUZ1Q=="
     },
-    "@commitlint/cli@20.4.4_@types+node@25.5.0_typescript@5.9.3": {
-      "integrity": "sha512-GLMNQHYGcn0ohL2HMlAnXcD1PS2vqBBGbYKlhrRPOYsWiRoLWtrewsR3uKRb9v/IdS+qOS0vqJQ64n1g8VPKFw==",
+    "@commitlint/cli@20.5.0_@types+node@25.5.0_typescript@6.0.2": {
+      "integrity": "sha512-yNkyN/tuKTJS3wdVfsZ2tXDM4G4Gi7z+jW54Cki8N8tZqwKBltbIvUUrSbT4hz1bhW/h0CdR+5sCSpXD+wMKaQ==",
       "dependencies": [
         "@commitlint/format",
         "@commitlint/lint",
@@ -104,22 +112,22 @@
       ],
       "bin": true
     },
-    "@commitlint/config-conventional@20.4.4": {
-      "integrity": "sha512-Usg+XXbPNG2GtFWTgRURNWCge1iH1y6jQIvvklOdAbyn2t8ajfVwZCnf5t5X4gUsy17BOiY+myszGsSMIvhOVA==",
+    "@commitlint/config-conventional@20.5.0": {
+      "integrity": "sha512-t3Ni88rFw1XMa4nZHgOKJ8fIAT9M2j5TnKyTqJzsxea7FUetlNdYFus9dz+MhIRZmc16P0PPyEfh6X2d/qw8SA==",
       "dependencies": [
         "@commitlint/types",
         "conventional-changelog-conventionalcommits@9.3.0"
       ]
     },
-    "@commitlint/config-validator@20.4.4": {
-      "integrity": "sha512-K8hMS9PTLl7EYe5vWtSFQ/sgsV2PHUOtEnosg8k3ZQxCyfKD34I4C7FxWEfRTR54rFKeUYmM3pmRQqBNQeLdlw==",
+    "@commitlint/config-validator@20.5.0": {
+      "integrity": "sha512-T/Uh6iJUzyx7j35GmHWdIiGRQB+ouZDk0pwAaYq4SXgB54KZhFdJ0vYmxiW6AMYICTIWuyMxDBl1jK74oFp/Gw==",
       "dependencies": [
         "@commitlint/types",
         "ajv"
       ]
     },
-    "@commitlint/ensure@20.4.4": {
-      "integrity": "sha512-QivV0M1MGL867XCaF+jJkbVXEPKBALhUUXdjae66hes95aY1p3vBJdrcl3x8jDv2pdKWvIYIz+7DFRV/v0dRkA==",
+    "@commitlint/ensure@20.5.0": {
+      "integrity": "sha512-IpHqAUesBeW1EDDdjzJeaOxU9tnogLAyXLRBn03SHlj1SGENn2JGZqSWGkFvBJkJzfXAuCNtsoYzax+ZPS+puw==",
       "dependencies": [
         "@commitlint/types",
         "lodash.camelcase",
@@ -132,22 +140,22 @@
     "@commitlint/execute-rule@20.0.0": {
       "integrity": "sha512-xyCoOShoPuPL44gVa+5EdZsBVao/pNzpQhkzq3RdtlFdKZtjWcLlUFQHSWBuhk5utKYykeJPSz2i8ABHQA+ZZw=="
     },
-    "@commitlint/format@20.4.4": {
-      "integrity": "sha512-jLi/JBA4GEQxc5135VYCnkShcm1/rarbXMn2Tlt3Si7DHiiNKHm4TaiJCLnGbZ1r8UfwDRk+qrzZ80kwh08Aow==",
+    "@commitlint/format@20.5.0": {
+      "integrity": "sha512-TI9EwFU/qZWSK7a5qyXMpKPPv3qta7FO4tKW+Wt2al7sgMbLWTsAcDpX1cU8k16TRdsiiet9aOw0zpvRXNJu7Q==",
       "dependencies": [
         "@commitlint/types",
         "picocolors"
       ]
     },
-    "@commitlint/is-ignored@20.4.4": {
-      "integrity": "sha512-y76rT8yq02x+pMDBI2vY4y/ByAwmJTkta/pASbgo8tldBiKLduX8/2NCRTSCjb3SumE5FBeopERKx3oMIm8RTQ==",
+    "@commitlint/is-ignored@20.5.0": {
+      "integrity": "sha512-JWLarAsurHJhPozbuAH6GbP4p/hdOCoqS9zJMfqwswne+/GPs5V0+rrsfOkP68Y8PSLphwtFXV0EzJ+GTXTTGg==",
       "dependencies": [
         "@commitlint/types",
         "semver@7.7.4"
       ]
     },
-    "@commitlint/lint@20.4.4": {
-      "integrity": "sha512-svOEW+RptcNpXKE7UllcAsV0HDIdOck9reC2TP1QA6K5Fo0xxQV+QPjV8Zqx9g6X/hQBkF2S9ZQZ78Xrv1Eiog==",
+    "@commitlint/lint@20.5.0": {
+      "integrity": "sha512-jiM3hNUdu04jFBf1VgPdjtIPvbuVfDTBAc6L98AWcoLjF5sYqkulBHBzlVWll4rMF1T5zeQFB6r//a+s+BBKlA==",
       "dependencies": [
         "@commitlint/is-ignored",
         "@commitlint/parse",
@@ -155,8 +163,8 @@
         "@commitlint/types"
       ]
     },
-    "@commitlint/load@20.4.4_@types+node@25.5.0_typescript@5.9.3": {
-      "integrity": "sha512-kvFrzvoIACa/fMjXEP0LNEJB1joaH3q3oeMJsLajXE5IXjYrNGVcW1ZFojXUruVJ7odTZbC3LdE/6+ONW4f2Dg==",
+    "@commitlint/load@20.5.0_@types+node@25.5.0_typescript@6.0.2": {
+      "integrity": "sha512-sLhhYTL/KxeOTZjjabKDhwidGZan84XKK1+XFkwDYL/4883kIajcz/dZFAhBJmZPtL8+nBx6bnkzA95YxPeDPw==",
       "dependencies": [
         "@commitlint/config-validator",
         "@commitlint/execute-rule",
@@ -172,16 +180,16 @@
     "@commitlint/message@20.4.3": {
       "integrity": "sha512-6akwCYrzcrFcTYz9GyUaWlhisY4lmQ3KvrnabmhoeAV8nRH4dXJAh4+EUQ3uArtxxKQkvxJS78hNX2EU3USgxQ=="
     },
-    "@commitlint/parse@20.4.4": {
-      "integrity": "sha512-AjfgOgrjEozeQNzhFu1KL5N0nDx4JZmswVJKNfOTLTUGp6xODhZHCHqb//QUHKOzx36If5DQ7tci2o7szYxu1A==",
+    "@commitlint/parse@20.5.0": {
+      "integrity": "sha512-SeKWHBMk7YOTnnEWUhx+d1a9vHsjjuo6Uo1xRfPNfeY4bdYFasCH1dDpAv13Lyn+dDPOels+jP6D2GRZqzc5fA==",
       "dependencies": [
         "@commitlint/types",
         "conventional-changelog-angular",
         "conventional-commits-parser"
       ]
     },
-    "@commitlint/read@20.4.4": {
-      "integrity": "sha512-jvgdAQDdEY6L8kCxOo21IWoiAyNFzvrZb121wU2eBxI1DzWAUZgAq+a8LlJRbT0Qsj9INhIPVWgdaBbEzlF0dQ==",
+    "@commitlint/read@20.5.0": {
+      "integrity": "sha512-JDEIJ2+GnWpK8QqwfmW7O42h0aycJEWNqcdkJnyzLD11nf9dW2dWLTVEa8Wtlo4IZFGLPATjR5neA5QlOvIH1w==",
       "dependencies": [
         "@commitlint/top-level",
         "@commitlint/types",
@@ -190,8 +198,8 @@
         "tinyexec"
       ]
     },
-    "@commitlint/resolve-extends@20.4.4": {
-      "integrity": "sha512-pyOf+yX3c3m/IWAn2Jop+7s0YGKPQ8YvQaxt9IQxnLIM3yZAlBdkKiQCT14TnrmZTkVGTXiLtckcnFTXYwlY0A==",
+    "@commitlint/resolve-extends@20.5.0": {
+      "integrity": "sha512-3SHPWUW2v0tyspCTcfSsYml0gses92l6TlogwzvM2cbxDgmhSRc+fldDjvGkCXJrjSM87BBaWYTPWwwyASZRrg==",
       "dependencies": [
         "@commitlint/config-validator",
         "@commitlint/types",
@@ -201,8 +209,8 @@
         "resolve-from@5.0.0"
       ]
     },
-    "@commitlint/rules@20.4.4": {
-      "integrity": "sha512-PmUp8QPLICn9w05dAx5r1rdOYoTk7SkfusJJh5tP3TqHwo2mlQ9jsOm8F0HSXU9kuLfgTEGNrunAx/dlK/RyPQ==",
+    "@commitlint/rules@20.5.0": {
+      "integrity": "sha512-5NdQXQEdnDPT5pK8O39ZA7HohzPRHEsDGU23cyVCNPQy4WegAbAwrQk3nIu7p2sl3dutPk8RZd91yKTrMTnRkQ==",
       "dependencies": [
         "@commitlint/ensure",
         "@commitlint/message",
@@ -219,8 +227,8 @@
         "escalade"
       ]
     },
-    "@commitlint/types@20.4.4": {
-      "integrity": "sha512-dwTGzyAblFXHJNBOgrTuO5Ee48ioXpS5XPRLLatxhQu149DFAHUcB3f0Q5eea3RM4USSsP1+WVT2dBtLVod4fg==",
+    "@commitlint/types@20.5.0": {
+      "integrity": "sha512-ZJoS8oSq2CAZEpc/YI9SulLrdiIyXeHb/OGqGrkUP6Q7YV+0ouNAa7GjqRdXeQPncHQIDz/jbCTlHScvYvO/gA==",
       "dependencies": [
         "conventional-commits-parser",
         "picocolors"
@@ -586,12 +594,6 @@
         "balanced-match"
       ]
     },
-    "braces@3.0.3": {
-      "integrity": "sha512-yQbXgO/OSZVD2IsiLlro+7Hf6Q18EJrKSEsdoMzKePKXct3gvD8oLcOQdIzGupr5Fj+EDe8gO/lxc1BzfMpxvA==",
-      "dependencies": [
-        "fill-range"
-      ]
-    },
     "bytes@3.1.2": {
       "integrity": "sha512-/Nf7TyzTx6S3yRJObOAV7956r8cr2+Oj8AC5dt8wSP3BQAoeX58NoHyCU8P8zGkNXStjTSi6fzO6F0pBdcYbEg=="
     },
@@ -782,26 +784,26 @@
         "vary"
       ]
     },
-    "cosmiconfig-typescript-loader@6.2.0_@types+node@25.5.0_cosmiconfig@9.0.1__typescript@5.9.3_typescript@5.9.3": {
+    "cosmiconfig-typescript-loader@6.2.0_@types+node@25.5.0_cosmiconfig@9.0.1__typescript@6.0.2_typescript@6.0.2": {
       "integrity": "sha512-GEN39v7TgdxgIoNcdkRE3uiAzQt3UXLyHbRHD6YoL048XAeOomyxaP+Hh/+2C6C2wYjxJ2onhJcsQp+L4YEkVQ==",
       "dependencies": [
         "@types/node",
         "cosmiconfig",
         "jiti",
-        "typescript@5.9.3"
+        "typescript@6.0.2"
       ]
     },
-    "cosmiconfig@9.0.1_typescript@5.9.3": {
+    "cosmiconfig@9.0.1_typescript@6.0.2": {
       "integrity": "sha512-hr4ihw+DBqcvrsEDioRO31Z17x71pUYoNe/4h6Z0wB72p7MU7/9gH8Q3s12NFhHPfYBBOV3qyfUxmr/Yn3shnQ==",
       "dependencies": [
         "env-paths",
         "import-fresh",
         "js-yaml",
         "parse-json",
-        "typescript@5.9.3"
+        "typescript@6.0.2"
       ],
       "optionalPeers": [
-        "typescript@5.9.3"
+        "typescript@6.0.2"
       ]
     },
     "css-select@5.2.2": {
@@ -1009,12 +1011,6 @@
       "integrity": "sha512-yaduQFRKLXYOGgEn6AZau90j3ggSOyiqXU0F9JZfeXYhNa+Jk4X+s45A2zg5jns87GAFa34BBm2kXw4XpNcbdg==",
       "dependencies": [
         "escape-string-regexp"
-      ]
-    },
-    "fill-range@7.1.1": {
-      "integrity": "sha512-YsGpe3WHLK8ZYi4tWDg2Jy3ebRz2rXowDxnld4bkQB00cc/1Zw9AWnC0i9ztDJitivtQvaI9KaLyKrc+hBW0yg==",
-      "dependencies": [
-        "to-regex-range"
       ]
     },
     "finalhandler@2.1.1": {
@@ -1251,9 +1247,6 @@
         "get-east-asian-width"
       ]
     },
-    "is-number@7.0.0": {
-      "integrity": "sha512-41Cifkg6e8TylSpdtTpeLVMqvSBEVzTttHvERD741+pnZ8ANv0004MRL43QKPDlK9cGvNp6NZWZUBlbGXYxxng=="
-    },
     "is-obj@2.0.0": {
       "integrity": "sha512-drqDG3cbczxxEJRoOXcOjtdp1J/lyp1mNn0xaznRs8+muBhgQcrnbspox5X5fOw0HnMnbfDzvnEMEtqDEJEo8w=="
     },
@@ -1307,12 +1300,12 @@
     "lines-and-columns@1.2.4": {
       "integrity": "sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg=="
     },
-    "lint-staged@16.3.3": {
-      "integrity": "sha512-RLq2koZ5fGWrx7tcqx2tSTMQj4lRkfNJaebO/li/uunhCJbtZqwTuwPHpgIimAHHi/2nZIiGrkCHDCOeR1onxA==",
+    "lint-staged@16.4.0": {
+      "integrity": "sha512-lBWt8hujh/Cjysw5GYVmZpFHXDCgZzhrOm8vbcUdobADZNOK/bRshr2kM3DfgrrtR1DQhfupW9gnIXOfiFi+bw==",
       "dependencies": [
         "commander",
         "listr2",
-        "micromatch",
+        "picomatch",
         "string-argv",
         "tinyexec",
         "yaml"
@@ -1412,13 +1405,6 @@
     },
     "methods@1.1.2": {
       "integrity": "sha512-iclAHeNqNm68zFtnZ0e+1L2yUIdvzNoauKU4WBA3VvH/vPFieF7qfRlwUZU+DA9P9bPXIS90ulxoUoCH23sV2w=="
-    },
-    "micromatch@4.0.8": {
-      "integrity": "sha512-PXwfBhYu0hBCPw8Dn0E+WDYb7af3dSLVWKi3HGv84IdF4TyFoC0ysxFd0Goxw7nSv4T/PzEJQxsYsEiFCKo2BA==",
-      "dependencies": [
-        "braces",
-        "picomatch"
-      ]
     },
     "mime-db@1.52.0": {
       "integrity": "sha512-sPU4uV7dYlvtWJxwwxHD0PuihVNiE7TyAbQ5SWxDCB9mUYvOgroQOwYQQOKPJ8CIbE+1ETVlOoK1UC2nU3gYvg=="
@@ -1592,8 +1578,8 @@
     "picocolors@1.1.1": {
       "integrity": "sha512-xceH2snhtb5M9liqDsmEw56le376mTZkEX/jEb/RxNFyegNul7eNslCXP9FDj/Lcu0X8KEyMceP2ntpaHrDEVA=="
     },
-    "picomatch@2.3.1": {
-      "integrity": "sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA=="
+    "picomatch@4.0.4": {
+      "integrity": "sha512-QP88BAKvMam/3NxH6vj2o21R6MjxZUAd6nlwAS/pnGvN9IVLocLHxGYIzFhg6fUQ+5th6P4dv4eW9jX3DSIj7A=="
     },
     "proxy-addr@2.0.7": {
       "integrity": "sha512-llQsMLSUDUPT44jdrU/O37qlnifitDP+ZwrmmZcoSKyLKvtZxpyV0n2/bD/N4tBAAZ/gJEdZU7KMraoK1+XYAg==",
@@ -1930,14 +1916,8 @@
     "through@2.3.8": {
       "integrity": "sha512-w89qg7PI8wAdvX60bMDP+bFoD5Dvhm9oLheFp5O4a2QF0cSBGsBX4qZmadPMvVqlLJBBci+WqGGOAPvcDeNSVg=="
     },
-    "tinyexec@1.0.2": {
-      "integrity": "sha512-W/KYk+NFhkmsYpuHq5JykngiOCnxeVL8v8dFnqxSD8qEEdRfXk1SDM6JzNqcERbcGYj9tMrDQBYV9cjgnunFIg=="
-    },
-    "to-regex-range@5.0.1": {
-      "integrity": "sha512-65P7iz6X5yEr1cwcgvQxbbIw7Uk3gOy5dIdtZ4rDveLqhrdJP+Li/Hx6tyK0NEb+2GCyneCMJiGqrADCSNk8sQ==",
-      "dependencies": [
-        "is-number"
-      ]
+    "tinyexec@1.0.4": {
+      "integrity": "sha512-u9r3uZC0bdpGOXtlxUIdwf9pkmvhqJdrVCH9fapQtgy/OeTTMZ1nqH7agtvEfmGui6e1XxjcdrlxvxJvc3sMqw=="
     },
     "toidentifier@1.0.1": {
       "integrity": "sha512-o5sSPKEkg/DIQNmH43V0/uerLrpzVedkUh8tGNvaeXpfpuwjKenlSox/2O/BTlZUtEe+JG7s5YhEz608PlAHRA=="
@@ -1975,8 +1955,8 @@
       "integrity": "sha512-1FXk9E2Hm+QzZQ7z+McJiHL4NW1F2EzMu9Nq9i3zAaGqibafqYwCVU6WyWAuyQRRzOlxou8xZSyXLEN8oKj24g==",
       "bin": true
     },
-    "typescript@5.9.3": {
-      "integrity": "sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==",
+    "typescript@6.0.2": {
+      "integrity": "sha512-bGdAIrZ0wiGDo5l8c++HWtbaNCWTS4UTv7RaTH/ThVIgjkveJt83m74bBHMJkuCbslY8ixgLBVZJIOiQlQTjfQ==",
       "bin": true
     },
     "uglify-js@3.19.3": {
@@ -2105,9 +2085,9 @@
   },
   "workspace": {
     "dependencies": [
-      "npm:@commitlint/cli@^20.4.3",
-      "npm:@commitlint/config-conventional@^20.4.3",
-      "npm:lint-staged@^16.3.1"
+      "npm:@commitlint/cli@^20.5.0",
+      "npm:@commitlint/config-conventional@^20.5.0",
+      "npm:lint-staged@^16.4.0"
     ],
     "members": {
       "packages/api": {
