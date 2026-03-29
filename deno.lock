@@ -83,6 +83,7 @@
       "integrity": "a7b45c35a323c3b26465ed033a60d808c2fb6ade208b8370c8307cc1833486db",
       "dependencies": [
         "npm:fast-deep-equal",
+        "npm:ts-toolbelt",
         "npm:zod"
       ]
     }
