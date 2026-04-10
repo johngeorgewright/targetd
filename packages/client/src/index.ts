@@ -1,4 +1,4 @@
-import type { Data, DT, PT, StaticRecord } from '@targetd/api'
+import type { Data, DT, PT, QT, QueryableData } from '@targetd/api'
 import { queryToURLSearchParams } from './queryToURLSearchParams.ts'
 import { ZodError } from 'zod'
 import { ResponseError } from './ResponseError.ts'
@@ -18,7 +18,7 @@ import { ResponseError } from './ResponseError.ts'
  * const allPayloads = await client.getPayloadForEachName({ country: 'US' })
  * ```
  */
-export class Client<$ extends DT.Meta> {
+export class Client<$ extends DT.Meta> implements QueryableData<$> {
   #baseURL: string
 
   #data: Data<$>
@@ -69,12 +69,12 @@ export class Client<$ extends DT.Meta> {
    */
   async getPayload<Name extends keyof $['PayloadParsers']>(
     name: Name,
-    rawQuery: Partial<StaticRecord<$['QueryParsers']>> = {},
+    rawQuery?: QT.Raw<$['QueryParsers']>,
   ): Promise<
     | PT.Payload<$, $['PayloadParsers'][Name]>
-    | void
+    | undefined
   > {
-    const query = this.#data.QueryParser.parse(rawQuery)
+    const query = this.#data.QueryParser.parse(rawQuery ?? {})
     const urlSearchParams = queryToURLSearchParams(query)
     const response = await fetch(
       `${this.#baseURL}/${String(name)}?${urlSearchParams}`,
@@ -122,17 +122,9 @@ export class Client<$ extends DT.Meta> {
    * ```
    */
   async getPayloadForEachName(
-    rawQuery: Partial<StaticRecord<$['QueryParsers']>> = {},
-  ): Promise<
-    Partial<
-      {
-        [Name in keyof $['PayloadParsers']]:
-          | PT.Payload<$, $['PayloadParsers'][Name]>
-          | undefined
-      }
-    >
-  > {
-    const query = this.#data.QueryParser.parse(rawQuery)
+    rawQuery?: QT.Raw<$['QueryParsers']>,
+  ): Promise<PT.Payloads<$>> {
+    const query = this.#data.QueryParser.parse(rawQuery ?? {})
     const urlSearchParams = queryToURLSearchParams(query)
     const response = await fetch(`${this.#baseURL}?${urlSearchParams}`, {
       method: 'GET',
@@ -140,6 +132,61 @@ export class Client<$ extends DT.Meta> {
     })
     const data = await this.#data.insert((await response.json()) as any)
     return data.getPayloadForEachName()
+  }
+
+  /**
+   * Fetch all matching payloads from the server by name.
+   *
+   * @param name - The name of the payload to retrieve.
+   * @param rawQuery - Optional query object with targeting parameters.
+   * @returns Array of all matching payloads.
+   * @throws {ZodError} When query parameters fail validation.
+   * @throws {ResponseError} When the server returns an error response.
+   *
+   * @example
+   * ```ts
+   * const greetings = await client.getPayloads('greeting', { country: 'US' })
+   * // Returns: ['Hello!', 'Hi!']
+   * ```
+   */
+  async getPayloads<Name extends keyof $['PayloadParsers']>(
+    name: Name,
+    rawQuery?: QT.Raw<$['QueryParsers']>,
+  ): Promise<
+    PT.Payload<$, $['PayloadParsers'][Name]>[]
+  > {
+    const query = this.#data.QueryParser.parse(rawQuery ?? {})
+    const urlSearchParams = queryToURLSearchParams(query)
+    const response = await fetch(
+      `${this.#baseURL}/${String(name)}/all?${urlSearchParams}`,
+      {
+        method: 'GET',
+        ...this.#init,
+      },
+    )
+
+    switch (true) {
+      case response.status === 400:
+        await response.json()
+          .then(
+            (error) => {
+              if (error.name === '$ZodError') {
+                throw new ZodError(JSON.parse(error.message))
+              }
+            },
+            () => {},
+          )
+      // fallthrough
+      case response.status > 200 || response.status < 200:
+        throw new ResponseError(response)
+      default: {
+        const payloads = await response.json() as any[]
+        const data = await this.#data.insert({
+          [name]: payloads.map((payload) => ({ payload })),
+        } as any)
+        return data.getPayloads(name)
+      }
+    }
   }
 }
 
