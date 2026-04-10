@@ -12,6 +12,7 @@ export type { default as TargetingPredicates } from './parsers/TargetingPredicat
 export { targetEquals } from './predicates/equals.ts'
 export { targetIncludes } from './predicates/targetIncludes.ts'
 export type { StaticRecord } from './types.ts'
+export type { Merge } from './util.ts'
 
 /**
  * Type helpers for the {@link Data} class.
