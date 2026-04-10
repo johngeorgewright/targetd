@@ -1,5 +1,14 @@
 # Changelog
 
+## [8.2.0](https://github.com/johngeorgewright/targetd/compare/@targetd/server-v8.1.3...@targetd/server-v8.2.0) (2026-04-10)
+
+
+### Features
+
+* enhance error handling and add tests for matching payloads ([e64b177](https://github.com/johngeorgewright/targetd/commit/e64b177937abf21ded60b328755635c7aed93125))
+* introduce data interfaces ([4dfe412](https://github.com/johngeorgewright/targetd/commit/4dfe412d206b1f5d0b09ea69286dbe6b93712fe2))
+* introduce data interfaces ([885b546](https://github.com/johngeorgewright/targetd/commit/885b54638afbbcf46159dfaee6cdf069061ad7f0))
+
 ## [8.1.3](https://github.com/johngeorgewright/targetd/compare/@targetd/server-v8.1.2...@targetd/server-v8.1.3) (2026-04-10)
 
 
