@@ -3,6 +3,7 @@ import {
   $constructor,
   type $ZodCustomDef,
   type $ZodCustomInternals,
+  type $ZodRawIssue,
   $ZodType,
   type $ZodType as $ZodTypeType,
   NEVER,
@@ -45,30 +46,36 @@ export interface ZodSwitch<SwitchMap extends $ZodSwitchMap = $ZodSwitchMap>
   >
 }
 
-export const ZodSwitch: $constructor<ZodSwitch> = $constructor(
+export const ZodSwitch = $constructor<ZodSwitch>(
   'ZodSwitch',
   (inst, def) => {
     $ZodType.init(inst, def)
     inst._zod.parse = (payload) => {
       const input = payload.value
+      let unfoundIssue: undefined | $ZodRawIssue = {
+        code: 'custom',
+        input,
+        message: 'no matching condition',
+      }
       payload.value = NEVER
       for (const [condition, parser] of def.switchMap) {
         const conditionResult = safeParse(condition, input)
-        if (conditionResult.success) {
-          const parseResult = safeParse(parser, input)
-          if (parseResult.success) {
-            payload.value = parseResult.data
-          } else {
-            for (const issue of parseResult.error.issues) {
-              payload.issues.push({
-                ...issue,
-                input: input as any,
-              })
-            }
+        if (conditionResult.success) unfoundIssue = undefined
+        else continue
+        const parseResult = safeParse(parser, input)
+        if (parseResult.success) {
+          payload.value = parseResult.data
+        } else {
+          for (const issue of parseResult.error.issues) {
+            payload.issues.push({
+              ...issue,
+              input: input as any,
+            })
           }
-          break
         }
+        break
       }
+      if (unfoundIssue) payload.issues.push(unfoundIssue)
       return payload
     }
   },
