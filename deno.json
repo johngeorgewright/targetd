@@ -8,12 +8,32 @@
       "exclude": ["no-explicit-any", "ban-types"]
     }
   },
+  "permissions": {
+    "commitlint": {
+      "env": true,
+      "read": true,
+      "run": ["git"],
+      "sys": ["homedir"]
+    },
+    "hook": {
+      "read": ["./.git"],
+      "run": ["git"],
+      "write": ["./hooks"]
+    },
+    "test": {
+      "env": true,
+      "net": ["0.0.0.0", "127.0.0.1", "localhost"],
+      "read": true,
+      "sys": ["hostname"],
+      "write": true
+    }
+  },
   "tasks": {
     "check": "deno check --frozen packages/**/src",
-    "commitlint": "deno run --allow-read --allow-env --allow-sys @commitlint/cli",
-    "hook": "deno run --allow-read --allow-run --allow-write https://deno.land/x/deno_hooks@0.1.1/mod.ts",
-    "test": "deno test --frozen --allow-all packages/**/test",
-    "test:dev": "deno test --allow-all packages/**/test"
+    "commitlint": "deno run --permission-set=commitlint @commitlint/cli",
+    "hook": "deno run --permission-set=hook https://deno.land/x/deno_hooks@0.1.1/mod.ts",
+    "test": "deno test --frozen --permission-set=test packages/**/test",
+    "test:dev": "deno test --permission-set=test packages/**/test"
   },
   "workspace": [
     "./packages/*"
