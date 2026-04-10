@@ -11,6 +11,9 @@ export type { default as TargetingPredicate } from './parsers/TargetingPredicate
 export type { default as TargetingPredicates } from './parsers/TargetingPredicates.ts'
 export { targetEquals } from './predicates/equals.ts'
 export { targetIncludes } from './predicates/targetIncludes.ts'
+export type { ConfigurableData } from './ConfigurableData.ts'
+export type { InsertableData } from './InsertableData.ts'
+export type { QueryableData } from './QueryableData.ts'
 export type { StaticRecord } from './types.ts'
 export type { Merge } from './util.ts'
 

@@ -8,11 +8,14 @@ import type * as QT from './types/Query.ts'
 import type { DataItemRulesIn } from './parsers/DataItemRules.ts'
 import type { MaybePromise } from './types.ts'
 import type { DataItemIn } from './parsers/DataItem.ts'
-import type { IData } from './IData.ts'
+import type { ConfigurableData } from './ConfigurableData.ts'
+import type { InsertableData } from './InsertableData.ts'
+import type { QueryableData } from './QueryableData.ts'
 import type { Merge } from './util.ts'
 
 /**
- * A Promise-based wrapper for Data that implements the IData interface.
+ * A Promise-based wrapper for Data that implements the ConfigurableData,
+ * InsertableData, and QueryableData interfaces.
  * Allows chaining operations on Data instances that may be resolved asynchronously.
  * All methods return a new PromisedData instance, enabling fluent API usage.
  *
@@ -20,10 +23,12 @@ import type { Merge } from './util.ts'
  *
  * @template $ - The metadata type extending Data.Meta
  * @extends {Promise<Data<$>>}
- * @implements {IData<$>}
+ * @implements {ConfigurableData<$>}
+ * @implements {InsertableData<$>}
+ * @implements {QueryableData<$>}
  */
 export class PromisedData<$ extends DT.Meta> extends Promise<Data<$>>
-  implements IData<$> {
+  implements ConfigurableData<$>, InsertableData<$>, QueryableData<$> {
   /**
    * Creates a new PromisedData instance.
    *
@@ -138,8 +143,10 @@ export class PromisedData<$ extends DT.Meta> extends Promise<Data<$>>
     targeting: TDs,
   ): PromisedData<
     Merge<$, {
-      FallThroughTargetingParsers:
-        Merge<$['FallThroughTargetingParsers'], FTTT.ParsersRecord<TDs>>
+      FallThroughTargetingParsers: Merge<
+        $['FallThroughTargetingParsers'],
+        FTTT.ParsersRecord<TDs>
+      >
     }>
   > {
     return this.#create((data) => data.useFallThroughTargeting(targeting))

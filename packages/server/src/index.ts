@@ -110,6 +110,21 @@ export function createServer<
 
   return server
     .get(
+      '/:name/all',
+      castQueryProp(),
+      castQueryArrayProps(getData),
+      async (req, res) => {
+        const query = res.locals.query ?? req.query
+        const data = await getData()
+
+        if (!(req.params.name in data.payloadParsers)) {
+          throw new StatusError(404, `Unknown data property ${req.params.name}`)
+        }
+
+        res.json(await data.getPayloads(req.params.name, query))
+      },
+    )
+    .get(
       '/:name',
       castQueryProp(),
       castQueryArrayProps(getData),
