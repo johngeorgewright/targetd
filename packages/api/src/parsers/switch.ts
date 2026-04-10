@@ -46,7 +46,7 @@ export interface ZodSwitch<SwitchMap extends $ZodSwitchMap = $ZodSwitchMap>
   >
 }
 
-export const ZodSwitch = $constructor<ZodSwitch>(
+export const ZodSwitch: $constructor<ZodSwitch> = $constructor(
   'ZodSwitch',
   (inst, def) => {
     $ZodType.init(inst, def)
