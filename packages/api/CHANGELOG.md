@@ -1,5 +1,13 @@
 # Changelog
 
+## [8.2.1](https://github.com/johngeorgewright/targetd/compare/@targetd/api-v8.2.0...@targetd/api-v8.2.1) (2026-04-10)
+
+
+### Bug Fixes
+
+* simplify requiresQuery assignment and update Any type to use any for parser definitions ([be29759](https://github.com/johngeorgewright/targetd/commit/be29759a1f76e3e9033fa352fa8471fda22d532d))
+* update Any type to use Record for parser definitions ([cdf9866](https://github.com/johngeorgewright/targetd/commit/cdf98666ee006d6d07846eb1327155863be1aba8))
+
 ## [8.2.0](https://github.com/johngeorgewright/targetd/compare/@targetd/api-v8.1.2...@targetd/api-v8.2.0) (2026-04-10)
 
 
