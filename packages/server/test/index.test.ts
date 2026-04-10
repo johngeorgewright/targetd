@@ -361,6 +361,40 @@ Deno.test('custom path structure', async () => {
     })
 })
 
+Deno.test('get all matching payloads', async (t) => {
+  await using server = await createDisposableServer()
+
+  let response = await request(server)
+    .get('/foo/all')
+    .expect('Content-Type', /json/)
+    .expect(200)
+  await assertSnapshot(t, response.body)
+
+  response = await request(server)
+    .get('/foo/all?weather=sunny')
+    .expect('Content-Type', /json/)
+    .expect(200)
+  await assertSnapshot(t, response.body)
+
+  response = await request(server)
+    .get('/foo/all?highTide=true&weather=sunny')
+    .expect('Content-Type', /json/)
+    .expect(200)
+  await assertSnapshot(t, response.body)
+
+  // Empty results
+  response = await request(server)
+    .get('/timed/all')
+    .expect('Content-Type', /json/)
+    .expect(200)
+  await assertSnapshot(t, response.body)
+
+  // 404 for unknown name
+  await request(server)
+    .get('/nonexistent/all')
+    .expect(404)
+})
+
 Deno.test('error handling', async (t) => {
   await using server = await createDisposableServer()
 

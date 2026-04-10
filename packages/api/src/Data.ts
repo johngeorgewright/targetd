@@ -29,7 +29,9 @@ import {
 import { partial, strictObject } from 'zod/mini'
 import { PromisedData } from './PromisedData.ts'
 import { resolveVariables } from './parsers/DataItemVariableResolver.ts'
-import type { IData } from './IData.ts'
+import type { ConfigurableData } from './ConfigurableData.ts'
+import type { InsertableData } from './InsertableData.ts'
+import type { QueryableData } from './QueryableData.ts'
 
 /**
  * In-memory data store.
@@ -59,7 +61,8 @@ import type { IData } from './IData.ts'
  * )
  * ```
  */
-export default class Data<$ extends DT.Meta> implements IData<$> {
+export default class Data<$ extends DT.Meta>
+  implements ConfigurableData<$>, InsertableData<$>, QueryableData<$> {
   readonly #fallThroughTargetingParsers: $['FallThroughTargetingParsers']
   readonly #data: DataItemsOut<$>
   readonly #payloadParsers: $['PayloadParsers']
@@ -533,14 +536,18 @@ export default class Data<$ extends DT.Meta> implements IData<$> {
   ): Promise<
     Data<
       Merge<$, {
-        FallThroughTargetingParsers:
-          Merge<$['FallThroughTargetingParsers'], FTTT.ParsersRecord<TDs>>
+        FallThroughTargetingParsers: Merge<
+          $['FallThroughTargetingParsers'],
+          FTTT.ParsersRecord<TDs>
+        >
       }>
     >
   > {
     type $$ = Merge<$, {
-      FallThroughTargetingParsers:
-        Merge<$['FallThroughTargetingParsers'], FTTT.ParsersRecord<TDs>>
+      FallThroughTargetingParsers: Merge<
+        $['FallThroughTargetingParsers'],
+        FTTT.ParsersRecord<TDs>
+      >
     }>
 
     const fallThroughTargetingParsers = this.#mergeFallThroughTargeting(
