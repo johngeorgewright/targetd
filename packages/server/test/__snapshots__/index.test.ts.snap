@@ -64,6 +64,34 @@ snapshot[`get all 6`] = `
 }
 `;
 
+snapshot[`get all matching payloads 1`] = `
+[
+  "bar",
+]
+`;
+
+snapshot[`get all matching payloads 2`] = `
+[
+  "😎",
+  "bar",
+]
+`;
+
+snapshot[`get all matching payloads 3`] = `
+[
+  "🏄‍♂️",
+  "😎",
+  "🌊",
+  "bar",
+]
+`;
+
+snapshot[`get all matching payloads 4`] = `
+[
+  "out of time",
+]
+`;
+
 snapshot[`error handling 1`] = `
 {
   issues: [

@@ -125,6 +125,18 @@ Deno.test('get all', async (t) => {
   )
 })
 
+Deno.test('get all matching payloads', async (t) => {
+  await using service = await startService()
+  const { client } = service
+
+  await assertSnapshot(t, await client.getPayloads('foo'))
+  await assertSnapshot(t, await client.getPayloads('foo', { weather: 'sunny' }))
+  await assertSnapshot(
+    t,
+    await client.getPayloads('foo', { highTide: true, weather: 'sunny' }),
+  )
+})
+
 async function startService(): Promise<
   AsyncDisposable & { client: ClientWithData<typeof data> }
 > {

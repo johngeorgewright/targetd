@@ -130,8 +130,26 @@ export class Client<$ extends DT.Meta> implements QueryableData<$> {
       method: 'GET',
       ...this.#init,
     })
-    const data = await this.#data.insert((await response.json()) as any)
-    return data.getPayloadForEachName()
+
+    switch (true) {
+      case response.status === 400:
+        await response.json()
+          .then(
+            (error) => {
+              if (error.name === '$ZodError') {
+                throw new ZodError(JSON.parse(error.message))
+              }
+            },
+            () => {},
+          )
+      // fallthrough
+      case response.status > 200 || response.status < 200:
+        throw new ResponseError(response)
+      default: {
+        const data = await this.#data.insert((await response.json()) as any)
+        return data.getPayloadForEachName()
+      }
+    }
   }
 
   /**
@@ -181,9 +199,10 @@ export class Client<$ extends DT.Meta> implements QueryableData<$> {
         throw new ResponseError(response)
       default: {
         const payloads = await response.json() as any[]
-        const data = await this.#data.insert({
-          [name]: payloads.map((payload) => ({ payload })),
-        } as any)
+        const data = await this.#data.addRules(
+          name,
+          payloads.map((payload) => ({ payload })) as any,
+        )
         return data.getPayloads(name)
       }
     }
