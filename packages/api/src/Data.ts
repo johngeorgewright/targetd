@@ -484,9 +484,7 @@ export default class Data<$ extends DT.Meta>
       ...this.#targetingPredicates,
       ...objectMap(targeting, (targetingDescriptor) => ({
         predicate: targetingDescriptor.predicate,
-        requiresQuery: 'requiresQuery' in targetingDescriptor
-          ? targetingDescriptor.requiresQuery
-          : true,
+        requiresQuery: targetingDescriptor.requiresQuery ?? true,
       })),
     }
   }

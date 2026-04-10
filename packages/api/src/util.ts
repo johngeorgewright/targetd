@@ -7,7 +7,11 @@ import type { MaybePromise } from './types.ts'
  * TypeScript resolves eagerly, preventing type instantiation depth errors
  * when chaining methods like `usePayload` and `useTargeting`.
  */
-export type Merge<A, B> = Omit<A, keyof B> & B
+export type Merge<A, B> =
+  & {
+    [K in Exclude<keyof A, keyof B> & string]: A[K]
+  }
+  & B
 
 export function objectMap<O extends Record<string, unknown>, R>(
   obj: O,
