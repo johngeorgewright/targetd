@@ -1,5 +1,15 @@
 # Changelog
 
+## [5.2.1](https://github.com/johngeorgewright/targetd/compare/@targetd/json-schema-v5.2.0...@targetd/json-schema-v5.2.1) (2026-04-10)
+
+
+### Bug Fixes
+
+* **release:** update workspace imports during release ([aa1ad25](https://github.com/johngeorgewright/targetd/commit/aa1ad2525246866c2fa980af09218bc8c335320b))
+* **release:** update workspace imports during release ([abbbd29](https://github.com/johngeorgewright/targetd/commit/abbbd2911178d9aba6a4a26f46bde15651be6137))
+* **release:** update workspace imports during release ([26dfaee](https://github.com/johngeorgewright/targetd/commit/26dfaeeb261a18ee4c73f8b4c8b00d15f614cc30))
+* update deno.json references from deno.jsonc to deno.json across multiple packages ([84ff5ae](https://github.com/johngeorgewright/targetd/commit/84ff5ae4affb577d2f5a71a60841682f8bcb1159))
+
 ## [5.2.0](https://github.com/johngeorgewright/targetd/compare/@targetd/json-schema-v5.1.0...@targetd/json-schema-v5.2.0) (2026-03-14)
 
 
