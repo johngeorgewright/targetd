@@ -28,10 +28,10 @@ export interface EmptyMeta {
  */
 export type Any = Data<
   {
-    PayloadParsers: any
-    TargetingParsers: any
-    QueryParsers: any
-    FallThroughTargetingParsers: any
+    PayloadParsers: Record<string, any>
+    TargetingParsers: Record<string, any>
+    QueryParsers: Record<string, any>
+    FallThroughTargetingParsers: Record<string, any>
   }
 >
 
