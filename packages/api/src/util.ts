@@ -1,6 +1,14 @@
 import type { L } from 'ts-toolbelt'
 import type { MaybePromise } from './types.ts'
 
+/**
+ * Merge two object types, with B's properties taking precedence over A's.
+ * Unlike intersection (`A & B`), this produces a flat mapped type that
+ * TypeScript resolves eagerly, preventing type instantiation depth errors
+ * when chaining methods like `usePayload` and `useTargeting`.
+ */
+export type Merge<A, B> = Omit<A, keyof B> & B
+
 export function objectMap<O extends Record<string, unknown>, R>(
   obj: O,
   fn: <K extends keyof O>(v: O[K], k: K) => R,

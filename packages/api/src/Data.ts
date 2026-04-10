@@ -1,5 +1,6 @@
 import type TargetingPredicates from './parsers/TargetingPredicates.ts'
 import {
+  type Merge,
   objectEntries,
   objectEveryAsync,
   objectFitler,
@@ -193,9 +194,9 @@ export default class Data<$ extends DT.Meta> implements IData<$> {
    * ```
    */
   async usePayload<Parsers extends $ZodShape>(parsers: Parsers): Promise<
-    Data<$ & { PayloadParsers: $['PayloadParsers'] & Parsers }>
+    Data<Merge<$, { PayloadParsers: Merge<$['PayloadParsers'], Parsers> }>>
   > {
-    type $$ = $ & { PayloadParsers: $['PayloadParsers'] & Parsers }
+    type $$ = Merge<$, { PayloadParsers: Merge<$['PayloadParsers'], Parsers> }>
 
     const payloadParsers = this.#mergePayloadParsers(parsers)
 
@@ -217,11 +218,11 @@ export default class Data<$ extends DT.Meta> implements IData<$> {
 
   #mergePayloadParsers<Parsers extends $ZodShape>(
     parsers: Parsers,
-  ): $['PayloadParsers'] & Parsers {
+  ): Merge<$['PayloadParsers'], Parsers> {
     return {
       ...this.#payloadParsers,
       ...parsers,
-    }
+    } as Merge<$['PayloadParsers'], Parsers>
   }
 
   /**
@@ -426,16 +427,16 @@ export default class Data<$ extends DT.Meta> implements IData<$> {
    */
   async useTargeting<TDs extends TT.DescriptorRecord>(targeting: TDs): Promise<
     Data<
-      $ & {
-        TargetingParsers: $['TargetingParsers'] & TT.ParserRecord<TDs>
-        QueryParsers: $['QueryParsers'] & QT.ParserRecord<TDs>
-      }
+      Merge<$, {
+        TargetingParsers: Merge<$['TargetingParsers'], TT.ParserRecord<TDs>>
+        QueryParsers: Merge<$['QueryParsers'], QT.ParserRecord<TDs>>
+      }>
     >
   > {
-    type $$ = $ & {
-      TargetingParsers: $['TargetingParsers'] & TT.ParserRecord<TDs>
-      QueryParsers: $['QueryParsers'] & QT.ParserRecord<TDs>
-    }
+    type $$ = Merge<$, {
+      TargetingParsers: Merge<$['TargetingParsers'], TT.ParserRecord<TDs>>
+      QueryParsers: Merge<$['QueryParsers'], QT.ParserRecord<TDs>>
+    }>
 
     const targetingParsers: $$['TargetingParsers'] = this
       .#mergeTargetingParsers(
@@ -468,11 +469,11 @@ export default class Data<$ extends DT.Meta> implements IData<$> {
 
   #mergeTargetingParsers<TDs extends TT.DescriptorRecord>(
     targeting: TDs,
-  ): $['TargetingParsers'] & TT.ParserRecord<TDs> {
+  ): Merge<$['TargetingParsers'], TT.ParserRecord<TDs>> {
     return {
       ...this.targetingParsers,
       ...objectMap(targeting, ({ targetingParser }) => targetingParser),
-    }
+    } as Merge<$['TargetingParsers'], TT.ParserRecord<TDs>>
   }
 
   #mergeTargetingPredicates(targeting: TT.DescriptorRecord) {
@@ -489,11 +490,11 @@ export default class Data<$ extends DT.Meta> implements IData<$> {
 
   #mergeQueryPredicates<TDs extends TT.DescriptorRecord>(
     targeting: TDs,
-  ): $['QueryParsers'] & QT.ParserRecord<TDs> {
+  ): Merge<$['QueryParsers'], QT.ParserRecord<TDs>> {
     return {
       ...this.#queryParsers,
       ...objectMap(targeting, ({ queryParser }) => queryParser),
-    }
+    } as Merge<$['QueryParsers'], QT.ParserRecord<TDs>>
   }
 
   /**
@@ -531,18 +532,16 @@ export default class Data<$ extends DT.Meta> implements IData<$> {
     targeting: TDs,
   ): Promise<
     Data<
-      $ & {
+      Merge<$, {
         FallThroughTargetingParsers:
-          & $['FallThroughTargetingParsers']
-          & FTTT.ParsersRecord<TDs>
-      }
+          Merge<$['FallThroughTargetingParsers'], FTTT.ParsersRecord<TDs>>
+      }>
     >
   > {
-    type $$ = $ & {
+    type $$ = Merge<$, {
       FallThroughTargetingParsers:
-        & $['FallThroughTargetingParsers']
-        & FTTT.ParsersRecord<TDs>
-    }
+        Merge<$['FallThroughTargetingParsers'], FTTT.ParsersRecord<TDs>>
+    }>
 
     const fallThroughTargetingParsers = this.#mergeFallThroughTargeting(
       targeting,
@@ -566,7 +565,7 @@ export default class Data<$ extends DT.Meta> implements IData<$> {
 
   #mergeFallThroughTargeting<TDs extends FTTT.DescriptorRecord>(
     targeting: TDs,
-  ): $['FallThroughTargetingParsers'] & FTTT.ParsersRecord<TDs> {
+  ): Merge<$['FallThroughTargetingParsers'], FTTT.ParsersRecord<TDs>> {
     return {
       ...this.#fallThroughTargetingParsers,
       ...objectMap(
@@ -576,7 +575,7 @@ export default class Data<$ extends DT.Meta> implements IData<$> {
             ? descriptorOrParser
             : descriptorOrParser.targetingParser,
       ),
-    }
+    } as Merge<$['FallThroughTargetingParsers'], FTTT.ParsersRecord<TDs>>
   }
 
   /**

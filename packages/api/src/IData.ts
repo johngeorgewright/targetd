@@ -4,18 +4,19 @@ import type * as FTTT from './types/FallThroughTargeting.ts'
 import type * as PT from './types/Payload.ts'
 import type * as QT from './types/Query.ts'
 import type * as TT from './types/Targeting.ts'
+import type { Merge } from './util.ts'
 
 export interface IData<$ extends DT.Meta> {
   usePayload<Parsers extends $ZodShape>(
     parsers: Parsers,
-  ): Promise<IData<$ & { PayloadParsers: $['PayloadParsers'] & Parsers }>>
+  ): Promise<IData<Merge<$, { PayloadParsers: Merge<$['PayloadParsers'], Parsers> }>>>
 
   useTargeting<TDs extends TT.DescriptorRecord>(targeting: TDs): Promise<
     IData<
-      $ & {
-        TargetingParsers: $['TargetingParsers'] & TT.ParserRecord<TDs>
-        QueryParsers: $['QueryParsers'] & QT.ParserRecord<TDs>
-      }
+      Merge<$, {
+        TargetingParsers: Merge<$['TargetingParsers'], TT.ParserRecord<TDs>>
+        QueryParsers: Merge<$['QueryParsers'], QT.ParserRecord<TDs>>
+      }>
     >
   >
 
@@ -23,11 +24,10 @@ export interface IData<$ extends DT.Meta> {
     targeting: TDs,
   ): Promise<
     IData<
-      $ & {
+      Merge<$, {
         FallThroughTargetingParsers:
-          & $['FallThroughTargetingParsers']
-          & FTTT.ParsersRecord<TDs>
-      }
+          Merge<$['FallThroughTargetingParsers'], FTTT.ParsersRecord<TDs>>
+      }>
     >
   >
 
