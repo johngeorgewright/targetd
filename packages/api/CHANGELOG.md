@@ -1,5 +1,19 @@
 # Changelog
 
+## [8.1.2](https://github.com/johngeorgewright/targetd/compare/@targetd/api-v8.1.1...@targetd/api-v8.1.2) (2026-04-10)
+
+
+### Bug Fixes
+
+* add type annotation for ZodSwitch constructor ([acd7d07](https://github.com/johngeorgewright/targetd/commit/acd7d07cff7b39d3689fe3e0159ffa1eb820ae7f))
+* handle unmatched conditions in ZodSwitch parser ([51a0fae](https://github.com/johngeorgewright/targetd/commit/51a0faebce0ebcc9ce7d598ea9f72f789e15b708))
+* update deno.json references from deno.jsonc to deno.json across multiple packages ([db89eca](https://github.com/johngeorgewright/targetd/commit/db89ecaa87845949a5de27f3316806c07a6fc578))
+
+
+### Performance Improvements
+
+* replace object merging logic with Merge utility type ([7f1c984](https://github.com/johngeorgewright/targetd/commit/7f1c984e58a212dc891bd0cce2efbb672336d5fe))
+
 ## [8.1.1](https://github.com/johngeorgewright/targetd/compare/@targetd/api-v8.1.0...@targetd/api-v8.1.1) (2026-03-15)
 
 
