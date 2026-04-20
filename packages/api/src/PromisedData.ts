@@ -1,34 +1,28 @@
-import type { $ZodShape } from 'zod/v4/core'
 import type Data from './Data.ts'
 import type * as DT from './types/Data.ts'
 import type * as PT from './types/Payload.ts'
-import type * as TT from './types/Targeting.ts'
-import type * as FTTT from './types/FallThroughTargeting.ts'
 import type * as QT from './types/Query.ts'
 import type { DataItemRulesIn } from './parsers/DataItemRules.ts'
 import type { MaybePromise } from './types.ts'
 import type { DataItemIn } from './parsers/DataItem.ts'
-import type { ConfigurableData } from './ConfigurableData.ts'
 import type { InsertableData } from './InsertableData.ts'
 import type { QueryableData } from './QueryableData.ts'
-import type { Merge } from './util.ts'
 
 /**
- * A Promise-based wrapper for Data that implements the ConfigurableData,
- * InsertableData, and QueryableData interfaces.
- * Allows chaining operations on Data instances that may be resolved asynchronously.
- * All methods return a new PromisedData instance, enabling fluent API usage.
+ * A Promise-based wrapper for Data that implements the InsertableData and
+ * QueryableData interfaces. Allows chaining data and query operations on Data
+ * instances that may be resolved asynchronously.
  *
- * This is used under the hood by {@link Data} and you most probably won't use it directly.
+ * Produced by {@link Data.create}; schema configuration lives on
+ * {@link DataSchema} and happens before the PromisedData is created.
  *
  * @template $ - The metadata type extending Data.Meta
  * @extends {Promise<Data<$>>}
- * @implements {ConfigurableData<$>}
  * @implements {InsertableData<$>}
  * @implements {QueryableData<$>}
  */
 export class PromisedData<$ extends DT.Meta> extends Promise<Data<$>>
-  implements ConfigurableData<$>, InsertableData<$>, QueryableData<$> {
+  implements InsertableData<$>, QueryableData<$> {
   /**
    * Creates a new PromisedData instance.
    *
@@ -59,29 +53,11 @@ export class PromisedData<$ extends DT.Meta> extends Promise<Data<$>>
   /**
    * Internal helper method to create a new PromisedData instance by applying a transformation.
    *
-   * @template $$ - The new metadata type
    * @param cb - Callback function that transforms the Data instance
    * @returns A new PromisedData instance with the transformed Data
    */
-  #create<$$ extends DT.Meta>(
-    cb: (data: Data<$>) => MaybePromise<Data<$$>>,
-  ): PromisedData<$$> {
+  #create(cb: (data: Data<$>) => MaybePromise<Data<$>>): PromisedData<$> {
     return new PromisedData((resolve) => resolve(this.then(cb)))
-  }
-
-  /**
-   * Registers additional payload parsers.
-   *
-   * @template Parsers - The Zod shape type for the parsers
-   * @param parsers - An object containing Zod parsers for payload validation
-   * @returns A new PromisedData instance with the updated payload parsers
-   */
-  usePayload<Parsers extends $ZodShape>(
-    parsers: Parsers,
-  ): PromisedData<
-    Merge<$, { PayloadParsers: Merge<$['PayloadParsers'], Parsers> }>
-  > {
-    return this.#create((data) => data.usePayload(parsers))
   }
 
   /**
@@ -111,45 +87,6 @@ export class PromisedData<$ extends DT.Meta> extends Promise<Data<$>>
       | DataItemRulesIn<$, $['PayloadParsers'][Name]>,
   ): PromisedData<$> {
     return this.#create((data) => data.addRules(name, opts))
-  }
-
-  /**
-   * Registers targeting descriptors to enable query-based filtering.
-   *
-   * @template TDs - The targeting descriptor record type
-   * @param targeting - An object containing targeting descriptors
-   * @returns A new PromisedData instance with the updated targeting and query parsers
-   */
-  useTargeting<TDs extends TT.DescriptorRecord>(
-    targeting: TDs,
-  ): PromisedData<
-    Merge<$, {
-      TargetingParsers: Merge<$['TargetingParsers'], TT.ParserRecord<TDs>>
-      QueryParsers: Merge<$['QueryParsers'], QT.ParserRecord<TDs>>
-    }>
-  > {
-    return this.#create((data) => data.useTargeting(targeting))
-  }
-
-  /**
-   * Registers fall-through targeting descriptors.
-   * Fall-through targeting allows rules to continue matching after a successful match.
-   *
-   * @template TDs - The fall-through targeting descriptor record type
-   * @param targeting - An object containing fall-through targeting descriptors
-   * @returns A new PromisedData instance with the updated fall-through targeting parsers
-   */
-  useFallThroughTargeting<TDs extends FTTT.DescriptorRecord>(
-    targeting: TDs,
-  ): PromisedData<
-    Merge<$, {
-      FallThroughTargetingParsers: Merge<
-        $['FallThroughTargetingParsers'],
-        FTTT.ParsersRecord<TDs>
-      >
-    }>
-  > {
-    return this.#create((data) => data.useFallThroughTargeting(targeting))
   }
 
   /**

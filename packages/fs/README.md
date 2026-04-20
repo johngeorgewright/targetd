@@ -78,20 +78,23 @@ greeting:
 Use `load()` to read rules from a directory once:
 
 ```typescript
-import { Data } from '@targetd/api'
+import { Data, DataSchema, targetIncludes } from '@targetd/api'
 import { load } from '@targetd/fs'
 import { z } from 'zod'
 
-const data = await Data.create()
-  .usePayload({
-    greeting: z.string(),
-    config: z.object({
-      enabled: z.boolean(),
-    }),
-  })
-  .useTargeting({
-    country: targetIncludes(z.string()),
-  })
+const data = await Data.create(
+  DataSchema.create()
+    .usePayload({
+      greeting: z.string(),
+      config: z.object({
+        enabled: z.boolean(),
+      }),
+    })
+    .useTargeting({
+      country: targetIncludes(z.string()),
+    })
+    .build(),
+)
 
 // Load rules from directory
 const dataWithRules = await load(data, './rules')
@@ -105,17 +108,20 @@ const greeting = await dataWithRules.getPayload('greeting', { country: 'US' })
 Use `watch()` to automatically reload rules when files change:
 
 ```typescript
-import { Data } from '@targetd/api'
+import { Data, DataSchema, targetIncludes } from '@targetd/api'
 import { watch } from '@targetd/fs'
 import { z } from 'zod'
 
-const data = await Data.create()
-  .usePayload({
-    greeting: z.string(),
-  })
-  .useTargeting({
-    country: targetIncludes(z.string()),
-  })
+const data = await Data.create(
+  DataSchema.create()
+    .usePayload({
+      greeting: z.string(),
+    })
+    .useTargeting({
+      country: targetIncludes(z.string()),
+    })
+    .build(),
+)
 
 // Watch directory and reload on changes
 const stopWatching = watch(
@@ -183,21 +189,24 @@ The `onLoad` callback receives:
 ### Basic Application Setup
 
 ```typescript
-import { Data, targetIncludes } from '@targetd/api'
+import { Data, DataSchema, targetIncludes } from '@targetd/api'
 import { load } from '@targetd/fs'
 import { z } from 'zod'
 import * as path from 'node:path'
 
 // Define data structure
-const data = await Data.create()
-  .usePayload({
-    'app.title': z.string(),
-    'app.version': z.string(),
-    'feature.enabled': z.boolean(),
-  })
-  .useTargeting({
-    environment: targetIncludes(z.string()),
-  })
+const data = await Data.create(
+  DataSchema.create()
+    .usePayload({
+      'app.title': z.string(),
+      'app.version': z.string(),
+      'feature.enabled': z.boolean(),
+    })
+    .useTargeting({
+      environment: targetIncludes(z.string()),
+    })
+    .build(),
+)
 
 // Load rules from filesystem
 const appData = await load(
@@ -243,22 +252,25 @@ feature.enabled:
 ### Hot Reloading in Development
 
 ```typescript
-import { Data, targetIncludes } from '@targetd/api'
+import { Data, DataSchema, targetIncludes } from '@targetd/api'
 import { watch } from '@targetd/fs'
 import { z } from 'zod'
 
 let currentData: Data<any>
 
-const data = await Data.create()
-  .usePayload({
-    feature: z.object({
-      name: z.string(),
-      enabled: z.boolean(),
-    }),
-  })
-  .useTargeting({
-    environment: targetIncludes(z.string()),
-  })
+const data = await Data.create(
+  DataSchema.create()
+    .usePayload({
+      feature: z.object({
+        name: z.string(),
+        enabled: z.boolean(),
+      }),
+    })
+    .useTargeting({
+      environment: targetIncludes(z.string()),
+    })
+    .build(),
+)
 
 // Watch for changes during development
 const stopWatching = watch(
@@ -309,14 +321,17 @@ greeting:
 ```
 
 ```typescript
-const data = await Data.create()
-  .usePayload({
-    greeting: z.string(),
-  })
-  .useTargeting({
-    country: targetIncludes(z.string()),
-    tier: targetIncludes(z.string()),
-  })
+const data = await Data.create(
+  DataSchema.create()
+    .usePayload({
+      greeting: z.string(),
+    })
+    .useTargeting({
+      country: targetIncludes(z.string()),
+      tier: targetIncludes(z.string()),
+    })
+    .build(),
+)
 
 const dataWithRules = await load(data, './rules')
 

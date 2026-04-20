@@ -53,22 +53,24 @@ const targetingParser: TargetingParser = union([
  *
  * @example
  * ```ts
- * import { Data } from '@targetd/api'
+ * import { Data, DataSchema } from '@targetd/api'
  * import dateRangeTargeting from '@targetd/date-range'
  * import { z } from 'zod'
  *
- * const data = await Data.create()
- *   .usePayload({ campaign: z.string() })
- *   .useTargeting({ date: dateRangeTargeting })
- *   .addRules('campaign', [
- *     {
- *       targeting: {
- *         date: { start: '2024-12-01', end: '2024-12-31' }
- *       },
- *       payload: 'Holiday Campaign'
+ * const data = await Data.create(
+ *   DataSchema.create()
+ *     .usePayload({ campaign: z.string() })
+ *     .useTargeting({ date: dateRangeTargeting })
+ *     .build(),
+ * ).addRules('campaign', [
+ *   {
+ *     targeting: {
+ *       date: { start: '2024-12-01', end: '2024-12-31' }
  *     },
- *     { payload: 'Regular Campaign' }
- *   ])
+ *     payload: 'Holiday Campaign'
+ *   },
+ *   { payload: 'Regular Campaign' }
+ * ])
  *
  * // Automatic current date evaluation
  * await data.getPayload('campaign')

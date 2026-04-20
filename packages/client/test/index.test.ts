@@ -1,6 +1,6 @@
 import { assertStrictEquals } from 'jsr:@std/assert'
 import { assertSnapshot } from 'jsr:@std/testing/snapshot'
-import { Data, targetEquals, targetIncludes } from '@targetd/api'
+import { Data, DataSchema, targetEquals, targetIncludes } from '@targetd/api'
 import dateRangeTargeting from '@targetd/date-range'
 import { createServer } from '@targetd/server'
 import type { AddressInfo } from 'node:net'
@@ -9,22 +9,26 @@ import z from 'zod'
 import { Client, type ClientWithData } from '@targetd/client'
 import { promisify } from 'node:util'
 
-const data = await Data.create()
-  .usePayload({
-    foo: z.string(),
-    bar: z.number(),
-    timed: z.string(),
-  })
-  .useTargeting({
-    weather: targetIncludes(z.string()),
-    highTide: targetEquals(z.boolean()),
-    asyncThing: {
-      predicate: (q) => setTimeout(10, (t) => q === t && setTimeout(10, true)),
-      queryParser: z.boolean(),
-      targetingParser: z.boolean(),
-    },
-    date: dateRangeTargeting,
-  })
+const data = await Data.create(
+  DataSchema.create()
+    .usePayload({
+      foo: z.string(),
+      bar: z.number(),
+      timed: z.string(),
+    })
+    .useTargeting({
+      weather: targetIncludes(z.string()),
+      highTide: targetEquals(z.boolean()),
+      asyncThing: {
+        predicate: (q) =>
+          setTimeout(10, (t) => q === t && setTimeout(10, true)),
+        queryParser: z.boolean(),
+        targetingParser: z.boolean(),
+      },
+      date: dateRangeTargeting,
+    })
+    .build(),
+)
   .addRules('foo', [
     {
       targeting: {

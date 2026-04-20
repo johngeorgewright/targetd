@@ -30,39 +30,41 @@ provided, making it perfect for real-time targeting.
 ## Basic Usage
 
 ```typescript
-import { Data } from '@targetd/api'
+import { Data, DataSchema } from '@targetd/api'
 import dateRangeTargeting from '@targetd/date-range'
 import { z } from 'zod'
 
-const data = await Data.create()
+const schema = DataSchema.create()
   .usePayload({
     banner: z.string(),
   })
   .useTargeting({
     dateRange: dateRangeTargeting,
   })
-  .addRules('banner', [
-    {
-      targeting: {
-        dateRange: {
-          start: '2024-12-01',
-          end: '2024-12-31',
-        },
+  .build()
+
+const data = await Data.create(schema).addRules('banner', [
+  {
+    targeting: {
+      dateRange: {
+        start: '2024-12-01',
+        end: '2024-12-31',
       },
-      payload: '🎄 Holiday Sale!',
     },
-    {
-      targeting: {
-        dateRange: {
-          start: '2025-01-01',
-        },
+    payload: '🎄 Holiday Sale!',
+  },
+  {
+    targeting: {
+      dateRange: {
+        start: '2025-01-01',
       },
-      payload: '🎉 New Year Special!',
     },
-    {
-      payload: 'Regular banner',
-    },
-  ])
+    payload: '🎉 New Year Special!',
+  },
+  {
+    payload: 'Regular banner',
+  },
+])
 
 // Query with current system time
 const currentBanner = await data.getPayload('banner')
@@ -194,11 +196,11 @@ Target multiple date ranges with an array:
 Here's a comprehensive example showing event-based content delivery:
 
 ```typescript
-import { Data } from '@targetd/api'
+import { Data, DataSchema } from '@targetd/api'
 import dateRangeTargeting from '@targetd/date-range'
 import { z } from 'zod'
 
-const data = await Data.create()
+const schema = DataSchema.create()
   .usePayload({
     event: z.object({
       name: z.string(),
@@ -209,40 +211,42 @@ const data = await Data.create()
   .useTargeting({
     dateRange: dateRangeTargeting,
   })
-  .addRules('event', [
-    {
-      targeting: {
-        dateRange: {
-          start: '1939-09-01',
-          end: '1945-09-02',
-        },
-      },
-      payload: {
-        name: 'World War II',
-        message: 'Historical period: 1939-1945',
-        active: true,
+  .build()
+
+const data = await Data.create(schema).addRules('event', [
+  {
+    targeting: {
+      dateRange: {
+        start: '1939-09-01',
+        end: '1945-09-02',
       },
     },
-    {
-      targeting: {
-        dateRange: {
-          start: '2020-01-01T00:00:00',
-        },
-      },
-      payload: {
-        name: 'Modern Era',
-        message: 'Welcome to the 2020s',
-        active: true,
+    payload: {
+      name: 'World War II',
+      message: 'Historical period: 1939-1945',
+      active: true,
+    },
+  },
+  {
+    targeting: {
+      dateRange: {
+        start: '2020-01-01T00:00:00',
       },
     },
-    {
-      payload: {
-        name: 'No Active Event',
-        message: 'No special event during this period',
-        active: false,
-      },
+    payload: {
+      name: 'Modern Era',
+      message: 'Welcome to the 2020s',
+      active: true,
     },
-  ])
+  },
+  {
+    payload: {
+      name: 'No Active Event',
+      message: 'No special event during this period',
+      active: false,
+    },
+  },
+])
 
 // Query with current time
 const currentEvent = await data.getPayload('event')

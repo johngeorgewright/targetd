@@ -43,17 +43,19 @@ export interface CreateServerOptions<
  *
  * @example Basic server:
  * ```ts
- * import { Data, targetIncludes } from '@targetd/api'
+ * import { Data, DataSchema, targetIncludes } from '@targetd/api'
  * import { createServer } from '@targetd/server'
  * import { z } from 'zod'
  *
- * const data = await Data.create()
- *   .usePayload({ greeting: z.string() })
- *   .useTargeting({ country: targetIncludes(z.string()) })
- *   .addRules('greeting', [
- *     { targeting: { country: ['US'] }, payload: 'Hello!' },
- *     { payload: 'Hi!' }
- *   ])
+ * const data = await Data.create(
+ *   DataSchema.create()
+ *     .usePayload({ greeting: z.string() })
+ *     .useTargeting({ country: targetIncludes(z.string()) })
+ *     .build(),
+ * ).addRules('greeting', [
+ *   { targeting: { country: ['US'] }, payload: 'Hello!' },
+ *   { payload: 'Hi!' }
+ * ])
  *
  * createServer(data).listen(3000)
  * // GET /greeting?country=US → "Hello!"

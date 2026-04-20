@@ -1,5 +1,7 @@
 export { default as Data } from './Data.ts'
 export * from './PromisedData.ts'
+export { DataSchema } from './DataSchema.ts'
+export type { BuiltDataSchema } from './DataSchema.ts'
 export { DataItemParser } from './parsers/DataItem.ts'
 export { DataItemsParser } from './parsers/DataItems.ts'
 export { DataItemRuleParser } from './parsers/DataItemRule.ts'
@@ -11,11 +13,9 @@ export type { default as TargetingPredicate } from './parsers/TargetingPredicate
 export type { default as TargetingPredicates } from './parsers/TargetingPredicates.ts'
 export { targetEquals } from './predicates/equals.ts'
 export { targetIncludes } from './predicates/targetIncludes.ts'
-export type { ConfigurableData } from './ConfigurableData.ts'
 export type { InsertableData } from './InsertableData.ts'
 export type { QueryableData } from './QueryableData.ts'
 export type { StaticRecord } from './types.ts'
-export type { Merge } from './util.ts'
 
 /**
  * Type helpers for the {@link Data} class.

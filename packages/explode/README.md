@@ -29,16 +29,19 @@ This is useful for:
 ## Basic Usage
 
 ```typescript
-import { Data } from '@targetd/api'
+import { Data, DataSchema } from '@targetd/api'
 import { explode } from '@targetd/explode'
 import { z } from 'zod'
 
-const data = await Data.create()
-  .usePayload({
-    'app.title': z.string(),
-    'app.version': z.string(),
-    'feature.darkMode': z.boolean(),
-  })
+const data = await Data.create(
+  DataSchema.create()
+    .usePayload({
+      'app.title': z.string(),
+      'app.version': z.string(),
+      'feature.darkMode': z.boolean(),
+    })
+    .build(),
+)
   .addRules('app.title', [{ payload: 'My App' }])
   .addRules('app.version', [{ payload: '1.0.0' }])
   .addRules('feature.darkMode', [{ payload: true }])
@@ -82,17 +85,20 @@ const nested = explode(flatObject, '.')
 Organize application settings by namespace:
 
 ```typescript
-import { Data } from '@targetd/api'
+import { Data, DataSchema } from '@targetd/api'
 import { explode } from '@targetd/explode'
 import { z } from 'zod'
 
-const data = await Data.create()
-  .usePayload({
-    'api.endpoint': z.string(),
-    'api.timeout': z.number(),
-    'ui.theme': z.string(),
-    'ui.language': z.string(),
-  })
+const data = await Data.create(
+  DataSchema.create()
+    .usePayload({
+      'api.endpoint': z.string(),
+      'api.timeout': z.number(),
+      'ui.theme': z.string(),
+      'ui.language': z.string(),
+    })
+    .build(),
+)
   .addRules('api.endpoint', [{ payload: 'https://api.example.com' }])
   .addRules('api.timeout', [{ payload: 5000 }])
   .addRules('ui.theme', [{ payload: 'dark' }])
@@ -116,11 +122,11 @@ const config = explode(await data.getPayloadForEachName(), '.')
 Structure feature flags with platform-specific configurations:
 
 ```typescript
-import { Data, targetIncludes } from '@targetd/api'
+import { Data, DataSchema, targetIncludes } from '@targetd/api'
 import { explode } from '@targetd/explode'
 import { z } from 'zod'
 
-const data = await Data.create()
+const schema = DataSchema.create()
   .usePayload({
     'feature.mobile.enabled': z.boolean(),
     'feature.mobile.maxItems': z.number(),
@@ -130,6 +136,9 @@ const data = await Data.create()
   .useTargeting({
     platform: targetIncludes(z.string()),
   })
+  .build()
+
+const data = await Data.create(schema)
   .addRules('feature.mobile.enabled', [
     {
       targeting: { platform: ['ios', 'android'] },

@@ -1,24 +1,27 @@
-import { Data, targetIncludes } from '@targetd/api'
+import { Data, DataSchema, targetIncludes } from '@targetd/api'
 import { z } from 'zod/mini'
 
-export const data = await Data.create()
-  .usePayload(
-    {
-      foo: z.string(),
-      bar: z.strictObject({
-        a: z.number(),
-        b: z.array(z.string()),
-      }),
-      record: z.record(z.string(), z.number()),
-      array: z.array(z.number()),
-    },
-  )
-  .useTargeting({
-    weather: targetIncludes(z.string()),
-  })
-  .useFallThroughTargeting({
-    browser: targetIncludes(z.string()),
-  })
+export const data = await Data.create(
+  DataSchema.create()
+    .usePayload(
+      {
+        foo: z.string(),
+        bar: z.strictObject({
+          a: z.number(),
+          b: z.array(z.string()),
+        }),
+        record: z.record(z.string(), z.number()),
+        array: z.array(z.number()),
+      },
+    )
+    .useTargeting({
+      weather: targetIncludes(z.string()),
+    })
+    .useFallThroughTargeting({
+      browser: targetIncludes(z.string()),
+    })
+    .build(),
+)
   .addRules('foo', {
     variables: {
       weatherMessage: [

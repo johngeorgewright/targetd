@@ -9,23 +9,27 @@ import z, { type ZodError } from 'zod'
 import {
   createTargetingDescriptor,
   Data,
+  DataSchema,
   targetEquals,
   targetIncludes,
 } from '@targetd/api'
 
 Deno.test('getPayload', async () => {
-  const data = await Data.create()
-    .usePayload({ 'foo': z.string() })
-    .useTargeting({
-      weather: targetIncludes(z.string()),
-      highTide: targetEquals(z.boolean()),
-      asyncThing: {
-        predicate: (q) =>
-          setTimeout(10, (t: boolean) => q === t && setTimeout(10, true)),
-        queryParser: z.boolean(),
-        targetingParser: z.boolean(),
-      },
-    })
+  const data = await Data.create(
+    DataSchema.create()
+      .usePayload({ 'foo': z.string() })
+      .useTargeting({
+        weather: targetIncludes(z.string()),
+        highTide: targetEquals(z.boolean()),
+        asyncThing: {
+          predicate: (q) =>
+            setTimeout(10, (t: boolean) => q === t && setTimeout(10, true)),
+          queryParser: z.boolean(),
+          targetingParser: z.boolean(),
+        },
+      })
+      .build(),
+  )
     .addRules('foo', [
       {
         targeting: {
@@ -98,12 +102,15 @@ Deno.test('getPayload', async () => {
 })
 
 Deno.test('targeting with multiple conditions', async () => {
-  const data = await Data.create()
-    .usePayload({ foo: z.string() })
-    .useTargeting({
-      weather: targetIncludes(z.string()),
-      highTide: targetEquals(z.boolean()),
-    })
+  const data = await Data.create(
+    DataSchema.create()
+      .usePayload({ foo: z.string() })
+      .useTargeting({
+        weather: targetIncludes(z.string()),
+        highTide: targetEquals(z.boolean()),
+      })
+      .build(),
+  )
     .addRules('foo', [
       {
         targeting: [
@@ -133,18 +140,21 @@ Deno.test('targeting with multiple conditions', async () => {
 })
 
 Deno.test('targeting without requiring a query', async () => {
-  const data = await Data.create()
-    .usePayload({
-      foo: z.string(),
-    })
-    .useTargeting({
-      time: {
-        predicate: () => (t) => t === 'now!',
-        queryParser: z.undefined(),
-        requiresQuery: false,
-        targetingParser: z.literal('now!'),
-      },
-    })
+  const data = await Data.create(
+    DataSchema.create()
+      .usePayload({
+        foo: z.string(),
+      })
+      .useTargeting({
+        time: {
+          predicate: () => (t) => t === 'now!',
+          queryParser: z.undefined(),
+          requiresQuery: false,
+          targetingParser: z.literal('now!'),
+        },
+      })
+      .build(),
+  )
     .addRules('foo', [
       {
         targeting: {
@@ -161,14 +171,17 @@ Deno.test('targeting without requiring a query', async () => {
 })
 
 Deno.test('getPayloads', async (t) => {
-  const data = await Data.create()
-    .usePayload({
-      foo: z.string(),
-    })
-    .useTargeting({
-      weather: targetIncludes(z.string()),
-      highTide: targetEquals(z.boolean()),
-    })
+  const data = await Data.create(
+    DataSchema.create()
+      .usePayload({
+        foo: z.string(),
+      })
+      .useTargeting({
+        weather: targetIncludes(z.string()),
+        highTide: targetEquals(z.boolean()),
+      })
+      .build(),
+  )
     .addRules('foo', [
       {
         targeting: {
@@ -198,10 +211,13 @@ Deno.test('getPayloads', async (t) => {
 
 Deno.test('payload runtype validation', async (t) => {
   try {
-    await Data.create()
-      .usePayload({
-        foo: z.string().refine((x) => x === 'bar', 'Should be bar'),
-      })
+    await Data.create(
+      DataSchema.create()
+        .usePayload({
+          foo: z.string().refine((x) => x === 'bar', 'Should be bar'),
+        })
+        .build(),
+    )
       .addRules('foo', [
         {
           payload: 'rab',
@@ -216,21 +232,24 @@ Deno.test('payload runtype validation', async (t) => {
 })
 
 Deno.test('getPayloadForEachName', async (t) => {
-  const data = await Data.create()
-    .usePayload({
-      foo: z.string(),
-      bar: z.string(),
-    })
-    .useTargeting({
-      weather: targetIncludes(z.string()),
-      highTide: targetIncludes(z.boolean()),
-      asyncThing: {
-        predicate: (q) =>
-          setTimeout(10, (t: boolean) => q === t && setTimeout(10, true)),
-        queryParser: z.boolean(),
-        targetingParser: z.boolean(),
-      },
-    })
+  const data = await Data.create(
+    DataSchema.create()
+      .usePayload({
+        foo: z.string(),
+        bar: z.string(),
+      })
+      .useTargeting({
+        weather: targetIncludes(z.string()),
+        highTide: targetIncludes(z.boolean()),
+        asyncThing: {
+          predicate: (q) =>
+            setTimeout(10, (t: boolean) => q === t && setTimeout(10, true)),
+          queryParser: z.boolean(),
+          targetingParser: z.boolean(),
+        },
+      })
+      .build(),
+  )
     .addRules('foo', [
       {
         targeting: {
@@ -277,14 +296,17 @@ Deno.test('getPayloadForEachName', async (t) => {
 })
 
 Deno.test('fallThrough targeting', async (t) => {
-  const data = await Data.create()
-    .usePayload({
-      foo: z.string(),
-      bar: z.string(),
-      mung: z.string(),
-    })
-    .useTargeting({ surf: targetIncludes(z.string(), { withNegate: true }) })
-    .useFallThroughTargeting({ weather: z.array(z.string()) })
+  const data = await Data.create(
+    DataSchema.create()
+      .usePayload({
+        foo: z.string(),
+        bar: z.string(),
+        mung: z.string(),
+      })
+      .useTargeting({ surf: targetIncludes(z.string(), { withNegate: true }) })
+      .useFallThroughTargeting({ weather: z.array(z.string()) })
+      .build(),
+  )
     .addRules('foo', [
       {
         targeting: {
@@ -346,18 +368,21 @@ Deno.test('fallThrough targeting', async (t) => {
 })
 
 Deno.test('inserting data', async (t) => {
-  const data = await Data.create()
-    .usePayload({
-      moo: z.string(),
-      foo: z.string(),
-      bar: z.string(),
-    })
-    .useTargeting({
-      weather: targetIncludes(z.string()),
-    })
-    .useFallThroughTargeting({
-      highTide: targetEquals(z.boolean()),
-    })
+  const data = await Data.create(
+    DataSchema.create()
+      .usePayload({
+        moo: z.string(),
+        foo: z.string(),
+        bar: z.string(),
+      })
+      .useTargeting({
+        weather: targetIncludes(z.string()),
+      })
+      .useFallThroughTargeting({
+        highTide: targetEquals(z.boolean()),
+      })
+      .build(),
+  )
     .insert({
       bar: {
         __rules__: [
@@ -401,16 +426,19 @@ Deno.test('inserting data', async (t) => {
 })
 
 Deno.test('inserting data with variables', async (t) => {
-  const data = await Data.create()
-    .usePayload({
-      moo: z.string(),
-      foo: z.string(),
-      bar: z.string(),
-    })
-    .useTargeting({
-      weather: targetIncludes(z.string()),
-      highTide: targetEquals(z.boolean()),
-    })
+  const data = await Data.create(
+    DataSchema.create()
+      .usePayload({
+        moo: z.string(),
+        foo: z.string(),
+        bar: z.string(),
+      })
+      .useTargeting({
+        weather: targetIncludes(z.string()),
+        highTide: targetEquals(z.boolean()),
+      })
+      .build(),
+  )
     .insert({
       bar: {
         __variables__: {
@@ -468,23 +496,26 @@ Deno.test('targeting predicate with full query object', async () => {
       targeting.includes(queryValue),
   })
 
-  const data = await Data.create()
-    .usePayload({
-      foo: z.string(),
-    })
-    .useTargeting({
-      oof: {
-        queryParser: z.string(),
-        targetingParser: z.string(),
-        predicate: (q) => (t) => q === t,
-      },
-      bar: {
-        queryParser: z.boolean(),
-        targetingParser: z.boolean(),
-        predicate: (q) => (t) => q === t,
-      },
-      mung: mungTargeting,
-    })
+  const data = await Data.create(
+    DataSchema.create()
+      .usePayload({
+        foo: z.string(),
+      })
+      .useTargeting({
+        oof: {
+          queryParser: z.string(),
+          targetingParser: z.string(),
+          predicate: (q) => (t) => q === t,
+        },
+        bar: {
+          queryParser: z.boolean(),
+          targetingParser: z.boolean(),
+          predicate: (q) => (t) => q === t,
+        },
+        mung: mungTargeting,
+      })
+      .build(),
+  )
     .addRules('foo', [
       {
         targeting: { mung: ['mung'] },
@@ -509,14 +540,17 @@ Deno.test('broken', async (t) => {
     foo: z.string(),
   }
 
-  const data = await Data.create()
-    .usePayload(payloadSchema)
-    .useTargeting({
-      channel: channelTargeting,
-    })
-    .useFallThroughTargeting({
-      browser: browserTargeting,
-    })
+  const data = await Data.create(
+    DataSchema.create()
+      .usePayload(payloadSchema)
+      .useTargeting({
+        channel: channelTargeting,
+      })
+      .useFallThroughTargeting({
+        browser: browserTargeting,
+      })
+      .build(),
+  )
     .addRules('foo', [
       {
         targeting: {
@@ -545,23 +579,26 @@ Deno.test('broken', async (t) => {
 })
 
 Deno.test('variables', async (t) => {
-  const data = await Data.create()
-    .usePayload({
-      foo: z.strictObject({
-        a: z.strictObject({
-          b: z.strictObject({
-            c: z.string(),
-            d: z.number(),
+  const data = await Data.create(
+    DataSchema.create()
+      .usePayload({
+        foo: z.strictObject({
+          a: z.strictObject({
+            b: z.strictObject({
+              c: z.string(),
+              d: z.number(),
+            }),
           }),
         }),
-      }),
-    })
-    .useTargeting({
-      channel: targetIncludes(z.enum(['foo', 'bar'])),
-    })
-    .useFallThroughTargeting({
-      browser: targetIncludes(z.enum(['chrome', 'edge'])),
-    })
+      })
+      .useTargeting({
+        channel: targetIncludes(z.enum(['foo', 'bar'])),
+      })
+      .useFallThroughTargeting({
+        browser: targetIncludes(z.enum(['chrome', 'edge'])),
+      })
+      .build(),
+  )
     .addRules('foo', {
       variables: {
         c: [
@@ -599,23 +636,26 @@ Deno.test('variables', async (t) => {
 })
 
 Deno.test('variables using fallthrough targeting', async (t) => {
-  const data = await Data.create()
-    .usePayload({
-      foo: z.strictObject({
-        a: z.strictObject({
-          b: z.strictObject({
-            c: z.string(),
-            d: z.number(),
+  const data = await Data.create(
+    DataSchema.create()
+      .usePayload({
+        foo: z.strictObject({
+          a: z.strictObject({
+            b: z.strictObject({
+              c: z.string(),
+              d: z.number(),
+            }),
           }),
         }),
-      }),
-    })
-    .useTargeting({
-      channel: targetIncludes(z.enum(['foo', 'bar'])),
-    })
-    .useFallThroughTargeting({
-      browser: targetIncludes(z.enum(['chrome', 'edge'])),
-    })
+      })
+      .useTargeting({
+        channel: targetIncludes(z.enum(['foo', 'bar'])),
+      })
+      .useFallThroughTargeting({
+        browser: targetIncludes(z.enum(['chrome', 'edge'])),
+      })
+      .build(),
+  )
     .addRules('foo', {
       variables: {
         c: [
@@ -654,10 +694,13 @@ Deno.test('variables using fallthrough targeting', async (t) => {
 })
 
 Deno.test('variables in records', async () => {
-  const data = await Data.create()
-    .usePayload({
-      foo: z.record(z.string(), z.array(z.number())),
-    })
+  const data = await Data.create(
+    DataSchema.create()
+      .usePayload({
+        foo: z.record(z.string(), z.array(z.number())),
+      })
+      .build(),
+  )
     .addRules('foo', {
       variables: {
         a: [{ payload: [1, 2, 3] }],
@@ -670,25 +713,28 @@ Deno.test('variables in records', async () => {
 })
 
 Deno.test('variables in arrays', async (t) => {
-  const data = await Data.create()
-    .usePayload({
-      foo: z.array(z.number()),
-      bar: z.array(z.strictObject({
-        b: z.number(),
-        c: z.string(),
-      })),
-    }).addRules('foo', {
-      variables: {
-        a: [{ payload: 1 }],
-      },
-      rules: [{ payload: ['{{a}}'] }],
-    }).addRules('bar', {
-      variables: {
-        b: [{ payload: 2 }],
-        c: [{ payload: '3' }],
-      },
-      rules: [{ payload: [{ b: '{{b}}', c: '{{c}}' }] }],
-    })
+  const data = await Data.create(
+    DataSchema.create()
+      .usePayload({
+        foo: z.array(z.number()),
+        bar: z.array(z.strictObject({
+          b: z.number(),
+          c: z.string(),
+        })),
+      })
+      .build(),
+  ).addRules('foo', {
+    variables: {
+      a: [{ payload: 1 }],
+    },
+    rules: [{ payload: ['{{a}}'] }],
+  }).addRules('bar', {
+    variables: {
+      b: [{ payload: 2 }],
+      c: [{ payload: '3' }],
+    },
+    rules: [{ payload: [{ b: '{{b}}', c: '{{c}}' }] }],
+  })
 
   await assertSnapshot(
     t,
@@ -707,16 +753,19 @@ Deno.test('variables in arrays', async (t) => {
 })
 
 Deno.test('errors when using variables with incorrect types', async (t) => {
-  const data = await Data.create()
-    .usePayload({
-      foo: z.strictObject({
-        a: z.strictObject({
-          b: z.strictObject({
-            c: z.string(),
+  const data = await Data.create(
+    DataSchema.create()
+      .usePayload({
+        foo: z.strictObject({
+          a: z.strictObject({
+            b: z.strictObject({
+              c: z.string(),
+            }),
           }),
         }),
-      }),
-    })
+      })
+      .build(),
+  )
 
   await assertSnapshot(
     t,
@@ -754,27 +803,30 @@ Deno.test(
         throw new Error('This should never get called')
       },
     })
-    const baseSchema = Data.create()
+    const basePayload = DataSchema.create()
       .usePayload({ 'foo': z.string() })
-    const clientSchema = baseSchema
+    const clientConfig = basePayload
       .useTargeting({ fft: minInnerWindowWidthTargeting })
-    const serverSchema = baseSchema
-      .useFallThroughTargeting((await clientSchema).targetingParsers)
-      .addRules('foo', {
-        variables: {
-          x: [{
-            targeting: {
-              fft: 129,
-            },
-            payload: 'fft',
-          }, {
-            payload: 'st',
-          }],
-        },
-        rules: [
-          { payload: '{{x}}' },
-        ],
-      })
+      .build()
+    const serverSchema = Data.create(
+      basePayload
+        .useFallThroughTargeting(clientConfig.targetingParsers)
+        .build(),
+    ).addRules('foo', {
+      variables: {
+        x: [{
+          targeting: {
+            fft: 129,
+          },
+          payload: 'fft',
+        }, {
+          payload: 'st',
+        }],
+      },
+      rules: [
+        { payload: '{{x}}' },
+      ],
+    })
     await serverSchema.getPayloadForEachName()
   },
 )
