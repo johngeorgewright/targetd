@@ -16,12 +16,12 @@ import type * as DT from './types/Data.ts'
 import type * as FTTT from './types/FallThroughTargeting.ts'
 import type * as PT from './types/Payload.ts'
 import type * as QT from './types/Query.ts'
-import {
-  type $InferObjectOutput,
-  type $strict,
-  type $ZodOptional,
-  type $ZodType,
-  type output,
+import type {
+  $InferObjectOutput,
+  $strict,
+  $ZodOptional,
+  $ZodType,
+  output,
 } from 'zod/v4/core'
 import { partial, strictObject } from 'zod/mini'
 import { PromisedData } from './PromisedData.ts'
