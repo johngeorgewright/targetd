@@ -29,6 +29,14 @@ export interface BuiltDataSchema<$ extends DT.Meta> {
  * parameters — this avoids the deep mapped-type instantiation that caused
  * TS2589 when chaining many schema calls directly on {@link Data}.
  *
+ * **Key uniqueness:** payload, targeting, query, and fall-through targeting
+ * names are expected to be unique across calls. Registering the same key
+ * twice is a user error: at runtime the later registration wins (object
+ * spread), but at the type level the entries are intersected. If the two
+ * parsers have incompatible types, the intersected key may resolve to
+ * `never`. Use unique names, or call {@link DataSchema.create} again to
+ * start a fresh configuration.
+ *
  * @example
  * ```ts
  * const schema = DataSchema.create()
@@ -158,6 +166,10 @@ export class DataSchema<
   /**
    * Materialise the accumulated configuration into a {@link BuiltDataSchema}
    * suitable for passing to {@link Data.create}.
+   *
+   * The returned object and each nested parser record are frozen, so the
+   * built schema is safe to share between {@link Data} instances without
+   * risk of external mutation changing behaviour.
    */
   build(): BuiltDataSchema<{
     PayloadParsers: PP
@@ -172,11 +184,15 @@ export class DataSchema<
       FallThroughTargetingParsers: FP
     }
     return Object.freeze({
-      payloadParsers: this.#payloadParsers,
-      targetingParsers: this.#targetingParsers,
-      queryParsers: this.#queryParsers,
-      fallThroughTargetingParsers: this.#fallThroughTargetingParsers,
-      targetingPredicates: this.#targetingPredicates as TargetingPredicates<$>,
+      payloadParsers: Object.freeze({ ...this.#payloadParsers }),
+      targetingParsers: Object.freeze({ ...this.#targetingParsers }),
+      queryParsers: Object.freeze({ ...this.#queryParsers }),
+      fallThroughTargetingParsers: Object.freeze({
+        ...this.#fallThroughTargetingParsers,
+      }),
+      targetingPredicates: Object.freeze({
+        ...this.#targetingPredicates,
+      }) as TargetingPredicates<$>,
     })
   }
 }
