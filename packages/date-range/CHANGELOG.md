@@ -1,5 +1,16 @@
 # Changelog
 
+## [7.0.0](https://github.com/johngeorgewright/targetd/compare/@targetd/date-range-v6.0.3...@targetd/date-range-v7.0.0) (2026-04-20)
+
+
+### ⚠ BREAKING CHANGES
+
+* **api:** Data.create() now requires a BuiltDataSchema argument. The schema configuration methods (usePayload, useTargeting, useFallThroughTargeting) have moved from Data/PromisedData to DataSchema. The ConfigurableData interface and the DT.Assign* type helpers have been removed from the public API.
+
+### Features
+
+* **api:** move schema configuration into a DataSchema builder ([46d7572](https://github.com/johngeorgewright/targetd/commit/46d75723fe7fcde566ae75071d3ac601840e6c3a))
+
 ## [6.0.3](https://github.com/johngeorgewright/targetd/compare/@targetd/date-range-v6.0.2...@targetd/date-range-v6.0.3) (2026-04-10)
 
 
