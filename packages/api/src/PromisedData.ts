@@ -11,7 +11,6 @@ import type { DataItemIn } from './parsers/DataItem.ts'
 import type { ConfigurableData } from './ConfigurableData.ts'
 import type { InsertableData } from './InsertableData.ts'
 import type { QueryableData } from './QueryableData.ts'
-import type { Merge } from './util.ts'
 
 /**
  * A Promise-based wrapper for Data that implements the ConfigurableData,
@@ -79,7 +78,7 @@ export class PromisedData<$ extends DT.Meta> extends Promise<Data<$>>
   usePayload<Parsers extends $ZodShape>(
     parsers: Parsers,
   ): PromisedData<
-    Merge<$, { PayloadParsers: Merge<$['PayloadParsers'], Parsers> }>
+    DT.AssignPayloadParsers<$, Parsers>
   > {
     return this.#create((data) => data.usePayload(parsers))
   }
@@ -123,10 +122,7 @@ export class PromisedData<$ extends DT.Meta> extends Promise<Data<$>>
   useTargeting<TDs extends TT.DescriptorRecord>(
     targeting: TDs,
   ): PromisedData<
-    Merge<$, {
-      TargetingParsers: Merge<$['TargetingParsers'], TT.ParserRecord<TDs>>
-      QueryParsers: Merge<$['QueryParsers'], QT.ParserRecord<TDs>>
-    }>
+    DT.AssignTargetingDescriptorRecord<$, TDs>
   > {
     return this.#create((data) => data.useTargeting(targeting))
   }
@@ -142,12 +138,7 @@ export class PromisedData<$ extends DT.Meta> extends Promise<Data<$>>
   useFallThroughTargeting<TDs extends FTTT.DescriptorRecord>(
     targeting: TDs,
   ): PromisedData<
-    Merge<$, {
-      FallThroughTargetingParsers: Merge<
-        $['FallThroughTargetingParsers'],
-        FTTT.ParsersRecord<TDs>
-      >
-    }>
+    DT.AssignFallThroughTargetingParsers<$, FTTT.ParsersRecord<TDs>>
   > {
     return this.#create((data) => data.useFallThroughTargeting(targeting))
   }

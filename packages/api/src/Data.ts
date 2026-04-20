@@ -1,6 +1,5 @@
 import type TargetingPredicates from './parsers/TargetingPredicates.ts'
 import {
-  type Merge,
   objectEntries,
   objectEveryAsync,
   objectFitler,
@@ -8,6 +7,7 @@ import {
   objectMap,
   objectSize,
 } from './util.ts'
+import type { Assign } from 'utility-types'
 import { type DataItemsOut, DataItemsParser } from './parsers/DataItems.ts'
 import type { DataItemIn, DataItemOut } from './parsers/DataItem.ts'
 import type { DataItemRule } from './parsers/DataItemRule.ts'
@@ -197,9 +197,9 @@ export default class Data<$ extends DT.Meta>
    * ```
    */
   async usePayload<Parsers extends $ZodShape>(parsers: Parsers): Promise<
-    Data<Merge<$, { PayloadParsers: Merge<$['PayloadParsers'], Parsers> }>>
+    Data<DT.AssignPayloadParsers<$, Parsers>>
   > {
-    type $$ = Merge<$, { PayloadParsers: Merge<$['PayloadParsers'], Parsers> }>
+    type $$ = DT.AssignPayloadParsers<$, Parsers>
 
     const payloadParsers = this.#mergePayloadParsers(parsers)
 
@@ -221,11 +221,11 @@ export default class Data<$ extends DT.Meta>
 
   #mergePayloadParsers<Parsers extends $ZodShape>(
     parsers: Parsers,
-  ): Merge<$['PayloadParsers'], Parsers> {
+  ): Assign<$['PayloadParsers'], Parsers> {
     return {
       ...this.#payloadParsers,
       ...parsers,
-    } as Merge<$['PayloadParsers'], Parsers>
+    } as Assign<$['PayloadParsers'], Parsers>
   }
 
   /**
@@ -429,17 +429,9 @@ export default class Data<$ extends DT.Meta>
    * ```
    */
   async useTargeting<TDs extends TT.DescriptorRecord>(targeting: TDs): Promise<
-    Data<
-      Merge<$, {
-        TargetingParsers: Merge<$['TargetingParsers'], TT.ParserRecord<TDs>>
-        QueryParsers: Merge<$['QueryParsers'], QT.ParserRecord<TDs>>
-      }>
-    >
+    Data<DT.AssignTargetingDescriptorRecord<$, TDs>>
   > {
-    type $$ = Merge<$, {
-      TargetingParsers: Merge<$['TargetingParsers'], TT.ParserRecord<TDs>>
-      QueryParsers: Merge<$['QueryParsers'], QT.ParserRecord<TDs>>
-    }>
+    type $$ = DT.AssignTargetingDescriptorRecord<$, TDs>
 
     const targetingParsers: $$['TargetingParsers'] = this
       .#mergeTargetingParsers(
@@ -472,11 +464,11 @@ export default class Data<$ extends DT.Meta>
 
   #mergeTargetingParsers<TDs extends TT.DescriptorRecord>(
     targeting: TDs,
-  ): Merge<$['TargetingParsers'], TT.ParserRecord<TDs>> {
+  ): Assign<$['TargetingParsers'], TT.ParserRecord<TDs>> {
     return {
       ...this.targetingParsers,
       ...objectMap(targeting, ({ targetingParser }) => targetingParser),
-    } as Merge<$['TargetingParsers'], TT.ParserRecord<TDs>>
+    } as Assign<$['TargetingParsers'], TT.ParserRecord<TDs>>
   }
 
   #mergeTargetingPredicates(targeting: TT.DescriptorRecord) {
@@ -491,11 +483,11 @@ export default class Data<$ extends DT.Meta>
 
   #mergeQueryPredicates<TDs extends TT.DescriptorRecord>(
     targeting: TDs,
-  ): Merge<$['QueryParsers'], QT.ParserRecord<TDs>> {
+  ): Assign<$['QueryParsers'], QT.ParserRecord<TDs>> {
     return {
       ...this.#queryParsers,
       ...objectMap(targeting, ({ queryParser }) => queryParser),
-    } as Merge<$['QueryParsers'], QT.ParserRecord<TDs>>
+    } as Assign<$['QueryParsers'], QT.ParserRecord<TDs>>
   }
 
   /**
@@ -532,21 +524,9 @@ export default class Data<$ extends DT.Meta>
   async useFallThroughTargeting<TDs extends FTTT.DescriptorRecord>(
     targeting: TDs,
   ): Promise<
-    Data<
-      Merge<$, {
-        FallThroughTargetingParsers: Merge<
-          $['FallThroughTargetingParsers'],
-          FTTT.ParsersRecord<TDs>
-        >
-      }>
-    >
+    Data<DT.AssignFallThroughTargetingParsers<$, FTTT.ParsersRecord<TDs>>>
   > {
-    type $$ = Merge<$, {
-      FallThroughTargetingParsers: Merge<
-        $['FallThroughTargetingParsers'],
-        FTTT.ParsersRecord<TDs>
-      >
-    }>
+    type $$ = DT.AssignFallThroughTargetingParsers<$, FTTT.ParsersRecord<TDs>>
 
     const fallThroughTargetingParsers = this.#mergeFallThroughTargeting(
       targeting,
@@ -570,7 +550,7 @@ export default class Data<$ extends DT.Meta>
 
   #mergeFallThroughTargeting<TDs extends FTTT.DescriptorRecord>(
     targeting: TDs,
-  ): Merge<$['FallThroughTargetingParsers'], FTTT.ParsersRecord<TDs>> {
+  ): Assign<$['FallThroughTargetingParsers'], FTTT.ParsersRecord<TDs>> {
     return {
       ...this.#fallThroughTargetingParsers,
       ...objectMap(
@@ -580,7 +560,7 @@ export default class Data<$ extends DT.Meta>
             ? descriptorOrParser
             : descriptorOrParser.targetingParser,
       ),
-    } as Merge<$['FallThroughTargetingParsers'], FTTT.ParsersRecord<TDs>>
+    } as Assign<$['FallThroughTargetingParsers'], FTTT.ParsersRecord<TDs>>
   }
 
   /**

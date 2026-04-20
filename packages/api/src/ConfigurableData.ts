@@ -1,9 +1,7 @@
 import type { $ZodShape } from 'zod/v4/core'
 import type * as DT from './types/Data.ts'
 import type * as FTTT from './types/FallThroughTargeting.ts'
-import type * as QT from './types/Query.ts'
 import type * as TT from './types/Targeting.ts'
-import type { Merge } from './util.ts'
 
 /**
  * Interface for configuring a {@link Data} instance with payload schemas,
@@ -32,7 +30,7 @@ export interface ConfigurableData<$ extends DT.Meta> {
     parsers: Parsers,
   ): Promise<
     ConfigurableData<
-      Merge<$, { PayloadParsers: Merge<$['PayloadParsers'], Parsers> }>
+      DT.AssignPayloadParsers<$, Parsers>
     >
   >
 
@@ -44,10 +42,7 @@ export interface ConfigurableData<$ extends DT.Meta> {
    */
   useTargeting<TDs extends TT.DescriptorRecord>(targeting: TDs): Promise<
     ConfigurableData<
-      Merge<$, {
-        TargetingParsers: Merge<$['TargetingParsers'], TT.ParserRecord<TDs>>
-        QueryParsers: Merge<$['QueryParsers'], QT.ParserRecord<TDs>>
-      }>
+      DT.AssignTargetingDescriptorRecord<$, TDs>
     >
   >
 
@@ -62,12 +57,7 @@ export interface ConfigurableData<$ extends DT.Meta> {
     targeting: TDs,
   ): Promise<
     ConfigurableData<
-      Merge<$, {
-        FallThroughTargetingParsers: Merge<
-          $['FallThroughTargetingParsers'],
-          FTTT.ParsersRecord<TDs>
-        >
-      }>
+      DT.AssignFallThroughTargetingParsers<$, FTTT.ParsersRecord<TDs>>
     >
   >
 }

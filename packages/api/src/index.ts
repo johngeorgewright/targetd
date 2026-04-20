@@ -15,7 +15,6 @@ export type { ConfigurableData } from './ConfigurableData.ts'
 export type { InsertableData } from './InsertableData.ts'
 export type { QueryableData } from './QueryableData.ts'
 export type { StaticRecord } from './types.ts'
-export type { Merge } from './util.ts'
 
 /**
  * Type helpers for the {@link Data} class.

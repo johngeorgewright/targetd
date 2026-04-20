@@ -1,4 +1,7 @@
+import type { Assign } from 'utility-types'
 import type Data from '../Data.ts'
+import type * as QT from './Query.ts'
+import type * as TT from './Targeting.ts'
 import type * as FTTT from './FallThroughTargeting.ts'
 import type { $ZodShape, output } from 'zod/v4/core'
 
@@ -21,6 +24,48 @@ export interface EmptyMeta {
   TargetingParsers: {}
   QueryParsers: {}
   FallThroughTargetingParsers: {}
+}
+
+export type AssignPayloadParsers<$ extends Meta, Parsers extends $ZodShape> = {
+  PayloadParsers: Assign<$['PayloadParsers'], Parsers>
+  TargetingParsers: $['TargetingParsers']
+  QueryParsers: $['QueryParsers']
+  FallThroughTargetingParsers: $['FallThroughTargetingParsers']
+}
+
+export type AssignTargetingParsers<$ extends Meta, Parsers extends $ZodShape> =
+  {
+    PayloadParsers: $['PayloadParsers']
+    TargetingParsers: Assign<$['TargetingParsers'], Parsers>
+    QueryParsers: $['QueryParsers']
+    FallThroughTargetingParsers: $['FallThroughTargetingParsers']
+  }
+
+export type AssignQueryParsers<$ extends Meta, Parsers extends $ZodShape> = {
+  PayloadParsers: $['PayloadParsers']
+  TargetingParsers: $['TargetingParsers']
+  QueryParsers: Assign<$['QueryParsers'], Parsers>
+  FallThroughTargetingParsers: $['FallThroughTargetingParsers']
+}
+
+export type AssignFallThroughTargetingParsers<
+  $ extends Meta,
+  Parsers extends $ZodShape,
+> = {
+  PayloadParsers: $['PayloadParsers']
+  TargetingParsers: $['TargetingParsers']
+  QueryParsers: $['QueryParsers']
+  FallThroughTargetingParsers: Assign<$['FallThroughTargetingParsers'], Parsers>
+}
+
+export type AssignTargetingDescriptorRecord<
+  $ extends Meta,
+  TDs extends TT.DescriptorRecord,
+> = {
+  PayloadParsers: $['PayloadParsers']
+  TargetingParsers: Assign<$['TargetingParsers'], TT.ParserRecord<TDs>>
+  QueryParsers: Assign<$['QueryParsers'], QT.ParserRecord<TDs>>
+  FallThroughTargetingParsers: $['FallThroughTargetingParsers']
 }
 
 /**
