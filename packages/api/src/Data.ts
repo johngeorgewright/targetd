@@ -7,14 +7,12 @@ import {
   objectMap,
   objectSize,
 } from './util.ts'
-import type { Assign } from 'utility-types'
 import { type DataItemsOut, DataItemsParser } from './parsers/DataItems.ts'
 import type { DataItemIn, DataItemOut } from './parsers/DataItem.ts'
 import type { DataItemRule } from './parsers/DataItemRule.ts'
 import type { MaybeArray, MaybePromise, ZodPartialObject } from './types.ts'
 import type { DataItemRulesIn } from './parsers/DataItemRules.ts'
 import type * as DT from './types/Data.ts'
-import type * as TT from './types/Targeting.ts'
 import type * as FTTT from './types/FallThroughTargeting.ts'
 import type * as PT from './types/Payload.ts'
 import type * as QT from './types/Query.ts'
@@ -22,38 +20,40 @@ import {
   type $InferObjectOutput,
   type $strict,
   type $ZodOptional,
-  type $ZodShape,
-  $ZodType,
+  type $ZodType,
   type output,
 } from 'zod/v4/core'
 import { partial, strictObject } from 'zod/mini'
 import { PromisedData } from './PromisedData.ts'
 import { resolveVariables } from './parsers/DataItemVariableResolver.ts'
-import type { ConfigurableData } from './ConfigurableData.ts'
 import type { InsertableData } from './InsertableData.ts'
 import type { QueryableData } from './QueryableData.ts'
+import type { BuiltDataSchema } from './DataSchema.ts'
 
 /**
- * In-memory data store.
+ * In-memory data store. Configure payload and targeting schemas with
+ * {@link DataSchema}, then pass the built schema to {@link Data.create}.
  *
  * @example
  * ```ts
  * import { z } from 'zod/mini'
- * import { targetIncludes } from '@targetd/api'
+ * import { Data, DataSchema, targetIncludes } from '@targetd/api'
  * import { assertEquals } from 'jsr:@std/assert'
  *
- * const data = await Data.create()
+ * const schema = DataSchema.create()
  *   .usePayload({ foo: z.string() })
  *   .useTargeting({ channel: targetIncludes(z.string()) })
- *   .addRules('foo', [
- *     {
- *       targeting: { channel: ['news'] },
- *       payload: 'bar'
- *     },
- *     {
- *       payload: 'foo'
- *     }
- *   ])
+ *   .build()
+ *
+ * const data = await Data.create(schema).addRules('foo', [
+ *   {
+ *     targeting: { channel: ['news'] },
+ *     payload: 'bar'
+ *   },
+ *   {
+ *     payload: 'foo'
+ *   }
+ * ])
  *
  * assertEquals(
  *   await data.getPayloadForEachName({ channel: 'news' }),
@@ -62,7 +62,7 @@ import type { QueryableData } from './QueryableData.ts'
  * ```
  */
 export default class Data<$ extends DT.Meta>
-  implements ConfigurableData<$>, InsertableData<$>, QueryableData<$> {
+  implements InsertableData<$>, QueryableData<$> {
   readonly #fallThroughTargetingParsers: $['FallThroughTargetingParsers']
   readonly #data: DataItemsOut<$>
   readonly #payloadParsers: $['PayloadParsers']
@@ -72,22 +72,38 @@ export default class Data<$ extends DT.Meta>
   readonly #QueryParser: ZodPartialObject<$['QueryParsers']>
 
   /**
-   * Create a new empty Data instance.
+   * Create a new empty Data instance from a {@link BuiltDataSchema}.
    *
-   * @returns A PromisedData instance that can be configured with payloads, targeting, and rules.
+   * @param schema - A schema produced by {@link DataSchema.build}.
+   * @returns A PromisedData instance ready for rules, inserts, and queries.
    *
    * @example
    * ```ts
-   * import { Data } from '@targetd/api'
+   * import { Data, DataSchema } from '@targetd/api'
    * import { z } from 'zod'
    *
-   * const data = await Data.create()
+   * const schema = DataSchema.create()
    *   .usePayload({ greeting: z.string() })
-   *   .addRules('greeting', [{ payload: 'Hello!' }])
+   *   .build()
+   *
+   * const data = await Data.create(schema).addRules('greeting', [
+   *   { payload: 'Hello!' },
+   * ])
    * ```
    */
-  static create(): PromisedData<DT.EmptyMeta> {
-    return PromisedData.create(new Data({}, {}, {}, {}, {}, {}))
+  static create<$ extends DT.Meta>(
+    schema: BuiltDataSchema<$>,
+  ): PromisedData<$> {
+    return PromisedData.create(
+      new Data<$>(
+        {} as DataItemsOut<$>,
+        schema.payloadParsers,
+        schema.targetingPredicates,
+        schema.targetingParsers,
+        schema.queryParsers,
+        schema.fallThroughTargetingParsers,
+      ),
+    )
   }
 
   /**
@@ -176,59 +192,6 @@ export default class Data<$ extends DT.Meta>
   }
 
   /**
-   * Define payload types using Zod schemas. This determines what data can be stored in the Data instance.
-   *
-   * @param parsers - Object mapping payload names to Zod schemas.
-   * @returns A new Data instance with the payload parsers registered.
-   *
-   * @example
-   * ```ts
-   * import { Data } from '@targetd/api'
-   * import { z } from 'zod'
-   *
-   * const data = await Data.create()
-   *   .usePayload({
-   *     message: z.string(),
-   *     config: z.object({
-   *       enabled: z.boolean(),
-   *       maxRetries: z.number()
-   *     })
-   *   })
-   * ```
-   */
-  async usePayload<Parsers extends $ZodShape>(parsers: Parsers): Promise<
-    Data<DT.AssignPayloadParsers<$, Parsers>>
-  > {
-    type $$ = DT.AssignPayloadParsers<$, Parsers>
-
-    const payloadParsers = this.#mergePayloadParsers(parsers)
-
-    const data = (await DataItemsParser(
-      payloadParsers,
-      this.#targetingParsers,
-      this.#fallThroughTargetingParsers,
-    ).parseAsync(this.#data)) as DataItemsOut<$$>
-
-    return new Data<$$>(
-      data,
-      payloadParsers,
-      this.#targetingPredicates,
-      this.#targetingParsers,
-      this.#queryParsers,
-      this.#fallThroughTargetingParsers,
-    )
-  }
-
-  #mergePayloadParsers<Parsers extends $ZodShape>(
-    parsers: Parsers,
-  ): Assign<$['PayloadParsers'], Parsers> {
-    return {
-      ...this.#payloadParsers,
-      ...parsers,
-    } as Assign<$['PayloadParsers'], Parsers>
-  }
-
-  /**
    * Insert data from another Data instance or add new rules. Commonly used with fall-through targeting
    * to pass unresolved rules between services.
    *
@@ -308,14 +271,16 @@ export default class Data<$ extends DT.Meta>
    *
    * @example
    * ```ts
-   * const data = await Data.create()
-   *   .usePayload({ greeting: z.string() })
-   *   .useTargeting({ country: targetIncludes(z.string()) })
-   *   .addRules('greeting', [
-   *     { targeting: { country: ['US'] }, payload: 'Hello!' },
-   *     { targeting: { country: ['ES'] }, payload: '¡Hola!' },
-   *     { payload: 'Hi!' } // default fallback
-   *   ])
+   * const data = await Data.create(
+   *   DataSchema.create()
+   *     .usePayload({ greeting: z.string() })
+   *     .useTargeting({ country: targetIncludes(z.string()) })
+   *     .build(),
+   * ).addRules('greeting', [
+   *   { targeting: { country: ['US'] }, payload: 'Hello!' },
+   *   { targeting: { country: ['ES'] }, payload: '¡Hola!' },
+   *   { payload: 'Hi!' } // default fallback
+   * ])
    * ```
    *
    * @example With variables:
@@ -398,169 +363,6 @@ export default class Data<$ extends DT.Meta>
       this.#queryParsers,
       this.#fallThroughTargetingParsers,
     )
-  }
-
-  /**
-   * Define targeting descriptors that determine how rules are matched against queries.
-   *
-   * @param targeting - Object mapping targeting keys to targeting descriptors with predicate functions and parsers.
-   * @returns A new Data instance with the targeting descriptors registered.
-   *
-   * @example Using built-in predicates:
-   * ```ts
-   * import { targetIncludes, targetEquals } from '@targetd/api'
-   *
-   * const data = await Data.create()
-   *   .useTargeting({
-   *     country: targetIncludes(z.string()),
-   *     isPremium: targetEquals(z.boolean())
-   *   })
-   * ```
-   *
-   * @example Custom targeting descriptor:
-   * ```ts
-   * .useTargeting({
-   *   timeOfDay: {
-   *     predicate: (queryTime) => (targetTime) => queryTime === targetTime,
-   *     queryParser: z.enum(['morning', 'afternoon', 'evening']),
-   *     targetingParser: z.enum(['morning', 'afternoon', 'evening'])
-   *   }
-   * })
-   * ```
-   */
-  async useTargeting<TDs extends TT.DescriptorRecord>(targeting: TDs): Promise<
-    Data<DT.AssignTargetingDescriptorRecord<$, TDs>>
-  > {
-    type $$ = DT.AssignTargetingDescriptorRecord<$, TDs>
-
-    const targetingParsers: $$['TargetingParsers'] = this
-      .#mergeTargetingParsers(
-        targeting,
-      )
-
-    const targetingPredicates = this.#mergeTargetingPredicates(
-      targeting,
-    ) as TargetingPredicates<$$>
-
-    const queryParsers: $$['QueryParsers'] = this.#mergeQueryPredicates(
-      targeting,
-    )
-
-    const data = await DataItemsParser(
-      this.#payloadParsers,
-      targetingParsers,
-      this.#fallThroughTargetingParsers,
-    ).parseAsync(this.#data) as DataItemsOut<$$>
-
-    return new Data<$$>(
-      data,
-      this.#payloadParsers,
-      targetingPredicates,
-      targetingParsers,
-      queryParsers,
-      this.#fallThroughTargetingParsers,
-    )
-  }
-
-  #mergeTargetingParsers<TDs extends TT.DescriptorRecord>(
-    targeting: TDs,
-  ): Assign<$['TargetingParsers'], TT.ParserRecord<TDs>> {
-    return {
-      ...this.targetingParsers,
-      ...objectMap(targeting, ({ targetingParser }) => targetingParser),
-    } as Assign<$['TargetingParsers'], TT.ParserRecord<TDs>>
-  }
-
-  #mergeTargetingPredicates(targeting: TT.DescriptorRecord) {
-    return {
-      ...this.#targetingPredicates,
-      ...objectMap(targeting, (targetingDescriptor) => ({
-        predicate: targetingDescriptor.predicate,
-        requiresQuery: targetingDescriptor.requiresQuery ?? true,
-      })),
-    }
-  }
-
-  #mergeQueryPredicates<TDs extends TT.DescriptorRecord>(
-    targeting: TDs,
-  ): Assign<$['QueryParsers'], QT.ParserRecord<TDs>> {
-    return {
-      ...this.#queryParsers,
-      ...objectMap(targeting, ({ queryParser }) => queryParser),
-    } as Assign<$['QueryParsers'], QT.ParserRecord<TDs>>
-  }
-
-  /**
-   * Define fall-through targeting for rules that cannot be fully evaluated in the current service.
-   * These targeting conditions will be passed to another service for evaluation.
-   *
-   * @param targeting - Object mapping targeting keys to Zod parsers or targeting descriptors.
-   * @returns A new Data instance with fall-through targeting registered.
-   *
-   * @example
-   * ```ts
-   * const data = await Data.create()
-   *   .useTargeting({
-   *     channel: targetIncludes(z.string())
-   *   })
-   *   .useFallThroughTargeting({
-   *     region: z.array(z.string())
-   *   })
-   *   .addRules('message', [
-   *     {
-   *       targeting: {
-   *         channel: ['mobile'],
-   *         region: ['EU'] // fall-through
-   *       },
-   *       payload: 'EU mobile message'
-   *     }
-   *   ])
-   *
-   * const result = await data.getPayload('message', { channel: 'mobile' })
-   * // Returns: { __rules__: [...], __variables__: {...} }
-   * // Can be passed to another service with region context
-   * ```
-   */
-  async useFallThroughTargeting<TDs extends FTTT.DescriptorRecord>(
-    targeting: TDs,
-  ): Promise<
-    Data<DT.AssignFallThroughTargetingParsers<$, FTTT.ParsersRecord<TDs>>>
-  > {
-    type $$ = DT.AssignFallThroughTargetingParsers<$, FTTT.ParsersRecord<TDs>>
-
-    const fallThroughTargetingParsers = this.#mergeFallThroughTargeting(
-      targeting,
-    )
-
-    const data = (await DataItemsParser(
-      this.#payloadParsers,
-      this.#targetingParsers,
-      fallThroughTargetingParsers,
-    ).parseAsync(this.#data)) as DataItemsOut<$$>
-
-    return new Data<$$>(
-      data,
-      this.#payloadParsers,
-      this.#targetingPredicates,
-      this.#targetingParsers,
-      this.#queryParsers,
-      fallThroughTargetingParsers,
-    )
-  }
-
-  #mergeFallThroughTargeting<TDs extends FTTT.DescriptorRecord>(
-    targeting: TDs,
-  ): Assign<$['FallThroughTargetingParsers'], FTTT.ParsersRecord<TDs>> {
-    return {
-      ...this.#fallThroughTargetingParsers,
-      ...objectMap(
-        targeting,
-        (descriptorOrParser) =>
-          descriptorOrParser instanceof $ZodType
-            ? descriptorOrParser
-            : descriptorOrParser.targetingParser,
-      ),
-    } as Assign<$['FallThroughTargetingParsers'], FTTT.ParsersRecord<TDs>>
   }
 
   /**

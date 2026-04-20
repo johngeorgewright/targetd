@@ -28,16 +28,16 @@ Key features:
 
 ## Basic Usage
 
-### 1. Define Shared Types
+### 1. Define a Shared Schema
 
-Create shared type definitions that both client and server will use:
+Create a `DataSchema` that both client and server will use:
 
 ```typescript
-// shared/types.ts
-import { Data, targetIncludes } from '@targetd/api'
+// shared/schema.ts
+import { DataSchema, targetIncludes } from '@targetd/api'
 import { z } from 'zod'
 
-export const data = await Data.create()
+export const schema = DataSchema.create()
   .usePayload({
     greeting: z.string(),
     config: z.object({
@@ -47,6 +47,7 @@ export const data = await Data.create()
   .useTargeting({
     country: targetIncludes(z.string()),
   })
+  .build()
 ```
 
 ### 2. Set Up the Server
@@ -56,10 +57,11 @@ endpoint:
 
 ```typescript
 // server.ts
+import { Data } from '@targetd/api'
 import { createServer } from '@targetd/server'
-import { data } from './shared/types.ts'
+import { schema } from './shared/schema.ts'
 
-const serverData = await data
+const serverData = await Data.create(schema)
   .addRules('greeting', [
     {
       targeting: { country: ['US'] },
@@ -84,13 +86,15 @@ createServer(serverData).listen(3000)
 
 ### 3. Query from the Client
 
-Use the Client class with the same type definition:
+Use the Client class with a local Data built from the same schema:
 
 ```typescript
 // client.ts
+import { Data } from '@targetd/api'
 import { Client } from '@targetd/client'
-import { data } from './shared/types.ts'
+import { schema } from './shared/schema.ts'
 
+const data = await Data.create(schema)
 const client = new Client('http://localhost:3000', data)
 
 // Type-safe queries with full autocomplete
@@ -152,12 +156,12 @@ export const deviceTargeting = createTargetingDescriptor({
 ```
 
 ```typescript
-// data.ts - Shared data structure
-import { Data } from '@targetd/api'
+// schema.ts - Shared schema
+import { DataSchema } from '@targetd/api'
 import { z } from 'zod'
 import { deviceTargeting } from './device.ts'
 
-export const data = await Data.create()
+export const schema = DataSchema.create()
   .usePayload({
     content: z.string(),
     maxItems: z.number(),
@@ -165,14 +169,16 @@ export const data = await Data.create()
   .useTargeting({
     device: deviceTargeting,
   })
+  .build()
 ```
 
 ```typescript
 // server.ts - Server implementation
+import { Data } from '@targetd/api'
 import { createServer } from '@targetd/server'
-import { data } from './data.ts'
+import { schema } from './schema.ts'
 
-const serverData = await data
+const serverData = await Data.create(schema)
   .addRules('content', [
     {
       targeting: { device: ['mobile'] },
@@ -199,9 +205,11 @@ createServer(serverData).listen(3000)
 
 ```typescript
 // client.ts - Client usage
+import { Data } from '@targetd/api'
 import { Client } from '@targetd/client'
-import { data } from './data.ts'
+import { schema } from './schema.ts'
 
+const data = await Data.create(schema)
 const client = new Client('http://localhost:3000', data)
 
 // Query for mobile

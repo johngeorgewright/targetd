@@ -52,13 +52,16 @@ export interface WatchOptions extends BaseWatchOptions {
  *
  * @example
  * ```ts
- * import { Data, targetIncludes } from '@targetd/api'
+ * import { Data, DataSchema, targetIncludes } from '@targetd/api'
  * import { watch } from '@targetd/fs'
  * import { z } from 'zod'
  *
- * const baseData = await Data.create()
- *   .usePayload({ greeting: z.string() })
- *   .useTargeting({ country: targetIncludes(z.string()) })
+ * const baseData = await Data.create(
+ *   DataSchema.create()
+ *     .usePayload({ greeting: z.string() })
+ *     .useTargeting({ country: targetIncludes(z.string()) })
+ *     .build(),
+ * )
  *
  * let currentData = baseData
  *

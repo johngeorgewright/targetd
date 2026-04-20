@@ -214,7 +214,7 @@ export class Client<$ extends DT.Meta> implements QueryableData<$> {
  *
  * @example
  * ```ts
- * const data = await Data.create()...
+ * const data = await Data.create(DataSchema.create()...build())
  * type MyClient = ClientWithData<typeof data>
  * ```
  */

@@ -32,7 +32,6 @@
     "npm:release-please@*": "17.3.0",
     "npm:supertest@*": "7.2.2",
     "npm:ts-toolbelt@^9.6.0": "9.6.0",
-    "npm:utility-types@^3.11.0": "3.11.0",
     "npm:yaml@^2.8.2": "2.8.2",
     "npm:yargs@18": "18.0.0",
     "npm:zod@^4.3.6": "4.3.6"
@@ -1993,9 +1992,6 @@
     "unpipe@1.0.0": {
       "integrity": "sha512-pjy2bYhSsufwWlKwPc+l3cN7+wuJlK6uz0YdJEOlQDbl6jo/YlPi4mb8agUkVC8BF7V8NuzeyPNqRksA3hztKQ=="
     },
-    "utility-types@3.11.0": {
-      "integrity": "sha512-6Z7Ma2aVEWisaL6TvBCy7P8rm2LQoPv6dJ7ecIaIixHcwfbJ0x7mWdbcwlIM5IGQxPZSFYeqRCqlOOeKoJYMkw=="
-    },
     "validate-npm-package-license@3.0.4": {
       "integrity": "sha512-DpKm2Ui/xN7/HQKCtpZxoRWBhZ9Z0kqtygG8XCgNQ8ZlDnxuQmWhj566j8fN4Cu3/JmbhsDo7fcAJq4s9h27Ew==",
       "dependencies": [
@@ -2093,8 +2089,7 @@
     "dependencies": [
       "npm:@commitlint/cli@^20.5.0",
       "npm:@commitlint/config-conventional@^20.5.0",
-      "npm:lint-staged@^16.4.0",
-      "npm:utility-types@^3.11.0"
+      "npm:lint-staged@^16.4.0"
     ],
     "members": {
       "packages/api": {

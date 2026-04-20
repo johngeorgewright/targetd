@@ -25,13 +25,16 @@ type FileData = output<typeof FileData>
  *
  * @example
  * ```ts
- * import { Data, targetIncludes } from '@targetd/api'
+ * import { Data, DataSchema, targetIncludes } from '@targetd/api'
  * import { load } from '@targetd/fs'
  * import { z } from 'zod'
  *
- * const baseData = await Data.create()
- *   .usePayload({ greeting: z.string() })
- *   .useTargeting({ country: targetIncludes(z.string()) })
+ * const baseData = await Data.create(
+ *   DataSchema.create()
+ *     .usePayload({ greeting: z.string() })
+ *     .useTargeting({ country: targetIncludes(z.string()) })
+ *     .build(),
+ * )
  *
  * const data = await load(baseData, './rules')
  * // Loads rules from ./rules/*.{json,yaml,yml}

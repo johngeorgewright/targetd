@@ -25,32 +25,35 @@ for serving different payloads based on targeting conditions. It's ideal for:
 
 ### Creating a Data Store
 
-Start by creating a data store with `Data.create()`:
+Configure payload and targeting schemas with `DataSchema`, then pass the built
+config to `Data.create()`:
 
 ```typescript
-import { Data, targetEquals, targetIncludes } from '@targetd/api'
+import { Data, DataSchema, targetEquals, targetIncludes } from '@targetd/api'
 import { z } from 'zod'
 
-const data = await Data.create()
+const schema = DataSchema.create()
   .usePayload({
     greeting: z.string(),
   })
   .useTargeting({
     country: targetIncludes(z.string()),
   })
-  .addRules('greeting', [
-    {
-      targeting: { country: ['US'] },
-      payload: 'Hello!',
-    },
-    {
-      targeting: { country: ['ES'] },
-      payload: '¡Hola!',
-    },
-    {
-      payload: 'Hi!', // default fallback
-    },
-  ])
+  .build()
+
+const data = await Data.create(schema).addRules('greeting', [
+  {
+    targeting: { country: ['US'] },
+    payload: 'Hello!',
+  },
+  {
+    targeting: { country: ['ES'] },
+    payload: '¡Hola!',
+  },
+  {
+    payload: 'Hi!', // default fallback
+  },
+])
 
 // Query the data
 const greeting = await data.getPayload('greeting', { country: 'US' })
@@ -60,6 +63,11 @@ const defaultGreeting = await data.getPayload('greeting')
 // Returns: 'Hi!'
 ```
 
+Schema configuration (`DataSchema`) and data operations (`Data`) are split so
+that TypeScript only has to resolve the accumulated parser types once, at
+`.build()`. This keeps compilation cheap even when hundreds of payloads and
+targeting descriptors are chained together.
+
 ## Core Concepts
 
 ### 1. Payloads
@@ -68,7 +76,7 @@ Define the types of data your store will manage using [Zod](https://zod.dev/)
 schemas:
 
 ```typescript
-const data = await Data.create()
+const schema = DataSchema.create()
   .usePayload({
     message: z.string(),
     config: z.object({
@@ -76,6 +84,7 @@ const data = await Data.create()
       maxRetries: z.number(),
     }),
   })
+  .build()
 ```
 
 ### 2. Targeting
@@ -87,27 +96,31 @@ built-in predicates or create custom ones:
 
 - **`targetIncludes`**: Check if a value is in an array
   ```typescript
-  .useTargeting({
-    channels: targetIncludes(z.string())
-  })
-  .addRules('content', [
+  const schema = DataSchema.create()
+    .usePayload({ content: z.string() })
+    .useTargeting({ channels: targetIncludes(z.string()) })
+    .build()
+
+  const data = await Data.create(schema).addRules('content', [
     {
       targeting: { channels: ['mobile', 'web'] },
-      payload: 'Multi-platform content'
-    }
+      payload: 'Multi-platform content',
+    },
   ])
   ```
 
 - **`targetEquals`**: Check for exact equality
   ```typescript
-  .useTargeting({
-    isPremium: targetEquals(z.boolean())
-  })
-  .addRules('feature', [
+  const schema = DataSchema.create()
+    .usePayload({ feature: z.string() })
+    .useTargeting({ isPremium: targetEquals(z.boolean()) })
+    .build()
+
+  const data = await Data.create(schema).addRules('feature', [
     {
       targeting: { isPremium: true },
-      payload: 'Premium feature'
-    }
+      payload: 'Premium feature',
+    },
   ])
   ```
 
@@ -116,7 +129,7 @@ built-in predicates or create custom ones:
 Create custom targeting logic with predicates:
 
 ```typescript
-const data = await Data.create()
+const schema = DataSchema.create()
   .usePayload({ message: z.string() })
   .useTargeting({
     timeOfDay: {
@@ -127,12 +140,14 @@ const data = await Data.create()
       targetingParser: z.enum(['morning', 'afternoon', 'evening']),
     },
   })
-  .addRules('message', [
-    {
-      targeting: { timeOfDay: 'morning' },
-      payload: 'Good morning!',
-    },
-  ])
+  .build()
+
+const data = await Data.create(schema).addRules('message', [
+  {
+    targeting: { timeOfDay: 'morning' },
+    payload: 'Good morning!',
+  },
+])
 ```
 
 #### Async Predicates
@@ -140,15 +155,15 @@ const data = await Data.create()
 Predicates can be asynchronous:
 
 ```typescript
-.useTargeting({
+DataSchema.create().useTargeting({
   hasAccess: {
     predicate: (userId) => async (requiredRole) => {
       const user = await fetchUser(userId)
       return user.role === requiredRole
     },
     queryParser: z.string(),
-    targetingParser: z.string()
-  }
+    targetingParser: z.string(),
+  },
 })
 ```
 
@@ -157,17 +172,17 @@ Predicates can be asynchronous:
 Set `requiresQuery: false` for predicates that don't need query parameters:
 
 ```typescript
-import { createTargetingDescriptor } from '@targetd/api'
+import { createTargetingDescriptor, DataSchema } from '@targetd/api'
 
-.useTargeting({
+DataSchema.create().useTargeting({
   currentTime: createTargetingDescriptor({
     predicate: () => (targetTime) => {
       return new Date().getHours() === targetTime
     },
     queryParser: z.undefined(),
     targetingParser: z.number(),
-    requiresQuery: false
-  })
+    requiresQuery: false,
+  }),
 })
 ```
 
@@ -277,7 +292,7 @@ This is useful in distributed systems where different services have access to
 different context:
 
 ```typescript
-const data = await Data.create()
+const schema = DataSchema.create()
   .usePayload({ message: z.string() })
   .useTargeting({
     channel: targetIncludes(z.string()),
@@ -285,21 +300,23 @@ const data = await Data.create()
   .useFallThroughTargeting({
     region: z.array(z.string()),
   })
-  .addRules('message', [
-    {
-      targeting: {
-        channel: ['mobile'],
-        region: ['EU'], // fall-through
-      },
-      payload: 'EU mobile message',
+  .build()
+
+const data = await Data.create(schema).addRules('message', [
+  {
+    targeting: {
+      channel: ['mobile'],
+      region: ['EU'], // fall-through
     },
-    {
-      targeting: {
-        channel: ['mobile'],
-      },
-      payload: 'Mobile message',
+    payload: 'EU mobile message',
+  },
+  {
+    targeting: {
+      channel: ['mobile'],
     },
-  ])
+    payload: 'Mobile message',
+  },
+])
 
 // Query with only the regular targeting field
 const result = await data.getPayload('message', { channel: 'mobile' })
@@ -313,14 +330,16 @@ fall-through targeting conditions with its own context:
 
 ```typescript
 // In the receiving service with region context
-const receivingServiceData = await Data.create()
+const receivingConfig = DataSchema.create()
   .usePayload({ message: z.string() })
   .useTargeting({
     region: targetIncludes(z.string()),
   })
-  .insert({
-    message: result, // The __rules__ structure from the first service
-  })
+  .build()
+
+const receivingServiceData = await Data.create(receivingConfig).insert({
+  message: result, // The __rules__ structure from the first service
+})
 
 // Now evaluate with region context
 const finalPayload = await receivingServiceData.getPayload('message', {
@@ -383,17 +402,19 @@ const empty = data.removeAllRules()
 Use `withNegate` option to support negative targeting:
 
 ```typescript
-const data = await Data.create()
+const schema = DataSchema.create()
   .usePayload({ content: z.string() })
   .useTargeting({
     platform: targetIncludes(z.string(), { withNegate: true }),
   })
-  .addRules('content', [
-    {
-      targeting: { platform: ['!mobile'] },
-      payload: 'Desktop-only content',
-    },
-  ])
+  .build()
+
+const data = await Data.create(schema).addRules('content', [
+  {
+    targeting: { platform: ['!mobile'] },
+    payload: 'Desktop-only content',
+  },
+])
 
 // Matches everything except mobile
 await data.getPayload('content', { platform: 'desktop' })
@@ -402,33 +423,35 @@ await data.getPayload('content', { platform: 'desktop' })
 ### Complex Multi-condition Rules
 
 ```typescript
-const data = await Data.create()
+const schema = DataSchema.create()
   .usePayload({ experience: z.string() })
   .useTargeting({
     weather: targetIncludes(z.string()),
     tide: targetEquals(z.boolean()),
     wind: targetEquals(z.string()),
   })
-  .addRules('experience', [
-    {
-      // All conditions must match (AND)
-      targeting: {
-        weather: ['sunny'],
-        tide: true,
-        wind: 'strong',
-      },
-      payload: 'Perfect surfing conditions! 🏄‍♂️',
+  .build()
+
+const data = await Data.create(schema).addRules('experience', [
+  {
+    // All conditions must match (AND)
+    targeting: {
+      weather: ['sunny'],
+      tide: true,
+      wind: 'strong',
     },
-    {
-      targeting: {
-        weather: ['sunny'],
-      },
-      payload: 'Nice day! 😎',
+    payload: 'Perfect surfing conditions! 🏄‍♂️',
+  },
+  {
+    targeting: {
+      weather: ['sunny'],
     },
-    {
-      payload: 'Regular day',
-    },
-  ])
+    payload: 'Nice day! 😎',
+  },
+  {
+    payload: 'Regular day',
+  },
+])
 ```
 
 ## Type Safety
@@ -436,9 +459,12 @@ const data = await Data.create()
 The library provides full TypeScript type inference:
 
 ```typescript
-const data = await Data.create()
+const schema = DataSchema.create()
   .usePayload({ message: z.string() })
   .useTargeting({ country: targetIncludes(z.string()) })
+  .build()
+
+const data = await Data.create(schema)
 
 // ✅ Type-safe
 await data.getPayload('message', { country: 'US' })

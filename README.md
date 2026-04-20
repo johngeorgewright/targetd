@@ -28,17 +28,19 @@ Core targeting and data querying API. Define payloads, targeting rules, and
 query logic.
 
 ```typescript
-import { Data, targetIncludes } from '@targetd/api'
+import { Data, DataSchema, targetIncludes } from '@targetd/api'
 import { z } from 'zod'
 
-const data = await Data.create()
+const schema = DataSchema.create()
   .usePayload({ greeting: z.string() })
   .useTargeting({ country: targetIncludes(z.string()) })
-  .addRules('greeting', [
-    { targeting: { country: ['US'] }, payload: 'Hello!' },
-    { targeting: { country: ['ES'] }, payload: '¡Hola!' },
-    { payload: 'Hi!' },
-  ])
+  .build()
+
+const data = await Data.create(schema).addRules('greeting', [
+  { targeting: { country: ['US'] }, payload: 'Hello!' },
+  { targeting: { country: ['ES'] }, payload: '¡Hola!' },
+  { payload: 'Hi!' },
+])
 
 await data.getPayload('greeting', { country: 'US' }) // 'Hello!'
 ```
@@ -93,14 +95,17 @@ Built-in targeting descriptor for date range queries.
 ```typescript
 import dateRangeTargeting from '@targetd/date-range'
 
-const data = await Data.create()
+const schema = DataSchema.create()
+  .usePayload({ campaign: z.string() })
   .useTargeting({ date: dateRangeTargeting })
-  .addRules('campaign', [
-    {
-      targeting: { date: { start: '2024-12-01', end: '2024-12-31' } },
-      payload: 'Holiday Campaign',
-    },
-  ])
+  .build()
+
+const data = await Data.create(schema).addRules('campaign', [
+  {
+    targeting: { date: { start: '2024-12-01', end: '2024-12-31' } },
+    payload: 'Holiday Campaign',
+  },
+])
 ```
 
 **[View Documentation →](./packages/date-range)**
@@ -144,10 +149,10 @@ npx jsr add @targetd/api @targetd/fs
 **1. Define your data:**
 
 ```typescript
-import { Data, targetIncludes } from '@targetd/api'
+import { Data, DataSchema, targetIncludes } from '@targetd/api'
 import { z } from 'zod'
 
-export const data = await Data.create()
+const schema = DataSchema.create()
   .usePayload({
     banner: z.string(),
     feature: z.object({
@@ -159,6 +164,9 @@ export const data = await Data.create()
     platform: targetIncludes(z.string()),
     isPremium: targetIncludes(z.boolean()),
   })
+  .build()
+
+export const data = await Data.create(schema)
   .addRules('banner', [
     { targeting: { platform: ['mobile'] }, payload: '📱 Mobile Banner' },
     { targeting: { platform: ['desktop'] }, payload: '🖥 Desktop Banner' },
@@ -200,74 +208,89 @@ const allPayloads = await client.getPayloadForEachName({ isPremium: true })
 ### Feature Flags
 
 ```typescript
-const data = await Data.create()
-  .usePayload({ newFeature: z.boolean() })
-  .useTargeting({ userTier: targetEquals(z.string()) })
-  .addRules('newFeature', [
-    { targeting: { userTier: 'beta' }, payload: true },
-    { payload: false },
-  ])
+const data = await Data.create(
+  DataSchema.create()
+    .usePayload({ newFeature: z.boolean() })
+    .useTargeting({ userTier: targetEquals(z.string()) })
+    .build(),
+).addRules('newFeature', [
+  { targeting: { userTier: 'beta' }, payload: true },
+  { payload: false },
+])
 ```
 
 ### A/B Testing
 
 ```typescript
-const data = await Data.create()
-  .usePayload({ variant: z.string() })
-  .useTargeting({ userId: targetIncludes(z.string()) })
-  .addRules('variant', [
-    { targeting: { userId: experimentGroup }, payload: 'variant-a' },
-    { payload: 'variant-b' },
-  ])
+const data = await Data.create(
+  DataSchema.create()
+    .usePayload({ variant: z.string() })
+    .useTargeting({ userId: targetIncludes(z.string()) })
+    .build(),
+).addRules('variant', [
+  { targeting: { userId: experimentGroup }, payload: 'variant-a' },
+  { payload: 'variant-b' },
+])
 ```
 
 ### Content Personalization
 
 ```typescript
-const data = await Data.create()
-  .usePayload({ content: z.string() })
-  .useTargeting({
-    region: targetIncludes(z.string()),
-    language: targetIncludes(z.string()),
-  })
-  .addRules('content', [
-    {
-      targeting: { region: ['US'], language: ['en'] },
-      payload: 'US English content',
-    },
-    {
-      targeting: { region: ['US'], language: ['es'] },
-      payload: 'US Spanish content',
-    },
-    { payload: 'Default content' },
-  ])
+const data = await Data.create(
+  DataSchema.create()
+    .usePayload({ content: z.string() })
+    .useTargeting({
+      region: targetIncludes(z.string()),
+      language: targetIncludes(z.string()),
+    })
+    .build(),
+).addRules('content', [
+  {
+    targeting: { region: ['US'], language: ['en'] },
+    payload: 'US English content',
+  },
+  {
+    targeting: { region: ['US'], language: ['es'] },
+    payload: 'US Spanish content',
+  },
+  { payload: 'Default content' },
+])
 ```
 
 ### Configuration Management
 
 ```typescript
-const data = await Data.create()
-  .usePayload({
-    config: z.object({
-      apiUrl: z.string(),
-      timeout: z.number(),
-    }),
-  })
-  .useTargeting({ environment: targetEquals(z.string()) })
-  .addRules('config', [
-    {
-      targeting: { environment: 'production' },
-      payload: { apiUrl: 'https://api.prod.com', timeout: 5000 },
-    },
-    {
-      targeting: { environment: 'staging' },
-      payload: { apiUrl: 'https://api.staging.com', timeout: 10000 },
-    },
-    { payload: { apiUrl: 'http://localhost:3000', timeout: 30000 } },
-  ])
+const data = await Data.create(
+  DataSchema.create()
+    .usePayload({
+      config: z.object({
+        apiUrl: z.string(),
+        timeout: z.number(),
+      }),
+    })
+    .useTargeting({ environment: targetEquals(z.string()) })
+    .build(),
+).addRules('config', [
+  {
+    targeting: { environment: 'production' },
+    payload: { apiUrl: 'https://api.prod.com', timeout: 5000 },
+  },
+  {
+    targeting: { environment: 'staging' },
+    payload: { apiUrl: 'https://api.staging.com', timeout: 10000 },
+  },
+  { payload: { apiUrl: 'http://localhost:3000', timeout: 30000 } },
+])
 ```
 
 ## Core Concepts
+
+### Schema Configuration
+
+Use `DataSchema` to declare payload schemas and targeting descriptors, then
+`.build()` and pass the result to `Data.create()`. Splitting the schema and data
+phases keeps TypeScript compilation cheap even with hundreds of payloads and
+targeting descriptors.
 
 ### Payloads
 

@@ -13,17 +13,19 @@ import { array } from 'zod/mini'
  *
  * @example
  * ```ts
- * import { Data, targetIncludes } from '@targetd/api'
+ * import { Data, DataSchema, targetIncludes } from '@targetd/api'
  * import { z } from 'zod'
  *
- * const data = await Data.create()
- *   .usePayload({ content: z.string() })
- *   .useTargeting({ country: targetIncludes(z.string()) })
- *   .addRules('content', [
- *     { targeting: { country: ['US', 'CA'] }, payload: 'North America content' },
- *     { targeting: { country: ['UK', 'FR'] }, payload: 'Europe content' },
- *     { payload: 'Default content' }
- *   ])
+ * const data = await Data.create(
+ *   DataSchema.create()
+ *     .usePayload({ content: z.string() })
+ *     .useTargeting({ country: targetIncludes(z.string()) })
+ *     .build(),
+ * ).addRules('content', [
+ *   { targeting: { country: ['US', 'CA'] }, payload: 'North America content' },
+ *   { targeting: { country: ['UK', 'FR'] }, payload: 'Europe content' },
+ *   { payload: 'Default content' }
+ * ])
  *
  * await data.getPayload('content', { country: 'US' }) // 'North America content'
  * await data.getPayload('content', { country: 'UK' }) // 'Europe content'
@@ -31,10 +33,8 @@ import { array } from 'zod/mini'
  *
  * @example With negation:
  * ```ts
- * .useTargeting({ platform: targetIncludes(z.string(), { withNegate: true }) })
- * .addRules('content', [
- *   { targeting: { platform: ['!mobile'] }, payload: 'Desktop-only content' }
- * ])
+ * DataSchema.create()
+ *   .useTargeting({ platform: targetIncludes(z.string(), { withNegate: true }) })
  * ```
  */
 export function targetIncludes<T extends $ZodType>(

@@ -41,7 +41,6 @@
   "imports": {
     "@commitlint/cli": "npm:@commitlint/cli@^20.5.0",
     "@commitlint/config-conventional": "npm:@commitlint/config-conventional@^20.5.0",
-    "lint-staged": "npm:lint-staged@^16.4.0",
-    "utility-types": "npm:utility-types@^3.11.0"
+    "lint-staged": "npm:lint-staged@^16.4.0"
   }
 }

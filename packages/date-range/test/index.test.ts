@@ -1,17 +1,20 @@
 import { assertStrictEquals } from 'jsr:@std/assert'
 import { FakeTime } from 'jsr:@std/testing/time'
-import { Data } from '@targetd/api'
+import { Data, DataSchema } from '@targetd/api'
 import z from 'zod'
 import dateRangeTargeting from '@targetd/date-range'
 
 Deno.test('date range predicate', async () => {
-  const data = await Data.create()
-    .usePayload({
-      foo: z.string(),
-    })
-    .useTargeting({
-      dateRange: dateRangeTargeting,
-    })
+  const data = await Data.create(
+    DataSchema.create()
+      .usePayload({
+        foo: z.string(),
+      })
+      .useTargeting({
+        dateRange: dateRangeTargeting,
+      })
+      .build(),
+  )
     .addRules('foo', [
       {
         targeting: {

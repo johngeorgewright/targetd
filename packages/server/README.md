@@ -30,11 +30,11 @@ Key features:
 ## Basic Usage
 
 ```typescript
-import { Data, targetIncludes } from '@targetd/api'
+import { Data, DataSchema, targetIncludes } from '@targetd/api'
 import { createServer } from '@targetd/server'
 import { z } from 'zod'
 
-const data = await Data.create()
+const schema = DataSchema.create()
   .usePayload({
     greeting: z.string(),
     config: z.object({
@@ -44,6 +44,9 @@ const data = await Data.create()
   .useTargeting({
     country: targetIncludes(z.string()),
   })
+  .build()
+
+const data = await Data.create(schema)
   .addRules('greeting', [
     {
       targeting: { country: ['US'] },
@@ -160,11 +163,11 @@ Creates an Express server with targeting endpoints.
 ### Basic Server
 
 ```typescript
-import { Data, targetEquals, targetIncludes } from '@targetd/api'
+import { Data, DataSchema, targetEquals, targetIncludes } from '@targetd/api'
 import { createServer } from '@targetd/server'
 import { z } from 'zod'
 
-const data = await Data.create()
+const schema = DataSchema.create()
   .usePayload({
     banner: z.string(),
     feature: z.object({
@@ -176,6 +179,9 @@ const data = await Data.create()
     platform: targetIncludes(z.string()),
     isPremium: targetEquals(z.boolean()),
   })
+  .build()
+
+const data = await Data.create(schema)
   .addRules('banner', [
     {
       targeting: { platform: ['mobile'] },
@@ -223,14 +229,17 @@ curl http://localhost:3000/?platform=mobile
 Use a function to provide data for dynamic updates:
 
 ```typescript
-import { Data } from '@targetd/api'
+import { Data, DataSchema } from '@targetd/api'
 import { watch } from '@targetd/fs'
 import { createServer } from '@targetd/server'
 
-let currentData = await Data.create()
-  .usePayload({
-    content: z.string(),
-  })
+const baseData = await Data.create(
+  DataSchema.create()
+    .usePayload({ content: z.string() })
+    .build(),
+)
+
+let currentData = baseData
 
 // Watch for file changes
 watch(baseData, './rules', (error, updatedData) => {
@@ -250,11 +259,11 @@ server.listen(3000)
 Create REST-friendly URLs using path parameters:
 
 ```typescript
-import { Data, targetIncludes } from '@targetd/api'
+import { Data, DataSchema, targetIncludes } from '@targetd/api'
 import { createServer } from '@targetd/server'
 import { z } from 'zod'
 
-const data = await Data.create()
+const schema = DataSchema.create()
   .usePayload({
     content: z.string(),
   })
@@ -262,25 +271,27 @@ const data = await Data.create()
     region: targetIncludes(z.string()),
     language: targetIncludes(z.string()),
   })
-  .addRules('content', [
-    {
-      targeting: {
-        region: ['US'],
-        language: ['en'],
-      },
-      payload: 'US English content',
+  .build()
+
+const data = await Data.create(schema).addRules('content', [
+  {
+    targeting: {
+      region: ['US'],
+      language: ['en'],
     },
-    {
-      targeting: {
-        region: ['US'],
-        language: ['es'],
-      },
-      payload: 'US Spanish content',
+    payload: 'US English content',
+  },
+  {
+    targeting: {
+      region: ['US'],
+      language: ['es'],
     },
-    {
-      payload: 'Default content',
-    },
-  ])
+    payload: 'US Spanish content',
+  },
+  {
+    payload: 'Default content',
+  },
+])
 
 const server = createServer(data, {
   pathStructure: ['region', 'language'],
@@ -306,7 +317,7 @@ Integrate into an existing Express application:
 
 ```typescript
 import express from 'express'
-import { Data } from '@targetd/api'
+import { Data, DataSchema } from '@targetd/api'
 import { createServer } from '@targetd/server'
 
 const app = express()
@@ -317,9 +328,11 @@ app.get('/health', (req, res) => {
 })
 
 // Add targetd endpoints
-const data = await Data.create()
-  .usePayload({ config: z.object({ version: z.string() }) })
-  .addRules('config', [{ payload: { version: '1.0.0' } }])
+const data = await Data.create(
+  DataSchema.create()
+    .usePayload({ config: z.object({ version: z.string() }) })
+    .build(),
+).addRules('config', [{ payload: { version: '1.0.0' } }])
 
 createServer(data, { app })
 
@@ -334,32 +347,34 @@ Combine with [@targetd/date-range](https://jsr.io/@targetd/date-range) for
 time-based content:
 
 ```typescript
-import { Data } from '@targetd/api'
+import { Data, DataSchema } from '@targetd/api'
 import { createServer } from '@targetd/server'
 import dateRangeTargeting from '@targetd/date-range'
 import { z } from 'zod'
 
-const data = await Data.create()
+const schema = DataSchema.create()
   .usePayload({
     campaign: z.string(),
   })
   .useTargeting({
     date: dateRangeTargeting,
   })
-  .addRules('campaign', [
-    {
-      targeting: {
-        date: {
-          start: '2024-12-01',
-          end: '2024-12-31',
-        },
+  .build()
+
+const data = await Data.create(schema).addRules('campaign', [
+  {
+    targeting: {
+      date: {
+        start: '2024-12-01',
+        end: '2024-12-31',
       },
-      payload: '🎄 Holiday Campaign',
     },
-    {
-      payload: 'Regular Campaign',
-    },
-  ])
+    payload: '🎄 Holiday Campaign',
+  },
+  {
+    payload: 'Regular Campaign',
+  },
+])
 
 createServer(data).listen(3000)
 ```
@@ -379,30 +394,32 @@ curl 'http://localhost:3000/campaign?date[start]=2024-12-15'
 Handle nested and array query parameters:
 
 ```typescript
-import { Data, targetIncludes } from '@targetd/api'
+import { Data, DataSchema, targetIncludes } from '@targetd/api'
 import { createServer } from '@targetd/server'
 import { z } from 'zod'
 
-const data = await Data.create()
+const schema = DataSchema.create()
   .usePayload({
     recommendations: z.array(z.string()),
   })
   .useTargeting({
     interests: targetIncludes(z.string()),
   })
-  .addRules('recommendations', [
-    {
-      targeting: { interests: ['sports'] },
-      payload: ['Football News', 'Basketball Scores'],
-    },
-    {
-      targeting: { interests: ['tech'] },
-      payload: ['Latest Gadgets', 'Programming Tips'],
-    },
-    {
-      payload: ['General News'],
-    },
-  ])
+  .build()
+
+const data = await Data.create(schema).addRules('recommendations', [
+  {
+    targeting: { interests: ['sports'] },
+    payload: ['Football News', 'Basketball Scores'],
+  },
+  {
+    targeting: { interests: ['tech'] },
+    payload: ['Latest Gadgets', 'Programming Tips'],
+  },
+  {
+    payload: ['General News'],
+  },
+])
 
 createServer(data).listen(3000)
 ```
@@ -496,16 +513,18 @@ The server is designed to work seamlessly with
 **Server:**
 
 ```typescript
-import { Data, targetIncludes } from '@targetd/api'
+import { Data, DataSchema, targetIncludes } from '@targetd/api'
 import { createServer } from '@targetd/server'
 
-export const data = await Data.create()
+const schema = DataSchema.create()
   .usePayload({ greeting: z.string() })
   .useTargeting({ country: targetIncludes(z.string()) })
-  .addRules('greeting', [
-    { targeting: { country: ['US'] }, payload: 'Hello!' },
-    { payload: 'Hi!' },
-  ])
+  .build()
+
+export const data = await Data.create(schema).addRules('greeting', [
+  { targeting: { country: ['US'] }, payload: 'Hello!' },
+  { payload: 'Hi!' },
+])
 
 createServer(data).listen(3000)
 ```

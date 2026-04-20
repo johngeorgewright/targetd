@@ -35,9 +35,12 @@ See
 and built-in predicates in
 [packages/api/src/predicates/](packages/api/src/predicates/).
 
-**PromisedData Pattern**: The `Data.create()` builder uses
-[PromisedData](packages/api/src/PromisedData.ts) to enable fluent async
-configuration before resolving to a `Data` instance.
+**Two-phase API**: Schema setup uses
+[DataSchema](packages/api/src/DataSchema.ts) (synchronous, accumulates parser
+shapes via intersection for cheap type inference). `.build()` produces a
+`BuiltDataSchema<Meta>`, which `Data.create(schema)` turns into a
+[PromisedData](packages/api/src/PromisedData.ts) — an awaitable chain for
+`addRules`/`insert`/query operations.
 
 **Type Inference**: Heavy use of TypeScript's type system with Zod schemas. The
 `Data` class uses complex type inference (`DT.Meta`) to ensure payloads,
@@ -137,10 +140,10 @@ cd packages/api && deno task test
 **Import Paths**: Use `.ts` extensions in imports, even though it's Deno. Use
 workspace references like `@targetd/api` in package dependencies.
 
-**Zod Schemas**: For new code and public examples, prefer `import { z } from 'zod'`
-for consistency with the root README and package READMEs. Some internal,
-performance-sensitive modules may instead use `zod/mini` for schemas and
-`zod/v4/core` for types; when editing those files (e.g.
+**Zod Schemas**: For new code and public examples, prefer
+`import { z } from 'zod'` for consistency with the root README and package
+READMEs. Some internal, performance-sensitive modules may instead use `zod/mini`
+for schemas and `zod/v4/core` for types; when editing those files (e.g.
 [packages/api/src/Data.ts](packages/api/src/Data.ts#L22-L25)), follow the
 existing local style.
 
@@ -190,16 +193,19 @@ challenging:
 
 ```typescript
 // Instead of chaining everything
-const data = await Data.create()
-  .usePayload({ foo: z.string() })
-  .useTargeting({ bar: targetIncludes(z.string()) })
-  .addRules('foo', rules)
+const data = await Data.create(
+  DataSchema.create()
+    .usePayload({ foo: z.string() })
+    .useTargeting({ bar: targetIncludes(z.string()) })
+    .build(),
+).addRules('foo', rules)
 
 // Break it down to inspect types
-const step1 = Data.create()
+const step1 = DataSchema.create()
 const step2 = step1.usePayload({ foo: z.string() })
 const step3 = step2.useTargeting({ bar: targetIncludes(z.string()) })
-type Step3Type = Awaited<typeof step3> // Inspect in IDE
+const built = step3.build()
+type BuiltType = typeof built // Inspect in IDE
 ```
 
 **Strategy 2: Use helper types from `types/` directories**

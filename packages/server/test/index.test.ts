@@ -1,5 +1,11 @@
 import { assertSnapshot } from 'jsr:@std/testing/snapshot'
-import { Data, type DT, targetEquals, targetIncludes } from '@targetd/api'
+import {
+  Data,
+  DataSchema,
+  type DT,
+  targetEquals,
+  targetIncludes,
+} from '@targetd/api'
 import dateRangeTargeting from '@targetd/date-range'
 import _ from 'npm:lodash'
 import { setTimeout } from 'node:timers/promises'
@@ -135,28 +141,31 @@ async function createDisposableServer(options?: {
 }
 
 function createData() {
-  return Data.create()
-    .usePayload({
-      foo: z.string(),
-      bar: z.number(),
-      timed: z.string(),
-    })
-    .useTargeting({
-      weather: targetIncludes(z.string()),
-      highTide: targetEquals(z.boolean()),
-      asyncThing: {
-        predicate: (q) =>
-          setTimeout(10, (t) => q === t && setTimeout(10, true)),
-        queryParser: z.boolean(),
-        targetingParser: z.boolean(),
-      },
-      arrayThing: {
-        predicate: (q) => (t) => _.difference(q, t).length === 0,
-        queryParser: z.string().array(),
-        targetingParser: z.string().array(),
-      },
-      date: dateRangeTargeting,
-    })
+  return Data.create(
+    DataSchema.create()
+      .usePayload({
+        foo: z.string(),
+        bar: z.number(),
+        timed: z.string(),
+      })
+      .useTargeting({
+        weather: targetIncludes(z.string()),
+        highTide: targetEquals(z.boolean()),
+        asyncThing: {
+          predicate: (q) =>
+            setTimeout(10, (t) => q === t && setTimeout(10, true)),
+          queryParser: z.boolean(),
+          targetingParser: z.boolean(),
+        },
+        arrayThing: {
+          predicate: (q) => (t) => _.difference(q, t).length === 0,
+          queryParser: z.string().array(),
+          targetingParser: z.string().array(),
+        },
+        date: dateRangeTargeting,
+      })
+      .build(),
+  )
     .addRules('foo', [
       {
         targeting: {
@@ -224,15 +233,18 @@ function createData() {
 }
 
 Deno.test('custom path structure', async () => {
-  const data = await Data.create()
-    .usePayload({
-      content: z.string(),
-      config: z.number(),
-    })
-    .useTargeting({
-      region: targetIncludes(z.string()),
-      device: targetIncludes(z.string()),
-    })
+  const data = await Data.create(
+    DataSchema.create()
+      .usePayload({
+        content: z.string(),
+        config: z.number(),
+      })
+      .useTargeting({
+        region: targetIncludes(z.string()),
+        device: targetIncludes(z.string()),
+      })
+      .build(),
+  )
     .addRules('content', [
       {
         targeting: {

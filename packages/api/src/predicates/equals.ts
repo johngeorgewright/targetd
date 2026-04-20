@@ -11,26 +11,26 @@ import type { $ZodType } from 'zod/v4/core'
  *
  * @example
  * ```ts
- * import { Data, targetEquals } from '@targetd/api'
+ * import { Data, DataSchema, targetEquals } from '@targetd/api'
  * import { z } from 'zod'
  *
- * const data = await Data.create()
- *   .usePayload({ feature: z.string() })
- *   .useTargeting({ isPremium: targetEquals(z.boolean()) })
- *   .addRules('feature', [
- *     { targeting: { isPremium: true }, payload: 'Premium feature' },
- *     { payload: 'Basic feature' }
- *   ])
+ * const data = await Data.create(
+ *   DataSchema.create()
+ *     .usePayload({ feature: z.string() })
+ *     .useTargeting({ isPremium: targetEquals(z.boolean()) })
+ *     .build(),
+ * ).addRules('feature', [
+ *   { targeting: { isPremium: true }, payload: 'Premium feature' },
+ *   { payload: 'Basic feature' }
+ * ])
  *
  * await data.getPayload('feature', { isPremium: true }) // 'Premium feature'
  * ```
  *
  * @example With negation:
  * ```ts
- * .useTargeting({ environment: targetEquals(z.string(), { withNegate: true }) })
- * .addRules('config', [
- *   { targeting: { environment: '!production' }, payload: 'Debug mode' }
- * ])
+ * DataSchema.create()
+ *   .useTargeting({ environment: targetEquals(z.string(), { withNegate: true }) })
  * ```
  */
 export function targetEquals<T extends $ZodType>(
