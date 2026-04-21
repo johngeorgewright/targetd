@@ -56,7 +56,7 @@ export function DataItemsParser<
  * Zod parser for all items in a Data instance.
  * Returns a partial object where each key is a payload name.
  *
- * @template $ - Data meta configuration.
+ * @template $ - DataSchema type.
  */
 export type DataItemsParser<
   $ extends DataSchema,
