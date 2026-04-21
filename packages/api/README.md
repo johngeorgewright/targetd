@@ -25,8 +25,8 @@ for serving different payloads based on targeting conditions. It's ideal for:
 
 ### Creating a Data Store
 
-Configure payload and targeting schemas with `DataSchema`, then pass the built
-config to `Data.create()`:
+Configure payload and targeting schemas with `DataSchema`, then pass the schema
+directly to `Data.create()`:
 
 ```typescript
 import { Data, DataSchema, targetEquals, targetIncludes } from '@targetd/api'
@@ -39,7 +39,6 @@ const schema = DataSchema.create()
   .useTargeting({
     country: targetIncludes(z.string()),
   })
-  .build()
 
 const data = await Data.create(schema).addRules('greeting', [
   {
@@ -64,9 +63,9 @@ const defaultGreeting = await data.getPayload('greeting')
 ```
 
 Schema configuration (`DataSchema`) and data operations (`Data`) are split so
-that TypeScript only has to resolve the accumulated parser types once, at
-`.build()`. This keeps compilation cheap even when hundreds of payloads and
-targeting descriptors are chained together.
+that TypeScript only has to resolve the accumulated parser types on the schema,
+then reuse that single type inside `Data.create()`. This keeps compilation cheap
+even when hundreds of payloads and targeting descriptors are chained together.
 
 ## Core Concepts
 
@@ -84,7 +83,6 @@ const schema = DataSchema.create()
       maxRetries: z.number(),
     }),
   })
-  .build()
 ```
 
 ### 2. Targeting
@@ -99,7 +97,6 @@ built-in predicates or create custom ones:
   const schema = DataSchema.create()
     .usePayload({ content: z.string() })
     .useTargeting({ channels: targetIncludes(z.string()) })
-    .build()
 
   const data = await Data.create(schema).addRules('content', [
     {
@@ -114,7 +111,6 @@ built-in predicates or create custom ones:
   const schema = DataSchema.create()
     .usePayload({ feature: z.string() })
     .useTargeting({ isPremium: targetEquals(z.boolean()) })
-    .build()
 
   const data = await Data.create(schema).addRules('feature', [
     {
@@ -140,7 +136,6 @@ const schema = DataSchema.create()
       targetingParser: z.enum(['morning', 'afternoon', 'evening']),
     },
   })
-  .build()
 
 const data = await Data.create(schema).addRules('message', [
   {
@@ -300,7 +295,6 @@ const schema = DataSchema.create()
   .useFallThroughTargeting({
     region: z.array(z.string()),
   })
-  .build()
 
 const data = await Data.create(schema).addRules('message', [
   {
@@ -335,7 +329,6 @@ const receivingConfig = DataSchema.create()
   .useTargeting({
     region: targetIncludes(z.string()),
   })
-  .build()
 
 const receivingServiceData = await Data.create(receivingConfig).insert({
   message: result, // The __rules__ structure from the first service
@@ -407,7 +400,6 @@ const schema = DataSchema.create()
   .useTargeting({
     platform: targetIncludes(z.string(), { withNegate: true }),
   })
-  .build()
 
 const data = await Data.create(schema).addRules('content', [
   {
@@ -430,7 +422,6 @@ const schema = DataSchema.create()
     tide: targetEquals(z.boolean()),
     wind: targetEquals(z.string()),
   })
-  .build()
 
 const data = await Data.create(schema).addRules('experience', [
   {
@@ -462,7 +453,6 @@ The library provides full TypeScript type inference:
 const schema = DataSchema.create()
   .usePayload({ message: z.string() })
   .useTargeting({ country: targetIncludes(z.string()) })
-  .build()
 
 const data = await Data.create(schema)
 

@@ -19,8 +19,7 @@ export const data = await Data.create(
     })
     .useFallThroughTargeting({
       browser: targetIncludes(z.string()),
-    })
-    .build(),
+    }),
 )
   .addRules('foo', {
     variables: {

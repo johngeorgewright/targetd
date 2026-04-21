@@ -60,8 +60,7 @@ const targetingParser: TargetingParser = union([
  * const data = await Data.create(
  *   DataSchema.create()
  *     .usePayload({ campaign: z.string() })
- *     .useTargeting({ date: dateRangeTargeting })
- *     .build(),
+ *     .useTargeting({ date: dateRangeTargeting }),
  * ).addRules('campaign', [
  *   {
  *     targeting: {

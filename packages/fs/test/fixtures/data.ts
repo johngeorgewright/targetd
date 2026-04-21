@@ -7,6 +7,5 @@ export const data = await Data.create(
       foo: z.string(),
       b: z.string(),
     })
-    .useTargeting({ channel: targetIncludes(string()) })
-    .build(),
+    .useTargeting({ channel: targetIncludes(string()) }),
 )

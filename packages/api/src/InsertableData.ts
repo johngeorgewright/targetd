@@ -1,9 +1,10 @@
+import type { DataSchema } from './DataSchema.ts'
 import type * as DT from './types/Data.ts'
 
 /**
  * Interface for inserting rule data into a {@link Data} instance.
  *
- * @template $ - The metadata type extending {@link DT.Meta}
+ * @template $ - The {@link DataSchema} type.
  *
  * @example
  * ```ts
@@ -12,7 +13,7 @@ import type * as DT from './types/Data.ts'
  * })
  * ```
  */
-export interface InsertableData<$ extends DT.Meta> {
+export interface InsertableData<$ extends DataSchema> {
   /**
    * Insert rule data into the instance.
    *

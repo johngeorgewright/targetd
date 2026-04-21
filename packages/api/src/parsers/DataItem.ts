@@ -13,7 +13,7 @@ import {
 } from './DataItemRules.ts'
 import { DataItemVariablesParser } from './DataItemVariablesParser.ts'
 import { variablesFor } from './variablesRegistry.ts'
-import type * as DT from '../types/Data.ts'
+import type { DataSchema } from '../DataSchema.ts'
 
 /**
  * Parses an "item".
@@ -25,12 +25,12 @@ import type * as DT from '../types/Data.ts'
  * Currently this is just restricted to `rules`.
  */
 export function DataItemParser<
-  $ extends DT.Meta,
+  $ extends DataSchema,
   PayloadParser extends $ZodType,
 >(
   Payload: PayloadParser,
-  targeting: $['TargetingParsers'],
-  fallThroughTargeting: $['FallThroughTargetingParsers'],
+  targeting: $['targetingParsers'],
+  fallThroughTargeting: $['fallThroughTargetingParsers'],
   strictTargeting: boolean,
 ): DataItemParser<$, PayloadParser> {
   const variablesRegistry = variablesFor(Payload)
@@ -57,11 +57,11 @@ export function DataItemParser<
 /**
  * Zod parser type for a single data item with rules and variables.
  *
- * @template $ - Data meta configuration.
+ * @template $ - Data schema
  * @template PayloadParser - Zod parser for the payload type.
  */
 export type DataItemParser<
-  $ extends DT.Meta,
+  $ extends DataSchema,
   PayloadParser extends $ZodType,
 > = ZodMiniObject<
   {
@@ -75,7 +75,7 @@ export type DataItemParser<
  * The data shape expected for {@link DataItemParser} inputs.
  */
 export interface DataItemIn<
-  $ extends DT.Meta,
+  $ extends DataSchema,
   PayloadParser extends $ZodType,
 > {
   rules: DataItemRulesIn<$, PayloadParser>
@@ -89,7 +89,7 @@ export interface DataItemIn<
  * The data shape expected for {@link DataItemParser} outputs.
  */
 export interface DataItemOut<
-  $ extends DT.Meta,
+  $ extends DataSchema,
   PayloadParser extends $ZodType,
 > {
   rules: DataItemRulesOut<$, PayloadParser>

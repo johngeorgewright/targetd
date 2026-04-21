@@ -27,8 +27,7 @@ Deno.test('getPayload', async () => {
           queryParser: z.boolean(),
           targetingParser: z.boolean(),
         },
-      })
-      .build(),
+      }),
   )
     .addRules('foo', [
       {
@@ -108,8 +107,7 @@ Deno.test('targeting with multiple conditions', async () => {
       .useTargeting({
         weather: targetIncludes(z.string()),
         highTide: targetEquals(z.boolean()),
-      })
-      .build(),
+      }),
   )
     .addRules('foo', [
       {
@@ -152,8 +150,7 @@ Deno.test('targeting without requiring a query', async () => {
           requiresQuery: false,
           targetingParser: z.literal('now!'),
         },
-      })
-      .build(),
+      }),
   )
     .addRules('foo', [
       {
@@ -179,8 +176,7 @@ Deno.test('getPayloads', async (t) => {
       .useTargeting({
         weather: targetIncludes(z.string()),
         highTide: targetEquals(z.boolean()),
-      })
-      .build(),
+      }),
   )
     .addRules('foo', [
       {
@@ -215,8 +211,7 @@ Deno.test('payload runtype validation', async (t) => {
       DataSchema.create()
         .usePayload({
           foo: z.string().refine((x) => x === 'bar', 'Should be bar'),
-        })
-        .build(),
+        }),
     )
       .addRules('foo', [
         {
@@ -247,8 +242,7 @@ Deno.test('getPayloadForEachName', async (t) => {
           queryParser: z.boolean(),
           targetingParser: z.boolean(),
         },
-      })
-      .build(),
+      }),
   )
     .addRules('foo', [
       {
@@ -304,8 +298,7 @@ Deno.test('fallThrough targeting', async (t) => {
         mung: z.string(),
       })
       .useTargeting({ surf: targetIncludes(z.string(), { withNegate: true }) })
-      .useFallThroughTargeting({ weather: z.array(z.string()) })
-      .build(),
+      .useFallThroughTargeting({ weather: z.array(z.string()) }),
   )
     .addRules('foo', [
       {
@@ -380,8 +373,7 @@ Deno.test('inserting data', async (t) => {
       })
       .useFallThroughTargeting({
         highTide: targetEquals(z.boolean()),
-      })
-      .build(),
+      }),
   )
     .insert({
       bar: {
@@ -436,8 +428,7 @@ Deno.test('inserting data with variables', async (t) => {
       .useTargeting({
         weather: targetIncludes(z.string()),
         highTide: targetEquals(z.boolean()),
-      })
-      .build(),
+      }),
   )
     .insert({
       bar: {
@@ -513,8 +504,7 @@ Deno.test('targeting predicate with full query object', async () => {
           predicate: (q) => (t) => q === t,
         },
         mung: mungTargeting,
-      })
-      .build(),
+      }),
   )
     .addRules('foo', [
       {
@@ -548,8 +538,7 @@ Deno.test('broken', async (t) => {
       })
       .useFallThroughTargeting({
         browser: browserTargeting,
-      })
-      .build(),
+      }),
   )
     .addRules('foo', [
       {
@@ -596,8 +585,7 @@ Deno.test('variables', async (t) => {
       })
       .useFallThroughTargeting({
         browser: targetIncludes(z.enum(['chrome', 'edge'])),
-      })
-      .build(),
+      }),
   )
     .addRules('foo', {
       variables: {
@@ -653,8 +641,7 @@ Deno.test('variables using fallthrough targeting', async (t) => {
       })
       .useFallThroughTargeting({
         browser: targetIncludes(z.enum(['chrome', 'edge'])),
-      })
-      .build(),
+      }),
   )
     .addRules('foo', {
       variables: {
@@ -698,8 +685,7 @@ Deno.test('variables in records', async () => {
     DataSchema.create()
       .usePayload({
         foo: z.record(z.string(), z.array(z.number())),
-      })
-      .build(),
+      }),
   )
     .addRules('foo', {
       variables: {
@@ -721,8 +707,7 @@ Deno.test('variables in arrays', async (t) => {
           b: z.number(),
           c: z.string(),
         })),
-      })
-      .build(),
+      }),
   ).addRules('foo', {
     variables: {
       a: [{ payload: 1 }],
@@ -763,8 +748,7 @@ Deno.test('errors when using variables with incorrect types', async (t) => {
             }),
           }),
         }),
-      })
-      .build(),
+      }),
   )
 
   await assertSnapshot(
@@ -807,11 +791,9 @@ Deno.test(
       .usePayload({ 'foo': z.string() })
     const clientConfig = basePayload
       .useTargeting({ fft: minInnerWindowWidthTargeting })
-      .build()
     const serverSchema = Data.create(
       basePayload
-        .useFallThroughTargeting(clientConfig.targetingParsers)
-        .build(),
+        .useFallThroughTargeting(clientConfig.targetingParsers),
     ).addRules('foo', {
       variables: {
         x: [{

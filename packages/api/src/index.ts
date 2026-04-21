@@ -1,7 +1,6 @@
 export { default as Data } from './Data.ts'
 export * from './PromisedData.ts'
 export { DataSchema } from './DataSchema.ts'
-export type { BuiltDataSchema } from './DataSchema.ts'
 export { DataItemParser } from './parsers/DataItem.ts'
 export { DataItemsParser } from './parsers/DataItems.ts'
 export { DataItemRuleParser } from './parsers/DataItemRule.ts'

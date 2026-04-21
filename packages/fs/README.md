@@ -92,8 +92,7 @@ const data = await Data.create(
     })
     .useTargeting({
       country: targetIncludes(z.string()),
-    })
-    .build(),
+    }),
 )
 
 // Load rules from directory
@@ -119,8 +118,7 @@ const data = await Data.create(
     })
     .useTargeting({
       country: targetIncludes(z.string()),
-    })
-    .build(),
+    }),
 )
 
 // Watch directory and reload on changes
@@ -204,8 +202,7 @@ const data = await Data.create(
     })
     .useTargeting({
       environment: targetIncludes(z.string()),
-    })
-    .build(),
+    }),
 )
 
 // Load rules from filesystem
@@ -268,8 +265,7 @@ const data = await Data.create(
     })
     .useTargeting({
       environment: targetIncludes(z.string()),
-    })
-    .build(),
+    }),
 )
 
 // Watch for changes during development
@@ -329,8 +325,7 @@ const data = await Data.create(
     .useTargeting({
       country: targetIncludes(z.string()),
       tier: targetIncludes(z.string()),
-    })
-    .build(),
+    }),
 )
 
 const dataWithRules = await load(data, './rules')

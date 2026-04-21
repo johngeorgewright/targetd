@@ -21,7 +21,7 @@ import {
 } from 'zod/mini'
 import type { $ZodShape, $ZodType } from 'zod/v4/core'
 import type { ZodPartialInferObject } from '../types.ts'
-import type * as DT from '../types/Data.ts'
+import type { DataSchema } from '../DataSchema.ts'
 import type { VariablesRegistry } from './variablesRegistry.ts'
 
 /**
@@ -59,13 +59,13 @@ import type { VariablesRegistry } from './variablesRegistry.ts'
  * ```
  */
 export function DataItemRulesParser<
-  $ extends DT.Meta,
+  $ extends DataSchema,
   PayloadParser extends $ZodType,
 >(
   variablesRegistry: VariablesRegistry,
   payloadParser: PayloadParser,
-  targetingParsers: $['TargetingParsers'],
-  fallThroughTargetingParsers: $['FallThroughTargetingParsers'],
+  targetingParsers: $['targetingParsers'],
+  fallThroughTargetingParsers: $['fallThroughTargetingParsers'],
   strictTargeting: boolean,
 ): DataItemRulesParser<$, PayloadParser> {
   return pipe(
@@ -141,7 +141,7 @@ export function DataItemRulesParser<
 }
 
 export type DataItemRulesParser<
-  $ extends DT.Meta,
+  $ extends DataSchema,
   PayloadParser extends $ZodType,
 > = ZodMiniPipe<
   ZodMiniArray<RuleWithPayloadParser<$, PayloadParser>>,
@@ -152,7 +152,7 @@ export type DataItemRulesParser<
 >
 
 export type DataItemRulesIn<
-  $ extends DT.Meta,
+  $ extends DataSchema,
   PayloadParser extends $ZodType,
 > = RuleWithPayloadIn<$, PayloadParser>[]
 /**
@@ -162,12 +162,12 @@ export type DataItemRulesIn<
  * @template $ - Data meta configuration.
  * @template PayloadParser - Zod parser for the payload type.
  */ export type DataItemRulesOut<
-  $ extends DT.Meta,
+  $ extends DataSchema,
   PayloadParser extends $ZodType,
 > = DataItemRule<$, PayloadParser, false>[]
 
 function spreadMultiTargetsToSeparateRules<
-  $ extends DT.Meta,
+  $ extends DataSchema,
   PayloadParser extends $ZodType,
 >(rules: RuleWithPayloadIn<$, PayloadParser>[]) {
   return rules.reduce<RuleWithPayloadIn<$, PayloadParser, false>[]>(
@@ -190,8 +190,8 @@ function spreadMultiTargetsToSeparateRules<
 
 function canRulesCombine(
   targetingParsers: $ZodShape,
-  a: DataItemRule<DT.Meta, $ZodType, false>,
-  b: DataItemRule<DT.Meta, $ZodType, false>,
+  a: DataItemRule<DataSchema, $ZodType, false>,
+  b: DataItemRule<DataSchema, $ZodType, false>,
 ) {
   const aTargeting = a.targeting
     ? intersection(a.targeting, targetingParsers)
@@ -214,11 +214,11 @@ function canRulesCombine(
 }
 
 function adaptRule<
-  $ extends DT.Meta,
+  $ extends DataSchema,
   PayloadParser extends $ZodType,
 >(
-  targetingParsers: $['TargetingParsers'],
-  fallThroughTargetingParsers: $['FallThroughTargetingParsers'],
+  targetingParsers: $['targetingParsers'],
+  fallThroughTargetingParsers: $['fallThroughTargetingParsers'],
   rule: RuleWithPayloadIn<$, PayloadParser, false>,
 ) {
   return (
@@ -233,11 +233,11 @@ function adaptRule<
 }
 
 function adaptRuleIntoFallThroughRule<
-  $ extends DT.Meta,
+  $ extends DataSchema,
   PayloadParser extends $ZodType,
 >(
-  targetingParsers: $['TargetingParsers'],
-  fallThroughTargetingParsers: $['FallThroughTargetingParsers'],
+  targetingParsers: $['targetingParsers'],
+  fallThroughTargetingParsers: $['fallThroughTargetingParsers'],
   rule: DataItemRule<$, PayloadParser, false>,
 ): RuleWithFallThrough<$, PayloadParser, false> {
   if ('fallThrough' in rule) return rule
@@ -245,7 +245,7 @@ function adaptRuleIntoFallThroughRule<
     targeting: intersection(
       rule.targeting || {},
       targetingParsers,
-    ) as ZodPartialInferObject<$['TargetingParsers']>,
+    ) as ZodPartialInferObject<$['targetingParsers']>,
     fallThrough: [
       {
         payload: rule.payload,

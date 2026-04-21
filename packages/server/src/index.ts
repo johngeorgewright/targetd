@@ -1,4 +1,4 @@
-import type { DT } from '@targetd/api'
+import type { Data, DataSchema, QT } from '@targetd/api'
 import cors from 'cors'
 import express from 'express'
 import { errorHandler } from './middleware/error.ts'
@@ -11,7 +11,7 @@ import type { MaybePromise } from './types.ts'
  * Configuration options for createServer.
  */
 export interface CreateServerOptions<
-  D extends DT.Any = DT.Any,
+  $ extends DataSchema = DataSchema,
   App extends express.Express = express.Express,
 > {
   /**
@@ -28,7 +28,7 @@ export interface CreateServerOptions<
    * // GET /US/en is equivalent to /?region=US&language=en
    * ```
    */
-  pathStructure?: (keyof DT.QueryParsers<D>)[]
+  pathStructure?: (keyof $['queryParsers'])[]
 }
 
 /**
@@ -50,8 +50,7 @@ export interface CreateServerOptions<
  * const data = await Data.create(
  *   DataSchema.create()
  *     .usePayload({ greeting: z.string() })
- *     .useTargeting({ country: targetIncludes(z.string()) })
- *     .build(),
+ *     .useTargeting({ country: targetIncludes(z.string()) }),
  * ).addRules('greeting', [
  *   { targeting: { country: ['US'] }, payload: 'Hello!' },
  *   { payload: 'Hi!' }
@@ -81,14 +80,14 @@ export interface CreateServerOptions<
  * ```
  */
 export function createServer<
-  D extends DT.Any,
+  $ extends DataSchema,
   App extends express.Express = express.Express,
 >(
-  data: MaybePromise<D> | (() => MaybePromise<D>),
+  data: MaybePromise<Data<$>> | (() => MaybePromise<Data<$>>),
   {
     app = express() as App,
     pathStructure,
-  }: CreateServerOptions<D, App> = {},
+  }: CreateServerOptions<$, App> = {},
 ): App {
   const getData = typeof data === 'function' ? data : () => data
 
@@ -101,10 +100,12 @@ export function createServer<
       castQueryArrayProps(getData),
       async (req, res) => {
         res.json(
-          await (await getData()).getPayloadForEachName({
-            ...req.params,
-            ...(res.locals.query ?? req.query),
-          }),
+          await (await getData()).getPayloadForEachName(
+            {
+              ...req.params,
+              ...(res.locals.query ?? req.query),
+            } as QT.Raw<$['queryParsers']>,
+          ),
         )
       },
     )
@@ -116,7 +117,9 @@ export function createServer<
       castQueryProp(),
       castQueryArrayProps(getData),
       async (req, res) => {
-        const query = res.locals.query ?? req.query
+        const query = (res.locals.query ?? req.query) as QT.Raw<
+          $['queryParsers']
+        >
         const data = await getData()
 
         if (!(req.params.name in data.payloadParsers)) {
@@ -131,7 +134,9 @@ export function createServer<
       castQueryProp(),
       castQueryArrayProps(getData),
       async (req, res) => {
-        const query = res.locals.query ?? req.query
+        const query = (res.locals.query ?? req.query) as QT.Raw<
+          $['queryParsers']
+        >
         const data = await getData()
 
         if (!(req.params.name in data.payloadParsers)) {
@@ -151,7 +156,7 @@ export function createServer<
       async (req, res) => {
         res.json(
           await (await getData()).getPayloadForEachName(
-            res.locals.query ?? req.query,
+            (res.locals.query ?? req.query) as QT.Raw<$['queryParsers']>,
           ),
         )
       },

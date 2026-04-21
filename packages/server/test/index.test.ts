@@ -1,11 +1,5 @@
 import { assertSnapshot } from 'jsr:@std/testing/snapshot'
-import {
-  Data,
-  DataSchema,
-  type DT,
-  targetEquals,
-  targetIncludes,
-} from '@targetd/api'
+import { Data, DataSchema, targetEquals, targetIncludes } from '@targetd/api'
 import dateRangeTargeting from '@targetd/date-range'
 import _ from 'npm:lodash'
 import { setTimeout } from 'node:timers/promises'
@@ -126,7 +120,7 @@ Deno.test('get all', async (t) => {
 })
 
 async function createDisposableServer(options?: {
-  data?: DT.Any
+  data?: Data
   pathStructure?: string[]
 }): Promise<Server & AsyncDisposable> {
   const data = options?.data ?? createData()
@@ -163,8 +157,7 @@ function createData() {
           targetingParser: z.string().array(),
         },
         date: dateRangeTargeting,
-      })
-      .build(),
+      }),
   )
     .addRules('foo', [
       {
@@ -242,8 +235,7 @@ Deno.test('custom path structure', async () => {
       .useTargeting({
         region: targetIncludes(z.string()),
         device: targetIncludes(z.string()),
-      })
-      .build(),
+      }),
   )
     .addRules('content', [
       {

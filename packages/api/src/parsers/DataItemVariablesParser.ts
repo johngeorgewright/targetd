@@ -10,12 +10,12 @@ import {
 } from 'zod/mini'
 import { DataItemRulesParser } from './DataItemRules.ts'
 import type { VariablesRegistry } from './variablesRegistry.ts'
-import type * as DT from '../types/Data.ts'
+import type { DataSchema } from '../DataSchema.ts'
 
-export function DataItemVariablesParser<$ extends DT.Meta>(
+export function DataItemVariablesParser<$ extends DataSchema>(
   variablesRegistry: VariablesRegistry,
-  targeting: $['TargetingParsers'],
-  fallThroughTargeting: $['FallThroughTargetingParsers'],
+  targeting: $['targetingParsers'],
+  fallThroughTargeting: $['fallThroughTargetingParsers'],
   strictTargeting: boolean,
 ): DataItemVariablesParser<$> {
   return record(
@@ -87,7 +87,7 @@ export function DataItemVariablesParser<$ extends DT.Meta>(
   })
 }
 
-export type DataItemVariablesParser<$ extends DT.Meta> = ZodMiniRecord<
+export type DataItemVariablesParser<$ extends DataSchema> = ZodMiniRecord<
   ZodMiniString<string>,
   DataItemRulesParser<$, ZodMiniAny>
 >

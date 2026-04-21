@@ -1,4 +1,5 @@
 import type Data from './Data.ts'
+import type { DataSchema } from './DataSchema.ts'
 import type * as DT from './types/Data.ts'
 import type * as PT from './types/Payload.ts'
 import type * as QT from './types/Query.ts'
@@ -16,12 +17,12 @@ import type { QueryableData } from './QueryableData.ts'
  * Produced by {@link Data.create}; schema configuration lives on
  * {@link DataSchema} and happens before the PromisedData is created.
  *
- * @template $ - The metadata type extending Data.Meta
+ * @template $ - The {@link DataSchema} type.
  * @extends {Promise<Data<$>>}
  * @implements {InsertableData<$>}
  * @implements {QueryableData<$>}
  */
-export class PromisedData<$ extends DT.Meta> extends Promise<Data<$>>
+export class PromisedData<$ extends DataSchema> extends Promise<Data<$>>
   implements InsertableData<$>, QueryableData<$> {
   /**
    * Creates a new PromisedData instance.
@@ -40,11 +41,11 @@ export class PromisedData<$ extends DT.Meta> extends Promise<Data<$>>
   /**
    * Factory method to create a PromisedData instance from a Data instance or Promise.
    *
-   * @template $ - The metadata type extending Data.Meta
+   * @template $ - The {@link DataSchema} type.
    * @param promisedData - A Data instance or a Promise that resolves to a Data instance
    * @returns A new PromisedData instance
    */
-  static create<$ extends DT.Meta>(
+  static create<$ extends DataSchema>(
     promisedData: MaybePromise<Data<$>>,
   ): PromisedData<$> {
     return new PromisedData((resolve) => resolve(promisedData))
@@ -79,12 +80,12 @@ export class PromisedData<$ extends DT.Meta> extends Promise<Data<$>>
    * @returns A new PromisedData instance with the added rules
    */
   addRules<
-    Name extends keyof $['PayloadParsers'],
+    Name extends keyof $['payloadParsers'],
   >(
     name: Name,
     opts:
-      | DataItemIn<$, $['PayloadParsers'][Name]>
-      | DataItemRulesIn<$, $['PayloadParsers'][Name]>,
+      | DataItemIn<$, $['payloadParsers'][Name]>
+      | DataItemRulesIn<$, $['payloadParsers'][Name]>,
   ): PromisedData<$> {
     return this.#create((data) => data.addRules(name, opts))
   }
@@ -96,7 +97,7 @@ export class PromisedData<$ extends DT.Meta> extends Promise<Data<$>>
    * @returns A Promise that resolves to an object containing payloads for each name
    */
   async getPayloadForEachName(
-    rawQuery?: QT.Raw<$['QueryParsers']>,
+    rawQuery?: QT.Raw<$['queryParsers']>,
   ): Promise<
     PT.Payloads<$>
   > {
@@ -112,11 +113,11 @@ export class PromisedData<$ extends DT.Meta> extends Promise<Data<$>>
    * @param rawQuery - Optional raw query object for filtering
    * @returns A Promise that resolves to the payload or undefined if not found
    */
-  async getPayload<Name extends keyof $['PayloadParsers']>(
+  async getPayload<Name extends keyof $['payloadParsers']>(
     name: Name,
-    rawQuery?: QT.Raw<$['QueryParsers']>,
+    rawQuery?: QT.Raw<$['queryParsers']>,
   ): Promise<
-    | PT.Payload<$, $['PayloadParsers'][Name]>
+    | PT.Payload<$, $['payloadParsers'][Name]>
     | undefined
   > {
     const data = await this
@@ -131,11 +132,11 @@ export class PromisedData<$ extends DT.Meta> extends Promise<Data<$>>
    * @param rawQuery - Optional raw query object for filtering
    * @returns A Promise that resolves to an array of payloads
    */
-  async getPayloads<Name extends keyof $['PayloadParsers']>(
+  async getPayloads<Name extends keyof $['payloadParsers']>(
     name: Name,
-    rawQuery?: QT.Raw<$['QueryParsers']>,
+    rawQuery?: QT.Raw<$['queryParsers']>,
   ): Promise<
-    PT.Payload<$, $['PayloadParsers'][Name]>[]
+    PT.Payload<$, $['payloadParsers'][Name]>[]
   > {
     const data = await this
     return data.getPayloads(name, rawQuery)

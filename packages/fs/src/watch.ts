@@ -1,10 +1,10 @@
-import type { DT } from '@targetd/api'
 import { debounce, Mutex } from '@es-toolkit/es-toolkit'
 import {
   watch as fsWatch,
   type WatchOptions as BaseWatchOptions,
 } from 'node:fs'
 import { load, pathIsLoadable } from './load.ts'
+import type { Data, DataSchema } from '@targetd/api'
 
 /**
  * Callback function invoked when rules are loaded or reloaded by the watch function.
@@ -27,7 +27,10 @@ import { load, pathIsLoadable } from './load.ts'
  * }
  * ```
  */
-export type OnLoad<D extends DT.Any> = (error: Error | null, data: D) => any
+export type OnLoad<$ extends DataSchema> = (
+  error: Error | null,
+  data: Data<$>,
+) => any
 
 /**
  * Options for watching a directory for rule file changes.
@@ -59,8 +62,7 @@ export interface WatchOptions extends BaseWatchOptions {
  * const baseData = await Data.create(
  *   DataSchema.create()
  *     .usePayload({ greeting: z.string() })
- *     .useTargeting({ country: targetIncludes(z.string()) })
- *     .build(),
+ *     .useTargeting({ country: targetIncludes(z.string()) }),
  * )
  *
  * let currentData = baseData
@@ -78,36 +80,36 @@ export interface WatchOptions extends BaseWatchOptions {
  * stopWatching()
  * ```
  */
-export function watch<D extends DT.Any>(
-  data: D,
+export function watch<$ extends DataSchema>(
+  data: Data<$>,
   dir: string,
   options: WatchOptions,
-  onLoad: OnLoad<D>,
+  onLoad: OnLoad<$>,
 ): WatchDisposer
 
-export function watch<D extends DT.Any>(
-  data: D,
+export function watch<$ extends DataSchema>(
+  data: Data<$>,
   dir: string,
-  onLoad: OnLoad<D>,
+  onLoad: OnLoad<$>,
 ): WatchDisposer
 
-export function watch<D extends DT.Any>(
-  data: D,
+export function watch<$ extends DataSchema>(
+  data: Data<$>,
   dir: string,
-  optionsOrOnLoad: WatchOptions | OnLoad<D>,
-  onLoadParam?: OnLoad<D>,
+  optionsOrOnLoad: WatchOptions | OnLoad<$>,
+  onLoadParam?: OnLoad<$>,
 ) {
   const { debounceMS = 300, ...fsOptions } = onLoadParam
     ? optionsOrOnLoad as WatchOptions
     : {}
-  const onLoad = (onLoadParam || optionsOrOnLoad) as OnLoad<D>
+  const onLoad = (onLoadParam || optionsOrOnLoad) as OnLoad<$>
   const mutex = new Mutex()
 
   const onChange = async () => {
     await mutex.acquire()
     let error: Error | null = null
     try {
-      data = await load(data.removeAllRules(), dir) as D
+      data = await load(data.removeAllRules(), dir)
     } catch ($error: any) {
       error = $error
     } finally {

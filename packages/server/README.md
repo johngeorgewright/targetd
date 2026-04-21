@@ -44,7 +44,6 @@ const schema = DataSchema.create()
   .useTargeting({
     country: targetIncludes(z.string()),
   })
-  .build()
 
 const data = await Data.create(schema)
   .addRules('greeting', [
@@ -179,7 +178,6 @@ const schema = DataSchema.create()
     platform: targetIncludes(z.string()),
     isPremium: targetEquals(z.boolean()),
   })
-  .build()
 
 const data = await Data.create(schema)
   .addRules('banner', [
@@ -235,8 +233,7 @@ import { createServer } from '@targetd/server'
 
 const baseData = await Data.create(
   DataSchema.create()
-    .usePayload({ content: z.string() })
-    .build(),
+    .usePayload({ content: z.string() }),
 )
 
 let currentData = baseData
@@ -271,7 +268,6 @@ const schema = DataSchema.create()
     region: targetIncludes(z.string()),
     language: targetIncludes(z.string()),
   })
-  .build()
 
 const data = await Data.create(schema).addRules('content', [
   {
@@ -330,8 +326,7 @@ app.get('/health', (req, res) => {
 // Add targetd endpoints
 const data = await Data.create(
   DataSchema.create()
-    .usePayload({ config: z.object({ version: z.string() }) })
-    .build(),
+    .usePayload({ config: z.object({ version: z.string() }) }),
 ).addRules('config', [{ payload: { version: '1.0.0' } }])
 
 createServer(data, { app })
@@ -359,7 +354,6 @@ const schema = DataSchema.create()
   .useTargeting({
     date: dateRangeTargeting,
   })
-  .build()
 
 const data = await Data.create(schema).addRules('campaign', [
   {
@@ -405,7 +399,6 @@ const schema = DataSchema.create()
   .useTargeting({
     interests: targetIncludes(z.string()),
   })
-  .build()
 
 const data = await Data.create(schema).addRules('recommendations', [
   {
@@ -519,7 +512,6 @@ import { createServer } from '@targetd/server'
 const schema = DataSchema.create()
   .usePayload({ greeting: z.string() })
   .useTargeting({ country: targetIncludes(z.string()) })
-  .build()
 
 export const data = await Data.create(schema).addRules('greeting', [
   { targeting: { country: ['US'] }, payload: 'Hello!' },

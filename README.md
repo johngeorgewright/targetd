@@ -34,7 +34,6 @@ import { z } from 'zod'
 const schema = DataSchema.create()
   .usePayload({ greeting: z.string() })
   .useTargeting({ country: targetIncludes(z.string()) })
-  .build()
 
 const data = await Data.create(schema).addRules('greeting', [
   { targeting: { country: ['US'] }, payload: 'Hello!' },
@@ -98,7 +97,6 @@ import dateRangeTargeting from '@targetd/date-range'
 const schema = DataSchema.create()
   .usePayload({ campaign: z.string() })
   .useTargeting({ date: dateRangeTargeting })
-  .build()
 
 const data = await Data.create(schema).addRules('campaign', [
   {
@@ -164,7 +162,6 @@ const schema = DataSchema.create()
     platform: targetIncludes(z.string()),
     isPremium: targetIncludes(z.boolean()),
   })
-  .build()
 
 export const data = await Data.create(schema)
   .addRules('banner', [
@@ -211,8 +208,7 @@ const allPayloads = await client.getPayloadForEachName({ isPremium: true })
 const data = await Data.create(
   DataSchema.create()
     .usePayload({ newFeature: z.boolean() })
-    .useTargeting({ userTier: targetEquals(z.string()) })
-    .build(),
+    .useTargeting({ userTier: targetEquals(z.string()) }),
 ).addRules('newFeature', [
   { targeting: { userTier: 'beta' }, payload: true },
   { payload: false },
@@ -225,8 +221,7 @@ const data = await Data.create(
 const data = await Data.create(
   DataSchema.create()
     .usePayload({ variant: z.string() })
-    .useTargeting({ userId: targetIncludes(z.string()) })
-    .build(),
+    .useTargeting({ userId: targetIncludes(z.string()) }),
 ).addRules('variant', [
   { targeting: { userId: experimentGroup }, payload: 'variant-a' },
   { payload: 'variant-b' },
@@ -242,8 +237,7 @@ const data = await Data.create(
     .useTargeting({
       region: targetIncludes(z.string()),
       language: targetIncludes(z.string()),
-    })
-    .build(),
+    }),
 ).addRules('content', [
   {
     targeting: { region: ['US'], language: ['en'] },
@@ -268,8 +262,7 @@ const data = await Data.create(
         timeout: z.number(),
       }),
     })
-    .useTargeting({ environment: targetEquals(z.string()) })
-    .build(),
+    .useTargeting({ environment: targetEquals(z.string()) }),
 ).addRules('config', [
   {
     targeting: { environment: 'production' },
@@ -287,8 +280,8 @@ const data = await Data.create(
 
 ### Schema Configuration
 
-Use `DataSchema` to declare payload schemas and targeting descriptors, then
-`.build()` and pass the result to `Data.create()`. Splitting the schema and data
+Use `DataSchema` to declare payload schemas and targeting descriptors, then pass
+the resulting schema directly to `Data.create()`. Splitting the schema and data
 phases keeps TypeScript compilation cheap even with hundreds of payloads and
 targeting descriptors.
 

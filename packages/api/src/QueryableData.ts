@@ -1,11 +1,11 @@
-import type * as DT from './types/Data.ts'
+import type { DataSchema } from './DataSchema.ts'
 import type * as PT from './types/Payload.ts'
 import type * as QT from './types/Query.ts'
 
 /**
  * Interface for querying payloads from a {@link Data} instance.
  *
- * @template $ - The metadata type extending {@link DT.Meta}
+ * @template $ - The {@link DataSchema} type.
  *
  * @example
  * ```ts
@@ -13,7 +13,7 @@ import type * as QT from './types/Query.ts'
  * const all = await data.getPayloadForEachName({ country: 'US' })
  * ```
  */
-export interface QueryableData<$ extends DT.Meta> {
+export interface QueryableData<$ extends DataSchema> {
   /**
    * Retrieve the first matching payload for every registered payload name.
    *
@@ -21,7 +21,7 @@ export interface QueryableData<$ extends DT.Meta> {
    * @returns An object mapping payload names to their matched values.
    */
   getPayloadForEachName(
-    rawQuery?: QT.Raw<$['QueryParsers']>,
+    rawQuery?: QT.Raw<$['queryParsers']>,
   ): Promise<PT.Payloads<$>>
 
   /**
@@ -31,11 +31,11 @@ export interface QueryableData<$ extends DT.Meta> {
    * @param rawQuery - Optional query object for targeting.
    * @returns The matched payload, or `undefined` if no rule matched.
    */
-  getPayload<Name extends keyof $['PayloadParsers']>(
+  getPayload<Name extends keyof $['payloadParsers']>(
     name: Name,
-    rawQuery?: QT.Raw<$['QueryParsers']>,
+    rawQuery?: QT.Raw<$['queryParsers']>,
   ): Promise<
-    | PT.Payload<$, $['PayloadParsers'][Name]>
+    | PT.Payload<$, $['payloadParsers'][Name]>
     | undefined
   >
 
@@ -46,10 +46,10 @@ export interface QueryableData<$ extends DT.Meta> {
    * @param rawQuery - Optional query object for targeting.
    * @returns An array of all matching payloads.
    */
-  getPayloads<Name extends keyof $['PayloadParsers']>(
+  getPayloads<Name extends keyof $['payloadParsers']>(
     name: Name,
-    rawQuery?: QT.Raw<$['QueryParsers']>,
+    rawQuery?: QT.Raw<$['queryParsers']>,
   ): Promise<
-    PT.Payload<$, $['PayloadParsers'][Name]>[]
+    PT.Payload<$, $['payloadParsers'][Name]>[]
   >
 }

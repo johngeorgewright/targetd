@@ -1,8 +1,8 @@
 import fs from '@johngw/fs'
 import type { WithFileNamesResult } from '@johngw/fs/dist/readFiles'
-import type { DT } from '@targetd/api'
 import { object } from 'zod'
 import { any, type output } from 'zod/mini'
+import type { Data, DataSchema } from '@targetd/api'
 
 /**
  * Zod schema for validating file data structure.
@@ -32,8 +32,7 @@ type FileData = output<typeof FileData>
  * const baseData = await Data.create(
  *   DataSchema.create()
  *     .usePayload({ greeting: z.string() })
- *     .useTargeting({ country: targetIncludes(z.string()) })
- *     .build(),
+ *     .useTargeting({ country: targetIncludes(z.string()) }),
  * )
  *
  * const data = await load(baseData, './rules')
@@ -50,7 +49,10 @@ type FileData = output<typeof FileData>
  *     - payload: Hi!
  * ```
  */
-export async function load<D extends DT.Any>(data: D, dir: string): Promise<D> {
+export async function load<$ extends DataSchema>(
+  data: Data<$>,
+  dir: string,
+): Promise<Data<$>> {
   for await (
     const contents of fs.readFiles(dir, {
       encoding: 'utf8',
@@ -104,15 +106,15 @@ async function parseFileContents({
  * @param fileData - Parsed file data containing rules
  * @returns Updated Data instance with added rules
  */
-async function addRules<D extends DT.Any>(
-  data: D,
+async function addRules<$ extends DataSchema>(
+  data: Data<$>,
   fileData: FileData,
-): Promise<D> {
+): Promise<Data<$>> {
   let result = data
 
   for (const [key, value] of Object.entries(fileData)) {
     if (typeof value === 'object') {
-      result = (await result.addRules(key, value)) as D
+      result = await result.addRules(key, value)
     }
   }
 

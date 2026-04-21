@@ -1,10 +1,10 @@
-import type { DT } from '@targetd/api'
 import yargs from 'yargs'
 import * as path from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { writeFile } from 'node:fs/promises'
 import { argv, cwd } from 'node:process'
 import { dataJSONSchemas } from './index.ts'
+import type { Data } from '@targetd/api'
 
 const { dataExport, inputModule, outputFile } = await yargs()
   .usage('targetd-json-schema [args]')
@@ -47,6 +47,7 @@ const jsonSchema = JSON.stringify(dataJSONSchemas(data), null, 2)
 if (outputFile) await writeFile(outputFile, jsonSchema)
 else console.info(jsonSchema)
 
-function isDataLike(x: any): x is DT.Any {
-  return 'payloadParsers' in x && 'targetingParsers' in x
+function isDataLike(x: unknown): x is Data {
+  return typeof x === 'object' && x !== null && 'payloadParsers' in x &&
+    'targetingParsers' in x
 }

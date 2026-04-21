@@ -17,8 +17,7 @@ import type { $ZodType } from 'zod/v4/core'
  * const data = await Data.create(
  *   DataSchema.create()
  *     .usePayload({ feature: z.string() })
- *     .useTargeting({ isPremium: targetEquals(z.boolean()) })
- *     .build(),
+ *     .useTargeting({ isPremium: targetEquals(z.boolean()) }),
  * ).addRules('feature', [
  *   { targeting: { isPremium: true }, payload: 'Premium feature' },
  *   { payload: 'Basic feature' }

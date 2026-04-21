@@ -41,7 +41,6 @@ const schema = DataSchema.create()
   .useTargeting({
     dateRange: dateRangeTargeting,
   })
-  .build()
 
 const data = await Data.create(schema).addRules('banner', [
   {
@@ -211,7 +210,6 @@ const schema = DataSchema.create()
   .useTargeting({
     dateRange: dateRangeTargeting,
   })
-  .build()
 
 const data = await Data.create(schema).addRules('event', [
   {

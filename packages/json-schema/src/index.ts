@@ -1,8 +1,9 @@
 import { omit } from '@es-toolkit/es-toolkit'
 import {
+  type Data,
   DataItemParser,
   DataItemsParser,
-  type DT,
+  type DataSchema,
   isZodSwitch,
 } from '@targetd/api'
 import { extend, optional, string, toJSONSchema } from 'zod/mini'
@@ -24,8 +25,8 @@ import type { JSONSchema } from 'zod/v4/core'
  * await Deno.writeTextFile('schema.json', JSON.stringify(schema, null, 2))
  * ```
  */
-export function dataJSONSchemas<D extends DT.Any>(
-  data: D,
+export function dataJSONSchemas<$ extends DataSchema>(
+  data: Data<$>,
   params?: ToJSONSchemaParams,
 ): JSONSchema.BaseSchema {
   return toJSONSchema(
@@ -34,7 +35,7 @@ export function dataJSONSchemas<D extends DT.Any>(
         data.payloadParsers,
         data.targetingParsers,
         data.fallThroughTargetingParsers,
-      ) as any,
+      ),
       { $schema: optional(string()) },
     ),
     toJSONSchemaParams(params),
@@ -56,9 +57,9 @@ export function dataJSONSchemas<D extends DT.Any>(
  * console.log(greetingSchema)
  * ```
  */
-export function dataJSONSchema<D extends DT.Any>(
-  data: D,
-  name: keyof DT.PayloadParsers<D>,
+export function dataJSONSchema<$ extends DataSchema>(
+  data: Data<$>,
+  name: keyof $['payloadParsers'],
   params?: ToJSONSchemaParams,
 ): JSONSchema.BaseSchema {
   return toJSONSchema(
@@ -68,7 +69,7 @@ export function dataJSONSchema<D extends DT.Any>(
         data.targetingParsers,
         data.fallThroughTargetingParsers,
         true,
-      ) as any,
+      ),
       { $schema: optional(string()) },
     ),
     toJSONSchemaParams(params),

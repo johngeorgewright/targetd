@@ -134,8 +134,7 @@ Deno.test('type stress: 100 payloads + 30 targeting descriptors', async () => {
       .useTargeting({ target_26: targetEquals(z.string()) })
       .useTargeting({ target_27: targetEquals(z.string()) })
       .useTargeting({ target_28: targetEquals(z.string()) })
-      .useTargeting({ target_29: targetEquals(z.string()) })
-      .build(),
+      .useTargeting({ target_29: targetEquals(z.string()) }),
   )
     .addRules('payload_0', [{ payload: 'hello' }])
     .addRules('payload_99', [{ payload: 'world' }])

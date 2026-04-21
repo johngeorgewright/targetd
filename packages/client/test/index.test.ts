@@ -6,7 +6,7 @@ import { createServer } from '@targetd/server'
 import type { AddressInfo } from 'node:net'
 import { setTimeout } from 'node:timers/promises'
 import z from 'zod'
-import { Client, type ClientWithData } from '@targetd/client'
+import { Client } from '@targetd/client'
 import { promisify } from 'node:util'
 
 const data = await Data.create(
@@ -26,8 +26,7 @@ const data = await Data.create(
         targetingParser: z.boolean(),
       },
       date: dateRangeTargeting,
-    })
-    .build(),
+    }),
 )
   .addRules('foo', [
     {
@@ -142,7 +141,7 @@ Deno.test('get all matching payloads', async (t) => {
 })
 
 async function startService(): Promise<
-  AsyncDisposable & { client: ClientWithData<typeof data> }
+  AsyncDisposable & { client: Client<typeof data['schema']> }
 > {
   const app = createServer(data)
   const { promise, reject, resolve } = Promise.withResolvers<void>()
