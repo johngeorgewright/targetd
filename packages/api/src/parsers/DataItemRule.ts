@@ -211,7 +211,7 @@ export type RuleWithPayloadParser<
  * Creates a Zod parser for rules with direct payload values.
  * Handles targeting conditions and payload parsing with variable resolution.
  *
- * @template $ - Data meta configuration.
+ * @template $ - Data schema
  * @template PayloadParser - Zod parser for the payload type.
  * @template AllowMultipleTargeting - Whether multiple targeting values are allowed.
  */
