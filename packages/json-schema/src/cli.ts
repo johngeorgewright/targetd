@@ -47,6 +47,7 @@ const jsonSchema = JSON.stringify(dataJSONSchemas(data), null, 2)
 if (outputFile) await writeFile(outputFile, jsonSchema)
 else console.info(jsonSchema)
 
-function isDataLike(x: any): x is Data {
-  return 'payloadParsers' in x && 'targetingParsers' in x
+function isDataLike(x: unknown): x is Data {
+  return typeof x === 'object' && x !== null && 'payloadParsers' in x &&
+    'targetingParsers' in x
 }
