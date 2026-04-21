@@ -17,7 +17,7 @@ import type { Data, DataSchema } from '@targetd/api'
  *
  * @example
  * ```ts
- * const onLoad: OnLoad<typeof myData> = (error, data) => {
+ * const onLoad: OnLoad<typeof mySchema> = (error, data) => {
  *   if (error) {
  *     console.error('Failed to load rules:', error)
  *   } else {
