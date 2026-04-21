@@ -5,7 +5,7 @@ import { errorHandler } from './middleware/error.ts'
 import { StatusError } from './StatusError.ts'
 import { castQueryArrayProps } from './middleware/castQueryArrayProps.ts'
 import { castQueryProp } from './middleware/castQueryProp.ts'
-import type { MaybePromise } from './types.ts'
+import type { MaybeCallable, MaybePromise } from './types.ts'
 
 /**
  * Configuration options for createServer.
@@ -83,7 +83,7 @@ export function createServer<
   $ extends DataSchema,
   App extends express.Express = express.Express,
 >(
-  data: MaybePromise<Data<$>> | (() => MaybePromise<Data<$>>),
+  data: MaybeCallable<MaybePromise<Data<$>>>,
   {
     app = express() as App,
     pathStructure,
