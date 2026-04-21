@@ -19,8 +19,7 @@ import { array } from 'zod/mini'
  * const data = await Data.create(
  *   DataSchema.create()
  *     .usePayload({ content: z.string() })
- *     .useTargeting({ country: targetIncludes(z.string()) })
- *     .build(),
+ *     .useTargeting({ country: targetIncludes(z.string()) }),
  * ).addRules('content', [
  *   { targeting: { country: ['US', 'CA'] }, payload: 'North America content' },
  *   { targeting: { country: ['UK', 'FR'] }, payload: 'Europe content' },

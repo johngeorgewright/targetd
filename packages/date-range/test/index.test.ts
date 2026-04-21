@@ -12,8 +12,7 @@ Deno.test('date range predicate', async () => {
       })
       .useTargeting({
         dateRange: dateRangeTargeting,
-      })
-      .build(),
+      }),
   )
     .addRules('foo', [
       {

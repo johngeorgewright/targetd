@@ -1,4 +1,4 @@
-import type * as DT from '../types/Data.ts'
+import type { DataSchema } from '../DataSchema.ts'
 import type { ObjValues, ZodPartialObject } from '../types.ts'
 import {
   type DataItemIn,
@@ -31,17 +31,17 @@ import type { $strict } from 'zod/v4/core'
  * ```
  */
 export function DataItemsParser<
-  $ extends DT.Meta,
+  $ extends DataSchema,
 >(
-  payloadParsers: $['PayloadParsers'],
-  targeting: $['TargetingParsers'],
-  fallThroughTargeting: $['FallThroughTargetingParsers'],
+  payloadParsers: $['payloadParsers'],
+  targeting: $['targetingParsers'],
+  fallThroughTargeting: $['fallThroughTargetingParsers'],
   strict = true,
 ): DataItemsParser<$> {
   const dataItems: Record<string, any> = {}
   for (const [key, Payload] of Object.entries(payloadParsers)) {
     dataItems[key] = DataItemParser(
-      Payload as ObjValues<$['PayloadParsers']>,
+      Payload as ObjValues<$['payloadParsers']>,
       targeting,
       fallThroughTargeting,
       strict,
@@ -59,12 +59,12 @@ export function DataItemsParser<
  * @template $ - Data meta configuration.
  */
 export type DataItemsParser<
-  $ extends DT.Meta,
+  $ extends DataSchema,
 > = ZodPartialObject<
   {
-    [Name in keyof $['PayloadParsers']]: DataItemParser<
+    [Name in keyof $['payloadParsers']]: DataItemParser<
       $,
-      $['PayloadParsers'][Name]
+      $['payloadParsers'][Name]
     >
   },
   $strict
@@ -74,21 +74,21 @@ export type DataItemsParser<
  * Input type for {@link DataItemsParser}.
  * Maps payload names to their item input configurations.
  *
- * @template $ - Data meta configuration.
+ * @template $ - DataSchema type.
  */
-export type DataItemsIn<$ extends DT.Meta> = {
-  [Name in keyof $['PayloadParsers']]?: DataItemIn<$, $['PayloadParsers'][Name]>
+export type DataItemsIn<$ extends DataSchema> = {
+  [Name in keyof $['payloadParsers']]?: DataItemIn<$, $['payloadParsers'][Name]>
 }
 
 /**
  * Output type for {@link DataItemsParser}.
  * Maps payload names to their item output configurations.
  *
- * @template $ - Data meta configuration.
+ * @template $ - DataSchema type.
  */
-export type DataItemsOut<$ extends DT.Meta> = {
-  [Name in keyof $['PayloadParsers']]?: DataItemOut<
+export type DataItemsOut<$ extends DataSchema> = {
+  [Name in keyof $['payloadParsers']]?: DataItemOut<
     $,
-    $['PayloadParsers'][Name]
+    $['payloadParsers'][Name]
   >
 }

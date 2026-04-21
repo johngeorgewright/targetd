@@ -1,4 +1,4 @@
-import type { Data, DT, PT, QT, QueryableData } from '@targetd/api'
+import type { Data, DataSchema, PT, QT, QueryableData } from '@targetd/api'
 import { queryToURLSearchParams } from './queryToURLSearchParams.ts'
 import { ZodError } from 'zod'
 import { ResponseError } from './ResponseError.ts'
@@ -18,7 +18,8 @@ import { ResponseError } from './ResponseError.ts'
  * const allPayloads = await client.getPayloadForEachName({ country: 'US' })
  * ```
  */
-export class Client<$ extends DT.Meta> implements QueryableData<$> {
+export class Client<$ extends DataSchema = DataSchema>
+  implements QueryableData<$> {
   #baseURL: string
 
   #data: Data<$>
@@ -67,11 +68,11 @@ export class Client<$ extends DT.Meta> implements QueryableData<$> {
    * // Returns: 'Hi!' (default fallback)
    * ```
    */
-  async getPayload<Name extends keyof $['PayloadParsers']>(
+  async getPayload<Name extends keyof $['payloadParsers']>(
     name: Name,
-    rawQuery?: QT.Raw<$['QueryParsers']>,
+    rawQuery?: QT.Raw<$['queryParsers']>,
   ): Promise<
-    | PT.Payload<$, $['PayloadParsers'][Name]>
+    | PT.Payload<$, $['payloadParsers'][Name]>
     | undefined
   > {
     const query = this.#data.QueryParser.parse(rawQuery ?? {})
@@ -122,7 +123,7 @@ export class Client<$ extends DT.Meta> implements QueryableData<$> {
    * ```
    */
   async getPayloadForEachName(
-    rawQuery?: QT.Raw<$['QueryParsers']>,
+    rawQuery?: QT.Raw<$['queryParsers']>,
   ): Promise<PT.Payloads<$>> {
     const query = this.#data.QueryParser.parse(rawQuery ?? {})
     const urlSearchParams = queryToURLSearchParams(query)
@@ -167,11 +168,11 @@ export class Client<$ extends DT.Meta> implements QueryableData<$> {
    * // Returns: ['Hello!', 'Hi!']
    * ```
    */
-  async getPayloads<Name extends keyof $['PayloadParsers']>(
+  async getPayloads<Name extends keyof $['payloadParsers']>(
     name: Name,
-    rawQuery?: QT.Raw<$['QueryParsers']>,
+    rawQuery?: QT.Raw<$['queryParsers']>,
   ): Promise<
-    PT.Payload<$, $['PayloadParsers'][Name]>[]
+    PT.Payload<$, $['payloadParsers'][Name]>[]
   > {
     const query = this.#data.QueryParser.parse(rawQuery ?? {})
     const urlSearchParams = queryToURLSearchParams(query)
@@ -208,14 +209,3 @@ export class Client<$ extends DT.Meta> implements QueryableData<$> {
     }
   }
 }
-
-/**
- * Helper type to create a Client from a Data instance type.
- *
- * @example
- * ```ts
- * const data = await Data.create(DataSchema.create()...build())
- * type MyClient = ClientWithData<typeof data>
- * ```
- */
-export type ClientWithData<D extends DT.Any> = Client<DT.$<D>>

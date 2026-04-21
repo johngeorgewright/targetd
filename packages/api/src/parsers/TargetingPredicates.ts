@@ -1,22 +1,29 @@
 import type { Keys } from 'ts-toolbelt/out/Any/Keys'
 import type TargetingPredicate from './TargetingPredicate.ts'
-import type * as DT from '../types/Data.ts'
-import type { $InferObjectOutput, $strict, output } from 'zod/v4/core'
+import type {
+  $InferObjectOutput,
+  $strict,
+  $ZodShape,
+  output,
+} from 'zod/v4/core'
 
 /**
  * Maps targeting field names to their predicate functions and requirements.
  * Used internally to configure how each targeting field is evaluated.
  *
- * @template $ - Data meta configuration with TargetingParsers and QueryParsers.
+ * @template $ - Shape with `targetingParsers` and `queryParsers`.
  */
 type TargetingPredicates<
-  $ extends Pick<DT.Meta, 'TargetingParsers' | 'QueryParsers'>,
+  $ extends {
+    targetingParsers: $ZodShape
+    queryParsers: $ZodShape
+  },
 > = {
-  [Name in Keys<$['TargetingParsers']>]: {
+  [Name in Keys<$['targetingParsers']>]: {
     predicate: TargetingPredicate<
-      $['QueryParsers'][Name],
-      $['TargetingParsers'][Name],
-      Partial<output<$InferObjectOutput<$['QueryParsers'], $strict>>>
+      $['queryParsers'][Name],
+      $['targetingParsers'][Name],
+      Partial<output<$InferObjectOutput<$['queryParsers'], $strict>>>
     >
     requiresQuery: boolean
   }

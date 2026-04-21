@@ -1,4 +1,4 @@
-import type { DT, PT } from '@targetd/api'
+import type { DataSchema, PT } from '@targetd/api'
 import type { O, S, U } from 'ts-toolbelt'
 
 /**
@@ -19,13 +19,13 @@ import type { O, S, U } from 'ts-toolbelt'
  * ```
  */
 export type ExplodedPayloads<
-  D extends DT.Any,
+  $ extends DataSchema,
   PathSeparator extends string,
 > = Explode<
   Partial<
     {
-      [Name in keyof DT.PayloadParsers<D>]:
-        | PT.Payload<DT.PayloadParsers<D>[Name], DT.TargetingParsers<D>>
+      [Name in keyof $['payloadParsers']]:
+        | PT.Payload<$, $['payloadParsers'][Name]>
         | undefined
     }
   >,

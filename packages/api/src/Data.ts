@@ -1,4 +1,3 @@
-import type TargetingPredicates from './parsers/TargetingPredicates.ts'
 import {
   objectEntries,
   objectEveryAsync,
@@ -28,11 +27,11 @@ import { PromisedData } from './PromisedData.ts'
 import { resolveVariables } from './parsers/DataItemVariableResolver.ts'
 import type { InsertableData } from './InsertableData.ts'
 import type { QueryableData } from './QueryableData.ts'
-import type { BuiltDataSchema } from './DataSchema.ts'
+import type { DataSchema } from './DataSchema.ts'
 
 /**
  * In-memory data store. Configure payload and targeting schemas with
- * {@link DataSchema}, then pass the built schema to {@link Data.create}.
+ * {@link DataSchema}, then pass the schema to {@link Data.create}.
  *
  * @example
  * ```ts
@@ -43,7 +42,6 @@ import type { BuiltDataSchema } from './DataSchema.ts'
  * const schema = DataSchema.create()
  *   .usePayload({ foo: z.string() })
  *   .useTargeting({ channel: targetIncludes(z.string()) })
- *   .build()
  *
  * const data = await Data.create(schema).addRules('foo', [
  *   {
@@ -61,20 +59,16 @@ import type { BuiltDataSchema } from './DataSchema.ts'
  * )
  * ```
  */
-export default class Data<$ extends DT.Meta>
+export default class Data<$ extends DataSchema = DataSchema>
   implements InsertableData<$>, QueryableData<$> {
-  readonly #fallThroughTargetingParsers: $['FallThroughTargetingParsers']
+  readonly #schema: $
   readonly #data: DataItemsOut<$>
-  readonly #payloadParsers: $['PayloadParsers']
-  readonly #targetingPredicates: TargetingPredicates<$>
-  readonly #targetingParsers: $['TargetingParsers']
-  readonly #queryParsers: $['QueryParsers']
-  readonly #QueryParser: ZodPartialObject<$['QueryParsers']>
+  readonly #QueryParser: ZodPartialObject<$['queryParsers']>
 
   /**
-   * Create a new empty Data instance from a {@link BuiltDataSchema}.
+   * Create a new empty Data instance from a {@link DataSchema}.
    *
-   * @param schema - A schema produced by {@link DataSchema.build}.
+   * @param schema - A schema produced by chaining {@link DataSchema.create} and `use*` calls.
    * @returns A PromisedData instance ready for rules, inserts, and queries.
    *
    * @example
@@ -84,25 +78,17 @@ export default class Data<$ extends DT.Meta>
    *
    * const schema = DataSchema.create()
    *   .usePayload({ greeting: z.string() })
-   *   .build()
    *
    * const data = await Data.create(schema).addRules('greeting', [
    *   { payload: 'Hello!' },
    * ])
    * ```
    */
-  static create<$ extends DT.Meta>(
-    schema: BuiltDataSchema<$>,
+  static create<$ extends DataSchema>(
+    schema: $,
   ): PromisedData<$> {
     return PromisedData.create(
-      new Data<$>(
-        {} as DataItemsOut<$>,
-        schema.payloadParsers,
-        schema.targetingPredicates,
-        schema.targetingParsers,
-        schema.queryParsers,
-        schema.fallThroughTargetingParsers,
-      ),
+      new Data<$>(schema, {} as DataItemsOut<$>),
     )
   }
 
@@ -110,22 +96,21 @@ export default class Data<$ extends DT.Meta>
    * @see {@link Data.create}
    */
   private constructor(
+    schema: $,
     data: DataItemsOut<$>,
-    payloadParsers: $['PayloadParsers'],
-    targetingPredicates: TargetingPredicates<$>,
-    targetingParsers: $['TargetingParsers'],
-    queryParsers: $['QueryParsers'],
-    fallThroughTargetingParsers: $['FallThroughTargetingParsers'],
   ) {
-    this.#fallThroughTargetingParsers = Object.freeze(
-      fallThroughTargetingParsers,
-    )
+    this.#schema = schema
     this.#data = Object.freeze(data)
-    this.#payloadParsers = Object.freeze(payloadParsers)
-    this.#targetingPredicates = Object.freeze(targetingPredicates)
-    this.#targetingParsers = Object.freeze(targetingParsers)
-    this.#queryParsers = Object.freeze(queryParsers)
-    this.#QueryParser = partial(strictObject(this.#queryParsers))
+    this.#QueryParser = partial(
+      strictObject(schema.queryParsers),
+    ) as ZodPartialObject<$['queryParsers']>
+  }
+
+  /**
+   * Get the schema used to configure this Data instance.
+   */
+  get schema(): $ {
+    return this.#schema
   }
 
   /**
@@ -142,8 +127,8 @@ export default class Data<$ extends DT.Meta>
    *
    * @returns Object mapping payload names to their Zod schemas.
    */
-  get payloadParsers(): $['PayloadParsers'] {
-    return this.#payloadParsers
+  get payloadParsers(): $['payloadParsers'] {
+    return this.#schema.payloadParsers
   }
 
   /**
@@ -151,8 +136,8 @@ export default class Data<$ extends DT.Meta>
    *
    * @returns Object mapping targeting keys to their predicate functions and configuration.
    */
-  get targetingPredicates(): TargetingPredicates<$> {
-    return this.#targetingPredicates
+  get targetingPredicates(): $['targetingPredicates'] {
+    return this.#schema.targetingPredicates
   }
 
   /**
@@ -160,8 +145,8 @@ export default class Data<$ extends DT.Meta>
    *
    * @returns Object mapping targeting keys to their Zod schemas.
    */
-  get targetingParsers(): $['TargetingParsers'] {
-    return this.#targetingParsers
+  get targetingParsers(): $['targetingParsers'] {
+    return this.#schema.targetingParsers
   }
 
   /**
@@ -169,8 +154,8 @@ export default class Data<$ extends DT.Meta>
    *
    * @returns Object mapping query parameter names to their Zod schemas.
    */
-  get queryParsers(): $['QueryParsers'] {
-    return this.#queryParsers
+  get queryParsers(): $['queryParsers'] {
+    return this.#schema.queryParsers
   }
 
   /**
@@ -178,7 +163,7 @@ export default class Data<$ extends DT.Meta>
    *
    * @returns Zod schema that validates query objects.
    */
-  get QueryParser(): ZodPartialObject<$['QueryParsers'], $strict> {
+  get QueryParser(): ZodPartialObject<$['queryParsers'], $strict> {
     return this.#QueryParser
   }
 
@@ -187,8 +172,8 @@ export default class Data<$ extends DT.Meta>
    *
    * @returns Object mapping fall-through targeting keys to their Zod schemas.
    */
-  get fallThroughTargetingParsers(): $['FallThroughTargetingParsers'] {
-    return this.#fallThroughTargetingParsers
+  get fallThroughTargetingParsers(): $['fallThroughTargetingParsers'] {
+    return this.#schema.fallThroughTargetingParsers
   }
 
   /**
@@ -212,9 +197,9 @@ export default class Data<$ extends DT.Meta>
     const newData = {
       ...this.#data,
       ...(await DataItemsParser(
-        this.#payloadParsers,
-        this.#targetingParsers,
-        this.#fallThroughTargetingParsers,
+        this.#schema.payloadParsers,
+        this.#schema.targetingParsers,
+        this.#schema.fallThroughTargetingParsers,
         false,
       ).parseAsync(
         Object.entries(data).reduce((data, [name, value]) => {
@@ -245,21 +230,14 @@ export default class Data<$ extends DT.Meta>
       )),
     }
 
-    return new Data(
-      newData,
-      this.#payloadParsers,
-      this.#targetingPredicates,
-      this.#targetingParsers,
-      this.#queryParsers,
-      this.#fallThroughTargetingParsers,
-    )
+    return new Data(this.#schema, newData)
   }
 
   readonly #isFallThroughRulesPayload = <
-    Name extends keyof $['PayloadParsers'],
+    Name extends keyof $['payloadParsers'],
   >(
-    payload: PT.Payload<$, $['PayloadParsers'][Name]>,
-  ): payload is FTTT.Rules<$, $['PayloadParsers'][Name]> =>
+    payload: PT.Payload<$, $['payloadParsers'][Name]>,
+  ): payload is FTTT.Rules<$, $['payloadParsers'][Name]> =>
     typeof payload === 'object' && payload !== null && '__rules__' in payload
 
   /**
@@ -274,8 +252,7 @@ export default class Data<$ extends DT.Meta>
    * const data = await Data.create(
    *   DataSchema.create()
    *     .usePayload({ greeting: z.string() })
-   *     .useTargeting({ country: targetIncludes(z.string()) })
-   *     .build(),
+   *     .useTargeting({ country: targetIncludes(z.string()) }),
    * ).addRules('greeting', [
    *   { targeting: { country: ['US'] }, payload: 'Hello!' },
    *   { targeting: { country: ['ES'] }, payload: '¡Hola!' },
@@ -299,12 +276,12 @@ export default class Data<$ extends DT.Meta>
    * ```
    */
   async addRules<
-    Name extends keyof $['PayloadParsers'],
+    Name extends keyof $['payloadParsers'],
   >(
     name: Name,
     opts:
-      | DataItemIn<$, $['PayloadParsers'][Name]>
-      | DataItemRulesIn<$, $['PayloadParsers'][Name]>,
+      | DataItemIn<$, $['payloadParsers'][Name]>
+      | DataItemRulesIn<$, $['payloadParsers'][Name]>,
   ): Promise<Data<$>> {
     const dataItem = this.#data[name] ||
       {
@@ -318,9 +295,9 @@ export default class Data<$ extends DT.Meta>
     const data = {
       ...this.#data,
       ...(await DataItemsParser(
-        this.#payloadParsers,
-        this.#targetingParsers,
-        this.#fallThroughTargetingParsers,
+        this.#schema.payloadParsers,
+        this.#schema.targetingParsers,
+        this.#schema.fallThroughTargetingParsers,
       ).parseAsync({
         [name]: {
           ...dataItem,
@@ -333,14 +310,7 @@ export default class Data<$ extends DT.Meta>
       })),
     }
 
-    return new Data(
-      data,
-      this.#payloadParsers,
-      this.#targetingPredicates,
-      this.#targetingParsers,
-      this.#queryParsers,
-      this.#fallThroughTargetingParsers,
-    )
+    return new Data(this.#schema, data)
   }
 
   /**
@@ -355,14 +325,7 @@ export default class Data<$ extends DT.Meta>
    * ```
    */
   removeAllRules(): Data<$> {
-    return new Data(
-      {} as any,
-      this.#payloadParsers,
-      this.#targetingPredicates,
-      this.#targetingParsers,
-      this.#queryParsers,
-      this.#fallThroughTargetingParsers,
-    )
+    return new Data(this.#schema, {} as DataItemsOut<$>)
   }
 
   /**
@@ -378,7 +341,7 @@ export default class Data<$ extends DT.Meta>
    * ```
    */
   async getPayloadForEachName(
-    rawQuery: QT.Raw<$['QueryParsers']> = {},
+    rawQuery: QT.Raw<$['queryParsers']> = {},
   ): Promise<PT.Payloads<$>> {
     const payloads = {} as PT.Payloads<$>
 
@@ -415,17 +378,17 @@ export default class Data<$ extends DT.Meta>
    * // if region targeting cannot be resolved
    * ```
    */
-  async getPayload<Name extends keyof $['PayloadParsers']>(
+  async getPayload<Name extends keyof $['payloadParsers']>(
     name: Name,
-    rawQuery: QT.Raw<$['QueryParsers']> = {},
+    rawQuery: QT.Raw<$['queryParsers']> = {},
   ): Promise<
-    | PT.Payload<$, $['PayloadParsers'][Name]>
+    | PT.Payload<$, $['payloadParsers'][Name]>
     | undefined
   > {
     const predicate = await this.#createRulePredicate(rawQuery)
     const targetableItem = this.#getTargetableItem(name)
     let payload:
-      | PT.Payload<$, $['PayloadParsers'][Name]>
+      | PT.Payload<$, $['payloadParsers'][Name]>
       | undefined
 
     for (const rule of targetableItem.rules) {
@@ -464,10 +427,10 @@ export default class Data<$ extends DT.Meta>
       : resolvedPayload
   }
 
-  async #getVariables<Name extends keyof $['PayloadParsers']>(
-    targetableItem: DataItemOut<$, $['PayloadParsers'][Name]>,
+  async #getVariables<Name extends keyof $['payloadParsers']>(
+    targetableItem: DataItemOut<$, $['payloadParsers'][Name]>,
     predicate: (
-      rule: DataItemRule<$, $['PayloadParsers'][Name]>,
+      rule: DataItemRule<$, $['payloadParsers'][Name]>,
     ) => Promise<boolean>,
   ) {
     const variables: Record<string, any> = {}
@@ -501,13 +464,13 @@ export default class Data<$ extends DT.Meta>
    * // (if multiple rules matched)
    * ```
    */
-  async getPayloads<Name extends keyof $['PayloadParsers']>(
+  async getPayloads<Name extends keyof $['payloadParsers']>(
     name: Name,
-    rawQuery: QT.Raw<$['QueryParsers']> = {},
+    rawQuery: QT.Raw<$['queryParsers']> = {},
   ): Promise<
-    PT.Payload<$, $['PayloadParsers'][Name]>[]
+    PT.Payload<$, $['payloadParsers'][Name]>[]
   > {
-    const payloads: PT.Payload<$, $['PayloadParsers'][Name]>[] = []
+    const payloads: PT.Payload<$, $['payloadParsers'][Name]>[] = []
     const predicate = await this.#createRulePredicate(rawQuery)
     const targetableItem = this.#getTargetableItem(name)
     for (const rule of targetableItem.rules) {
@@ -532,13 +495,13 @@ export default class Data<$ extends DT.Meta>
       : undefined
   }
 
-  async #createRulePredicate<Name extends keyof $['PayloadParsers']>(
-    rawQuery: QT.Raw<$['QueryParsers']>,
+  async #createRulePredicate<Name extends keyof $['payloadParsers']>(
+    rawQuery: QT.Raw<$['queryParsers']>,
   ) {
     const query = await this.#QueryParser.parseAsync(rawQuery)
 
     return (
-      rule: DataItemRule<$, $['PayloadParsers'][Name]>,
+      rule: DataItemRule<$, $['payloadParsers'][Name]>,
     ) =>
       (
         !('targeting' in rule) ||
@@ -546,7 +509,10 @@ export default class Data<$ extends DT.Meta>
           query as any,
           rule.targeting! as any,
           objectMap(
-            this.#targetingPredicates,
+            this.#schema.targetingPredicates as Record<string, {
+              predicate: (...args: any[]) => any
+              requiresQuery: boolean
+            }>,
             (target, targetingKey) => ({
               predicate: () =>
                 target.predicate(
@@ -562,13 +528,13 @@ export default class Data<$ extends DT.Meta>
       ) as Promise<boolean>
   }
 
-  #getTargetableItem<Name extends keyof $['PayloadParsers']>(name: Name) {
+  #getTargetableItem<Name extends keyof $['payloadParsers']>(name: Name) {
     return (
       (
         this.#data as unknown as {
-          [Name in keyof $['PayloadParsers']]: DataItemOut<
+          [Name in keyof $['payloadParsers']]: DataItemOut<
             $,
-            $['PayloadParsers'][Name]
+            $['payloadParsers'][Name]
           >
         }
       )[name] ?? { rules: [], variables: {} }
@@ -577,14 +543,14 @@ export default class Data<$ extends DT.Meta>
 
   async #targetingPredicate(
     query: $InferObjectOutput<
-      { [K in keyof $['QueryParsers']]: $ZodOptional<$['QueryParsers'][K]> },
+      { [K in keyof $['queryParsers']]: $ZodOptional<$['queryParsers'][K]> },
       {}
     >,
     targeting: MaybeArray<
       $InferObjectOutput<
         {
-          [K in keyof $['TargetingParsers']]: $ZodOptional<
-            $['TargetingParsers'][K]
+          [K in keyof $['targetingParsers']]: $ZodOptional<
+            $['targetingParsers'][K]
           >
         },
         {}

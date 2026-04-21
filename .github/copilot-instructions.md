@@ -37,14 +37,15 @@ and built-in predicates in
 
 **Two-phase API**: Schema setup uses
 [DataSchema](packages/api/src/DataSchema.ts) (synchronous, accumulates parser
-shapes via intersection for cheap type inference). `.build()` produces a
-`BuiltDataSchema<Meta>`, which `Data.create(schema)` turns into a
+shapes via intersection for cheap type inference). The resulting `DataSchema` is
+passed directly to `Data.create(schema)`, which returns a
 [PromisedData](packages/api/src/PromisedData.ts) — an awaitable chain for
 `addRules`/`insert`/query operations.
 
-**Type Inference**: Heavy use of TypeScript's type system with Zod schemas. The
-`Data` class uses complex type inference (`DT.Meta`) to ensure payloads,
-targeting, and queries are type-safe across the API.
+**Type Inference**: Heavy use of TypeScript's type system with Zod schemas.
+`Data<$ extends DataSchema = DataSchema>` carries the schema's concrete parser
+shapes so payloads, targeting, and queries stay type-safe across the API. Access
+the schema types via indexed access on the generic, e.g. `$['payloadParsers']`.
 
 ### Creating Custom Targeting Descriptors
 
@@ -196,16 +197,14 @@ challenging:
 const data = await Data.create(
   DataSchema.create()
     .usePayload({ foo: z.string() })
-    .useTargeting({ bar: targetIncludes(z.string()) })
-    .build(),
+    .useTargeting({ bar: targetIncludes(z.string()) }),
 ).addRules('foo', rules)
 
 // Break it down to inspect types
 const step1 = DataSchema.create()
 const step2 = step1.usePayload({ foo: z.string() })
 const step3 = step2.useTargeting({ bar: targetIncludes(z.string()) })
-const built = step3.build()
-type BuiltType = typeof built // Inspect in IDE
+type SchemaType = typeof step3 // Inspect in IDE
 ```
 
 **Strategy 2: Use helper types from `types/` directories**

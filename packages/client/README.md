@@ -47,7 +47,6 @@ export const schema = DataSchema.create()
   .useTargeting({
     country: targetIncludes(z.string()),
   })
-  .build()
 ```
 
 ### 2. Set Up the Server
@@ -169,7 +168,6 @@ export const schema = DataSchema.create()
   .useTargeting({
     device: deviceTargeting,
   })
-  .build()
 ```
 
 ```typescript

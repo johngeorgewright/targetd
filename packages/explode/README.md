@@ -39,8 +39,7 @@ const data = await Data.create(
       'app.title': z.string(),
       'app.version': z.string(),
       'feature.darkMode': z.boolean(),
-    })
-    .build(),
+    }),
 )
   .addRules('app.title', [{ payload: 'My App' }])
   .addRules('app.version', [{ payload: '1.0.0' }])
@@ -96,8 +95,7 @@ const data = await Data.create(
       'api.timeout': z.number(),
       'ui.theme': z.string(),
       'ui.language': z.string(),
-    })
-    .build(),
+    }),
 )
   .addRules('api.endpoint', [{ payload: 'https://api.example.com' }])
   .addRules('api.timeout', [{ payload: 5000 }])
@@ -136,7 +134,6 @@ const schema = DataSchema.create()
   .useTargeting({
     platform: targetIncludes(z.string()),
   })
-  .build()
 
 const data = await Data.create(schema)
   .addRules('feature.mobile.enabled', [
