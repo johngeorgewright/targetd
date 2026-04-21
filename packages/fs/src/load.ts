@@ -1,14 +1,13 @@
 import fs from '@johngw/fs'
 import type { WithFileNamesResult } from '@johngw/fs/dist/readFiles'
-import { object } from 'zod'
-import { any, type output } from 'zod/mini'
+import { any, catchall, object, type output } from 'zod/mini'
 import type { Data, DataSchema } from '@targetd/api'
 
 /**
  * Zod schema for validating file data structure.
  * Accepts any object with catchall validation for dynamic keys.
  */
-const FileData = object().catchall(any())
+const FileData = catchall(object(), any())
 /**
  * Type representing the output of the FileData schema.
  * A record with string keys and any values.
