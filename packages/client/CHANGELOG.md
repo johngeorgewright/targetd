@@ -1,5 +1,16 @@
 # Changelog
 
+## [9.0.0](https://github.com/johngeorgewright/targetd/compare/@targetd/client-v8.0.0...@targetd/client-v9.0.0) (2026-04-23)
+
+
+### ⚠ BREAKING CHANGES
+
+* **api:** `.build()`, `BuiltDataSchema`, `DT.Meta`, and `DT.EmptyMeta` have been removed.
+
+### Code Refactoring
+
+* **api:** collapse DataSchema builder/built distinction and remove DT.Meta ([55e3108](https://github.com/johngeorgewright/targetd/commit/55e31087dbe6a1478297e6bd8814ff2dd9074509))
+
 ## [8.0.0](https://github.com/johngeorgewright/targetd/compare/@targetd/client-v7.1.0...@targetd/client-v8.0.0) (2026-04-20)
 
 
