@@ -73,10 +73,7 @@ export class DataSchema<
    * Start a new empty configuration.
    */
   static create(): DataSchema<{}, {}, {}, {}> {
-    return new DataSchema({}, {}, {}, {}, {} as TargetingPredicates<{
-      targetingParsers: {}
-      queryParsers: {}
-    }>)
+    return new DataSchema({}, {}, {}, {}, {})
   }
 
   /**
