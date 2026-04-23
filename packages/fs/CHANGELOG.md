@@ -1,5 +1,21 @@
 # Changelog
 
+## [9.0.0](https://github.com/johngeorgewright/targetd/compare/@targetd/fs-v8.0.0...@targetd/fs-v9.0.0) (2026-04-23)
+
+
+### ⚠ BREAKING CHANGES
+
+* **api:** `.build()`, `BuiltDataSchema`, `DT.Meta`, and `DT.EmptyMeta` have been removed.
+
+### Bug Fixes
+
+* **schema:** use zod mini ([c9c992a](https://github.com/johngeorgewright/targetd/commit/c9c992a59ee2befaf3dc94fafeab6df4a11fe7b8))
+
+
+### Code Refactoring
+
+* **api:** collapse DataSchema builder/built distinction and remove DT.Meta ([55e3108](https://github.com/johngeorgewright/targetd/commit/55e31087dbe6a1478297e6bd8814ff2dd9074509))
+
 ## [8.0.0](https://github.com/johngeorgewright/targetd/compare/@targetd/fs-v7.1.1...@targetd/fs-v8.0.0) (2026-04-20)
 
 
