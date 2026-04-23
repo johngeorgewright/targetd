@@ -12,7 +12,6 @@
     "jsr:@std/internal@^1.0.9": "1.0.10",
     "jsr:@std/path@^1.1.1": "1.1.2",
     "jsr:@std/testing@*": "1.0.15",
-    "jsr:@targetd/api@9": "9.0.0",
     "npm:@commitlint/cli@^20.5.0": "20.5.0_@types+node@25.5.0_typescript@6.0.2",
     "npm:@commitlint/config-conventional@^20.5.0": "20.5.0",
     "npm:@johngw/error@^2.2.2": "2.2.2",
@@ -77,14 +76,6 @@
         "jsr:@std/fs@^1.0.19",
         "jsr:@std/internal@^1.0.10",
         "jsr:@std/path"
-      ]
-    },
-    "@targetd/api@9.0.0": {
-      "integrity": "b3a35af127fcf1d4f0e835f7663f55a77fce6820989a4df18445896b387324aa",
-      "dependencies": [
-        "npm:fast-deep-equal",
-        "npm:ts-toolbelt",
-        "npm:zod"
       ]
     }
   },
@@ -2101,20 +2092,20 @@
       },
       "packages/client": {
         "dependencies": [
-          "jsr:@targetd/api@9",
+          "jsr:@targetd/api@10",
           "npm:ts-toolbelt@^9.6.0",
           "npm:zod@^4.3.6"
         ]
       },
       "packages/date-range": {
         "dependencies": [
-          "jsr:@targetd/api@9",
+          "jsr:@targetd/api@10",
           "npm:zod@^4.3.6"
         ]
       },
       "packages/explode": {
         "dependencies": [
-          "jsr:@targetd/api@9",
+          "jsr:@targetd/api@10",
           "npm:flat@^6.0.1",
           "npm:ts-toolbelt@^9.6.0",
           "npm:zod@^4.3.6"
@@ -2123,7 +2114,7 @@
       "packages/fs": {
         "dependencies": [
           "jsr:@es-toolkit/es-toolkit@^1.45.1",
-          "jsr:@targetd/api@9",
+          "jsr:@targetd/api@10",
           "npm:@johngw/fs@^3.0.1",
           "npm:ts-toolbelt@^9.6.0",
           "npm:yaml@^2.8.2",
@@ -2133,7 +2124,7 @@
       "packages/json-schema": {
         "dependencies": [
           "jsr:@es-toolkit/es-toolkit@^1.45.1",
-          "jsr:@targetd/api@9",
+          "jsr:@targetd/api@10",
           "npm:@types/yargs@^17.0.35",
           "npm:yargs@18",
           "npm:zod@^4.3.6"
@@ -2141,7 +2132,7 @@
       },
       "packages/server": {
         "dependencies": [
-          "jsr:@targetd/api@9",
+          "jsr:@targetd/api@10",
           "npm:@johngw/error@^2.2.2",
           "npm:@types/express@^5.0.6",
           "npm:@types/qs@^6.15.0",
