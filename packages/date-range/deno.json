@@ -5,7 +5,7 @@
   "exports": "./src/index.ts",
   "imports": {
     "@targetd/api": "jsr:@targetd/api@^10.1.0",
-    "zod": "npm:zod@~4.6.6"
+    "zod": "npm:zod@~4.6.7"
   },
   "lint": {
     "rules": {
